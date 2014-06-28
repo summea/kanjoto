@@ -1,0 +1,7 @@
+<resources>
+
+    <string name="app_name">otashu</string>
+	<string name="button_generate">Generate</string>
+	<string name="button_play">Play</string>
+	
+</resources>
