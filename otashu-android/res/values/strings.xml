@@ -1,6 +1,23 @@
 <resources>
 
     <string name="app_name">otashu</string>
+    <string name="menu_title">otashu collection</string>
+    <string name="button_create_noteset">create</string>
+    <string name="button_view_all_notesets">view all</string>
+    <string name="button_save">Save</string>
+    
+    <string name="create_noteset_title">Create Noteset</string>
+    <string name="spinner_emotion_label">Emotion</string>
+    <string name="spinner_note1_label">Note 1</string>
+    <string name="spinner_note2_label">Note 2</string>
+    <string name="spinner_note3_label">Note 3</string>
+    <string name="spinner_note4_label">Note 4</string>
+    
+    <string name="view_all_notesets_title">View All Notesets</string>
+    
+    <string name="view_noteset_detail_title">Noteset Details</string>
+    <string name="noteset_detail_title_label">Noteset Name</string>
+    
 	<string name="button_generate">Generate</string>
 	<string name="button_play">Play</string>
 	

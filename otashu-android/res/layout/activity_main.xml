@@ -4,17 +4,25 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#eeeeee">
+    
+    <TextView
+    	android:id="@+id/menu_title"
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:gravity="center_horizontal"
+    	android:text="@string/menu_title"
+    	android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <Button
-        android:id="@+id/button_generate"
+        android:id="@+id/button_create_noteset"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/button_generate" />
+        android:text="@string/button_create_noteset" />
     
     <Button
-        android:id="@+id/button_play"
+        android:id="@+id/button_view_all_notesets"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/button_play" />
+        android:text="@string/button_view_all_notesets" />
 
 </LinearLayout>
