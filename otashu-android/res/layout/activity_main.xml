@@ -24,5 +24,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/button_view_all_notesets" />
+        
+    <Button
+        android:id="@+id/button_view_sequence"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_view_sequence" />
+    
+    <Button
+    	android:id="@+id/button_get_remote_noteset"
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:text="@string/button_get_remote_noteset" />
+    
+    <Button
+    	android:id="@+id/button_settings"
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:text="@string/button_settings" />
 
 </LinearLayout>

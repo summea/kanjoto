@@ -16,7 +16,11 @@ public class ViewAllNotesetsActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		
 		String[] allNotesets = new String[] { "example one", "example two", "example three" };
+		
+		NotesetCollectionOpenHelper db = new NotesetCollectionOpenHelper(this);
 
+		db.getAllNotesets();
+		
 		setListAdapter(new ArrayAdapter<String>(this, R.layout.list_noteset, allNotesets));
 		
 		ListView listView = getListView();

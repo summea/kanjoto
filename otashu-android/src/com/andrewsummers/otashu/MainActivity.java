@@ -13,6 +13,9 @@ public class MainActivity extends Activity implements OnClickListener {
 	
 	private Button buttonCreateNoteset = null;
 	private Button buttonViewAllNotesets = null;
+	private Button buttonViewSequence = null;
+	private Button buttonGetRemoteNoteset = null;
+	private Button buttonSettings = null;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -28,6 +31,15 @@ public class MainActivity extends Activity implements OnClickListener {
 		
 		buttonViewAllNotesets = (Button)findViewById(R.id.button_view_all_notesets);
 		buttonViewAllNotesets.setOnClickListener(this);
+		
+		buttonViewSequence = (Button)findViewById(R.id.button_view_sequence);
+		buttonViewSequence.setOnClickListener(this);
+		
+		buttonGetRemoteNoteset = (Button)findViewById(R.id.button_get_remote_noteset);
+		buttonGetRemoteNoteset.setOnClickListener(this);
+		
+		buttonSettings = (Button)findViewById(R.id.button_settings);
+		buttonSettings.setOnClickListener(this);
 	}
 
 	@Override
@@ -41,6 +53,18 @@ public class MainActivity extends Activity implements OnClickListener {
 				break;
 			case R.id.button_view_all_notesets:
 				intent = new Intent(this, ViewAllNotesetsActivity.class);
+				startActivity(intent);
+				break;
+			case R.id.button_view_sequence:
+				intent = new Intent(this, ScreenSlideActivity.class);
+				startActivity(intent);
+				break;
+			case R.id.button_get_remote_noteset:
+				intent = new Intent(this, GetRemoteNotesetActivity.class);
+				startActivity(intent);
+				break;
+			case R.id.button_settings:
+				intent = new Intent(this, SettingsActivity.class);
 				startActivity(intent);
 				break;
 		}

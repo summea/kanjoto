@@ -41,6 +41,27 @@
     			<action android:name="android.intent.action.MAIN" />
     		</intent-filter>
     	</activity>
+    	<activity
+    		android:name="com.andrewsummers.otashu.ScreenSlideActivity"
+    		android:label="@string/app_name">
+    		<intent-filter>
+    			<action android:name="android.intent.action.MAIN" />
+    		</intent-filter>
+    	</activity>
+		<activity
+    		android:name="com.andrewsummers.otashu.GetRemoteNotesetActivity"
+    		android:label="@string/app_name">
+    		<intent-filter>
+    			<action android:name="android.intent.action.MAIN" />
+    		</intent-filter>
+    	</activity>
+    	<activity
+    		android:name="com.andrewsummers.otashu.SettingsActivity"
+    		android:label="@string/app_name">
+    		<intent-filter>
+    			<action android:name="android.intent.action.MAIN" />
+    		</intent-filter>
+    	</activity>
     </application>
-
+	<uses-permission android:name="android.permission.INTERNET" />
 </manifest>
