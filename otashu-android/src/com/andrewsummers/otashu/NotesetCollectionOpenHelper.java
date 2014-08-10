@@ -1,3 +1,10 @@
+/* Data source based on tutorial by vogella
+ * http://www.vogella.com/tutorials/AndroidSQLite/article.html
+ * Licensed under:
+ * CC BY-NC-SA 3.0 DE: http://creativecommons.org/licenses/by-nc-sa/3.0/de/deed.en
+ * Eclipse Public License: https://www.eclipse.org/legal/epl-v10.html
+ */
+
 package com.andrewsummers.otashu;
 
 import java.util.LinkedList;
@@ -56,6 +63,31 @@ public class NotesetCollectionOpenHelper extends SQLiteOpenHelper {
 				noteset.setNotevalues(cursor.getString(1));
 				
 				notesets.add(noteset);
+			} while (cursor.moveToNext());
+		}
+		
+		Log.d("MYLOG", notesets.toString());
+		
+		return notesets;
+	}
+	
+	public List<String> getAllNotesetListPreviews() {
+		
+		List<String> notesets = new LinkedList<String>();
+		
+		String query = "SELECT * FROM " + TABLE_NOTESETS;
+		
+		SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.rawQuery(query, null);
+		
+		Noteset noteset = null;
+		if (cursor.moveToFirst()) {
+			do {
+				noteset = new Noteset();
+				noteset.setId(Integer.parseInt(cursor.getString(0)));
+				noteset.setNotevalues(cursor.getString(1));
+				
+				notesets.add(noteset.toString());
 			} while (cursor.moveToNext());
 		}
 		

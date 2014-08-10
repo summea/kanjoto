@@ -1,5 +1,7 @@
 package com.andrewsummers.otashu;
 
+import java.util.List;
+
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,12 +16,11 @@ public class ViewAllNotesetsActivity extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		String[] allNotesets = new String[] { "example one", "example two", "example three" };
-		
-		NotesetCollectionOpenHelper db = new NotesetCollectionOpenHelper(this);
 
-		db.getAllNotesets();
+		NotesetCollectionOpenHelper db = new NotesetCollectionOpenHelper(this);
+		
+		List<String> allNotesetsData = db.getAllNotesetListPreviews();
+		String[] allNotesets = allNotesetsData.toArray(new String[allNotesetsData.size()]);
 		
 		setListAdapter(new ArrayAdapter<String>(this, R.layout.list_noteset, allNotesets));
 		

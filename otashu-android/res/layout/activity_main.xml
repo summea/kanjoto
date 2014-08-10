@@ -11,36 +11,41 @@
     	android:layout_height="wrap_content"
     	android:gravity="center_horizontal"
     	android:text="@string/menu_title"
-    	android:textAppearance="?android:attr/textAppearanceLarge" />
+    	android:textSize="34dp" />
 
     <Button
         android:id="@+id/button_create_noteset"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/button_create_noteset" />
+        android:text="@string/button_create_noteset"
+        android:padding="20dp" />
     
     <Button
         android:id="@+id/button_view_all_notesets"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/button_view_all_notesets" />
+        android:text="@string/button_view_all_notesets"
+        android:padding="20dp" />
         
     <Button
         android:id="@+id/button_view_sequence"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/button_view_sequence" />
+        android:text="@string/button_view_sequence"
+        android:padding="20dp" />
     
     <Button
     	android:id="@+id/button_get_remote_noteset"
     	android:layout_width="match_parent"
     	android:layout_height="wrap_content"
-    	android:text="@string/button_get_remote_noteset" />
+    	android:text="@string/button_get_remote_noteset"
+    	android:padding="20dp" />
     
     <Button
     	android:id="@+id/button_settings"
     	android:layout_width="match_parent"
     	android:layout_height="wrap_content"
-    	android:text="@string/button_settings" />
+    	android:text="@string/button_settings"
+    	android:padding="20dp" />
 
 </LinearLayout>

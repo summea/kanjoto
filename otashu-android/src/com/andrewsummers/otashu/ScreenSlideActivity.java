@@ -1,5 +1,7 @@
 package com.andrewsummers.otashu;
 
+import java.util.List;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,9 +22,17 @@ public class ScreenSlideActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_screen_slide);
 		
+		NotesetCollectionOpenHelper db = new NotesetCollectionOpenHelper(this);
+		
+		List<String> allNotesetsData = db.getAllNotesetListPreviews();
+		String[] allNotesets = allNotesetsData.toArray(new String[allNotesetsData.size()]);
+		
+		// demo data
+		String data = allNotesets[0];
+		
 		// instantiate a ViewPager and a PagerAdapter
 		mPager = (ViewPager)findViewById(R.id.pager);
-		mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+		mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), data);
 		mPager.setAdapter(mPagerAdapter);
 		
 		Bundle bundle = new Bundle();
@@ -51,8 +61,11 @@ public class ScreenSlideActivity extends FragmentActivity {
 	
 	private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 
-		public ScreenSlidePagerAdapter(FragmentManager fm) {
+		private String data = null;
+		
+		public ScreenSlidePagerAdapter(FragmentManager fm, String data) {
 			super(fm);
+			this.data = data;
 		}
 		
 		@Override
@@ -62,16 +75,16 @@ public class ScreenSlideActivity extends FragmentActivity {
 			
 			switch (position) {
 				case 0:
-					bundle.putString("textforfragment", "this is some text for fragment1");
+					bundle.putString("textforfragment", Character.toString(data.charAt(0)));
 					break;
 				case 1:
-					bundle.putString("textforfragment", "this is some text for fragment2");
+					bundle.putString("textforfragment", Character.toString(data.charAt(1)));
 					break;
 				case 2:
-					bundle.putString("textforfragment", "this is some text for fragment3");
+					bundle.putString("textforfragment", Character.toString(data.charAt(2)));
 					break;
 				case 3:
-					bundle.putString("textforfragment", "this is some text for fragment4");
+					bundle.putString("textforfragment", Character.toString(data.charAt(3)));
 					break;
 			}
 			

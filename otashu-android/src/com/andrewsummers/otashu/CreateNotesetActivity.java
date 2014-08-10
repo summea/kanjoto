@@ -112,9 +112,8 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
 	
 	private void saveNotesets(View v, String data) {
 		//ArrayAdapter<Noteset> adapter = (ArrayAdapter<Noteset>) getListAdapter();
-		Noteset noteset = null;
 		String notesetData = data;
-		noteset = datasource.createNoteset(notesetData);
+		datasource.createNoteset(notesetData);
 		
 		Context context = getApplicationContext();
 		int duration = Toast.LENGTH_SHORT;
