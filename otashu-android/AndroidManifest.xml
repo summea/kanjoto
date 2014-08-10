@@ -42,7 +42,7 @@
     		</intent-filter>
     	</activity>
     	<activity
-    		android:name="com.andrewsummers.otashu.ScreenSlideActivity"
+    		android:name="com.andrewsummers.otashu.ViewNotesetSequenceActivity"
     		android:label="@string/app_name">
     		<intent-filter>
     			<action android:name="android.intent.action.MAIN" />

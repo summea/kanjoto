@@ -11,7 +11,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 
-public class ScreenSlideActivity extends FragmentActivity {
+public class ViewNotesetSequenceActivity extends FragmentActivity {
 
 	private static final int NUM_PAGES = 4;
 	private ViewPager mPager;
@@ -20,7 +20,7 @@ public class ScreenSlideActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_screen_slide);
+		setContentView(R.layout.activity_view_noteset_sequence);
 		
 		NotesetCollectionOpenHelper db = new NotesetCollectionOpenHelper(this);
 		
@@ -88,7 +88,7 @@ public class ScreenSlideActivity extends FragmentActivity {
 					break;
 			}
 			
-			ScreenSlidePageFragment sspf = new ScreenSlidePageFragment();
+			ViewNotesetSequencePageFragment sspf = new ViewNotesetSequencePageFragment();
 			sspf.setArguments(bundle);
 			return sspf;
 		}

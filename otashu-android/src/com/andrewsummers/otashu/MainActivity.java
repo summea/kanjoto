@@ -56,7 +56,7 @@ public class MainActivity extends Activity implements OnClickListener {
 				startActivity(intent);
 				break;
 			case R.id.button_view_sequence:
-				intent = new Intent(this, ScreenSlideActivity.class);
+				intent = new Intent(this, ViewNotesetSequenceActivity.class);
 				startActivity(intent);
 				break;
 			case R.id.button_get_remote_noteset:
