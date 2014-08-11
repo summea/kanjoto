@@ -11,8 +11,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
+/**
+ * View all notesets as a list.
+ */
 public class ViewAllNotesetsActivity extends ListActivity {
 	
+	/**
+	 * onCreate override used to gather and display a list of all notesets
+	 * saved in database.
+	 * 
+	 * @param savedInstanceState	Current application state data.
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

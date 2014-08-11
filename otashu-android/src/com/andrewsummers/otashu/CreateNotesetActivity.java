@@ -10,11 +10,20 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+/**
+ * CreateNotesetActivity is an Activity which provides users the ability to
+ * create new notesets.
+ */
 public class CreateNotesetActivity extends Activity implements OnClickListener {
 
 	private Button buttonSave = null;
 	private NotesetsDataSource datasource;
 	
+	/**
+	 * onCreate override that provides noteset creation view to user .
+	 * 
+	 * @param savedInstanceState	Current application state data.
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,10 +71,13 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
 		spinner.setAdapter(adapter);
 	}
 	
+	/**
+	 * onClick override used to save noteset data once user clicks save button.
+	 * 
+	 * @param view		Incoming view.
+	 */
 	@Override
 	public void onClick(View v) {
-		// change text of button clicked for now
-		//((Button)v).setText("I was clicked");
 		switch (v.getId()) {
 			case R.id.button_save:
 				// gather noteset data from form
@@ -91,27 +103,37 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
 				
 				// save data
 				saveNotesets(v, noteset);
-				//Intent intent = new Intent(this, MainActivity.class);
-				//startActivity(intent);
+				
 				finish();
 				break;
 		}
 	}
 	
+	/**
+	 * onResume override used to open up data source when resuming activity. 
+	 */
 	@Override
 	protected void onResume() {
 		datasource.open();
 		super.onResume();
 	}
 	
+	/**
+	 * onPause override used to close data source when activity paused.
+	 */
 	@Override
 	protected void onPause() {
 		datasource.close();
 		super.onPause();
 	}
 	
+	/**
+	 * Save noteset data.
+	 * 
+	 * @param v		Incoming view.
+	 * @param data	Incoming string of data to be saved.
+	 */
 	private void saveNotesets(View v, String data) {
-		//ArrayAdapter<Noteset> adapter = (ArrayAdapter<Noteset>) getListAdapter();
 		String notesetData = data;
 		datasource.createNoteset(notesetData);
 		
@@ -120,8 +142,5 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
 		
 		Toast toast = Toast.makeText(context, context.getResources().getString(R.string.noteset_saved), duration);
 		toast.show();
-		
-		//adapter.add(noteset);
-		//adapter.notifyDataSetChanged();
 	}
 }

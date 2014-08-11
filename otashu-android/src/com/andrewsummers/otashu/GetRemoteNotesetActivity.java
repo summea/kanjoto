@@ -1,8 +1,3 @@
-/*
- * HttpAsyncTask originally based on a code tutorial located at:
- * http://hmkcode.com/android-parsing-json-data/
- */
-
 package com.andrewsummers.otashu;
 
 import java.io.BufferedReader;
@@ -25,10 +20,20 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * GetRemoteNotesetActivity is used to get a remote source of noteset data
+ * which can then be used in a variety of ways.
+ */
 public class GetRemoteNotesetActivity extends Activity {
 
 	private TextView notesetData;
-	
+
+	/**
+	 * onCreate override used to start async task that makes a remote REST GET
+	 * call in order to obtain remote noteset data.
+	 * 
+	 * @param savedInstanceState	Current application state data.
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,8 +45,20 @@ public class GetRemoteNotesetActivity extends Activity {
 		new HttpAsyncTask().execute("http://screenplays.herokuapp.com/welcome/get_notesets.json");
 	}
 	
+	/**
+	 * HttpAsyncTask is used as an HTTP wrapper for AsyncTask.
+	 * 
+	 * HttpAsyncTask originally based on a code tutorial which can be found at:
+	 * http://hmkcode.com/android-parsing-json-data/
+	 */
 	private class HttpAsyncTask extends AsyncTask<String, Void, String> {
 
+		/**
+		 * doInBackground implements the HTTP wrapper for this particular
+		 * asynchronous task.
+		 * 
+		 * @param urls	Incoming URLs (though only the first URL is used).
+		 */
 		@Override
 		protected String doInBackground(String... urls) {
 			
@@ -71,6 +88,12 @@ public class GetRemoteNotesetActivity extends Activity {
 			return result;
 		}
 		
+		/**
+		 * convertInputStreamToString turns an input stream into a string. 
+		 * 
+		 * @param inputStream	The incoming input stream to be converted.
+		 * @return	<String> of converted input stream.
+		 */
 		private String convertInputStreamToString(InputStream inputStream) {
 			
 			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
@@ -95,9 +118,14 @@ public class GetRemoteNotesetActivity extends Activity {
 			return result;
 		}
 		
+		/**
+		 * onPostExecute displays incoming, remote data once received.
+		 * 
+		 * @param result	Incoming, remote data source.
+		 */
 		@Override
 		protected void onPostExecute(String result) {
-			Toast.makeText(getBaseContext(), "received HTTP get data!", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getBaseContext(), "Received HTTP get data!", Toast.LENGTH_SHORT).show();
 			
 			try {
 				JSONObject jsonObj = new JSONObject(result);

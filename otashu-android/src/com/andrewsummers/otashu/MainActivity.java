@@ -9,6 +9,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+/**
+ * MainActivity currently acts as a general menu in order to demo
+ * various functionality available in this application.
+ */
 public class MainActivity extends Activity implements OnClickListener {
 	
 	private Button buttonCreateNoteset = null;
@@ -17,6 +21,11 @@ public class MainActivity extends Activity implements OnClickListener {
 	private Button buttonGetRemoteNoteset = null;
 	private Button buttonSettings = null;
 	
+	/**
+	 * onCreate override that provides menu buttons on menu view.
+	 * 
+	 * @param savedInstanceState	Current application state data.
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,6 +51,11 @@ public class MainActivity extends Activity implements OnClickListener {
 		buttonSettings.setOnClickListener(this);
 	}
 
+	/**
+	 * onClick override that acts as a router to start desired activities.
+	 * 
+	 * @param view		Incoming view.
+	 */
 	@Override
 	public void onClick(View v) {
 		Intent intent = null;

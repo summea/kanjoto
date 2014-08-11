@@ -7,8 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+/**
+ * Page fragment used to display individual noteset note value data.
+ */
 public class ViewNotesetSequencePageFragment extends Fragment {
 	
+	/**
+	 * onCreateView override used to gather data (that was sent along in a bundle)
+	 * and then display the given data on current page.
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_view_noteset_sequence_page, container, false);

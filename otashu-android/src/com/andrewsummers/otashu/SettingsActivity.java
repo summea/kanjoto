@@ -5,10 +5,17 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.CheckBox;
 
+/**
+ * Settings are general settings for the overall application.
+ */
 public class SettingsActivity extends Activity {
 	
-	//public static final String PREFS_NAME = "OtashuSharedPrefs";
-	
+	/**
+	 * onCreate override used to restore existing settings when viewing
+	 * Settings activity.
+	 * 
+	 * @param savedInstanceState	Current application state data.
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -25,6 +32,10 @@ public class SettingsActivity extends Activity {
 		}
 	}
 	
+	/**
+	 * onStop override used to save settings when user is done viewing
+	 * Settings activity.
+	 */
 	@Override
 	public void onStop() {
 		super.onStop();
