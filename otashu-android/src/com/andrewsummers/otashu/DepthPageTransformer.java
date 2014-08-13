@@ -16,7 +16,6 @@ import android.view.View;
  * terms described in the Creative Commons 2.5 Attribution License
  */
 public class DepthPageTransformer implements ViewPager.PageTransformer {
-
 	private static final float MIN_SCALE = 0.5f;
 	private boolean touchFeedbackEnabled = false;
 	
@@ -27,7 +26,8 @@ public class DepthPageTransformer implements ViewPager.PageTransformer {
 	 * 
 	 * @param savedInstanceState	Current application state data.
 	 */
-	public DepthPageTransformer(Bundle savedInstanceState) {
+	public DepthPageTransformer(Bundle savedInstanceState) {		
+		// get (and enable) current app settings
 		if (savedInstanceState.getString("touchFeedbackEnabled").equals("true")) {
 			touchFeedbackEnabled = true;
 		}
@@ -44,7 +44,7 @@ public class DepthPageTransformer implements ViewPager.PageTransformer {
 	 * 						0 is front and center.
 	 * 						1 is one page position to the right 					 
 	 */
-	public void transformPage(View view, float position) {	
+	public void transformPage(View view, float position) {
 		int pageWidth = view.getWidth();
 		
 		// if application touch feedback setting is set, enable touch feedback

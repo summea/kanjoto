@@ -25,7 +25,6 @@ import android.widget.Toast;
  * which can then be used in a variety of ways.
  */
 public class GetRemoteNotesetActivity extends Activity {
-
 	private TextView notesetData;
 
 	/**
@@ -37,11 +36,13 @@ public class GetRemoteNotesetActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		// get specific layout for content view
 		setContentView(R.layout.activity_get_remote_noteset);
 		
 		notesetData = (TextView)findViewById(R.id.remote_noteset);
 		
-		// call async task
+		// call async task and execute REST GET request on remote server
 		new HttpAsyncTask().execute("http://screenplays.herokuapp.com/welcome/get_notesets.json");
 	}
 	
@@ -52,7 +53,6 @@ public class GetRemoteNotesetActivity extends Activity {
 	 * http://hmkcode.com/android-parsing-json-data/
 	 */
 	private class HttpAsyncTask extends AsyncTask<String, Void, String> {
-
 		/**
 		 * doInBackground implements the HTTP wrapper for this particular
 		 * asynchronous task.
@@ -61,7 +61,6 @@ public class GetRemoteNotesetActivity extends Activity {
 		 */
 		@Override
 		protected String doInBackground(String... urls) {
-			
 			InputStream inputStream = null;
 			String result = "";
 			String url = urls[0];
@@ -95,7 +94,6 @@ public class GetRemoteNotesetActivity extends Activity {
 		 * @return	<String> of converted input stream.
 		 */
 		private String convertInputStreamToString(InputStream inputStream) {
-			
 			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 			String result = "";
 			String line = "";
@@ -128,6 +126,7 @@ public class GetRemoteNotesetActivity extends Activity {
 			Toast.makeText(getBaseContext(), "Received HTTP get data!", Toast.LENGTH_SHORT).show();
 			
 			try {
+				// parse incoming HTTP data as JSON objects and JSON arrays
 				JSONObject jsonObj = new JSONObject(result);
 				String jsonTextResult = "";
 				
@@ -137,6 +136,7 @@ public class GetRemoteNotesetActivity extends Activity {
 				jsonTextResult += emotions.join(",");
 				jsonTextResult += notevalues.join(",");
 
+				// display received JSON data
 				notesetData.setText(jsonTextResult);
 			} catch (JSONException e) {
 				e.printStackTrace();

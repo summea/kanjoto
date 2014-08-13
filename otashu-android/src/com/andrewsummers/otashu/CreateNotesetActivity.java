@@ -15,7 +15,6 @@ import android.widget.Toast;
  * create new notesets.
  */
 public class CreateNotesetActivity extends Activity implements OnClickListener {
-
 	private Button buttonSave = null;
 	private NotesetsDataSource datasource;
 	
@@ -36,12 +35,14 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
 		buttonSave = (Button)findViewById(R.id.button_save);
 		buttonSave.setOnClickListener(this);
 		
+		// open data source handle
 		datasource = new NotesetsDataSource(this);
 		datasource.open();
 		
 		Spinner spinner = null;
 		ArrayAdapter<CharSequence> adapter = null;
 		
+		// locate next spinner in layout
 		spinner = (Spinner)findViewById(R.id.spinner_emotion);
 		// create an ArrayAdapter using the string array in the related XML file and use the default spinner layout
 		adapter = ArrayAdapter.createFromResource(this, R.array.emotion_values_array, android.R.layout.simple_spinner_item);
@@ -135,6 +136,8 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
 	 */
 	private void saveNotesets(View v, String data) {
 		String notesetData = data;
+		
+		// save noteset in database
 		datasource.createNoteset(notesetData);
 		
 		Context context = getApplicationContext();

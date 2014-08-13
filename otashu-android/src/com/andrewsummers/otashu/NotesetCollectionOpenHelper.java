@@ -20,7 +20,6 @@ import android.util.Log;
  * Eclipse Public License: https://www.eclipse.org/legal/epl-v10.html
  */
 public class NotesetCollectionOpenHelper extends SQLiteOpenHelper {
-	
 	private static final int DATABASE_VERSION = 1;
 	private static final String DATABASE_NAME = "noteset_collection.db";
 	
@@ -49,7 +48,7 @@ public class NotesetCollectionOpenHelper extends SQLiteOpenHelper {
 	 */
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL(DATABASE_CREATE);	
+		db.execSQL(DATABASE_CREATE);
 	}
 
 	/**
@@ -70,21 +69,25 @@ public class NotesetCollectionOpenHelper extends SQLiteOpenHelper {
 	 * @return List of Notesets.
 	 */
 	public List<Noteset> getAllNotesets() {
-		
 		List<Noteset> notesets = new LinkedList<Noteset>();
 		
 		String query = "SELECT * FROM " + TABLE_NOTESETS;
 		
+		// create database handle
 		SQLiteDatabase db = this.getWritableDatabase();
+		
+		// select all notesets from database
 		Cursor cursor = db.rawQuery(query, null);
 		
 		Noteset noteset = null;
 		if (cursor.moveToFirst()) {
 			do {
+				// create noteset objects based on noteset data from database
 				noteset = new Noteset();
 				noteset.setId(Integer.parseInt(cursor.getString(0)));
 				noteset.setNotevalues(cursor.getString(1));
 				
+				// add noteset object to list of notesets
 				notesets.add(noteset);
 			} while (cursor.moveToNext());
 		}
@@ -100,21 +103,25 @@ public class NotesetCollectionOpenHelper extends SQLiteOpenHelper {
 	 * @return List of Noteset preview strings.
 	 */
 	public List<String> getAllNotesetListPreviews() {
-		
 		List<String> notesets = new LinkedList<String>();
 		
 		String query = "SELECT * FROM " + TABLE_NOTESETS;
-		
+
+		// create database handle
 		SQLiteDatabase db = this.getWritableDatabase();
+		
+		// select all notesets from database
 		Cursor cursor = db.rawQuery(query, null);
 		
 		Noteset noteset = null;
 		if (cursor.moveToFirst()) {
 			do {
+				// create noteset objects based on noteset data from database
 				noteset = new Noteset();
 				noteset.setId(Integer.parseInt(cursor.getString(0)));
 				noteset.setNotevalues(cursor.getString(1));
-				
+
+				// add noteset string to list of strings
 				notesets.add(noteset.toString());
 			} while (cursor.moveToNext());
 		}

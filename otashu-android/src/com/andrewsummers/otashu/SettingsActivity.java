@@ -9,7 +9,6 @@ import android.widget.CheckBox;
  * Settings are general settings for the overall application.
  */
 public class SettingsActivity extends Activity {
-	
 	/**
 	 * onCreate override used to restore existing settings when viewing
 	 * Settings activity.
@@ -19,9 +18,11 @@ public class SettingsActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		// get specific layout for content view
 		setContentView(R.layout.activity_settings);
 		
-		// restore settings
+		// get and restore settings
 		SharedPreferences settings = getSharedPreferences(getResources().getString(R.string.settings_file_name), 0);
 		
 		CheckBox checkboxTouchFeedback = (CheckBox)findViewById(R.id.touch_feedback);

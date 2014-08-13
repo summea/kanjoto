@@ -14,7 +14,6 @@ import android.widget.Button;
  * various functionality available in this application.
  */
 public class MainActivity extends Activity implements OnClickListener {
-	
 	private Button buttonCreateNoteset = null;
 	private Button buttonViewAllNotesets = null;
 	private Button buttonViewSequence = null;

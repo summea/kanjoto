@@ -7,7 +7,6 @@ import android.os.Bundle;
  * View details of a particular noteset.
  */
 public class ViewNotesetDetailActivity extends Activity {
-	
 	/**
 	 * onCreate override used to get details view.
 	 * 
@@ -20,5 +19,4 @@ public class ViewNotesetDetailActivity extends Activity {
 		// get specific layout for content view
 		setContentView(R.layout.activity_view_noteset_detail);
 	}
-	
 }

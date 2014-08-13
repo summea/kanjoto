@@ -1,10 +1,9 @@
 package com.andrewsummers.otashu;
 
 /**
- * Noteset is a model for Notesets.
+ * Noteset is a model for Noteset objects.
  */
 public class Noteset {
-	
 	private long id;
 	private String notevalues;
 	

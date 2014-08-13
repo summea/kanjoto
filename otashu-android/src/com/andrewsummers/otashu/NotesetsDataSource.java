@@ -21,9 +21,10 @@ import android.util.Log;
  * Eclipse Public License: https://www.eclipse.org/legal/epl-v10.html
  */
 public class NotesetsDataSource {
-
 	private SQLiteDatabase database;
 	private NotesetCollectionOpenHelper dbHelper;
+	
+	// database table columns
 	private String[] allColumns = { NotesetCollectionOpenHelper.COLUMN_ID, NotesetCollectionOpenHelper.COLUMN_NOTEVALUES };
 	
 	/**
