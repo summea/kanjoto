@@ -28,10 +28,10 @@ public class ViewAllNotesetsActivity extends ListActivity {
         super.onCreate(savedInstanceState);
 
         List<String> allNotesetsData = new LinkedList<String>();
-        NotesetCollectionOpenHelper db = new NotesetCollectionOpenHelper(this);
+        NotesetsDataSource ds = new NotesetsDataSource(this);
 
         // get string version of returned noteset list
-        allNotesetsData = db.getAllNotesetListPreviews();
+        allNotesetsData = ds.getAllNotesetListPreviews();
 
         // prevent crashes due to lack of database data
         if (allNotesetsData.isEmpty())

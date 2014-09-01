@@ -13,6 +13,7 @@
     
     <string name="http_request_failed">HTTP request failed</string>
     
+    <string name="textview_noteset_name_label">Name</string>
     <string name="spinner_emotion_label">Emotion</string>
     <string name="spinner_note1_label">Note 1</string>
     <string name="spinner_note2_label">Note 2</string>

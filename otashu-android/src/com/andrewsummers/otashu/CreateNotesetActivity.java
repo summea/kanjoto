@@ -3,10 +3,12 @@ package com.andrewsummers.otashu;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -16,7 +18,9 @@ import android.widget.Toast;
  */
 public class CreateNotesetActivity extends Activity implements OnClickListener {
     private Button buttonSave = null;
-    private NotesetsDataSource datasource;
+    private NotesetsDataSource notesetsDataSource;
+    private NotesDataSource notesDataSource;
+    private Noteset newlyInsertedNoteset;
 
     /**
      * onCreate override that provides noteset creation view to user .
@@ -37,8 +41,12 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
         buttonSave.setOnClickListener(this);
 
         // open data source handle
-        datasource = new NotesetsDataSource(this);
-        datasource.open();
+        notesetsDataSource = new NotesetsDataSource(this);
+        notesetsDataSource.open();
+        
+        notesDataSource = new NotesDataSource(this);
+        notesDataSource.open();
+
 
         Spinner spinner = null;
         ArrayAdapter<CharSequence> adapter = null;
@@ -95,29 +103,33 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
         switch (v.getId()) {
         case R.id.button_save:
             // gather noteset data from form
-            String noteset = null;
-            Spinner spinner = null;
-            String spinnerText = null;
+            String notesetName;
+            Spinner spinner;
 
-            spinner = (Spinner) findViewById(R.id.spinner_note1);
-            spinnerText = spinner.getSelectedItem().toString();
-            noteset = spinnerText;
-
-            spinner = (Spinner) findViewById(R.id.spinner_note2);
-            spinnerText = spinner.getSelectedItem().toString();
-            noteset += spinnerText;
-
-            spinner = (Spinner) findViewById(R.id.spinner_note3);
-            spinnerText = spinner.getSelectedItem().toString();
-            noteset += spinnerText;
-
-            spinner = (Spinner) findViewById(R.id.spinner_note4);
-            spinnerText = spinner.getSelectedItem().toString();
-            noteset += spinnerText;
-
-            // save data
-            saveNotesets(v, noteset);
-
+            Noteset notesetToInsert = new Noteset();
+            Note noteToInsert = new Note();
+            
+            notesetName = ((EditText) findViewById(R.id.edittext_noteset_name)).getText().toString();
+            notesetToInsert.setName(notesetName.toString());
+            
+            // first insert new noteset (parent of all related notes)
+            saveNoteset(v, notesetToInsert);
+            
+            int[] spinnerIds = {
+                    R.id.spinner_note1,
+                    R.id.spinner_note2,
+                    R.id.spinner_note3,
+                    R.id.spinner_note4
+            };
+            
+            for (int i = 0; i < spinnerIds.length; i++) {
+                spinner = (Spinner) findViewById(spinnerIds[i]);
+                noteToInsert.setNotesetId(newlyInsertedNoteset.getId());
+                Log.d("MYLOG", spinner.getSelectedItem().toString());
+                noteToInsert.setNotevalue(Integer.parseInt(spinner.getSelectedItem().toString()));
+                saveNote(v, noteToInsert);
+            }
+            
             finish();
             break;
         }
@@ -128,7 +140,8 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
      */
     @Override
     protected void onResume() {
-        datasource.open();
+        notesetsDataSource.open();
+        notesDataSource.open();
         super.onResume();
     }
 
@@ -137,7 +150,8 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
      */
     @Override
     protected void onPause() {
-        datasource.close();
+        notesetsDataSource.close();
+        notesDataSource.close();
         super.onPause();
     }
 
@@ -149,11 +163,30 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
      * @param data
      *            Incoming string of data to be saved.
      */
-    private void saveNotesets(View v, String data) {
-        String notesetData = data;
+    private void saveNoteset(View v, Noteset noteset) {
 
         // save noteset in database
-        datasource.createNoteset(notesetData);
+        newlyInsertedNoteset = notesetsDataSource.createNoteset(noteset);
+
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context,
+                context.getResources().getString(R.string.noteset_saved),
+                duration);
+        toast.show();
+    }
+    
+    private void saveNote(View v, Note note) {
+
+        Log.d("MYLOG", Long.toString(note.getNotesetId()));
+        Log.d("MYLOG", Integer.toString(note.getNotevalue()));
+        
+        //Note noteToSave = new Note();
+        //noteToSave = note;
+        
+        // save noteset in database
+        notesDataSource.createNote(note);
 
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;

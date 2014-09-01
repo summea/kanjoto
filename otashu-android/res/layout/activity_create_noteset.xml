@@ -12,6 +12,17 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
 	<TextView
+		android:id="@+id/textview_noteset_name_label"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/textview_noteset_name_label" />
+		
+	<EditText
+		android:id="@+id/edittext_noteset_name"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content" />
+
+	<TextView
 		android:id="@+id/spinner_emotion_label"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"

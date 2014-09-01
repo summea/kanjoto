@@ -5,7 +5,7 @@ package com.andrewsummers.otashu;
  */
 public class Noteset {
     private long id;
-    private String notevalues;
+    private String name;
 
     /**
      * getId gets Noteset id
@@ -27,31 +27,31 @@ public class Noteset {
     }
 
     /**
-     * getNotevalues gets Noteset note values.
+     * getName gets Noteset name.
      * 
-     * @return <code>String</code> of note values.
+     * @return <code>String</code> of noteset name.
      */
-    public String getNotevalues() {
-        return notevalues;
+    public String getName() {
+        return name;
     }
 
     /**
-     * setNotevalues sets Noteset note values.
+     * setName sets Noteset name.
      * 
-     * @param notevalues
-     *            New note values.
+     * @param name
+     *            New noteset name.
      */
-    public void setNotevalues(String notevalues) {
-        this.notevalues = notevalues;
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
-     * toString override to return note values.
+     * toString override to return noteset name.
      * 
-     * @return <code>String</code> of note values.
+     * @return <code>String</code> of noteset name.
      */
     @Override
     public String toString() {
-        return notevalues;
+        return name;
     }
 }
