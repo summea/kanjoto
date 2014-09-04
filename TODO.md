@@ -1,6 +1,8 @@
 # otashu collection
 
 ## TODO:
+- export database to storage
+- import database from storage
 - add spinner for length
 - add spinner for velocity
 
