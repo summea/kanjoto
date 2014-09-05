@@ -19,6 +19,7 @@ public class MainActivity extends Activity implements OnClickListener {
     private Button buttonViewSequence = null;
     private Button buttonGetRemoteNoteset = null;
     private Button buttonSettings = null;
+    private Button buttonExportDatabase = null;
 
     /**
      * onCreate override that provides menu buttons on menu view.
@@ -49,6 +50,9 @@ public class MainActivity extends Activity implements OnClickListener {
 
         buttonSettings = (Button) findViewById(R.id.button_settings);
         buttonSettings.setOnClickListener(this);
+        
+        buttonExportDatabase = (Button) findViewById(R.id.button_export_database);
+        buttonExportDatabase.setOnClickListener(this);
     }
 
     /**
@@ -80,6 +84,10 @@ public class MainActivity extends Activity implements OnClickListener {
             break;
         case R.id.button_settings:
             intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            break;
+        case R.id.button_export_database:
+            intent = new Intent(this, ExportDatabaseActivity.class);
             startActivity(intent);
             break;
         }

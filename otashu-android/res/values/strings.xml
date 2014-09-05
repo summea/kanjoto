@@ -8,6 +8,7 @@
     <string name="button_view_sequence">view sequence</string>
     <string name="button_save">Save</string>
     <string name="button_settings">settings</string>
+    <string name="button_export_database">export database</string>
     
     <string name="create_noteset_title">Create Noteset</string>
     
