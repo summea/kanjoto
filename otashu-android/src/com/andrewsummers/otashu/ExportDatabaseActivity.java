@@ -51,6 +51,7 @@ public class ExportDatabaseActivity extends Activity {
                 src = new FileInputStream(currentDB).getChannel();
                 dst = new FileOutputStream(backupDB).getChannel();
                 
+                // copy source file to destination
                 dst.transferFrom(src, 0, src.size());
             } catch (IOException e) {
                 e.printStackTrace();

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.CheckBox;
+import android.widget.EditText;
 
 /**
  * Settings are general settings for the overall application.
@@ -34,6 +35,10 @@ public class SettingsActivity extends Activity {
         if (touchFeedbackEnabled) {
             checkboxTouchFeedback.setChecked(true);
         }
+        
+        EditText importDatabaseLocation = (EditText) findViewById(R.id.import_database_location);
+        String importDatabaseLocationText = settings.getString("importDatabaseLocation", null);
+        importDatabaseLocation.setText(importDatabaseLocationText);
     }
 
     /**
@@ -52,6 +57,10 @@ public class SettingsActivity extends Activity {
         CheckBox checkboxTouchFeedback = (CheckBox) findViewById(R.id.touch_feedback);
         editor.putBoolean("touchFeedbackEnabled",
                 checkboxTouchFeedback.isChecked());
+        
+        EditText importDatabaseLocation = (EditText) findViewById(R.id.import_database_location);
+        editor.putString("importDatabaseLocation",
+                importDatabaseLocation.getText().toString());
 
         editor.commit();
     }

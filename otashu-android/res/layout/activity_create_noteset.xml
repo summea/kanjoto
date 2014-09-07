@@ -12,10 +12,10 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
 	<TextView
-		android:id="@+id/textview_noteset_name_label"
+		android:id="@+id/noteset_name_label"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:text="@string/textview_noteset_name_label" />
+		android:text="@string/noteset_name_label" />
 		
 	<EditText
 		android:id="@+id/edittext_noteset_name"

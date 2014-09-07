@@ -9,12 +9,13 @@
     <string name="button_save">Save</string>
     <string name="button_settings">settings</string>
     <string name="button_export_database">export database</string>
+    <string name="button_import_database">import database</string>
     
     <string name="create_noteset_title">Create Noteset</string>
     
     <string name="http_request_failed">HTTP request failed</string>
     
-    <string name="textview_noteset_name_label">Name</string>
+    <string name="noteset_name_label">Name</string>
     <string name="spinner_emotion_label">Emotion</string>
     <string name="spinner_note1_label">Note 1</string>
     <string name="spinner_note2_label">Note 2</string>
@@ -26,6 +27,7 @@
     <string name="remote_noteset">getting remote noteset...</string>
     <string name="settings_file_name">OtashuSharedPrefs</string>
     
+    <string name="import_database_location_label">Import Database from Location</string>
     <string name="touch_feedback">Enable touch feedback</string>
     
     <string name="view_all_notesets_title">View All Notesets</string>
