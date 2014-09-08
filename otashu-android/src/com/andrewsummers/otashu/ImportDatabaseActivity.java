@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
 public class ImportDatabaseActivity extends Activity {
     
@@ -58,6 +59,9 @@ public class ImportDatabaseActivity extends Activity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                    
+                    Toast.makeText(getBaseContext(), "Database imported!",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         }

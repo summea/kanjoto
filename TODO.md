@@ -1,6 +1,7 @@
 # otashu collection
 
 ## TODO:
+- user chooses emotion
 - add spinner for length
 - add spinner for velocity
 
