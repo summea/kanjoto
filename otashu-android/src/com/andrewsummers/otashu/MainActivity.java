@@ -14,6 +14,7 @@ import android.widget.Button;
  * functionality available in this application.
  */
 public class MainActivity extends Activity implements OnClickListener {
+    private Button buttonChooseEmotion = null;
     private Button buttonCreateNoteset = null;
     private Button buttonViewAllNotesets = null;
     private Button buttonViewSequence = null;
@@ -43,6 +44,9 @@ public class MainActivity extends Activity implements OnClickListener {
         buttonViewAllNotesets = (Button) findViewById(R.id.button_view_all_notesets);
         buttonViewAllNotesets.setOnClickListener(this);
 
+        buttonChooseEmotion = (Button) findViewById(R.id.button_choose_emotion);
+        buttonChooseEmotion.setOnClickListener(this);
+        
         buttonViewSequence = (Button) findViewById(R.id.button_view_sequence);
         buttonViewSequence.setOnClickListener(this);
 
@@ -76,6 +80,10 @@ public class MainActivity extends Activity implements OnClickListener {
             break;
         case R.id.button_view_all_notesets:
             intent = new Intent(this, ViewAllNotesetsActivity.class);
+            startActivity(intent);
+            break;
+        case R.id.button_choose_emotion:
+            intent = new Intent(this, ChooseEmotionActivity.class);
             startActivity(intent);
             break;
         case R.id.button_view_sequence:

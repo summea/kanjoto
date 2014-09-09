@@ -28,6 +28,13 @@
         android:padding="20dp" />
         
     <Button
+        android:id="@+id/button_choose_emotion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_choose_emotion"
+        android:padding="20dp" />
+
+    <Button
         android:id="@+id/button_view_sequence"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

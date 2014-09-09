@@ -1,12 +1,13 @@
 # otashu collection
 
 ## TODO:
-- user chooses emotion
-- add spinner for length
-- add spinner for velocity
+- add spinners for length in CreateNotesetActivity
+- add spinners for velocity in CreateNotesetActivity
 
 
 ## DONE:
+- 20140908: added ChooseEmotionActivity
+- 20140907: added toasts to database import/export process
 - 20140906: added database import feature
 - 20140905: added database export feature
 - 20140903: decide on table structure for emotion id (decision for now: if SQLite really does support `WHERE IN ()` then tagged emotions can be stored as ids in noteset table rows... and tags can be searched for using numbers rather than strings)

@@ -2,8 +2,10 @@
 
     <string name="app_name">otashu</string>
     <string name="menu_title">otashu collection</string>
+    <string name="button_choose_emotion">Choose Emotion</string>
     <string name="button_create_noteset">create</string>
     <string name="button_get_remote_noteset">get remote noteset</string>
+    <string name="button_go">Go</string>
     <string name="button_view_all_notesets">view all</string>
     <string name="button_view_sequence">view sequence</string>
     <string name="button_save">Save</string>
@@ -11,6 +13,7 @@
     <string name="button_export_database">export database</string>
     <string name="button_import_database">import database</string>
     
+    <string name="choose_emotion_title">Choose Emotion</string>
     <string name="create_noteset_title">Create Noteset</string>
     
     <string name="http_request_failed">HTTP request failed</string>

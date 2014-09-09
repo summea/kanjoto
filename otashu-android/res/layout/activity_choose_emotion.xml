@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+	<TextView
+        android:id="@+id/choose_emotion_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/choose_emotion_title"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+	<TextView
+		android:id="@+id/spinner_emotion_label"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/spinner_emotion_label" />
+		
+	<Spinner
+        android:id="@+id/spinner_emotion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+		
+	<Button
+        android:id="@+id/button_go"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_go" />
+		
+</LinearLayout>
