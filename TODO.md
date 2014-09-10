@@ -1,6 +1,13 @@
 # otashu collection
 
 ## TODO:
+- decide on which approach to try first for generating music:
+  - Approach 1:
+    - gather related notes from database based on given emotion
+    - convert query results into individual "noteset bundles"
+    - randomly choose from list of "noteset bundles"
+  - Approach 2:
+    - randomly query database for notesets and notes based on given emotion
 - add spinners for length in CreateNotesetActivity
 - add spinners for velocity in CreateNotesetActivity
 
