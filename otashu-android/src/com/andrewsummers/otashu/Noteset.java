@@ -6,6 +6,7 @@ package com.andrewsummers.otashu;
 public class Noteset {
     private long id;
     private String name;
+    private int emotion_id;
 
     /**
      * getId gets Noteset id
@@ -44,6 +45,25 @@ public class Noteset {
     public void setName(String name) {
         this.name = name;
     }
+    
+    /**
+     * getEmotion gets Noteset emotion_id.
+     * 
+     * @return <code>int</code> of noteset emotion_id.
+     */
+    public int getEmotion() {
+        return emotion_id;
+    }
+
+    /**
+     * setEmotion sets Noteset emotion_id.
+     * 
+     * @param name
+     *            New noteset emotion_id.
+     */
+    public void setEmotion(int emotion_id) {
+        this.emotion_id = emotion_id;
+    }
 
     /**
      * toString override to return noteset name.
@@ -52,6 +72,6 @@ public class Noteset {
      */
     @Override
     public String toString() {
-        return name;
+        return name + " " + emotion_id;
     }
 }

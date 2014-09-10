@@ -1,6 +1,6 @@
 package com.andrewsummers.otashu;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -68,6 +68,8 @@ public class NotesetsDataSource {
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME,
                 noteset.getName());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_EMOTION_ID,
+                noteset.getEmotion());
 
         long insertId = database
                 .insert(OtashuDatabaseHelper.TABLE_NOTESETS, null,
@@ -81,6 +83,7 @@ public class NotesetsDataSource {
         cursor.moveToFirst();
         Noteset newNoteset = cursorToNoteset(cursor);
         cursor.close();
+        Log.d("MYLOG", newNoteset.toString());
         return newNoteset;
     }
 
@@ -98,26 +101,100 @@ public class NotesetsDataSource {
     }
 
     /**
-     * Get all notesets from database table.
+     * Get all notesets bundles from database table.
      * 
-     * @return List of Notesets.
+     * @return List of noteset bundles.
      */
-    public List<Noteset> getAllNotesets() {
-        List<Noteset> notesets = new ArrayList<Noteset>();
+    public HashMap<Integer, List<Note>> getAllNotesetBundles() {        
+        HashMap<Integer, List<Note>> notesetBundles = new HashMap<Integer, List<Note>>();
+        
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS;
 
-        Cursor cursor = database.query(
-                OtashuDatabaseHelper.TABLE_NOTESETS, allColumns, null,
-                null, null, null, null);
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Noteset noteset = cursorToNoteset(cursor);
-            notesets.add(noteset);
-            cursor.moveToNext();
+        // select all notesets from database
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Integer notesetId = Integer.parseInt(cursor.getString(0));
+                
+                // get all related notes inside this noteset
+                // TODO: make this query approach more efficient at some point, if necessary
+                String queryForRelatedNotes = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = " + notesetId;
+                Cursor cursorForRelatedNotes = db.rawQuery(queryForRelatedNotes, null);
+                
+                
+                List<Note> notes = new LinkedList<Note>();
+                
+                if (cursorForRelatedNotes.moveToFirst()) {
+                    do {
+                        Note note = null;
+                        note = new Note();
+                        note.setNotevalue(Integer.parseInt(cursorForRelatedNotes.getString(2)));
+                        notes.add(note);
+                    } while (cursorForRelatedNotes.moveToNext());
+                }
+                
+                notesetBundles.put(notesetId, notes);
+                
+            } while (cursor.moveToNext());
         }
 
-        cursor.close();
-        return notesets;
+        Log.d("MYLOG", notesetBundles.toString());
+
+        return notesetBundles;
+    }
+    
+    /**
+     * Get all notesets bundles from database table.
+     * 
+     * @return List of noteset bundles.
+     */
+    public HashMap<Integer, List<Note>> getAllNotesetBundles(int emotion_id) {
+        HashMap<Integer, List<Note>> notesetBundles = new HashMap<Integer, List<Note>>();
+        
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS + " WHERE " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotion_id;
+        Log.d("MYLOG", "db query: " + query);
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notesets from database
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Integer notesetId = Integer.parseInt(cursor.getString(0));
+                Log.d("MYLOG", "noteset id: " + notesetId);
+                
+                // get all related notes inside this noteset
+                // TODO: make this query approach more efficient at some point, if necessary
+                String queryForRelatedNotes = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = " + notesetId;
+                Cursor cursorForRelatedNotes = db.rawQuery(queryForRelatedNotes, null);
+                
+                Log.d("MYLOG", "db query2: " + queryForRelatedNotes);
+                
+                List<Note> notes = new LinkedList<Note>();
+                
+                if (cursorForRelatedNotes.moveToFirst()) {
+                    do {
+                        Note note = null;
+                        note = new Note();
+                        note.setNotevalue(Integer.parseInt(cursorForRelatedNotes.getString(2)));
+                        notes.add(note);
+                    } while (cursorForRelatedNotes.moveToNext());
+                }
+                
+                notesetBundles.put(notesetId, notes);
+                
+            } while (cursor.moveToNext());
+        }
+
+        Log.d("MYLOG", notesetBundles.toString());
+
+        return notesetBundles;
     }
 
     /**
@@ -142,8 +219,6 @@ public class NotesetsDataSource {
     public List<String> getAllNotesetListPreviews() {
         List<String> notesets = new LinkedList<String>();
         
-        String itemForList = ""; 
-        
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS;
 
         // create database handle
@@ -155,10 +230,13 @@ public class NotesetsDataSource {
         Noteset noteset = null;
         if (cursor.moveToFirst()) {
             do {
+                String itemForList = "";
+                
                 // create noteset objects based on noteset data from database
                 noteset = new Noteset();
                 noteset.setId(Integer.parseInt(cursor.getString(0)));
                 noteset.setName(cursor.getString(1));
+                noteset.setEmotion((cursor.getInt(2)));
 
                 // get all related notes inside this noteset
                 // TODO: make this query approach more efficient at some point, if necessary

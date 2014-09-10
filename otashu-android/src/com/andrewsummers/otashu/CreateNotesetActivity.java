@@ -56,7 +56,7 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
         // create an ArrayAdapter using the string array in the related XML file
         // and use the default spinner layout
         adapter = ArrayAdapter.createFromResource(this,
-                R.array.emotion_values_array,
+                R.array.emotion_labels_array,
                 android.R.layout.simple_spinner_item);
         // specify the default layout when list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -105,12 +105,18 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
             // gather noteset data from form
             String notesetName;
             Spinner spinner;
-
+            
             Noteset notesetToInsert = new Noteset();
             Note noteToInsert = new Note();
             
             notesetName = ((EditText) findViewById(R.id.edittext_noteset_name)).getText().toString();
+            
+            Spinner emotionSpinner = (Spinner) findViewById(R.id.spinner_emotion);
+            int selectedEmotionValue = getResources().getIntArray(R.array.emotion_values_array)[emotionSpinner.getSelectedItemPosition()];
+            
             notesetToInsert.setName(notesetName.toString());
+            notesetToInsert.setEmotion(selectedEmotionValue);
+            Log.d("MYLOG", "new noteset: " + notesetName + " " + selectedEmotionValue);
             
             // first insert new noteset (parent of all related notes)
             saveNoteset(v, notesetToInsert);

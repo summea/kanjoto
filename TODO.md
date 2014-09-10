@@ -1,18 +1,16 @@
 # otashu collection
 
 ## TODO:
-- decide on which approach to try first for generating music:
-  - Approach 1:
-    - gather related notes from database based on given emotion
-    - convert query results into individual "noteset bundles"
-    - randomly choose from list of "noteset bundles"
-  - Approach 2:
-    - randomly query database for notesets and notes based on given emotion
+- pick random notesets from gathered data structure
+- write chosen notesets to midi file
+- playback midi file
 - add spinners for length in CreateNotesetActivity
 - add spinners for velocity in CreateNotesetActivity
 
 
 ## DONE:
+- 20140909: added note gathering feature for selecting notesets that match a user-selected emotion
+- 20140909: added emotion_id to notesets table in database
 - 20140908: added ChooseEmotionActivity
 - 20140907: added toasts to database import/export process
 - 20140906: added database import feature
@@ -24,11 +22,11 @@
 
 
 ## DATABASE:
-#### emotion
+#### emotions
 - id
 - name
 
-#### note
+#### notes
 - id
 - noteset_id
 - notevalue
@@ -38,3 +36,13 @@
 #### notesets
 - id
 - name
+
+
+## NOTES:
+- approaches to try first for generating music:
+  - Approach 1:
+    - gather related notes from database based on given emotion
+    - convert query results into individual "noteset bundles"
+    - randomly choose from list of "noteset bundles"
+  - Approach 2:
+    - randomly query database for notesets and notes based on given emotion

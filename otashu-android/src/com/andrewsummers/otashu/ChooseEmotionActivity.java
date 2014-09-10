@@ -1,6 +1,7 @@
 package com.andrewsummers.otashu;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,7 +39,7 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
         // create an ArrayAdapter using the string array in the related XML file
         // and use the default spinner layout
         adapter = ArrayAdapter.createFromResource(this,
-                R.array.emotion_values_array,
+                R.array.emotion_labels_array,
                 android.R.layout.simple_spinner_item);
         // specify the default layout when list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -47,8 +48,21 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
     }
 
     @Override
-    public void onClick(View arg0) {
-        // TODO Auto-generated method stub
-        
+    public void onClick(View v) {
+        Intent intent = null;
+
+        switch (v.getId()) {
+        case R.id.button_go:
+            Spinner emotionSpinner = (Spinner) findViewById(R.id.spinner_emotion);
+            int selectedEmotionValue = getResources().getIntArray(R.array.emotion_values_array)[emotionSpinner.getSelectedItemPosition()];
+
+            Bundle bundle = new Bundle();
+            bundle.putInt("emotion_id", selectedEmotionValue);
+
+            intent = new Intent(this, GenerateMusicActivity.class);
+            intent.putExtras(bundle);            
+            startActivity(intent);
+            break;
+        }
     }
 }
