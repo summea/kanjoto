@@ -1,14 +1,14 @@
 # otashu collection
 
 ## TODO:
-- pick random notesets from gathered data structure
-- write chosen notesets to midi file
 - playback midi file
 - add spinners for length in CreateNotesetActivity
 - add spinners for velocity in CreateNotesetActivity
 
 
 ## DONE:
+- 20140910: added write chosen notesets to midi file feature
+- 20140910: added random noteset picker (using gathered data structure)
 - 20140909: added note gathering feature for selecting notesets that match a user-selected emotion
 - 20140909: added emotion_id to notesets table in database
 - 20140908: added ChooseEmotionActivity
