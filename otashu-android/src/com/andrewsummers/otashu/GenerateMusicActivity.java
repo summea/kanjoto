@@ -16,12 +16,19 @@ import com.leff.midi.event.meta.Tempo;
 import com.leff.midi.event.meta.TimeSignature;
 
 import android.app.Activity;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 
 public class GenerateMusicActivity extends Activity {
 
+    File path = Environment.getExternalStorageDirectory();
+    String externalDirectory = path.toString() + "/otashu/";
+    File musicSource = new File(externalDirectory + "otashu.mid");
+    MediaPlayer mediaPlayer = new MediaPlayer();
+    
     /**
      * onCreate override that provides entry point for activity.
      * 
@@ -40,13 +47,13 @@ public class GenerateMusicActivity extends Activity {
             notes.addAll(getRandomNoteset(allNotesets));
         }
         
-        //Log.d("MYLOG", notes.get(5).toString());
-        
         generateMusic(notes);
+        
+        playMusic(musicSource);
         
         finish();
     }
-    
+
     public HashMap<Integer, List<Note>> gatherRelatedEmotions() {
         HashMap<Integer, List<Note>> allNotesetBundles = new HashMap<Integer, List<Note>>();
         Note emptyNote = new Note();
@@ -118,15 +125,20 @@ public class GenerateMusicActivity extends Activity {
         tracks.add(noteTrack);
         
         MidiFile midi = new MidiFile(MidiFile.DEFAULT_RESOLUTION, tracks);
-        
-        File path = Environment.getExternalStorageDirectory();
-        String externalDirectory = path.toString() + "/otashu/";
-        File output = new File(externalDirectory + "otashu.mid");
-        
+
         try {
-            midi.writeToFile(output);
+            midi.writeToFile(musicSource);
         } catch (IOException e) {
             Log.d("MYLOG", e.getStackTrace().toString());
         }
+    }
+    
+    public void playMusic(File musicSource) {
+        
+        // get media player ready
+        mediaPlayer = MediaPlayer.create(this, Uri.fromFile(musicSource));
+        
+        // play music
+        mediaPlayer.start();
     }
 }
