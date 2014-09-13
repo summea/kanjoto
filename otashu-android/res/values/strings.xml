@@ -1,11 +1,13 @@
 <resources>
     <string name="app_name">otashu</string>
-    <string name="menu_title">otashu collection</string>
+    <string name="menu_title">otashu</string>
     <string name="button_choose_emotion">Choose Emotion</string>
-    <string name="button_create_noteset">create</string>
+    <string name="button_create_emotion">New Emotion</string>
+    <string name="button_create_noteset">New Noteset</string>
     <string name="button_get_remote_noteset">get remote noteset</string>
     <string name="button_go">Go</string>
-    <string name="button_view_all_notesets">view all</string>
+    <string name="button_view_all_emotions">View All Emotions</string>
+    <string name="button_view_all_notesets">View All Notesets</string>
     <string name="button_view_sequence">view sequence</string>
     <string name="button_save">Save</string>
     <string name="button_settings">settings</string>
@@ -13,12 +15,16 @@
     <string name="button_import_database">import database</string>
     
     <string name="choose_emotion_title">Choose Emotion</string>
+    <string name="create_emotion_title">Create Emotion</string>
     <string name="create_noteset_title">Create Noteset</string>
     
+    <string name="emotion_name_label">Name</string>
+    <string name="emotion_saved">emotion saved</string>
     <string name="generate_music_placeholder">Playing music...</string>
     
     <string name="http_request_failed">HTTP request failed</string>
     
+    <string name="menu_button_create_emotion">New</string>
     <string name="menu_button_create_noteset">New</string>
     <string name="menu_button_settings">Settings</string>
     <string name="noteset_name_label">Name</string>

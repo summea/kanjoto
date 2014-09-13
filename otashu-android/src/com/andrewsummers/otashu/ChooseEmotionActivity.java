@@ -1,8 +1,12 @@
 package com.andrewsummers.otashu;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -31,20 +35,28 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
         buttonGo = (Button) findViewById(R.id.button_go);
         buttonGo.setOnClickListener(this);
         
-        Spinner spinner = null;
-        ArrayAdapter<CharSequence> adapter = null;
+        EmotionsDataSource emotionsDataSource = new EmotionsDataSource(this);
+        emotionsDataSource.open();
 
+        List<Emotion> allEmotions = new ArrayList<Emotion>();
+        allEmotions = emotionsDataSource.getAllEmotions();
+        
+        emotionsDataSource.close();
+        
+        Spinner spinner = null;
+        
         // locate next spinner in layout
         spinner = (Spinner) findViewById(R.id.spinner_emotion);
-        // create an ArrayAdapter using the string array in the related XML file
-        // and use the default spinner layout
-        adapter = ArrayAdapter.createFromResource(this,
-                R.array.emotion_labels_array,
-                android.R.layout.simple_spinner_item);
+
+        // create array adapter for list of emotions
+        ArrayAdapter<Emotion> emotionsAdapter = new ArrayAdapter<Emotion>(this, android.R.layout.simple_spinner_item);
+        emotionsAdapter.addAll(allEmotions);
+        
         // specify the default layout when list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        emotionsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        
         // apply this adapter to the spinner
-        spinner.setAdapter(adapter);
+        spinner.setAdapter(emotionsAdapter);
     }
 
     @Override
@@ -53,8 +65,22 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
 
         switch (v.getId()) {
         case R.id.button_go:
+            
+            EmotionsDataSource emotionsDataSource = new EmotionsDataSource(this);
+            emotionsDataSource.open();
+
+            List<Integer> allEmotionIds = new ArrayList<Integer>();
+            allEmotionIds = emotionsDataSource.getAllEmotionIds();
+            
             Spinner emotionSpinner = (Spinner) findViewById(R.id.spinner_emotion);
-            int selectedEmotionValue = getResources().getIntArray(R.array.emotion_values_array)[emotionSpinner.getSelectedItemPosition()];
+            int selectedEmotionValue = allEmotionIds.get(emotionSpinner.getSelectedItemPosition());
+            
+            emotionsDataSource.close();
+            
+            Log.d("MYLOG", "selected emotion value: " + selectedEmotionValue);
+            
+            
+            //int selectedEmotionValue = getResources().getIntArray(R.array.emotion_values_array)[emotionSpinner.getSelectedItemPosition()];
 
             Bundle bundle = new Bundle();
             bundle.putInt("emotion_id", selectedEmotionValue);

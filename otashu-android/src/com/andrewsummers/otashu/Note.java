@@ -20,7 +20,7 @@ public class Note {
     }
 
     /**
-     * setID sets Note id
+     * setId sets Note id
      * 
      * @param id
      *            New id value.

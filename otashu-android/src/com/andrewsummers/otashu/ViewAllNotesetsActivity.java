@@ -65,7 +65,7 @@ public class ViewAllNotesetsActivity extends ListActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
+        inflater.inflate(R.menu.menu_notesets, menu);
         return true;
     }
     

@@ -1,5 +1,8 @@
 package com.andrewsummers.otashu;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -18,6 +21,7 @@ import android.widget.Toast;
  */
 public class CreateNotesetActivity extends Activity implements OnClickListener {
     private Button buttonSave = null;
+    private EmotionsDataSource emotionsDataSource;
     private NotesetsDataSource notesetsDataSource;
     private NotesDataSource notesDataSource;
     private Noteset newlyInsertedNoteset;
@@ -46,23 +50,35 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
         
         notesDataSource = new NotesDataSource(this);
         notesDataSource.open();
+        
+        emotionsDataSource = new EmotionsDataSource(this);
+        emotionsDataSource.open();
 
+        List<Emotion> allEmotions = new ArrayList<Emotion>();
+        allEmotions = emotionsDataSource.getAllEmotions();
+        
+        emotionsDataSource.close();
+        
+        Log.d("MYLOG", "emotions: " + allEmotions);
 
         Spinner spinner = null;
-        ArrayAdapter<CharSequence> adapter = null;
 
         // locate next spinner in layout
         spinner = (Spinner) findViewById(R.id.spinner_emotion);
-        // create an ArrayAdapter using the string array in the related XML file
-        // and use the default spinner layout
-        adapter = ArrayAdapter.createFromResource(this,
-                R.array.emotion_labels_array,
-                android.R.layout.simple_spinner_item);
+        
+        // create array adapter for list of emotions
+        ArrayAdapter<Emotion> emotionsAdapter = new ArrayAdapter<Emotion>(this, android.R.layout.simple_spinner_item);
+        emotionsAdapter.addAll(allEmotions);
+        
         // specify the default layout when list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        emotionsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        
         // apply this adapter to the spinner
-        spinner.setAdapter(adapter);
+        spinner.setAdapter(emotionsAdapter);
 
+        
+        ArrayAdapter<CharSequence> adapter = null;
+        
         spinner = (Spinner) findViewById(R.id.spinner_note1);
         adapter = ArrayAdapter
                 .createFromResource(this, R.array.note_values_array,
@@ -111,8 +127,20 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
             
             notesetName = ((EditText) findViewById(R.id.edittext_noteset_name)).getText().toString();
             
+            // get select emotion's id
+            
+            emotionsDataSource = new EmotionsDataSource(this);
+            emotionsDataSource.open();
+
+            List<Integer> allEmotionIds = new ArrayList<Integer>();
+            allEmotionIds = emotionsDataSource.getAllEmotionIds();
+            
             Spinner emotionSpinner = (Spinner) findViewById(R.id.spinner_emotion);
-            int selectedEmotionValue = getResources().getIntArray(R.array.emotion_values_array)[emotionSpinner.getSelectedItemPosition()];
+            int selectedEmotionValue = allEmotionIds.get(emotionSpinner.getSelectedItemPosition());
+            
+            emotionsDataSource.close();
+            
+            Log.d("MYLOG", "selected emotion value: " + selectedEmotionValue);
             
             notesetToInsert.setName(notesetName.toString());
             notesetToInsert.setEmotion(selectedEmotionValue);
@@ -146,6 +174,7 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
      */
     @Override
     protected void onResume() {
+        emotionsDataSource.open();
         notesetsDataSource.open();
         notesDataSource.open();
         super.onResume();
@@ -156,6 +185,7 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
      */
     @Override
     protected void onPause() {
+        emotionsDataSource.close();
         notesetsDataSource.close();
         notesDataSource.close();
         super.onPause();

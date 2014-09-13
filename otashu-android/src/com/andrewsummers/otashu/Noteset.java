@@ -18,7 +18,7 @@ public class Noteset {
     }
 
     /**
-     * setID sets Noteset id
+     * setId sets Noteset id
      * 
      * @param id
      *            New id value.
