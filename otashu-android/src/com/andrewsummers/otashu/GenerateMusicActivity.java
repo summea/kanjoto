@@ -39,6 +39,9 @@ public class GenerateMusicActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        // get specific layout for content view
+        setContentView(R.layout.activity_generate_music);
+        
         HashMap<Integer, List<Note>> allNotesets = gatherRelatedEmotions();
         
         List<Note> notes = new ArrayList<Note>();
@@ -51,7 +54,7 @@ public class GenerateMusicActivity extends Activity {
         
         playMusic(musicSource);
         
-        finish();
+        //finish();
     }
 
     public HashMap<Integer, List<Note>> gatherRelatedEmotions() {
@@ -134,11 +137,23 @@ public class GenerateMusicActivity extends Activity {
     }
     
     public void playMusic(File musicSource) {
-        
         // get media player ready
         mediaPlayer = MediaPlayer.create(this, Uri.fromFile(musicSource));
         
         // play music
         mediaPlayer.start();
+    }
+    
+    /**
+     * onBackPressed override used to stop playing music when done with activity
+     */
+    @Override
+    public void onBackPressed() {
+        Log.d("MYLOG", "stop playing music!");
+        
+        // stop playing music
+        mediaPlayer.stop();
+        
+        super.onBackPressed();
     }
 }

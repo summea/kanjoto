@@ -6,12 +6,12 @@
     android:background="#eeeeee">
     
     <TextView
-    	android:id="@+id/menu_title"
-    	android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-    	android:gravity="center_horizontal"
-    	android:text="@string/menu_title"
-    	android:textSize="34dp" />
+        android:id="@+id/menu_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/menu_title"
+        android:textSize="34dp" />
 
     <Button
         android:id="@+id/button_create_noteset"
@@ -42,31 +42,31 @@
         android:padding="20dp" />
     
     <Button
-    	android:id="@+id/button_get_remote_noteset"
-    	android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-    	android:text="@string/button_get_remote_noteset"
-    	android:padding="20dp" />
+        android:id="@+id/button_get_remote_noteset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_get_remote_noteset"
+        android:padding="20dp" />
     
     <Button
-    	android:id="@+id/button_settings"
-    	android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-    	android:text="@string/button_settings"
-    	android:padding="20dp" />
+        android:id="@+id/button_settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_settings"
+        android:padding="20dp" />
     	
     <Button
-    	android:id="@+id/button_export_database"
-    	android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-    	android:text="@string/button_export_database"
-    	android:padding="20dp" />
+        android:id="@+id/button_export_database"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_export_database"
+        android:padding="20dp" />
     	
     <Button
-    	android:id="@+id/button_import_database"
-    	android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-    	android:text="@string/button_import_database"
-    	android:padding="20dp" />
+        android:id="@+id/button_import_database"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_import_database"
+        android:padding="20dp" />
 
 </LinearLayout>

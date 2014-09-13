@@ -5,13 +5,13 @@
     android:fillViewport="true" >
     
     <TextView style="?android:textAppearanceLarge"
-    	android:id="@+id/fragment_text_view"    	
-    	android:layout_width="match_parent"
-    	android:layout_height="match_parent"
-    	android:gravity="center"
-    	android:background="@color/background_grey"
-    	android:textSize="128dp"
-    	android:padding="20dp"
-    	android:text="@string/app_name" />
+        android:id="@+id/fragment_text_view"    	
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:background="@color/background_grey"
+        android:textSize="128dp"
+        android:padding="20dp"
+        android:text="@string/app_name" />
 
 </ScrollView>

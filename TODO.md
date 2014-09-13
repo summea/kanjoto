@@ -1,14 +1,14 @@
 # otashu collection
 
 ## TODO:
-- stop playback when exiting activity
 - add spinners for length in CreateNotesetActivity
 - add spinners for velocity in CreateNotesetActivity
 
 
 ## DONE:
+- 20140912: added "end music playback" functionality (when exiting GenerateMusicActivity)
 - 20140911: added playback of generated midi file
-- 20140910: added write chosen notesets to midi file feature
+- 20140910: added "write chosen notesets to midi file" feature
 - 20140910: added random noteset picker (using gathered data structure)
 - 20140909: added note gathering feature for selecting notesets that match a user-selected emotion
 - 20140909: added emotion_id to notesets table in database

@@ -1,5 +1,4 @@
 <resources>
-
     <string name="app_name">otashu</string>
     <string name="menu_title">otashu collection</string>
     <string name="button_choose_emotion">Choose Emotion</string>
@@ -19,6 +18,9 @@
     <string name="http_request_failed">HTTP request failed</string>
     
     <string name="noteset_name_label">Name</string>
+    
+    <string name="generate_music_placeholder">Playing music...</string>
+    
     <string name="spinner_emotion_label">Emotion</string>
     <string name="spinner_note1_label">Note 1</string>
     <string name="spinner_note2_label">Note 2</string>
@@ -38,7 +40,6 @@
     <string name="view_noteset_detail_title">Noteset Details</string>
     <string name="noteset_detail_title_label">Noteset Name</string>
     
-	<string name="button_generate">Generate</string>
-	<string name="button_play">Play</string>
-	
+    <string name="button_generate">Generate</string>
+    <string name="button_play">Play</string>
 </resources>

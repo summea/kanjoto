@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string-array name="emotion_labels_array">
-		<item>happy</item>
-		<item>sad</item>
-	</string-array>
-	<integer-array name="emotion_values_array">
-		<item>1</item>
-		<item>2</item>
-	</integer-array>
+    <string-array name="emotion_labels_array">
+        <item>happy</item>
+        <item>sad</item>
+    </string-array>
+    <integer-array name="emotion_values_array">
+        <item>1</item>
+        <item>2</item>
+    </integer-array>
 </resources>
