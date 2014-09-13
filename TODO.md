@@ -1,11 +1,18 @@
 # otashu collection
 
 ## TODO:
-- add spinners for length in CreateNotesetActivity
 - add spinners for velocity in CreateNotesetActivity
+- add spinners for length in CreateNotesetActivity
+- add "delete noteset" feature
+- add "edit noteset" feature
+- connect emotion spinner lists to emotion database table rows
+- add emotion database table
+- connect up "view noteset details" activity
 
 
 ## DONE:
+- 20140913: added menu create button (and menu settings button) to "view all notesets" activity
+- 20140913: fixed crash that happens when switching to landscape view in MainActivity
 - 20140912: added "end music playback" functionality (when exiting GenerateMusicActivity)
 - 20140911: added playback of generated midi file
 - 20140910: added "write chosen notesets to midi file" feature

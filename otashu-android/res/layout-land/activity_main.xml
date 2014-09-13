@@ -28,12 +28,20 @@
         android:layout_below="@id/button_create_noteset"
         android:layout_alignParentLeft="true"
         android:text="@string/button_view_all_notesets" />
+    
+    <Button
+        android:id="@+id/button_choose_emotion"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_view_all_notesets"
+        android:layout_alignParentLeft="true"
+        android:text="@string/button_choose_emotion" />
         
     <Button
         android:id="@+id/button_view_sequence"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/button_view_all_notesets"
+        android:layout_below="@id/button_choose_emotion"
         android:layout_alignParentLeft="true"
         android:text="@string/button_view_sequence" />
     
@@ -50,6 +58,23 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/button_get_remote_noteset"
+        android:layout_alignParentLeft="true"
         android:text="@string/button_settings" />
+        
+    <Button
+        android:id="@+id/button_export_database"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_settings"
+        android:layout_alignParentLeft="true"
+        android:text="@string/button_export_database" />
+        
+    <Button
+        android:id="@+id/button_import_database"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_export_database"
+        android:layout_alignParentLeft="true"
+        android:text="@string/button_import_database" />
 
 </RelativeLayout>

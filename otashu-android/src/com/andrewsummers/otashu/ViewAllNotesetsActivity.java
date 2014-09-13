@@ -6,6 +6,9 @@ import java.util.List;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -57,5 +60,31 @@ public class ViewAllNotesetsActivity extends ListActivity {
                 startActivity(intent);
             }
         });
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = null;
+        
+        // handle menu item selection
+        switch (item.getItemId()) {
+        case R.id.create_noteset:
+            intent = new Intent(this, CreateNotesetActivity.class);
+            startActivity(intent);
+            return true;
+        case R.id.view_settings:
+            intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
     }
 }
