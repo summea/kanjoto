@@ -9,6 +9,7 @@
 
 
 ## DONE:
+- 20140914: added context menu for "edit, delete" noteset options
 - 20140913: added "emotion spinner lists get data from emotion database table rows" functionality
 - 20140913: added "create emotion" feature
 - 20140913: added "view all emotions" feature

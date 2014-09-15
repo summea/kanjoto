@@ -6,6 +6,8 @@ import java.util.List;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -60,6 +62,9 @@ public class ViewAllNotesetsActivity extends ListActivity {
                 startActivity(intent);
             }
         });
+        
+        // register context menu
+        registerForContextMenu(listView);
     }
     
     @Override
@@ -86,5 +91,12 @@ public class ViewAllNotesetsActivity extends ListActivity {
         default:
             return super.onOptionsItemSelected(item);
         }
+    }
+    
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.context_menu_noteset, menu);
     }
 }

@@ -15,6 +15,8 @@
     <string name="button_import_database">import database</string>
     
     <string name="choose_emotion_title">Choose Emotion</string>
+    <string name="context_menu_edit">Edit</string>
+    <string name="context_menu_delete">Delete</string>
     <string name="create_emotion_title">Create Emotion</string>
     <string name="create_noteset_title">Create Noteset</string>
     
