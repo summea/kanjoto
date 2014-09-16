@@ -12,9 +12,63 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
-        android:id="@+id/noteset_detail_title_label"
+        android:id="@+id/noteset_detail_name_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/noteset_detail_title_label" />
+        android:text="@string/noteset_detail_name_label"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold" />
+        
+    <TextView
+        android:id="@+id/noteset_detail_name_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+        
+    <TextView
+        android:id="@+id/noteset_detail_emotion_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/noteset_detail_emotion_label"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold" />
+        
+    <TextView
+        android:id="@+id/noteset_detail_emotion_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/noteset_detail_notes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/noteset_detail_notes"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold" />
+        
+    <TextView
+        android:id="@+id/noteset_detail_note1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+        
+    <TextView
+        android:id="@+id/noteset_detail_note2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+        
+    <TextView
+        android:id="@+id/noteset_detail_note3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+        
+    <TextView
+        android:id="@+id/noteset_detail_note4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 		
 </LinearLayout>

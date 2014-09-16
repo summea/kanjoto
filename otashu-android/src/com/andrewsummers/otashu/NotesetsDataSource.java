@@ -197,6 +197,52 @@ public class NotesetsDataSource {
         return notesetBundles;
     }
 
+    public HashMap<Integer, List<Note>> getNotesetBundle(long id) {
+        HashMap<Integer, List<Note>> notesetBundle = new HashMap<Integer, List<Note>>();
+        
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + id;
+        Log.d("MYLOG", "db query: " + query);
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notesets from database
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Integer notesetId = Integer.parseInt(cursor.getString(0));
+                Log.d("MYLOG", "get noteset bundle noteset id: " + notesetId);
+                
+                // get all related notes inside this noteset
+                // TODO: make this query approach more efficient at some point, if necessary
+                String queryForRelatedNotes = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = " + id;
+                Cursor cursorForRelatedNotes = db.rawQuery(queryForRelatedNotes, null);
+                
+                Log.d("MYLOG", "db query2: " + queryForRelatedNotes);
+                
+                List<Note> notes = new LinkedList<Note>();
+                
+                if (cursorForRelatedNotes.moveToFirst()) {
+                    do {
+                        Note note = null;
+                        note = new Note();
+                        note.setNotevalue(Integer.parseInt(cursorForRelatedNotes.getString(2)));
+                        notes.add(note);
+                    } while (cursorForRelatedNotes.moveToNext());
+                }
+                
+                notesetBundle.put(notesetId, notes);
+                
+            } while (cursor.moveToNext());
+        }
+
+        Log.d("MYLOG", notesetBundle.toString());
+
+        return notesetBundle;
+    }
+
+    
     /**
      * Access column data at current position of result.
      * 
@@ -260,5 +306,66 @@ public class NotesetsDataSource {
         Log.d("MYLOG", notesets.toString());
 
         return notesets;
+    }
+    
+    /**
+     * getAllNotesetListDBTableIds gets a list of all notesets ids.
+     * 
+     * @return List of Noteset ids.
+     */
+    public List<Long> getAllNotesetListDBTableIds() {
+        List<Long> notesets = new LinkedList<Long>();
+        
+        String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM " + OtashuDatabaseHelper.TABLE_NOTESETS;
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notesets from database
+        Cursor cursor = db.rawQuery(query, null);
+
+        Noteset noteset = null;
+        if (cursor.moveToFirst()) {
+            do {                
+                // create noteset objects based on noteset data from database
+                noteset = new Noteset();
+                noteset.setId(Long.parseLong(cursor.getString(0)));
+                
+                // add noteset to notesets list
+                notesets.add(noteset.getId());
+            } while (cursor.moveToNext());
+        }
+
+        Log.d("MYLOG", notesets.toString());
+
+        return notesets;
+    }
+    
+    public Noteset getNoteset(long id) {
+        Noteset noteset = new Noteset();
+        
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + id;
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notesets from database
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String itemForList = "";
+                
+                // create noteset objects based on noteset data from database
+                noteset = new Noteset();
+                noteset.setId(Integer.parseInt(cursor.getString(0)));
+                noteset.setName(cursor.getString(1));
+                noteset.setEmotion((cursor.getInt(2)));
+            } while (cursor.moveToNext());
+        }
+
+        Log.d("MYLOG", noteset.toString());
+
+        return noteset;
     }
 }

@@ -29,6 +29,9 @@
     <string name="menu_button_create_emotion">New</string>
     <string name="menu_button_create_noteset">New</string>
     <string name="menu_button_settings">Settings</string>
+    <string name="noteset_detail_emotion_label">Emotion</string>
+    <string name="noteset_detail_name_label">Name</string>
+    <string name="noteset_detail_notes">Notes</string>
     <string name="noteset_name_label">Name</string>
     
     <string name="spinner_emotion_label">Emotion</string>

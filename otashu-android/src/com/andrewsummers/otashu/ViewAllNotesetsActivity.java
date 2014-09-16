@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -56,9 +57,14 @@ public class ViewAllNotesetsActivity extends ListActivity {
         listView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
+                
+                Log.d("MYLOG", "list item id: " + id);
+                
                 // launch details activity
                 Intent intent = new Intent(view.getContext(),
                         ViewNotesetDetailActivity.class);
+                
+                intent.putExtra("list_id", id);
                 startActivity(intent);
             }
         });

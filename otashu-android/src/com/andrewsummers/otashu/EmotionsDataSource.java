@@ -189,4 +189,27 @@ public class EmotionsDataSource {
 
         return emotions;
     }
+
+    public Emotion getEmotion(int emotionId) {
+        Emotion emotion = new Emotion();
+        
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EMOTIONS + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + emotionId;
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all emotions from database
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                // create emotion objects based on emotion data from database
+                emotion = new Emotion();
+                emotion.setId(Integer.parseInt(cursor.getString(0)));
+                emotion.setName(cursor.getString(1));
+            } while (cursor.moveToNext());
+        }
+        
+        return emotion;
+    }
 }
