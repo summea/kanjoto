@@ -1,9 +1,12 @@
 package com.andrewsummers.otashu;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -22,6 +26,9 @@ import android.widget.AdapterView.OnItemClickListener;
  * View all notesets as a list.
  */
 public class ViewAllNotesetsActivity extends ListActivity {
+    
+    private int selectedListPosition = 0;
+    
     /**
      * onCreate override used to gather and display a list of all notesets saved
      * in database.
@@ -102,7 +109,98 @@ public class ViewAllNotesetsActivity extends ListActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
+        
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+        selectedListPosition = info.position;
+        
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.context_menu_noteset, menu);
+    }
+    
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+            case R.id.context_menu_edit:
+                //editNote(info.id);
+                return true;
+            case R.id.context_menu_delete:
+                //deleteNote(info.id);
+                Log.d("MYLOG", "confirming delete");
+                confirmDelete();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+    
+    public void confirmDelete() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.dialog_confirm_delete_message).setTitle(R.string.dialog_confirm_delete_title);
+        builder.setPositiveButton(R.string.button_ok,  new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // user clicked ok
+                // go ahead and delete noteset
+                
+                // get correct noteset id to delete
+                Log.d("MYLOG", "selected row item: " + selectedListPosition);
+                
+                Noteset notesetToDelete = getNotesetFromListPosition(selectedListPosition);
+
+                Log.d("MYLOG", "deleting noteset: " + notesetToDelete.getId());
+                deleteNoteset(notesetToDelete);
+            }
+        });
+        builder.setNegativeButton(R.string.button_cancel,  new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // user clicked cancel
+                // just go back to list for now
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+    
+    public Noteset getNotesetFromListPosition(long rowId) {
+        
+        long notesetId = rowId;
+        
+        List<Long> allNotesetsData = new LinkedList<Long>();
+        NotesetsDataSource ds = new NotesetsDataSource(this);
+
+        // get string version of returned noteset list
+        allNotesetsData = ds.getAllNotesetListDBTableIds();
+        
+        Log.d("MYLOG", allNotesetsData.toString());
+
+        // prevent crashes due to lack of database data
+        if (allNotesetsData.isEmpty())
+            allNotesetsData.add((long) 0);
+
+        Log.d("MYLOG", "notesetId:: " + notesetId);
+        
+        Long[] allNotesets = allNotesetsData
+                .toArray(new Long[allNotesetsData.size()]);
+        
+        Log.d("MYLOG", "found noteset data: " + allNotesets[(int) notesetId]);
+        
+        // get noteset and notes information
+        HashMap<Integer, List<Note>> notesetBundle = new HashMap<Integer, List<Note>>();
+        notesetBundle = ds.getNotesetBundle(allNotesets[(int) notesetId]);
+        
+        Log.d("MYLOG", "noteset bundle: " + notesetBundle);
+        Log.d("MYLOG", "notesetId::: " + allNotesets[(int) notesetId]);
+        
+        Noteset noteset = ds.getNoteset(allNotesets[(int) notesetId]);        
+        
+        ds.close();
+        
+        return noteset;
+    }
+    
+    public void deleteNoteset(Noteset noteset) {
+        NotesetsDataSource ds = new NotesetsDataSource(this);
+        ds.deleteNoteset(noteset);
+        ds.close();
     }
 }

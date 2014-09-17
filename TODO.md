@@ -3,11 +3,12 @@
 ## TODO:
 - add spinners for velocity in CreateNotesetActivity
 - add spinners for length in CreateNotesetActivity
-- add "delete noteset" feature
 - add "edit noteset" feature
+- fix refresh notesets list in "view all notesets" activity after deletion
 
 
 ## DONE:
+- 20140916: added "delete noteset" feature
 - 20140915: connected up "view noteset details" activity
 - 20140914: added context menu for "edit, delete" noteset options
 - 20140913: added "emotion spinner lists get data from emotion database table rows" functionality
