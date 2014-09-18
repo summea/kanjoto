@@ -177,4 +177,21 @@ public class NotesDataSource {
 
         return notes;
     }
+
+    public Note updateNote(Note note) {
+        
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        
+        Log.d("MYLOG", Long.toString(note.getNotesetId()));
+        Log.d("MYLOG", Integer.toString(note.getNotevalue()));
+        
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(OtashuDatabaseHelper.COLUMN_NOTESET_ID, note.getNotesetId());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_NOTEVALUE, note.getNotevalue());
+
+        db.update(OtashuDatabaseHelper.TABLE_NOTES, contentValues, OtashuDatabaseHelper.COLUMN_ID + "=" + note.getId(), null);
+
+        return note;
+    }
 }

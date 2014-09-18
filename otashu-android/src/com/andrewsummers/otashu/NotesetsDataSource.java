@@ -253,6 +253,80 @@ public class NotesetsDataSource {
 
         return notesetBundle;
     }
+    
+    public HashMap<String, List<Object>> getNotesetBundleDetail(long id) {
+        HashMap<String, List<Object>> notesetBundle = new HashMap<String, List<Object>>();
+        
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + id;
+        Log.d("MYLOG", "db query: " + query);
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notesets from database
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Noteset noteset = new Noteset();
+                noteset.setId(Integer.parseInt(cursor.getString(0)));
+                noteset.setName(cursor.getString(1));
+                noteset.setEmotion(Integer.parseInt(cursor.getString(2)));
+                
+                List<Object> notesets = new LinkedList<Object>();
+                notesets.add(noteset);
+                
+                notesetBundle.put("noteset", notesets);
+                
+                Log.d("MYLOG", "get noteset bundle noteset id: " + noteset.getId());
+                
+                // get all related notes inside this noteset
+                // TODO: make this query approach more efficient at some point, if necessary
+                String queryForRelatedNotes = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = " + id;
+                Cursor cursorForRelatedNotes = db.rawQuery(queryForRelatedNotes, null);
+                
+                Log.d("MYLOG", "db query2: " + queryForRelatedNotes);
+                
+                List<Object> notes = new LinkedList<Object>();
+                
+                if (cursorForRelatedNotes.moveToFirst()) {
+                    do {                        
+                        Long nId = 0L;
+                        Long nNotesetId = 0L;
+                        int nNotevalue = 0;
+                        int nVelocity = 0;
+                        int nLength = 0;
+                        
+                        try {
+                            nId = cursorForRelatedNotes.getLong(0);
+                            nNotesetId = cursorForRelatedNotes.getLong(1);
+                            nNotevalue = cursorForRelatedNotes.getInt(2);
+                            nVelocity = cursorForRelatedNotes.getInt(3);
+                            nLength = cursorForRelatedNotes.getInt(4);
+                        } catch (Exception e) {
+                            Log.d("MYLOG", e.getStackTrace().toString());
+                        }
+                        
+                        Note note = new Note();
+                        note.setId(nId);
+                        note.setNotesetId(nNotesetId);
+                        note.setNotevalue(nNotevalue);
+                        note.setVelocity(nVelocity);
+                        note.setLength(nLength);
+                        
+                        notes.add(note);
+                    } while (cursorForRelatedNotes.moveToNext());
+                }
+                
+                notesetBundle.put("notes", notes);
+                
+            } while (cursor.moveToNext());
+        }
+
+        Log.d("MYLOG", notesetBundle.toString());
+
+        return notesetBundle;
+    }
 
     
     /**
@@ -378,6 +452,27 @@ public class NotesetsDataSource {
 
         Log.d("MYLOG", noteset.toString());
 
+        return noteset;
+    }
+
+    public Noteset updateNoteset(Noteset noteset) {
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(OtashuDatabaseHelper.COLUMN_NAME,
+                noteset.getName());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_EMOTION_ID,
+                noteset.getEmotion());
+
+        Log.d("MYLOG", "updating noteset name: " + noteset.getName());
+        Log.d("MYLOG", "updating noteset emotion: " + noteset.getEmotion());
+        
+        db.update(OtashuDatabaseHelper.TABLE_NOTESETS, contentValues, OtashuDatabaseHelper.COLUMN_ID + "=" + noteset.getId(), null);
+        //db.update(OtashuDatabaseHelper.TABLE_NOTESETS, contentValues, OtashuDatabaseHelper.COLUMN_ID + "=" + noteset.getId(), null);
+        //db.delete(OtashuDatabaseHelper.TABLE_NOTES,
+        //        OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = " + id, null);
+        
         return noteset;
     }
 }

@@ -123,9 +123,11 @@ public class ViewAllNotesetsActivity extends ListActivity {
         switch (item.getItemId()) {
             case R.id.context_menu_edit:
                 //editNote(info.id);
+                Intent intent = new Intent(this, EditNotesetActivity.class);
+                intent.putExtra("list_id", info.id);
+                startActivity(intent);
                 return true;
             case R.id.context_menu_delete:
-                //deleteNote(info.id);
                 Log.d("MYLOG", "confirming delete");
                 confirmDelete();
                 return true;
