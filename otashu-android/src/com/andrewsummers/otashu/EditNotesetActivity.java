@@ -26,7 +26,8 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
     private EmotionsDataSource emotionsDataSource;
     private NotesetsDataSource notesetsDataSource;
     private NotesDataSource notesDataSource;
-    private Noteset newlyInsertedNoteset;
+    private Noteset editNoteset;
+    private List<Note> editNotes = new LinkedList<Note>();
 
     /**
      * onCreate override that provides noteset creation view to user .
@@ -86,7 +87,7 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
         Log.d("MYLOG", "notesetId::: " + allNotesets[notesetId]);
         
         Noteset noteset = ds.getNoteset(allNotesets[notesetId]); 
-        
+        editNoteset = ds.getNoteset(allNotesets[notesetId]);
         
         
         // get data for noteset that is being edited
@@ -97,12 +98,14 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
         noteset = (Noteset) notesets.get(0);
         
         List<Object> notes = editingNoteset.get("notes");
-        Note note = new Note();
+        //Note note = new Note();
         int sizeOfNotes = notes.size();
         Log.d("MYLOG", String.valueOf(sizeOfNotes));
         
         for (int i = 0; i < notes.size(); i++) {
+            Note note = new Note();
             note = (Note) notes.get(i);
+            editNotes.add(note);
             Log.d("MYLOG", "editing note: " + note.getId());
         }
         
@@ -145,7 +148,7 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
         int[] spinnerItems = {R.id.spinner_note1, R.id.spinner_note2, R.id.spinner_note3, R.id.spinner_note4};
         
         for (int i = 0; i < spinnerItems.length; i++) {
-            note = (Note) notes.get(i);
+            Note note = (Note) notes.get(i);
             spinner = (Spinner) findViewById(spinnerItems[i]);
             adapter = ArrayAdapter
                     .createFromResource(this, R.array.note_values_array,
@@ -189,7 +192,8 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
             emotionsDataSource.close();
             
             Log.d("MYLOG", "selected emotion value: " + selectedEmotionValue);
-            
+
+            notesetToInsert.setId(editNoteset.getId());
             notesetToInsert.setName(notesetName.toString());
             notesetToInsert.setEmotion(selectedEmotionValue);
             Log.d("MYLOG", "new noteset: " + notesetName + " " + selectedEmotionValue);
@@ -206,7 +210,7 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
             
             for (int i = 0; i < spinnerIds.length; i++) {
                 spinner = (Spinner) findViewById(spinnerIds[i]);
-                noteToInsert.setNotesetId(newlyInsertedNoteset.getId());
+                noteToInsert = editNotes.get(i);
                 Log.d("MYLOG", spinner.getSelectedItem().toString());
                 noteToInsert.setNotevalue(Integer.parseInt(spinner.getSelectedItem().toString()));
                 saveNoteUpdates(v, noteToInsert);
@@ -249,8 +253,8 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
      */
     private void saveNotesetUpdates(View v, Noteset noteset) {
 
-        // save noteset in database
-        newlyInsertedNoteset = notesetsDataSource.updateNoteset(noteset);
+        // update noteset in database
+        notesetsDataSource.updateNoteset(noteset);
 
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
@@ -266,10 +270,7 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
         Log.d("MYLOG", Long.toString(note.getNotesetId()));
         Log.d("MYLOG", Integer.toString(note.getNotevalue()));
         
-        //Note noteToSave = new Note();
-        //noteToSave = note;
-        
-        // save noteset in database
+        //  update note in database
         notesDataSource.updateNote(note);
 
         Context context = getApplicationContext();

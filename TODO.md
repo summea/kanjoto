@@ -3,14 +3,14 @@
 ## TODO:
 - add spinners for velocity in CreateNotesetActivity
 - add spinners for length in CreateNotesetActivity
-- add "edit noteset" feature part 2: save updated data
-- fix refresh notesets list in "view all notesets" activity after deletion
 - add full range of notes to note spinners
 - organize data sources
 - organize models
 
 
 ## DONE:
+- 20140918: added "edit noteset" feature part 2: save updated data
+- 20140918: fixed refresh notesets list in "view all notesets" activity after deletion
 - 20140917: added "edit noteset" feature part 1: read original data
 - 20140916: added "delete noteset" feature
 - 20140915: connected up "view noteset details" activity
