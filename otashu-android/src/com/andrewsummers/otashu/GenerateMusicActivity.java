@@ -110,7 +110,7 @@ public class GenerateMusicActivity extends Activity {
         
         for (int i = 0; i < notes.size(); i++) {
             int channel = 0;
-            int pitch = notes.get(i).getNotevalue() + 30;
+            int pitch = notes.get(i).getNotevalue();
             int velocity = 100;
             
             NoteOn on = new NoteOn(i * 480, channel, pitch, velocity);

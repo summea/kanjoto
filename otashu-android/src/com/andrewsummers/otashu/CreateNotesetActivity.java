@@ -79,6 +79,19 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
         
         ArrayAdapter<CharSequence> adapter = null;
         
+        int[] spinnerItems = {R.id.spinner_note1, R.id.spinner_note2, R.id.spinner_note3, R.id.spinner_note4};
+        
+        for (int i = 0; i < spinnerItems.length; i++) {
+            spinner = (Spinner) findViewById(spinnerItems[i]);
+            adapter = ArrayAdapter
+                    .createFromResource(this, R.array.note_values_array,
+                            android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(adapter);
+            spinner.setSelection(adapter.getPosition(String.valueOf(60)));  // start at note C4
+        }
+        
+        /*
         spinner = (Spinner) findViewById(R.id.spinner_note1);
         adapter = ArrayAdapter
                 .createFromResource(this, R.array.note_values_array,
@@ -106,6 +119,7 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
                         android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+        */
     }
 
     /**
