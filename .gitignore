@@ -23,6 +23,7 @@ local.properties
 proguard/
 
 # Exclude other libraries
+otashu-android/libs/*
 otashu-android/src/com/leff/midi/*
 otashu-android/src/com/leff/midi/event/*
 otashu-android/src/com/leff/midi/event/meta/*

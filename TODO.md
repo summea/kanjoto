@@ -3,13 +3,14 @@
 ## TODO:
 - add spinners for velocity in CreateNotesetActivity
 - add spinners for length in CreateNotesetActivity
-- organize data sources
-- organize models
-- return to original activity after playing music back
-- add "view" option to context menu in "list all notesets" activity
 
 
 ## DONE:
+- 20140920: organized activities
+- 20140920: organized models
+- 20140920: organized data sources
+- 20140920: added "return to original activity after playing music back" feature
+- 20140920: added "view" option to context menu in "list all notesets" activity
 - 20140919: added full range of notes to note spinners
 - 20140918: added "edit noteset" feature part 2: save updated data
 - 20140918: fixed refresh notesets list in "view all notesets" activity after deletion

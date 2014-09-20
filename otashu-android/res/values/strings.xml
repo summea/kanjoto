@@ -21,6 +21,7 @@
     <string name="dialog_confirm_delete_title">Delete</string>
     <string name="context_menu_edit">Edit</string>
     <string name="context_menu_delete">Delete</string>
+    <string name="context_menu_view">View</string>
     <string name="create_emotion_title">Create Emotion</string>
     <string name="create_noteset_title">Create Noteset</string>
     

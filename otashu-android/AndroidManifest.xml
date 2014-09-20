@@ -13,7 +13,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.andrewsummers.otashu.MainActivity"
+            android:name="com.andrewsummers.otashu.activity.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,91 +21,91 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.andrewsummers.otashu.CreateNotesetActivity"
+            android:name="com.andrewsummers.otashu.activity.CreateNotesetActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.andrewsummers.otashu.ViewAllNotesetsActivity"
+            android:name="com.andrewsummers.otashu.activity.ViewAllNotesetsActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.andrewsummers.otashu.ViewNotesetDetailActivity"
+            android:name="com.andrewsummers.otashu.activity.ViewNotesetDetailActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.andrewsummers.otashu.ChooseEmotionActivity"
+            android:name="com.andrewsummers.otashu.activity.ChooseEmotionActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.andrewsummers.otashu.GenerateMusicActivity"
+            android:name="com.andrewsummers.otashu.activity.GenerateMusicActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.andrewsummers.otashu.ViewNotesetSequenceActivity"
+            android:name="com.andrewsummers.otashu.activity.ViewNotesetSequenceActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.andrewsummers.otashu.GetRemoteNotesetActivity"
+            android:name="com.andrewsummers.otashu.activity.GetRemoteNotesetActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.andrewsummers.otashu.SettingsActivity"
+            android:name="com.andrewsummers.otashu.activity.SettingsActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.andrewsummers.otashu.ExportDatabaseActivity"
+            android:name="com.andrewsummers.otashu.activity.ExportDatabaseActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.andrewsummers.otashu.ImportDatabaseActivity"
+            android:name="com.andrewsummers.otashu.activity.ImportDatabaseActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.andrewsummers.otashu.CreateEmotionActivity"
+            android:name="com.andrewsummers.otashu.activity.CreateEmotionActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.andrewsummers.otashu.ViewAllEmotionsActivity"
+            android:name="com.andrewsummers.otashu.activity.ViewAllEmotionsActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.andrewsummers.otashu.EditNotesetActivity"
+            android:name="com.andrewsummers.otashu.activity.EditNotesetActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
