@@ -4,11 +4,12 @@ import java.util.List;
 
 import com.andrewsummers.otashu.DepthPageTransformer;
 import com.andrewsummers.otashu.R;
-import com.andrewsummers.otashu.ViewNotesetSequencePageFragment;
 import com.andrewsummers.otashu.data.NotesetsDataSource;
+import com.andrewsummers.otashu.fragment.ViewNotesetSequencePageFragment;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -63,20 +64,19 @@ public class ViewNotesetSequenceActivity extends FragmentActivity {
 
             Bundle bundle = new Bundle();
 
+            // load preferences
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+            
             // check if touch feedback is enabled
             // pass current setting value to bundle (for later delivery to
             // fragment view)
-            String settingsFileName = getResources().getString(
-                    R.string.settings_file_name);
-            SharedPreferences settings = getSharedPreferences(settingsFileName,
-                    0);
-            boolean touchFeedbackEnabled = settings.getBoolean(
-                    "touchFeedbackEnabled", true);
+            boolean pref_touch_feedback_enabled = sharedPref.getBoolean(
+                    "pref_touch_feedback_enabled", true);
 
-            if (touchFeedbackEnabled) {
-                bundle.putString("touchFeedbackEnabled", "true");
+            if (pref_touch_feedback_enabled) {
+                bundle.putString("pref_touch_feedback_enabled", "true");
             } else {
-                bundle.putString("touchFeedbackEnabled", "false");
+                bundle.putString("pref_touch_feedback_enabled", "false");
             }
 
             // set page animation

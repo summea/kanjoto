@@ -76,4 +76,31 @@ public class ViewAllEmotionsActivity extends ListActivity {
             return super.onOptionsItemSelected(item);
         }
     }
+    
+    // refresh noteset after save or update
+    // TODO: combine onCreate and onResume duplicated code
+    @Override
+    public void onResume() {
+        super.onResume();
+        
+        List<String> allEmotionsData = new LinkedList<String>();
+        EmotionsDataSource ds = new EmotionsDataSource(this);
+
+        // get string version of returned emotion list
+        allEmotionsData = ds.getAllEmotionListPreviews();
+
+        // prevent crashes due to lack of database data
+        if (allEmotionsData.isEmpty())
+            allEmotionsData.add("empty");
+
+        String[] allEmotions = allEmotionsData
+                .toArray(new String[allEmotionsData.size()]);
+
+        // pass list data to adapter
+        setListAdapter(new ArrayAdapter<String>(this, R.layout.list_emotion,
+                allEmotions));
+
+        ListView listView = getListView();
+        listView.setTextFilterEnabled(true);
+    }
 }

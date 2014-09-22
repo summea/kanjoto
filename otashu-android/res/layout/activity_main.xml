@@ -21,13 +21,6 @@
                 android:gravity="center_horizontal"
                 android:text="@string/menu_title"
                 android:textSize="34dp" />
-
-            <Button
-                android:id="@+id/button_create_noteset"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/button_create_noteset"
-                android:padding="20dp" />
     
             <Button
                 android:id="@+id/button_view_all_notesets"
@@ -42,56 +35,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/button_choose_emotion"
                 android:padding="20dp" />
-
-            <Button
-                android:id="@+id/button_view_sequence"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/button_view_sequence"
-                android:padding="20dp" />
-    
-            <Button
-                android:id="@+id/button_get_remote_noteset"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/button_get_remote_noteset"
-                android:padding="20dp" />
-    
-            <Button
-                android:id="@+id/button_settings"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/button_settings"
-                android:padding="20dp" />
-    	
-            <Button
-                android:id="@+id/button_export_database"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/button_export_database"
-                android:padding="20dp" />
-    	
-            <Button
-                android:id="@+id/button_import_database"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/button_import_database"
-                android:padding="20dp" />
-        
-            <Button
-                android:id="@+id/button_create_emotion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/button_create_emotion"
-                android:padding="20dp" />
-                
+        	
             <Button
                 android:id="@+id/button_view_all_emotions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/button_view_all_emotions"
                 android:padding="20dp" />
-        
+            
             </LinearLayout>
         </ScrollView>
 </LinearLayout>

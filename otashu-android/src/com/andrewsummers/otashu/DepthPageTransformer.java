@@ -17,7 +17,7 @@ import android.view.View;
  */
 public class DepthPageTransformer implements ViewPager.PageTransformer {
     private static final float MIN_SCALE = 0.5f;
-    private boolean touchFeedbackEnabled = false;
+    private boolean pref_touch_feedback_enabled = false;
 
     /**
      * DepthPageTransformer constructor primarily used to get general
@@ -29,8 +29,8 @@ public class DepthPageTransformer implements ViewPager.PageTransformer {
      */
     public DepthPageTransformer(Bundle savedInstanceState) {
         // get (and enable) current app settings
-        if (savedInstanceState.getString("touchFeedbackEnabled").equals("true")) {
-            touchFeedbackEnabled = true;
+        if (savedInstanceState.getString("pref_touch_feedback_enabled").equals("true")) {
+            pref_touch_feedback_enabled = true;
         }
     }
 
@@ -51,7 +51,7 @@ public class DepthPageTransformer implements ViewPager.PageTransformer {
         int pageWidth = view.getWidth();
 
         // if application touch feedback setting is set, enable touch feedback
-        if (touchFeedbackEnabled) {
+        if (pref_touch_feedback_enabled) {
             view.setHapticFeedbackEnabled(true);
             view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY,
                     HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);

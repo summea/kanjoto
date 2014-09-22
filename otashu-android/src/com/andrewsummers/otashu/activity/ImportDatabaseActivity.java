@@ -6,12 +6,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 
-import com.andrewsummers.otashu.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -21,11 +21,11 @@ public class ImportDatabaseActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String settingsFileName = getResources().getString(
-                R.string.settings_file_name);
-        SharedPreferences settings = getSharedPreferences(settingsFileName,
-                0);
-        String importDatabaseLocationText = settings.getString("importDatabaseLocation", "");  
+        // load preferences
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String importDatabaseLocationText = sharedPref.getString("pref_import_database_location", "");
+        
+        Log.d("MYLOG", "importing: " + importDatabaseLocationText);
         
         File externalStorage = Environment.getExternalStorageDirectory();
         

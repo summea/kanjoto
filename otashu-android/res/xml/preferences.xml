@@ -6,12 +6,13 @@
     
         <CheckBoxPreference
             android:title="@string/pref_touch_feedback"
-            android:key="pref_touch_feedback_enabled" />
+            android:key="pref_touch_feedback_enabled"
+            android:defaultValue="false" />
 
         <EditTextPreference
-
             android:title="@string/pref_import_database_location"
-            android:key="pref_import_database_location" />
+            android:key="pref_import_database_location"
+            android:defaultValue="" />
         
     </PreferenceCategory>
 
