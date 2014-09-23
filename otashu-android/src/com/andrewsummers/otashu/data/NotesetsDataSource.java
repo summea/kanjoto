@@ -471,9 +471,6 @@ public class NotesetsDataSource {
         Log.d("MYLOG", "sql update: " + OtashuDatabaseHelper.COLUMN_ID + "=" + noteset.getId());
         
         db.update(OtashuDatabaseHelper.TABLE_NOTESETS, contentValues, OtashuDatabaseHelper.COLUMN_ID + "=" + noteset.getId(), null);
-        //db.update(OtashuDatabaseHelper.TABLE_NOTESETS, contentValues, OtashuDatabaseHelper.COLUMN_ID + "=" + noteset.getId(), null);
-        //db.delete(OtashuDatabaseHelper.TABLE_NOTES,
-        //        OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = " + id, null);
         
         return noteset;
     }

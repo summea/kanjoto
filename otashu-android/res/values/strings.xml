@@ -23,6 +23,7 @@
     <string name="create_emotion_title">Create Emotion</string>
     <string name="create_noteset_title">Create Noteset</string>
     
+    <string name="edit_emotion_title">Edit Emotion</string>
     <string name="edit_noteset_title">Edit Noteset</string>
     <string name="emotion_name_label">Name</string>
     <string name="emotion_saved">emotion saved</string>

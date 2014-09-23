@@ -214,4 +214,25 @@ public class EmotionsDataSource {
         
         return emotion;
     }
+    
+    public Emotion updateEmotion(Emotion emotion) {
+        
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        
+        Log.d("MYLOG", Long.toString(emotion.getId()));
+        Log.d("MYLOG", emotion.getName());
+        
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(OtashuDatabaseHelper.COLUMN_ID, emotion.getId());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, emotion.getName());
+
+        //db.update(OtashuDatabaseHelper.TABLE_NOTES, contentValues, OtashuDatabaseHelper.COLUMN_ID + "=" + emotion.getId(), null);
+        
+        Log.d("MYLOG", "sql update: " + OtashuDatabaseHelper.COLUMN_ID + "=" + emotion.getId());
+        
+        db.update(OtashuDatabaseHelper.TABLE_EMOTIONS, contentValues, OtashuDatabaseHelper.COLUMN_ID + "=" + emotion.getId(), null);
+
+        return emotion;
+    }
 }

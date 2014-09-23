@@ -9,16 +9,23 @@ import com.andrewsummers.otashu.data.EmotionsDataSource;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
 /**
  * View all emotions as a list.
  */
 public class ViewAllEmotionsActivity extends ListActivity {
+    
+    private int selectedListPosition = 0;
+    
     /**
      * onCreate override used to gather and display a list of all emotions saved
      * in database.
@@ -49,6 +56,9 @@ public class ViewAllEmotionsActivity extends ListActivity {
 
         ListView listView = getListView();
         listView.setTextFilterEnabled(true);
+        
+        // register context menu
+        registerForContextMenu(listView);
     }
     
     @Override
@@ -74,6 +84,39 @@ public class ViewAllEmotionsActivity extends ListActivity {
             return true;
         default:
             return super.onOptionsItemSelected(item);
+        }
+    }
+    
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+        selectedListPosition = info.position;
+        
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.context_menu_emotion, menu);
+    }
+    
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+        Intent intent = null;
+        switch (item.getItemId()) {
+            case R.id.context_menu_view:
+                /*
+                intent = new Intent(this, ViewEmotionDetailActivity.class);
+                intent.putExtra("list_id", info.id);
+                startActivity(intent);
+                */
+                return true;
+            case R.id.context_menu_edit:
+                intent = new Intent(this, EditEmotionActivity.class);
+                intent.putExtra("list_id", info.id);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onContextItemSelected(item);
         }
     }
     

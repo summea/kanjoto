@@ -7,9 +7,13 @@
 - view note values as note names (C3, D3, etc.) in "view noteset details" activity
 - add end-note-matching logic to "generate music" activity
 - view note values as note names (C3, D3, etc.) in "create noteset" activity
+- view emotion feature
+- delete emotion feature
+- view all emotions context menu
 
 
 ## DONE:
+- 20140922: added "edit emotion" feature
 - 20140921: added more formatting to Settings activity (now uses PreferenceActivity)
 - 20140921: added "refresh view all emotions list after adding new emotion" feature
 - 20140921: added a simple layout test
