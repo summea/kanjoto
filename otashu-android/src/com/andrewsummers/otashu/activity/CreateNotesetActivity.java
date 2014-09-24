@@ -92,11 +92,11 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
         for (int i = 0; i < spinnerItems.length; i++) {
             spinner = (Spinner) findViewById(spinnerItems[i]);
             adapter = ArrayAdapter
-                    .createFromResource(this, R.array.note_values_array,
+                    .createFromResource(this, R.array.note_labels_array,
                             android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
-            spinner.setSelection(adapter.getPosition(String.valueOf(60)));  // start at note C4
+            spinner.setSelection(adapter.getPosition(String.valueOf("C4")));  // start at note C4
         }
     }
 
@@ -141,6 +141,8 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
             // first insert new noteset (parent of all related notes)
             saveNoteset(v, notesetToInsert);
             
+            String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
+            
             int[] spinnerIds = {
                     R.id.spinner_note1,
                     R.id.spinner_note2,
@@ -151,8 +153,8 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
             for (int i = 0; i < spinnerIds.length; i++) {
                 spinner = (Spinner) findViewById(spinnerIds[i]);
                 noteToInsert.setNotesetId(newlyInsertedNoteset.getId());
-                Log.d("MYLOG", spinner.getSelectedItem().toString());
-                noteToInsert.setNotevalue(Integer.parseInt(spinner.getSelectedItem().toString()));
+                Log.d("MYLOG", String.valueOf(noteValuesArray[spinner.getSelectedItemPosition()]));
+                noteToInsert.setNotevalue(Integer.parseInt(noteValuesArray[spinner.getSelectedItemPosition()]));
                 saveNote(v, noteToInsert);
             }
             

@@ -24,7 +24,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
  */
 public class ViewAllEmotionsActivity extends ListActivity {
     
-    private int selectedListPosition = 0;
+    //private int selectedListPosition = 0;
     
     /**
      * onCreate override used to gather and display a list of all emotions saved
@@ -91,8 +91,8 @@ public class ViewAllEmotionsActivity extends ListActivity {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        selectedListPosition = info.position;
+        //AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+        //selectedListPosition = info.position;
         
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.context_menu_emotion, menu);

@@ -6,7 +6,6 @@ import java.util.List;
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.model.Emotion;
-import com.andrewsummers.otashu.model.Noteset;
 
 import android.app.Activity;
 import android.content.Context;
