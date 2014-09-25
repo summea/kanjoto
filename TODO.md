@@ -3,8 +3,6 @@
 ## TODO:
 - add spinners for velocity in CreateNotesetActivity
 - add spinners for length in CreateNotesetActivity
-- view note values as note names (C3, D3, etc.) in "view all notesets" activity
-- view note values as note names (C3, D3, etc.) in "view noteset details" activity
 - add end-note-matching logic to "generate music" activity
 - view emotion feature
 - delete emotion feature
@@ -12,6 +10,9 @@
 
 
 ## DONE:
+- 20140924: added "view note values as note names (C3, D3, etc.) in view all notesets activity" feature
+- 20140924: added "view note values as note names (C3, D3, etc.) in edit noteset activity" feature
+- 20140924: added "view note values as note names (C3, D3, etc.) in view noteset details activity" feature
 - 20140923: added "view note values as note names (C3, D3, etc.) in create noteset activity" feature
 - 20140922: added "edit emotion" feature
 - 20140921: added more formatting to Settings activity (now uses PreferenceActivity)

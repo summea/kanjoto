@@ -54,22 +54,17 @@ public class ViewAllNotesetsActivity extends ListActivity {
         // get string version of returned noteset list
         allNotesetsData = ds.getAllNotesetListPreviews(noteLabelsArray, noteValuesArray);
         
-        Log.d("MYLOG", allNotesetsData.toString() + "current");
-        
         // prevent crashes due to lack of database data
         if (allNotesetsData.isEmpty())
             allNotesetsData.add("empty");
 
-        String[] allNotesets = allNotesetsData
-                .toArray(new String[allNotesetsData.size()]);
-
         // pass list data to adapter
         setListAdapter(new ArrayAdapter<String>(this, R.layout.list_noteset,
-                allNotesets));
+                allNotesetsData));
 
         ListView listView = getListView();
         listView.setTextFilterEnabled(true);
-
+        
         // get individual noteset details
         listView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
@@ -230,19 +225,19 @@ public class ViewAllNotesetsActivity extends ListActivity {
         List<String> allNotesetsData = new LinkedList<String>();
         NotesetsDataSource ds = new NotesetsDataSource(this);
 
+        String[] noteLabelsArray = getResources().getStringArray(R.array.note_labels_array);
+        String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
+        
         // get string version of returned noteset list
-        allNotesetsData = ds.getAllNotesetListPreviews();
+        allNotesetsData = ds.getAllNotesetListPreviews(noteLabelsArray, noteValuesArray);
 
         // prevent crashes due to lack of database data
         if (allNotesetsData.isEmpty())
             allNotesetsData.add("empty");
 
-        String[] allNotesets = allNotesetsData
-                .toArray(new String[allNotesetsData.size()]);
-
         // pass list data to adapter
         setListAdapter(new ArrayAdapter<String>(this, R.layout.list_noteset,
-                allNotesets));
+                allNotesetsData));
 
         ListView listView = getListView();
         listView.setTextFilterEnabled(true);

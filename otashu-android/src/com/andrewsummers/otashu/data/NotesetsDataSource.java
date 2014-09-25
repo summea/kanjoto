@@ -439,8 +439,9 @@ public class NotesetsDataSource {
                         note = new Note();
                         note.setNotevalue(Integer.parseInt(cursorForRelatedNotes.getString(2)));
                         for (int i = 0; i < noteValuesArray.length; i++) {
+                            // get actual note name (C3, D3, E3, etc.)
                             if (note.getNotevalue() == Integer.valueOf(noteValuesArray[i])) {
-                                itemForList += noteLabelsArray[i];
+                                itemForList += noteLabelsArray[i] + " ";
                             }
                         }
                     } while (cursorForRelatedNotes.moveToNext());
@@ -452,7 +453,7 @@ public class NotesetsDataSource {
             } while (cursor.moveToNext());
         }
 
-        Log.d("MYLOG", notesets.toString() + " hi");
+        Log.d("MYLOG", notesets.toString());
 
         return notesets;
     }

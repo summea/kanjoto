@@ -151,6 +151,9 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
             }
         }
         
+        String[] noteLabelsArray = getResources().getStringArray(R.array.note_labels_array);
+        String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
+        
         ArrayAdapter<CharSequence> adapter = null;
         
         int[] spinnerItems = {R.id.spinner_note1, R.id.spinner_note2, R.id.spinner_note3, R.id.spinner_note4};
@@ -159,11 +162,18 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
             Note note = (Note) notes.get(i);
             spinner = (Spinner) findViewById(spinnerItems[i]);
             adapter = ArrayAdapter
-                    .createFromResource(this, R.array.note_values_array,
+                    .createFromResource(this, R.array.note_labels_array,
                             android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
-            spinner.setSelection(adapter.getPosition(String.valueOf(note.getNotevalue()))); // get currently saved notevalue
+            String noteName = "C4";
+            for (int j = 0; j < noteValuesArray.length; j++) {
+                // get actual note name (C3, D3, E3, etc.)
+                if (note.getNotevalue() == Integer.valueOf(noteValuesArray[j])) {
+                    noteName = noteLabelsArray[j];
+                }
+            }
+            spinner.setSelection(adapter.getPosition(noteName)); // get currently saved notevalue
         }
     }
 
@@ -209,6 +219,8 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
             // first insert new noteset (parent of all related notes)
             saveNotesetUpdates(v, notesetToInsert);
             
+            String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
+            
             int[] spinnerIds = {
                     R.id.spinner_note1,
                     R.id.spinner_note2,
@@ -219,8 +231,8 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
             for (int i = 0; i < spinnerIds.length; i++) {
                 spinner = (Spinner) findViewById(spinnerIds[i]);
                 noteToInsert = editNotes.get(i);
-                Log.d("MYLOG", spinner.getSelectedItem().toString());
-                noteToInsert.setNotevalue(Integer.parseInt(spinner.getSelectedItem().toString()));
+                Log.d("MYLOG", String.valueOf(noteValuesArray[spinner.getSelectedItemPosition()]));
+                noteToInsert.setNotevalue(Integer.parseInt(noteValuesArray[spinner.getSelectedItemPosition()]));
                 saveNoteUpdates(v, noteToInsert);
             }
             

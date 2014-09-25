@@ -14,6 +14,7 @@ import com.andrewsummers.otashu.model.Noteset;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 /**
@@ -75,6 +76,9 @@ public class ViewNotesetDetailActivity extends Activity {
         
         eds.close();
         
+        String[] noteLabelsArray = getResources().getStringArray(R.array.note_labels_array);
+        String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
+        
         // conversion issues...
         int key = (int) (long) allNotesets[notesetId];
         
@@ -84,16 +88,27 @@ public class ViewNotesetDetailActivity extends Activity {
         TextView emotionName = (TextView) findViewById(R.id.noteset_detail_emotion_value);
         emotionName.setText(emotion.getName());
         
-        TextView note1 = (TextView) findViewById(R.id.noteset_detail_note1);
-        note1.setText(notesetBundle.get(key).get(0).toString());        
+        String noteName = "C4";
         
-        TextView note2 = (TextView) findViewById(R.id.noteset_detail_note2);
-        note2.setText(notesetBundle.get(key).get(1).toString());
+        int[] textViewIds = {
+                R.id.noteset_detail_note1,
+                R.id.noteset_detail_note2,
+                R.id.noteset_detail_note3,
+                R.id.noteset_detail_note4
+        };
         
-        TextView note3 = (TextView) findViewById(R.id.noteset_detail_note3);
-        note3.setText(notesetBundle.get(key).get(2).toString());
+        TextView note = null;
         
-        TextView note4 = (TextView) findViewById(R.id.noteset_detail_note4);
-        note4.setText(notesetBundle.get(key).get(3).toString());
+        for (int i = 0; i < textViewIds.length; i++) {
+            note = (TextView) findViewById(textViewIds[i]);
+            for (int j = 0; j < noteValuesArray.length; j++) {
+                // get actual note name (C3, D3, E3, etc.)
+                if (notesetBundle.get(key).get(i).getNotevalue() == Integer.valueOf(noteValuesArray[j])) {
+                    note.setText(noteLabelsArray[j]);
+                    break;
+                }
+            }
+        }
+   
     }
 }
