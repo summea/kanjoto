@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.andrewsummers.otashu.model.Emotion;
+import com.andrewsummers.otashu.model.Noteset;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -93,8 +94,15 @@ public class EmotionsDataSource {
      */
     public void deleteEmotion(Emotion emotion) {
         long id = emotion.getId();
-        Log.d("OTASHULOG", "deleting emotion with id: " + id);
-        database.delete(OtashuDatabaseHelper.TABLE_EMOTIONS,
+        
+        Log.d("MYLOG", "now really deleting id: " + id);
+        
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        
+        // delete noteset
+        Log.d("OTASHULOG", "deleting noteset with id: " + id);
+        db.delete(OtashuDatabaseHelper.TABLE_EMOTIONS,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
     }
 
@@ -192,7 +200,40 @@ public class EmotionsDataSource {
         return emotions;
     }
 
-    public Emotion getEmotion(int emotionId) {
+    /**
+     * Get a list of all emotions ids.
+     * 
+     * @return List of Emotion ids.
+     */
+    public List<Long> getAllEmotionListDBTableIds() {
+        List<Long> emotions = new LinkedList<Long>();
+        
+        String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM " + OtashuDatabaseHelper.TABLE_EMOTIONS;
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notesets from database
+        Cursor cursor = db.rawQuery(query, null);
+
+        Emotion emotion = null;
+        if (cursor.moveToFirst()) {
+            do {                
+                // create noteset objects based on noteset data from database
+                emotion = new Emotion();
+                emotion.setId(Long.parseLong(cursor.getString(0)));
+                
+                // add noteset to notesets list
+                emotions.add(emotion.getId());
+            } while (cursor.moveToNext());
+        }
+
+        Log.d("MYLOG", emotions.toString());
+
+        return emotions;
+    }
+    
+    public Emotion getEmotion(long emotionId) {
         Emotion emotion = new Emotion();
         
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EMOTIONS + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + emotionId;

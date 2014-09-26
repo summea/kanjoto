@@ -459,7 +459,7 @@ public class NotesetsDataSource {
     }
     
     /**
-     * getAllNotesetListDBTableIds gets a list of all notesets ids.
+     * Get a list of all notesets ids.
      * 
      * @return List of Noteset ids.
      */

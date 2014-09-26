@@ -4,12 +4,13 @@
 - add spinners for velocity in CreateNotesetActivity
 - add spinners for length in CreateNotesetActivity
 - add end-note-matching logic to "generate music" activity
-- view emotion feature
-- delete emotion feature
-- view all emotions context menu
 
 
 ## DONE:
+- 20140925: added "view emotion details" feature
+- 20140925: added "delete emotion" feature
+- 20140925: added "view all emotions context menu" feature
+- 20140925: added "view emotion details after clicking emotion name in ViewAllEmotionsActivity list" feature
 - 20140924: added "view note values as note names (C3, D3, etc.) in view all notesets activity" feature
 - 20140924: added "view note values as note names (C3, D3, etc.) in edit noteset activity" feature
 - 20140924: added "view note values as note names (C3, D3, etc.) in view noteset details activity" feature

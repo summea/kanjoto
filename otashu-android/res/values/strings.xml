@@ -25,6 +25,7 @@
     
     <string name="edit_emotion_title">Edit Emotion</string>
     <string name="edit_noteset_title">Edit Noteset</string>
+    <string name="emotion_detail_name_label">Name</string>
     <string name="emotion_name_label">Name</string>
     <string name="emotion_saved">emotion saved</string>
     <string name="generate_music_placeholder">Playing music...</string>
@@ -59,6 +60,7 @@
     
     <string name="view_all_notesets_title">View All Notesets</string>
     
+    <string name="view_emotion_detail_title">Emotion Details</string>
     <string name="view_noteset_detail_title">Noteset Details</string>
     <string name="noteset_detail_title_label">Noteset Name</string>
     
