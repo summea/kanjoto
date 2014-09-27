@@ -33,7 +33,8 @@ public class NotesDataSource {
             OtashuDatabaseHelper.COLUMN_NOTESET_ID,
             OtashuDatabaseHelper.COLUMN_NOTEVALUE,
             OtashuDatabaseHelper.COLUMN_VELOCITY,
-            OtashuDatabaseHelper.COLUMN_LENGTH
+            OtashuDatabaseHelper.COLUMN_LENGTH,
+            OtashuDatabaseHelper.COLUMN_POSITION
     };
 
     /**
@@ -76,7 +77,12 @@ public class NotesDataSource {
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_NOTESET_ID, note.getNotesetId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_NOTEVALUE, note.getNotevalue());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_VELOCITY, note.getVelocity());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_LENGTH, note.getLength());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_POSITION, note.getPosition());
 
+        Log.d("MYLOG", "saving note contentValues: " + contentValues.toString());
+        
         long insertId = database
                 .insert(OtashuDatabaseHelper.TABLE_NOTES, null,
                         contentValues);
@@ -113,18 +119,31 @@ public class NotesDataSource {
     public List<Note> getAllNotes() {
         List<Note> notes = new ArrayList<Note>();
 
-        Cursor cursor = database.query(
-                OtashuDatabaseHelper.TABLE_NOTESETS, allColumns, null,
-                null, null, null, null);
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES;
 
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Note note = cursorToNote(cursor);
-            notes.add(note);
-            cursor.moveToNext();
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notes from database
+        Cursor cursor = db.rawQuery(query, null);
+
+        Note note = null;
+        if (cursor.moveToFirst()) {
+            do {
+                // create note objects based on note data from database
+                note = new Note();
+                note.setId(Integer.parseInt(cursor.getString(0)));
+                note.setNotesetId(cursor.getLong(1));
+                note.setNotevalue(cursor.getInt(2));
+                note.setVelocity(cursor.getInt(3));
+                note.setLength(cursor.getInt(4));
+                note.setPosition(cursor.getInt(5));
+
+                // add note string to list of strings
+                notes.add(note);
+            } while (cursor.moveToNext());
         }
 
-        cursor.close();
         return notes;
     }
 
@@ -141,6 +160,7 @@ public class NotesDataSource {
         note.setNotevalue(cursor.getInt(1));
         note.setVelocity(cursor.getInt(2));
         note.setLength(cursor.getInt(3));
+        note.setPosition(cursor.getInt(4));
         return note;
     }
         
@@ -152,7 +172,7 @@ public class NotesDataSource {
     public List<String> getAllNoteListPreviews() {
         List<String> notes = new LinkedList<String>();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -169,6 +189,7 @@ public class NotesDataSource {
                 note.setNotevalue(cursor.getInt(1));
                 note.setVelocity(cursor.getInt(2));
                 note.setLength(cursor.getInt(3));
+                note.setPosition(cursor.getInt(4));
 
                 // add note string to list of strings
                 notes.add(note.toString());
@@ -191,6 +212,9 @@ public class NotesDataSource {
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_NOTESET_ID, note.getNotesetId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_NOTEVALUE, note.getNotevalue());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_VELOCITY, note.getVelocity());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_LENGTH, note.getLength());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_POSITION, note.getPosition());
 
         db.update(OtashuDatabaseHelper.TABLE_NOTES, contentValues, OtashuDatabaseHelper.COLUMN_ID + "=" + note.getId(), null);
 

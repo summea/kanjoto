@@ -22,6 +22,7 @@ public class MainActivity extends Activity implements OnClickListener {
     private Button buttonChooseEmotion = null;
     private Button buttonViewAllNotesets = null;    
     private Button buttonViewAllEmotions = null;
+    private Button buttonDatabaseDumper = null;
 
     /**
      * onCreate override that provides menu buttons on menu view.
@@ -51,6 +52,9 @@ public class MainActivity extends Activity implements OnClickListener {
             buttonViewAllEmotions = (Button) findViewById(R.id.button_view_all_emotions);
             buttonViewAllEmotions.setOnClickListener(this);
             
+            buttonDatabaseDumper = (Button) findViewById(R.id.button_database_dumper);
+            buttonDatabaseDumper.setOnClickListener(this);
+            
         } catch (Exception e) {
             Log.d("MYLOG", e.getStackTrace().toString());
         }
@@ -77,6 +81,10 @@ public class MainActivity extends Activity implements OnClickListener {
             break;
         case R.id.button_view_all_emotions:
             intent = new Intent(this, ViewAllEmotionsActivity.class);
+            startActivity(intent);
+            break;
+        case R.id.button_database_dumper:
+            intent = new Intent(this, DatabaseDumperActivity.class);
             startActivity(intent);
             break;
         }

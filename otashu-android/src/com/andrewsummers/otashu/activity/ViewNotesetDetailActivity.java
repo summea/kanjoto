@@ -14,7 +14,6 @@ import com.andrewsummers.otashu.model.Noteset;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 /**
@@ -88,7 +87,7 @@ public class ViewNotesetDetailActivity extends Activity {
         TextView emotionName = (TextView) findViewById(R.id.noteset_detail_emotion_value);
         emotionName.setText(emotion.getName());
         
-        String noteName = "C4";
+        //String noteName = "C4";
         
         int[] textViewIds = {
                 R.id.noteset_detail_note1,

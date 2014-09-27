@@ -9,6 +9,7 @@ public class Note {
     private int notevalue;
     private int velocity;
     private int length;
+    private int position;
 
     /**
      * getId gets Note id
@@ -103,6 +104,25 @@ public class Note {
      */
     public void setLength(int length) {
         this.length = length;
+    }
+    
+    /**
+     * getPosition gets Note position.
+     * 
+     * @return <code>int</code> of position.
+     */
+    public int getPosition() {
+        return position;
+    }
+
+    /**
+     * setPosition sets Note position.
+     * 
+     * @param position
+     *            New position.
+     */
+    public void setPosition(int position) {
+        this.position = position;
     }
 
     /**

@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.model.Note;
 import com.andrewsummers.otashu.model.Noteset;
 

@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.andrewsummers.otashu.model.Emotion;
-import com.andrewsummers.otashu.model.Noteset;
 
 import android.content.ContentValues;
 import android.content.Context;

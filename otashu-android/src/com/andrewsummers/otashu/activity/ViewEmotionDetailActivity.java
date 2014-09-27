@@ -1,20 +1,15 @@
 package com.andrewsummers.otashu.activity;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
-import com.andrewsummers.otashu.data.NotesetsDataSource;
 import com.andrewsummers.otashu.model.Emotion;
-import com.andrewsummers.otashu.model.Note;
-import com.andrewsummers.otashu.model.Noteset;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 /**

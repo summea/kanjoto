@@ -219,4 +219,48 @@ public class ViewAllNotesetsActivity extends ListActivity {
         ds.deleteNoteset(noteset);
         ds.close();
     }
+    
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        List<String> allNotesetsData = new LinkedList<String>();
+        NotesetsDataSource ds = new NotesetsDataSource(this);
+
+        String[] noteLabelsArray = getResources().getStringArray(R.array.note_labels_array);
+        String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
+        
+        // get string version of returned noteset list
+        allNotesetsData = ds.getAllNotesetListPreviews(noteLabelsArray, noteValuesArray);
+        
+        // prevent crashes due to lack of database data
+        if (allNotesetsData.isEmpty())
+            allNotesetsData.add("empty");
+
+        // pass list data to adapter
+        setListAdapter(new ArrayAdapter<String>(this, R.layout.list_noteset,
+                allNotesetsData));
+
+        ListView listView = getListView();
+        listView.setTextFilterEnabled(true);
+        
+        // get individual noteset details
+        listView.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                    int position, long id) {
+                
+                Log.d("MYLOG", "list item id: " + id);
+                
+                // launch details activity
+                Intent intent = new Intent(view.getContext(),
+                        ViewNotesetDetailActivity.class);
+                
+                intent.putExtra("list_id", id);
+                startActivity(intent);
+            }
+        });
+        
+        // register context menu
+        registerForContextMenu(listView);
+    }
 }

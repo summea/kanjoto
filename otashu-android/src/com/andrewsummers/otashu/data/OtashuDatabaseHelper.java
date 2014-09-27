@@ -29,6 +29,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_NOTEVALUE = "notevalue";
     public static final String COLUMN_VELOCITY = "velocity";
     public static final String COLUMN_LENGTH = "length";
+    public static final String COLUMN_POSITION = "position";
     
     public static final String TABLE_EMOTIONS = "emotions";
 
@@ -42,7 +43,8 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_NOTESET_ID + " integer,"
             + COLUMN_NOTEVALUE + " integer,"
             + COLUMN_VELOCITY + " integer,"
-            + COLUMN_LENGTH + " integer);";
+            + COLUMN_LENGTH + " integer,"
+            + COLUMN_POSITION + " integer);";
     
     private static final String CREATE_TABLE_EMOTIONS = "CREATE TABLE " + TABLE_EMOTIONS
             + " (" + COLUMN_ID + " integer primary key autoincrement, "

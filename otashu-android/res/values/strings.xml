@@ -5,6 +5,7 @@
     <string name="button_choose_emotion">Choose Emotion</string>
     <string name="button_create_emotion">New Emotion</string>
     <string name="button_create_noteset">New Noteset</string>
+    <string name="button_database_dumper">Database Dumper</string>
     <string name="button_get_remote_noteset">get remote noteset</string>
     <string name="button_go">Go</string>
     <string name="button_ok">OK</string>

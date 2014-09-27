@@ -1,15 +1,11 @@
 package com.andrewsummers.otashu.activity;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
-import com.andrewsummers.otashu.data.NotesetsDataSource;
 import com.andrewsummers.otashu.model.Emotion;
-import com.andrewsummers.otashu.model.Note;
-import com.andrewsummers.otashu.model.Noteset;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -213,5 +209,49 @@ public class ViewAllEmotionsActivity extends ListActivity {
         EmotionsDataSource ds = new EmotionsDataSource(this);
         ds.deleteEmotion(emotion);
         ds.close();
+    }
+    
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        List<String> allEmotionsData = new LinkedList<String>();
+        EmotionsDataSource ds = new EmotionsDataSource(this);
+
+        // get string version of returned emotion list
+        allEmotionsData = ds.getAllEmotionListPreviews();
+
+        // prevent crashes due to lack of database data
+        if (allEmotionsData.isEmpty())
+            allEmotionsData.add("empty");
+
+        String[] allEmotions = allEmotionsData
+                .toArray(new String[allEmotionsData.size()]);
+
+        // pass list data to adapter
+        setListAdapter(new ArrayAdapter<String>(this, R.layout.list_emotion,
+                allEmotions));
+
+        ListView listView = getListView();
+        listView.setTextFilterEnabled(true);
+        
+        // get individual emotion details
+        listView.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                    int position, long id) {
+                
+                Log.d("MYLOG", "list item id: " + id);
+                
+                // launch details activity
+                Intent intent = new Intent(view.getContext(),
+                        ViewEmotionDetailActivity.class);
+                
+                intent.putExtra("list_id", id);
+                startActivity(intent);
+            }
+        });
+
+        // register context menu
+        registerForContextMenu(listView);
     }
 }

@@ -128,7 +128,14 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
             allEmotionIds = emotionsDataSource.getAllEmotionIds();
             
             Spinner emotionSpinner = (Spinner) findViewById(R.id.spinner_emotion);
-            int selectedEmotionValue = allEmotionIds.get(emotionSpinner.getSelectedItemPosition());
+            int selectedEmotionValue = 0;
+            
+            // for times when emotion is not selected
+            try {
+                selectedEmotionValue = allEmotionIds.get(emotionSpinner.getSelectedItemPosition());
+            } catch (Exception e) {
+                Log.d("MYLOG", e.getStackTrace().toString());
+            }
             
             emotionsDataSource.close();
             
@@ -153,6 +160,7 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
             for (int i = 0; i < spinnerIds.length; i++) {
                 spinner = (Spinner) findViewById(spinnerIds[i]);
                 noteToInsert.setNotesetId(newlyInsertedNoteset.getId());
+                noteToInsert.setPosition(i+1);  // positions 1, 2, 3, 4, etc.
                 Log.d("MYLOG", String.valueOf(noteValuesArray[spinner.getSelectedItemPosition()]));
                 noteToInsert.setNotevalue(Integer.parseInt(noteValuesArray[spinner.getSelectedItemPosition()]));
                 saveNote(v, noteToInsert);
@@ -211,10 +219,7 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
 
         Log.d("MYLOG", Long.toString(note.getNotesetId()));
         Log.d("MYLOG", Integer.toString(note.getNotevalue()));
-        
-        //Note noteToSave = new Note();
-        //noteToSave = note;
-        
+                
         // save noteset in database
         notesDataSource.createNote(note);
 
