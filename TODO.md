@@ -4,12 +4,12 @@
 - add spinners for velocity in CreateNotesetActivity
 - add spinners for length in CreateNotesetActivity
 - add end-note-matching logic to "generate music" activity
-- add "position" column to notes database table
-- fix refresh "view all notesets" list after adding new noteset
-- fix refresh "view all emotions" list after adding new emotion
-- add "database dumper" activity for debugging
 
 ## DONE:
+- 20140926: added "position" column to notes database table
+- 20140926: fixed refresh "view all notesets" list after adding new noteset
+- 20140926: fixed refresh "view all emotions" list after adding new emotion
+- 20140926: added "database dumper" activity for debugging
 - 20140925: added "view emotion details" feature
 - 20140925: added "delete emotion" feature
 - 20140925: added "view all emotions context menu" feature
