@@ -47,10 +47,12 @@
     <string name="pref_general_category">General</string>
     
     <string name="spinner_emotion_label">Emotion</string>
-    <string name="spinner_note1_label">Note 1</string>
+    <string name="spinner_notevalue_label">Note</string>
     <string name="spinner_note2_label">Note 2</string>
     <string name="spinner_note3_label">Note 3</string>
     <string name="spinner_note4_label">Note 4</string>
+    <string name="spinner_length_label">Length</string>
+    <string name="spinner_velocity_label">Velocity</string>
     
     <string name="noteset_saved">noteset saved</string>
     

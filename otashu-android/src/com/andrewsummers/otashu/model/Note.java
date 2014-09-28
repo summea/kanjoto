@@ -8,7 +8,7 @@ public class Note {
     private long noteset_id;
     private int notevalue;
     private int velocity;
-    private int length;
+    private float length;
     private int position;
 
     /**
@@ -92,7 +92,7 @@ public class Note {
      * 
      * @return <code>int</code> of length.
      */
-    public int getLength() {
+    public float getLength() {
         return length;
     }
 
@@ -102,7 +102,7 @@ public class Note {
      * @param length
      *            New length.
      */
-    public void setLength(int length) {
+    public void setLength(float length) {
         this.length = length;
     }
     

@@ -43,7 +43,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_NOTESET_ID + " integer,"
             + COLUMN_NOTEVALUE + " integer,"
             + COLUMN_VELOCITY + " integer,"
-            + COLUMN_LENGTH + " integer,"
+            + COLUMN_LENGTH + " real,"
             + COLUMN_POSITION + " integer);";
     
     private static final String CREATE_TABLE_EMOTIONS = "CREATE TABLE " + TABLE_EMOTIONS

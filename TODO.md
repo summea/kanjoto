@@ -1,11 +1,15 @@
 # otashu
 
 ## TODO:
-- add spinners for velocity in CreateNotesetActivity
-- add spinners for length in CreateNotesetActivity
 - add end-note-matching logic to "generate music" activity
+- add support for velocity spinner in EditNotesetActivity
+- add support for length spinner in EditNotesetActivity
+
 
 ## DONE:
+- 20140927: added spinners for velocity in CreateNotesetActivity
+- 20140927: added spinners for length in CreateNotesetActivity
+- 20140927: cleaned up unnecessary information in manifest file
 - 20140926: added "position" column to notes database table
 - 20140926: fixed refresh "view all notesets" list after adding new noteset
 - 20140926: fixed refresh "view all emotions" list after adding new emotion

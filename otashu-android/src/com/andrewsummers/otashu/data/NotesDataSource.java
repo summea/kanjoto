@@ -136,7 +136,7 @@ public class NotesDataSource {
                 note.setNotesetId(cursor.getLong(1));
                 note.setNotevalue(cursor.getInt(2));
                 note.setVelocity(cursor.getInt(3));
-                note.setLength(cursor.getInt(4));
+                note.setLength(cursor.getFloat(4));
                 note.setPosition(cursor.getInt(5));
 
                 // add note string to list of strings
@@ -159,7 +159,7 @@ public class NotesDataSource {
         note.setId(cursor.getLong(0));
         note.setNotevalue(cursor.getInt(1));
         note.setVelocity(cursor.getInt(2));
-        note.setLength(cursor.getInt(3));
+        note.setLength(cursor.getFloat(3));
         note.setPosition(cursor.getInt(4));
         return note;
     }
@@ -188,7 +188,7 @@ public class NotesDataSource {
                 note.setId(Integer.parseInt(cursor.getString(0)));
                 note.setNotevalue(cursor.getInt(1));
                 note.setVelocity(cursor.getInt(2));
-                note.setLength(cursor.getInt(3));
+                note.setLength(cursor.getFloat(3));
                 note.setPosition(cursor.getInt(4));
 
                 // add note string to list of strings
