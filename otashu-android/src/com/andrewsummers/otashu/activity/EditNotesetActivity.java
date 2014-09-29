@@ -175,6 +175,32 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
             }
             spinner.setSelection(adapter.getPosition(noteName)); // get currently saved notevalue
         }
+        
+        int[] velocitySpinnerItems = {R.id.spinner_note1_velocity, R.id.spinner_note2_velocity, R.id.spinner_note3_velocity, R.id.spinner_note4_velocity};
+        
+        for (int i = 0; i < velocitySpinnerItems.length; i++) {
+            Note note = (Note) notes.get(i);
+            spinner = (Spinner) findViewById(velocitySpinnerItems[i]);
+            adapter = ArrayAdapter
+                    .createFromResource(this, R.array.velocity_values_array,
+                            android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(adapter);
+            spinner.setSelection(adapter.getPosition(String.valueOf(note.getVelocity())));  // get current velocity value for spinner default
+        }
+        
+        int[] lengthSpinnerItems = {R.id.spinner_note1_length, R.id.spinner_note2_length, R.id.spinner_note3_length, R.id.spinner_note4_length};
+        
+        for (int i = 0; i < lengthSpinnerItems.length; i++) {
+            Note note = (Note) notes.get(i);
+            spinner = (Spinner) findViewById(lengthSpinnerItems[i]);
+            adapter = ArrayAdapter
+                    .createFromResource(this, R.array.length_values_array,
+                            android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(adapter);
+            spinner.setSelection(adapter.getPosition(String.valueOf(note.getLength())));  // get current length value for spinner default
+        }
     }
 
     /**
@@ -220,6 +246,8 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
             saveNotesetUpdates(v, notesetToInsert);
             
             String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
+            String[] velocityValuesArray = getResources().getStringArray(R.array.velocity_values_array);
+            String[] lengthValuesArray = getResources().getStringArray(R.array.length_values_array);
             
             int[] spinnerIds = {
                     R.id.spinner_note1,
@@ -228,11 +256,31 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
                     R.id.spinner_note4
             };
             
+            int[] velocitySpinnerIds = {
+                    R.id.spinner_note1_velocity,
+                    R.id.spinner_note2_velocity,
+                    R.id.spinner_note3_velocity,
+                    R.id.spinner_note4_velocity
+            };
+            
+            int[] lengthSpinnerIds = {
+                    R.id.spinner_note1_length,
+                    R.id.spinner_note2_length,
+                    R.id.spinner_note3_length,
+                    R.id.spinner_note4_length
+            };
+            
             for (int i = 0; i < spinnerIds.length; i++) {
                 spinner = (Spinner) findViewById(spinnerIds[i]);
+                Spinner velocitySpinner = (Spinner) findViewById(velocitySpinnerIds[i]);
+                Spinner lengthSpinner = (Spinner) findViewById(lengthSpinnerIds[i]);
+                
                 noteToInsert = editNotes.get(i);
                 Log.d("MYLOG", String.valueOf(noteValuesArray[spinner.getSelectedItemPosition()]));
                 noteToInsert.setNotevalue(Integer.parseInt(noteValuesArray[spinner.getSelectedItemPosition()]));
+                noteToInsert.setVelocity(Integer.parseInt(velocityValuesArray[velocitySpinner.getSelectedItemPosition()]));
+                noteToInsert.setLength(Float.parseFloat(lengthValuesArray[lengthSpinner.getSelectedItemPosition()]));
+                
                 saveNoteUpdates(v, noteToInsert);
             }
             

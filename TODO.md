@@ -2,11 +2,11 @@
 
 ## TODO:
 - add end-note-matching logic to "generate music" activity
-- add support for velocity spinner in EditNotesetActivity
-- add support for length spinner in EditNotesetActivity
 
 
 ## DONE:
+- 20140928: added support for velocity spinner in EditNotesetActivity
+- 20140928: added support for length spinner in EditNotesetActivity
 - 20140927: added spinners for velocity in CreateNotesetActivity
 - 20140927: added spinners for length in CreateNotesetActivity
 - 20140927: cleaned up unnecessary information in manifest file

@@ -298,14 +298,14 @@ public class NotesetsDataSource {
                         Long nNotesetId = 0L;
                         int nNotevalue = 0;
                         int nVelocity = 0;
-                        int nLength = 0;
+                        float nLength = 0.0f;
                         
                         try {
                             nId = cursorForRelatedNotes.getLong(0);
                             nNotesetId = cursorForRelatedNotes.getLong(1);
                             nNotevalue = cursorForRelatedNotes.getInt(2);
                             nVelocity = cursorForRelatedNotes.getInt(3);
-                            nLength = cursorForRelatedNotes.getInt(4);
+                            nLength = cursorForRelatedNotes.getFloat(4);
                         } catch (Exception e) {
                             Log.d("MYLOG", e.getStackTrace().toString());
                         }

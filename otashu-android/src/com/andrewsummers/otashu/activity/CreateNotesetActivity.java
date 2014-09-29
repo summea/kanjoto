@@ -120,7 +120,7 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
                             android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
-            spinner.setSelection(adapter.getPosition(String.valueOf("0.50")));  // start at 80 velocity
+            spinner.setSelection(adapter.getPosition(String.valueOf("0.5")));  // start at 0.5 length
         }
     }
 
