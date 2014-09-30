@@ -1,9 +1,11 @@
 package com.andrewsummers.otashu.data;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.Note;
 import com.andrewsummers.otashu.model.Noteset;
 
@@ -113,6 +115,39 @@ public class NotesetsDataSource {
         Log.d("OTASHULOG", "deleting notes with noteset_id: " + id);
         db.delete(OtashuDatabaseHelper.TABLE_NOTES,
                 OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = " + id, null);
+    }
+    
+    /**
+     * Get all notesets from database table.
+     * 
+     * @return List of Notesets.
+     */
+    public List<Noteset> getAllNotesets() {
+        List<Noteset> notesets = new ArrayList<Noteset>();
+
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS;
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notes from database
+        Cursor cursor = db.rawQuery(query, null);
+
+        Noteset noteset = null;
+        if (cursor.moveToFirst()) {
+            do {
+                // create note objects based on note data from database
+                noteset = new Noteset();
+                noteset.setId(Long.parseLong(cursor.getString(0)));
+                noteset.setName(cursor.getString(1));
+                noteset.setEmotion(Integer.parseInt(cursor.getString(2)));
+
+                // add note string to list of strings
+                notesets.add(noteset);
+            } while (cursor.moveToNext());
+        }
+
+        return notesets;
     }
 
     /**

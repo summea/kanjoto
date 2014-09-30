@@ -5,6 +5,7 @@
 
 
 ## DONE:
+- 20140929: added emotion and noteset tables to Database Dumper
 - 20140928: added support for velocity spinner in EditNotesetActivity
 - 20140928: added support for length spinner in EditNotesetActivity
 - 20140927: added spinners for velocity in CreateNotesetActivity

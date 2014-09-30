@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.andrewsummers.otashu.model.Emotion;
+import com.andrewsummers.otashu.model.Note;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -113,18 +114,27 @@ public class EmotionsDataSource {
     public List<Emotion> getAllEmotions() {
         List<Emotion> emotions = new ArrayList<Emotion>();
 
-        Cursor cursor = database.query(
-                OtashuDatabaseHelper.TABLE_EMOTIONS, allColumns, null,
-                null, null, null, null);
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EMOTIONS;
 
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Emotion emotion = cursorToEmotion(cursor);
-            emotions.add(emotion);
-            cursor.moveToNext();
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notes from database
+        Cursor cursor = db.rawQuery(query, null);
+
+        Emotion emotion = null;
+        if (cursor.moveToFirst()) {
+            do {
+                // create note objects based on note data from database
+                emotion = new Emotion();
+                emotion.setId(Integer.parseInt(cursor.getString(0)));
+                emotion.setName(cursor.getString(1));
+
+                // add note string to list of strings
+                emotions.add(emotion);
+            } while (cursor.moveToNext());
         }
 
-        cursor.close();
         return emotions;
     }
     
