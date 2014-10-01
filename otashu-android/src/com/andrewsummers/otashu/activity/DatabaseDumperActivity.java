@@ -13,7 +13,6 @@ import com.andrewsummers.otashu.model.Noteset;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.EditText;
 
 public class DatabaseDumperActivity extends Activity {

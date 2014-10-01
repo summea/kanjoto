@@ -36,6 +36,7 @@
         <activity android:name="com.andrewsummers.otashu.activity.EditEmotionActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.ViewEmotionDetailActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.DatabaseDumperActivity" />
+        <activity android:name="com.andrewsummers.otashu.activity.ApprenticeActivity" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

@@ -22,6 +22,7 @@ public class MainActivity extends Activity implements OnClickListener {
     private Button buttonChooseEmotion = null;
     private Button buttonViewAllNotesets = null;    
     private Button buttonViewAllEmotions = null;
+    private Button buttonApprentice = null;
     private Button buttonDatabaseDumper = null;
 
     /**
@@ -52,6 +53,9 @@ public class MainActivity extends Activity implements OnClickListener {
             buttonViewAllEmotions = (Button) findViewById(R.id.button_view_all_emotions);
             buttonViewAllEmotions.setOnClickListener(this);
             
+            buttonApprentice = (Button) findViewById(R.id.button_apprentice);
+            buttonApprentice.setOnClickListener(this);
+            
             buttonDatabaseDumper = (Button) findViewById(R.id.button_database_dumper);
             buttonDatabaseDumper.setOnClickListener(this);
             
@@ -81,6 +85,10 @@ public class MainActivity extends Activity implements OnClickListener {
             break;
         case R.id.button_view_all_emotions:
             intent = new Intent(this, ViewAllEmotionsActivity.class);
+            startActivity(intent);
+            break;
+        case R.id.button_apprentice:
+            intent = new Intent(this, ApprenticeActivity.class);
             startActivity(intent);
             break;
         case R.id.button_database_dumper:

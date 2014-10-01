@@ -1,10 +1,14 @@
 # otashu
 
 ## TODO:
-- add end-note-matching logic to "generate music" activity
+- add end-note-matching Logic A to "generate music" activity
+- generate random noteset in ApprenticeActivity
+- ask user if randomly-generated noteset sounds like a particular emotion
+- save randomly-generated noteset to database if "yes"
 
 
 ## DONE:
+- 20140930: work on Apprentice begins
 - 20140929: added emotion and noteset tables to Database Dumper
 - 20140928: added support for velocity spinner in EditNotesetActivity
 - 20140928: added support for length spinner in EditNotesetActivity
