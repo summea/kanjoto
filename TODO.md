@@ -2,12 +2,15 @@
 
 ## TODO:
 - add end-note-matching Logic A to "generate music" activity
-- generate random noteset in ApprenticeActivity
-- ask user if randomly-generated noteset sounds like a particular emotion
-- save randomly-generated noteset to database if "yes"
+- noteset playback feature on CreateNotesetActivity
+- noteset playback feature on EditNotesetActivity
+- noteset playback feature on ViewNotesetDetailActivity
 
 
 ## DONE:
+- 20141002: added generate random noteset in ApprenticeActivity
+- 20141002: added ask user if randomly-generated noteset sounds like a particular emotion
+- 20141002: added save randomly-generated noteset to database if "yes"
 - 20140930: work on Apprentice begins
 - 20140929: added emotion and noteset tables to Database Dumper
 - 20140928: added support for velocity spinner in EditNotesetActivity

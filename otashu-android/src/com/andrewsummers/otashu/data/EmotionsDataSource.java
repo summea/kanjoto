@@ -3,6 +3,7 @@ package com.andrewsummers.otashu.data;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import com.andrewsummers.otashu.model.Emotion;
 
@@ -282,6 +283,20 @@ public class EmotionsDataSource {
         
         db.update(OtashuDatabaseHelper.TABLE_EMOTIONS, contentValues, OtashuDatabaseHelper.COLUMN_ID + "=" + emotion.getId(), null);
 
+        return emotion;
+    }
+
+    public Emotion getRandomEmotion() {
+        Emotion emotion = new Emotion();
+        
+        // get all emotions first
+        List<Emotion> allEmotions = getAllEmotions();
+
+        // choose random emotion
+        int chosenIndex = new Random().nextInt(allEmotions.size());        
+
+        emotion = allEmotions.get(chosenIndex);
+        
         return emotion;
     }
 }

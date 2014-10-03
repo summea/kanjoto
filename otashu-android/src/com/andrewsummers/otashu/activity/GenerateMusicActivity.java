@@ -54,7 +54,7 @@ public class GenerateMusicActivity extends Activity {
             notes.addAll(getRandomNoteset(allNotesets));
         }
         
-        generateMusic(notes);
+        generateMusic(notes, musicSource);
         
         playMusic(musicSource);
         
@@ -106,7 +106,7 @@ public class GenerateMusicActivity extends Activity {
         return notes;
     }
     
-    public void generateMusic(List<Note> notes) {
+    public void generateMusic(List<Note> notes, File musicSource) {
         MidiTrack tempoTrack = new MidiTrack();
         MidiTrack noteTrack = new MidiTrack();
         
