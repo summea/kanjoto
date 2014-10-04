@@ -49,13 +49,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/button_apprentice"
                 android:padding="20dp" />
-                
-            <Button
-                android:id="@+id/button_database_dumper"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/button_database_dumper"
-                android:padding="20dp" />
             
             </LinearLayout>
         </ScrollView>

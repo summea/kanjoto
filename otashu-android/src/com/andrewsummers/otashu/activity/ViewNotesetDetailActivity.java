@@ -1,8 +1,11 @@
 package com.andrewsummers.otashu.activity;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
@@ -12,16 +15,30 @@ import com.andrewsummers.otashu.model.Note;
 import com.andrewsummers.otashu.model.Noteset;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
 
 /**
  * View details of a particular noteset.
  */
-public class ViewNotesetDetailActivity extends Activity {
+public class ViewNotesetDetailActivity extends Activity implements OnClickListener {
     
+    private int key = 0;
     private int notesetId = 0;
+    private HashMap<Integer, List<Note>> notesetBundle = new HashMap<Integer, List<Note>>();
+    private Button buttonPlayNoteset = null;
+    private File path = Environment.getExternalStorageDirectory();
+    private String externalDirectory = path.toString() + "/otashu/";
+    private File musicSource = new File(externalDirectory + "otashu_preview.mid");
+    private MediaPlayer mediaPlayer = new MediaPlayer();
     
     /**
      * onCreate override used to get details view.
@@ -58,8 +75,7 @@ public class ViewNotesetDetailActivity extends Activity {
         
         Log.d("MYLOG", "found noteset data: " + allNotesets[notesetId]);
         
-        // get noteset and notes information
-        HashMap<Integer, List<Note>> notesetBundle = new HashMap<Integer, List<Note>>();
+        // get noteset and notes information        
         notesetBundle = ds.getNotesetBundle(allNotesets[notesetId]);
         
         Log.d("MYLOG", "noteset bundle: " + notesetBundle);
@@ -79,7 +95,7 @@ public class ViewNotesetDetailActivity extends Activity {
         String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
         
         // conversion issues...
-        int key = (int) (long) allNotesets[notesetId];
+        key = (int) (long) allNotesets[notesetId];
         
         TextView notesetName = (TextView) findViewById(R.id.noteset_detail_name_value);
         notesetName.setText(noteset.getName());
@@ -108,6 +124,64 @@ public class ViewNotesetDetailActivity extends Activity {
                 }
             }
         }
-   
+        
+        try {
+            // add listeners to buttons
+            // have to cast to Button in this case    
+            buttonPlayNoteset = (Button) findViewById(R.id.button_play_noteset);
+            buttonPlayNoteset.setOnClickListener(this);
+        } catch (Exception e) {
+            Log.d("MYLOG", e.getStackTrace().toString());
+        }
+    }
+    
+    /**
+     * onClick override that acts as a router to start desired activities.
+     * 
+     * @param view
+     *            Incoming view.
+     */
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+        case R.id.button_play_noteset:
+            
+            List<Note> notes = new ArrayList<Note>();
+            
+            for (int i = 0; i < notesetBundle.get(key).size(); i++) {
+                Note note = new Note();
+                note = notesetBundle.get(key).get(i);
+                notes.add(note);
+            }
+            
+            GenerateMusicActivity generateMusic = new GenerateMusicActivity();
+            generateMusic.generateMusic(notes, musicSource);
+
+            // play generated notes for user
+            playMusic(musicSource);
+            
+            break;
+        }
+    }
+    
+    public void playMusic(File musicSource) {
+        // get media player ready
+        mediaPlayer = MediaPlayer.create(this, Uri.fromFile(musicSource));
+        
+        // play music
+        mediaPlayer.start();
+    }
+    
+    /**
+     * onBackPressed override used to stop playing music when done with activity
+     */
+    @Override
+    public void onBackPressed() {
+        Log.d("MYLOG", "stop playing music!");
+        
+        // stop playing music
+        mediaPlayer.stop();
+        
+        super.onBackPressed();
     }
 }

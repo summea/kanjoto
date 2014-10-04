@@ -4,10 +4,14 @@
 - add end-note-matching Logic A to "generate music" activity
 - noteset playback feature on CreateNotesetActivity
 - noteset playback feature on EditNotesetActivity
-- noteset playback feature on ViewNotesetDetailActivity
+- think about doing something with "no" response from user in ApprenticeActivity
+- change main menu buttons to a GridView format
 
 
 ## DONE:
+- 20141003: added noteset playback feature on ViewNotesetDetailActivity
+- 20141003: added "play again" button for ApprenticeActivity
+- 20141003: fixed get another noteset after "yes" response from user in ApprenticeActivity
 - 20141002: added generate random noteset in ApprenticeActivity
 - 20141002: added ask user if randomly-generated noteset sounds like a particular emotion
 - 20141002: added save randomly-generated noteset to database if "yes"

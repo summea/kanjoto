@@ -59,7 +59,10 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
             buttonNo.setOnClickListener(this);
 
             Button buttonYes = (Button) findViewById(R.id.button_no);
-            buttonYes.setOnClickListener(this);        
+            buttonYes.setOnClickListener(this);
+            
+            Button buttonPlayNoteset = (Button) findViewById(R.id.button_play_noteset);
+            buttonPlayNoteset.setOnClickListener(this);
         } catch (Exception e) {
             Log.d("MYLOG", e.getStackTrace().toString());
         }
@@ -111,6 +114,8 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
         case R.id.button_no:
+            // TODO: do something with "no" response (learning)
+            
             // try another noteset
             apprenticeAskProcess();
             break;
@@ -126,7 +131,13 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                 
                 saveNote(v, notesToInsert.get(i));
             }
-
+            
+            // try another noteset
+            apprenticeAskProcess();
+            break;
+        case R.id.button_play_noteset:
+            // play generated notes for user
+            playMusic(musicSource);
             break;
         }
     }
@@ -187,5 +198,18 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                 context.getResources().getString(R.string.noteset_saved),
                 duration);
         toast.show();
+    }
+    
+    /**
+     * onBackPressed override used to stop playing music when done with activity
+     */
+    @Override
+    public void onBackPressed() {
+        Log.d("MYLOG", "stop playing music!");
+        
+        // stop playing music
+        mediaPlayer.stop();
+        
+        super.onBackPressed();
     }
 }

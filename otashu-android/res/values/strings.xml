@@ -8,12 +8,12 @@
     <string name="button_cancel">Cancel</string>
     <string name="button_choose_emotion">Choose Emotion</string>
     <string name="button_create_emotion">New Emotion</string>
-    <string name="button_create_noteset">New Noteset</string>
-    <string name="button_database_dumper">Database Dumper</string>
+    <string name="button_create_noteset">New Noteset</string>    
     <string name="button_get_remote_noteset">get remote noteset</string>
     <string name="button_go">Go</string>
     <string name="button_no">No</string>
     <string name="button_ok">OK</string>
+    <string name="button_play_noteset">Play</string>
     <string name="button_view_all_emotions">View All Emotions</string>
     <string name="button_view_all_notesets">View All Notesets</string>
     <string name="button_view_sequence">view sequence</string>
@@ -22,6 +22,7 @@
     <string name="button_yes">Yes</string>
     
     <string name="choose_emotion_title">Choose Emotion</string>
+        
     <string name="dialog_confirm_delete_message">Are you sure you want to delete this?</string>
     <string name="dialog_confirm_delete_title">Delete</string>
     <string name="context_menu_edit">Edit</string>
@@ -41,6 +42,7 @@
     
     <string name="menu_button_create_emotion">New</string>
     <string name="menu_button_create_noteset">New</string>
+    <string name="menu_button_database_dumper">Database Dumper</string>
     <string name="menu_button_export_database">Export Database</string>
     <string name="menu_button_import_database">Import Database</string>
     <string name="menu_button_settings">Settings</string>
