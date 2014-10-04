@@ -1,5 +1,6 @@
 package com.andrewsummers.otashu.activity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -15,7 +16,10 @@ import com.andrewsummers.otashu.model.Noteset;
 
 import android.app.Activity;
 import android.content.Context;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,6 +40,11 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
     private NotesDataSource notesDataSource;
     private Noteset editNoteset;
     private List<Note> editNotes = new LinkedList<Note>();
+    private Button buttonPlayNoteset = null;
+    private File path = Environment.getExternalStorageDirectory();
+    private String externalDirectory = path.toString() + "/otashu/";
+    private File musicSource = new File(externalDirectory + "otashu_preview.mid");
+    private MediaPlayer mediaPlayer = new MediaPlayer();
 
     /**
      * onCreate override that provides noteset creation view to user .
@@ -201,6 +210,15 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
             spinner.setAdapter(adapter);
             spinner.setSelection(adapter.getPosition(String.valueOf(note.getLength())));  // get current length value for spinner default
         }
+        
+        try {
+            // add listeners to buttons
+            // have to cast to Button in this case    
+            buttonPlayNoteset = (Button) findViewById(R.id.button_play_noteset);
+            buttonPlayNoteset.setOnClickListener(this);
+        } catch (Exception e) {
+            Log.d("MYLOG", e.getStackTrace().toString());
+        }
     }
 
     /**
@@ -211,6 +229,32 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
      */
     @Override
     public void onClick(View v) {
+        
+        String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
+        String[] velocityValuesArray = getResources().getStringArray(R.array.velocity_values_array);
+        String[] lengthValuesArray = getResources().getStringArray(R.array.length_values_array);
+        
+        int[] spinnerIds = {
+                R.id.spinner_note1,
+                R.id.spinner_note2,
+                R.id.spinner_note3,
+                R.id.spinner_note4
+        };
+        
+        int[] velocitySpinnerIds = {
+                R.id.spinner_note1_velocity,
+                R.id.spinner_note2_velocity,
+                R.id.spinner_note3_velocity,
+                R.id.spinner_note4_velocity
+        };
+        
+        int[] lengthSpinnerIds = {
+                R.id.spinner_note1_length,
+                R.id.spinner_note2_length,
+                R.id.spinner_note3_length,
+                R.id.spinner_note4_length
+        };
+        
         switch (v.getId()) {
         case R.id.button_save:
             // gather noteset data from form
@@ -245,31 +289,6 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
             // first insert new noteset (parent of all related notes)
             saveNotesetUpdates(v, notesetToInsert);
             
-            String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
-            String[] velocityValuesArray = getResources().getStringArray(R.array.velocity_values_array);
-            String[] lengthValuesArray = getResources().getStringArray(R.array.length_values_array);
-            
-            int[] spinnerIds = {
-                    R.id.spinner_note1,
-                    R.id.spinner_note2,
-                    R.id.spinner_note3,
-                    R.id.spinner_note4
-            };
-            
-            int[] velocitySpinnerIds = {
-                    R.id.spinner_note1_velocity,
-                    R.id.spinner_note2_velocity,
-                    R.id.spinner_note3_velocity,
-                    R.id.spinner_note4_velocity
-            };
-            
-            int[] lengthSpinnerIds = {
-                    R.id.spinner_note1_length,
-                    R.id.spinner_note2_length,
-                    R.id.spinner_note3_length,
-                    R.id.spinner_note4_length
-            };
-            
             for (int i = 0; i < spinnerIds.length; i++) {
                 spinner = (Spinner) findViewById(spinnerIds[i]);
                 Spinner velocitySpinner = (Spinner) findViewById(velocitySpinnerIds[i]);
@@ -285,6 +304,30 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
             }
             
             finish();
+            break;
+            
+        case R.id.button_play_noteset:
+            List<Note> notes = new ArrayList<Note>();
+            
+            for (int i = 0; i < spinnerIds.length; i++) {
+                spinner = (Spinner) findViewById(spinnerIds[i]);
+                Spinner velocitySpinner = (Spinner) findViewById(velocitySpinnerIds[i]);
+                Spinner lengthSpinner = (Spinner) findViewById(lengthSpinnerIds[i]);
+                
+                Note note = editNotes.get(i);
+                note.setNotevalue(Integer.parseInt(noteValuesArray[spinner.getSelectedItemPosition()]));
+                note.setVelocity(Integer.parseInt(velocityValuesArray[velocitySpinner.getSelectedItemPosition()]));
+                note.setLength(Float.parseFloat(lengthValuesArray[lengthSpinner.getSelectedItemPosition()]));
+                
+                notes.add(note);
+            }
+            
+            GenerateMusicActivity generateMusic = new GenerateMusicActivity();
+            generateMusic.generateMusic(notes, musicSource);
+
+            // play generated notes for user
+            playMusic(musicSource);
+            
             break;
         }
     }
@@ -348,5 +391,26 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
                 context.getResources().getString(R.string.noteset_saved),
                 duration);
         toast.show();
+    }
+    
+    public void playMusic(File musicSource) {
+        // get media player ready
+        mediaPlayer = MediaPlayer.create(this, Uri.fromFile(musicSource));
+        
+        // play music
+        mediaPlayer.start();
+    }
+    
+    /**
+     * onBackPressed override used to stop playing music when done with activity
+     */
+    @Override
+    public void onBackPressed() {
+        Log.d("MYLOG", "stop playing music!");
+        
+        // stop playing music
+        mediaPlayer.stop();
+        
+        super.onBackPressed();
     }
 }

@@ -162,9 +162,17 @@
     </LinearLayout>
     
     <Button
+        android:id="@+id/button_play_noteset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_play_noteset"
+        android:padding="20dp" />
+    
+    <Button
         android:id="@+id/button_save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/button_save" />
+        android:text="@string/button_save"
+        android:padding="20dp" />
 
 </LinearLayout>
