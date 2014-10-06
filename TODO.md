@@ -3,10 +3,11 @@
 ## TODO:
 - add end-note-matching Logic A to "generate music" activity
 - think about doing something with "no" response from user in ApprenticeActivity
-- change main menu buttons to a GridView format
+- create icons for main menu buttons
 
 
 ## DONE:
+- 20141005: fixed change main menu buttons to a GridView format
 - 20141004: added noteset playback feature on CreateNotesetActivity
 - 20141004: added noteset playback feature on EditNotesetActivity
 - 20141003: added noteset playback feature on ViewNotesetDetailActivity

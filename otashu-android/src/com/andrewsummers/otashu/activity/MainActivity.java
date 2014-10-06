@@ -1,5 +1,6 @@
 package com.andrewsummers.otashu.activity;
 
+import com.andrewsummers.otashu.ImageAdapter;
 import com.andrewsummers.otashu.R;
 
 import android.app.Activity;
@@ -12,17 +13,21 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.GridView;
+import android.widget.Toast;
 
 /**
  * MainActivity currently acts as a general menu in order to demo various
  * functionality available in this application.
  */
 public class MainActivity extends Activity implements OnClickListener {
-    private Button buttonChooseEmotion = null;
-    private Button buttonViewAllNotesets = null;    
-    private Button buttonViewAllEmotions = null;
-    private Button buttonApprentice = null;
+    //private Button buttonChooseEmotion = null;
+    //private Button buttonViewAllNotesets = null;    
+    //private Button buttonViewAllEmotions = null;
+    //private Button buttonApprentice = null;
 
     /**
      * onCreate override that provides menu buttons on menu view.
@@ -40,6 +45,7 @@ public class MainActivity extends Activity implements OnClickListener {
         // get specific layout for content view
         setContentView(R.layout.activity_main);
 
+        /*
         try {
             // add listeners to buttons
             // have to cast to Button in this case    
@@ -56,7 +62,16 @@ public class MainActivity extends Activity implements OnClickListener {
             buttonApprentice.setOnClickListener(this);
         } catch (Exception e) {
             Log.d("MYLOG", e.getStackTrace().toString());
-        }
+        }*/
+        
+        GridView gridview = (GridView) findViewById(R.id.gridview);
+        gridview.setAdapter(new ImageAdapter(this));
+        
+        gridview.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                Toast.makeText(MainActivity.this, "" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /**
@@ -69,6 +84,7 @@ public class MainActivity extends Activity implements OnClickListener {
     public void onClick(View v) {
         Intent intent = null;
 
+        /*
         switch (v.getId()) {
         case R.id.button_view_all_notesets:
             intent = new Intent(this, ViewAllNotesetsActivity.class);
@@ -87,6 +103,7 @@ public class MainActivity extends Activity implements OnClickListener {
             startActivity(intent);
             break;
         }
+        */
     }
     
     @Override
