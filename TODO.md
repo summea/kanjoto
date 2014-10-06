@@ -3,7 +3,8 @@
 ## TODO:
 - add end-note-matching Logic A to "generate music" activity
 - think about doing something with "no" response from user in ApprenticeActivity
-- create icons for main menu buttons
+- connect main menu grid buttons to activities
+- create icons for main menu grid buttons
 
 
 ## DONE:
