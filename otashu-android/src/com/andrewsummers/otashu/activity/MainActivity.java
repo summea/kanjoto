@@ -24,10 +24,6 @@ import android.widget.Toast;
  * functionality available in this application.
  */
 public class MainActivity extends Activity implements OnClickListener {
-    //private Button buttonChooseEmotion = null;
-    //private Button buttonViewAllNotesets = null;    
-    //private Button buttonViewAllEmotions = null;
-    //private Button buttonApprentice = null;
 
     /**
      * onCreate override that provides menu buttons on menu view.
@@ -44,32 +40,32 @@ public class MainActivity extends Activity implements OnClickListener {
         
         // get specific layout for content view
         setContentView(R.layout.activity_main);
-
-        /*
-        try {
-            // add listeners to buttons
-            // have to cast to Button in this case    
-            buttonViewAllNotesets = (Button) findViewById(R.id.button_view_all_notesets);
-            buttonViewAllNotesets.setOnClickListener(this);
-    
-            buttonChooseEmotion = (Button) findViewById(R.id.button_choose_emotion);
-            buttonChooseEmotion.setOnClickListener(this);
-            
-            buttonViewAllEmotions = (Button) findViewById(R.id.button_view_all_emotions);
-            buttonViewAllEmotions.setOnClickListener(this);
-            
-            buttonApprentice = (Button) findViewById(R.id.button_apprentice);
-            buttonApprentice.setOnClickListener(this);
-        } catch (Exception e) {
-            Log.d("MYLOG", e.getStackTrace().toString());
-        }*/
         
         GridView gridview = (GridView) findViewById(R.id.gridview);
         gridview.setAdapter(new ImageAdapter(this));
         
         gridview.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Toast.makeText(MainActivity.this, "" + position, Toast.LENGTH_SHORT).show();
+                Intent intent = null;
+                
+                switch (position) {
+                case 0:
+                    intent = new Intent(MainActivity.this, ViewAllNotesetsActivity.class);
+                    startActivity(intent);
+                    break;
+                case 1:
+                    intent = new Intent(MainActivity.this, ChooseEmotionActivity.class);
+                    startActivity(intent);
+                    break;
+                case 2:
+                    intent = new Intent(MainActivity.this, ViewAllEmotionsActivity.class);
+                    startActivity(intent);
+                    break;
+                case 3:
+                    intent = new Intent(MainActivity.this, ApprenticeActivity.class);
+                    startActivity(intent);
+                    break;
+                }                
             }
         });
     }
@@ -81,29 +77,7 @@ public class MainActivity extends Activity implements OnClickListener {
      *            Incoming view.
      */
     @Override
-    public void onClick(View v) {
-        Intent intent = null;
-
-        /*
-        switch (v.getId()) {
-        case R.id.button_view_all_notesets:
-            intent = new Intent(this, ViewAllNotesetsActivity.class);
-            startActivity(intent);
-            break;
-        case R.id.button_choose_emotion:
-            intent = new Intent(this, ChooseEmotionActivity.class);
-            startActivity(intent);
-            break;
-        case R.id.button_view_all_emotions:
-            intent = new Intent(this, ViewAllEmotionsActivity.class);
-            startActivity(intent);
-            break;
-        case R.id.button_apprentice:
-            intent = new Intent(this, ApprenticeActivity.class);
-            startActivity(intent);
-            break;
-        }
-        */
+    public void onClick(View v) {        
     }
     
     @Override
