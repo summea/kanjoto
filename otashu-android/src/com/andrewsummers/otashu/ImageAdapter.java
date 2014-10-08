@@ -51,9 +51,9 @@ public class ImageAdapter extends BaseAdapter {
 
     // references to our images
     private Integer[] mThumbIds = {
-            R.drawable.greybox,
-            R.drawable.greybox,
-            R.drawable.greybox,
-            R.drawable.greybox
+            R.drawable.notesets_list,
+            R.drawable.generate,
+            R.drawable.emotions,
+            R.drawable.apprentice
     };
 }
