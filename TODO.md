@@ -6,6 +6,7 @@
 
 
 ## DONE:
+- 20141008: fixed main activity landscape issue (when switching from portrait to landscape)
 - 20141007: created icons for main menu grid buttons
 - 20141006: fixed connect main menu grid buttons to activities
 - 20141005: fixed change main menu buttons to a GridView format

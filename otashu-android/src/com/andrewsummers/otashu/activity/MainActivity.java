@@ -51,21 +51,19 @@ public class MainActivity extends Activity implements OnClickListener {
                 switch (position) {
                 case 0:
                     intent = new Intent(MainActivity.this, ViewAllNotesetsActivity.class);
-                    startActivity(intent);
                     break;
                 case 1:
                     intent = new Intent(MainActivity.this, ChooseEmotionActivity.class);
-                    startActivity(intent);
                     break;
                 case 2:
                     intent = new Intent(MainActivity.this, ViewAllEmotionsActivity.class);
-                    startActivity(intent);
                     break;
                 case 3:
                     intent = new Intent(MainActivity.this, ApprenticeActivity.class);
-                    startActivity(intent);
                     break;
-                }                
+                }
+                
+                startActivity(intent);
             }
         });
     }
