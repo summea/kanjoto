@@ -1,11 +1,13 @@
 # otashu
 
 ## TODO:
-- add end-note-matching Logic A to "generate music" activity
 - think about doing something with "no" response from user in ApprenticeActivity
+- update main activity layout test
+- look into using graphics for note playback visualization
 
 
 ## DONE:
+- 20141010: added end-note-matching Logic A to "generate music" activity
 - 20141008: fixed main activity landscape issue (when switching from portrait to landscape)
 - 20141007: created icons for main menu grid buttons
 - 20141006: fixed connect main menu grid buttons to activities
