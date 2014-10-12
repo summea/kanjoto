@@ -7,6 +7,8 @@
 
 
 ## DONE:
+- 20141011: fixed prevent screen orientation change for generate music playback
+- 20141011: added more detail to Logic A
 - 20141010: added end-note-matching Logic A to "generate music" activity
 - 20141008: fixed main activity landscape issue (when switching from portrait to landscape)
 - 20141007: created icons for main menu grid buttons

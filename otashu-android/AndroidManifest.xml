@@ -24,7 +24,9 @@
         <activity android:name="com.andrewsummers.otashu.activity.ViewAllNotesetsActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.ViewNotesetDetailActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.ChooseEmotionActivity" />
-        <activity android:name="com.andrewsummers.otashu.activity.GenerateMusicActivity" />
+        <activity
+            android:name="com.andrewsummers.otashu.activity.GenerateMusicActivity"
+            android:screenOrientation="portrait" />
         <activity android:name="com.andrewsummers.otashu.activity.ViewNotesetSequenceActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.GetRemoteNotesetActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.SettingsActivity" />

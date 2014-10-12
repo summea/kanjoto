@@ -25,6 +25,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.util.SparseArray;
 import android.widget.TextView;
 
 public class GenerateMusicActivity extends Activity {
@@ -34,12 +35,12 @@ public class GenerateMusicActivity extends Activity {
     File musicSource = new File(externalDirectory + "otashu.mid");
     MediaPlayer mediaPlayer = new MediaPlayer();
     
-    private HashMap<Integer, List<Integer>> musicalKeys = new HashMap<Integer, List<Integer>>(); 
+    private SparseArray<List<Integer>> musicalKeys = new SparseArray<List<Integer>>(); 
     
-    private static HashMap<Integer, String> noteMap;
+    private static SparseArray<String> noteMap;
     static
     {
-        noteMap = new HashMap<Integer, String>();
+        noteMap = new SparseArray<String>();
         noteMap.put(60, "C4");
         noteMap.put(61, "C#4");
         noteMap.put(62, "D4");
@@ -68,13 +69,79 @@ public class GenerateMusicActivity extends Activity {
         // get specific layout for content view
         setContentView(R.layout.activity_generate_music);
         
-        musicalKeys.put(60, new ArrayList<Integer>() {{ add(60); add(64); add(67); }});  // C4, E4, G4
-        musicalKeys.put(62, new ArrayList<Integer>() {{ add(62); add(66); add(69); }});  // D4, F#4, A4
-        musicalKeys.put(64, new ArrayList<Integer>() {{ add(64); add(68); add(71); }});  // E4, G#4, B4
-        musicalKeys.put(65, new ArrayList<Integer>() {{ add(65); add(69); add(60); }});  // F4, A4, C4
-        musicalKeys.put(67, new ArrayList<Integer>() {{ add(67); add(71); add(62); }});  // G4, B4, D4
-        musicalKeys.put(69, new ArrayList<Integer>() {{ add(69); add(61); add(64); }});  // A4, C#4, E4
-        musicalKeys.put(71, new ArrayList<Integer>() {{ add(71); add(63); add(66); }});  // B4, D#4, F#4 
+        // TODO: double-check this section later
+        
+        // C4, E4, G4
+        musicalKeys.put(60, new ArrayList<Integer>() {
+            private static final long serialVersionUID = 1L;
+            { add(60); add(64); add(67); }
+        });
+        
+        // C#4, F4, G#4
+        musicalKeys.put(61, new ArrayList<Integer>() {
+            private static final long serialVersionUID = 1L;
+            { add(61); add(65); add(67); }
+        });
+        
+        // D4, F#4, A4
+        musicalKeys.put(62, new ArrayList<Integer>() {
+            private static final long serialVersionUID = 1L;
+            { add(62); add(66); add(69); }
+        });
+
+        // D#4, G4, A#4
+        musicalKeys.put(63, new ArrayList<Integer>() {
+            private static final long serialVersionUID = 1L;
+            { add(63); add(67); add(70); }
+        });
+        
+        // E4, G#4, B4
+        musicalKeys.put(64, new ArrayList<Integer>() {
+            private static final long serialVersionUID = 1L;
+            { add(64); add(68); add(71); }
+        });
+        
+        // F4, A4, C4
+        musicalKeys.put(65, new ArrayList<Integer>() {
+            private static final long serialVersionUID = 1L;
+            { add(65); add(69); add(60); }
+        });
+        
+        // F#4, A#4, C#4
+        musicalKeys.put(66, new ArrayList<Integer>() {
+            private static final long serialVersionUID = 1L;
+            { add(66); add(70); add(61); }
+        });
+        
+        // G4, B4, D4
+        musicalKeys.put(67, new ArrayList<Integer>() {
+            private static final long serialVersionUID = 1L;
+            { add(67); add(71); add(62); }
+        });
+        
+        // G#4, C4, D#4
+        musicalKeys.put(68, new ArrayList<Integer>() {
+            private static final long serialVersionUID = 1L;
+            { add(68); add(60); add(63); }
+        });
+        
+        // A4, C#4, E4
+        musicalKeys.put(69, new ArrayList<Integer>() {
+            private static final long serialVersionUID = 1L;
+            { add(69); add(61); add(64); }
+        });
+        
+        // A#4, D4, F4
+        musicalKeys.put(70, new ArrayList<Integer>() {
+            private static final long serialVersionUID = 1L;
+            { add(70); add(62); add(65); }
+        });
+        
+        // B4, D#4, F#4
+        musicalKeys.put(71, new ArrayList<Integer>() {
+            private static final long serialVersionUID = 1L;
+            { add(71); add(63); add(66); }
+        }); 
         
         HashMap<Integer, List<Note>> allNotesets = gatherRelatedEmotions();
         
@@ -90,8 +157,12 @@ public class GenerateMusicActivity extends Activity {
         */
         
         String notesText = "";
+        int lineBreak = 1;
         for (Note note : notes) {
             notesText += noteMap.get(note.getNotevalue()) + ", ";
+            if (lineBreak % 4 == 0)
+                notesText += "\n";
+            lineBreak++;
         }
         
         TextView playbackText = (TextView) findViewById(R.id.generate_music_placeholder);
@@ -120,13 +191,13 @@ public class GenerateMusicActivity extends Activity {
         // get selected emotion_id from spinner
         Bundle bundle = getIntent().getExtras();
         int selectedEmotionValue = bundle.getInt("emotion_id");
-        Log.d("MYLOG", "emotion_id: " + selectedEmotionValue);
+        //Log.d("MYLOG", "emotion_id: " + selectedEmotionValue);
         
         NotesetsDataSource ds = new NotesetsDataSource(this);
         
         allNotesetBundles = ds.getAllNotesetBundles(selectedEmotionValue);
         
-        Log.d("MYLOG", allNotesetBundles.toString());
+        //Log.d("MYLOG", allNotesetBundles.toString());
         
         // prevent crashes due to lack of database data
         if (allNotesetBundles.isEmpty())
@@ -144,7 +215,7 @@ public class GenerateMusicActivity extends Activity {
         Integer randomKey = keys.get(random.nextInt(keys.size()));
         notes = notesets.get(randomKey);
         
-        Log.d("MYLOG", notes.toString());
+        //Log.d("MYLOG", notes.toString());
         
         return notes;
     }
@@ -214,33 +285,66 @@ public class GenerateMusicActivity extends Activity {
     private List<Note> logicA(HashMap<Integer, List<Note>> allNotesets) {
         List<Note> notes = new ArrayList<Note>();
 
-        List<Integer> lookingForNotesInKey = new ArrayList();
+        List<Integer> lookingForNotesInKey = new ArrayList<Integer>();
+        Note lastNote = new Note();
+        lastNote.setNotevalue(0);
+        
+        Random random = new Random();
+        List<Integer> keys = new ArrayList<Integer>(allNotesets.keySet());
+        Integer randomKey = keys.get(random.nextInt(keys.size()));
         
         // loop through all found emotion-related notesets
         for (int i = 0; i < 8; i++) {
+        
+            List<Note> nsets = new ArrayList<Note>();
             
+            Log.d("MYLOG", "> last note: " + lastNote.getNotevalue());
+            
+            if (lastNote.getNotevalue() == 0) {
             // get random noteset (and try to find one that matches the new musical key search focus)
-            Random random = new Random();
-            List<Integer> keys = new ArrayList<Integer>(allNotesets.keySet());
-            Integer randomKey = keys.get(random.nextInt(keys.size()));
+            random = new Random();
+            keys = new ArrayList<Integer>(allNotesets.keySet());
+            randomKey = keys.get(random.nextInt(keys.size()));
             
             // get individual noteset
-            List<Note> nsets = allNotesets.get(randomKey);
-            
-            // loop through all available musical keys
-            for (Integer musicalKey : musicalKeys.keySet()) {
-                
-                // check if last note in current noteset sequence matches first note in a musical key list
-                if (nsets.get(3).getNotevalue() == musicalKey) {
-                    //a match gives us criteria for finding another, similar noteset to append for playback
-                    Log.d("MYLOG", "found matching musical key!");
-                    
-                    lookingForNotesInKey = musicalKeys.get(musicalKey);
-                    
-                    break;
+            nsets = allNotesets.get(randomKey);
+            } else {
+                if (allNotesets.get(lastNote) != null) {
+                    nsets = allNotesets.get(lastNote);
+                } else {
+                    nsets = allNotesets.get(60);
                 }
             }
             
+            // loop through all available musical keys
+            //for (Integer musicalKey : musicalKeys.keySet()) {
+            //for (int musicalKeyIndex = 0; musicalKeyIndex < musicalKeys.size(); musicalKeyIndex++) {
+                
+                try {
+                // check if last note in current noteset sequence matches first note in a musical key list
+                //if (nsets.get(3).getNotevalue() == musicalKeys.keyAt(musicalKeyIndex)) {
+                    //a match gives us criteria for finding another, similar noteset to append for playback
+                    Log.d("MYLOG", "found matching musical key for end note: " + nsets.get(3).getNotevalue());
+                    
+                    //lookingForNotesInKey = musicalKeys.get(nsets.get(3).getNotevalue());
+                    if (musicalKeys.get(nsets.get(3).getNotevalue()) != null) {
+                        lookingForNotesInKey = musicalKeys.get(nsets.get(3).getNotevalue());
+                    } else {
+                        lookingForNotesInKey = musicalKeys.get(60);
+                    }
+                } catch (Exception e) {
+                    //Log.d("MYLOG", e.getStackTrace().toString());
+                }
+                //finally {
+                //    if (lookingForNotesInKey == null)
+                //        lookingForNotesInKey = musicalKeys.get(60);
+                //}
+                
+                //Log.d("MYLOG", "looking for notes in key: " + lookingForNotesInKey.toString());
+                //}
+            //}
+        
+                
             for (int j = 0; j < 50; j++) {
                 random = new Random();
                 keys = new ArrayList<Integer>(allNotesets.keySet());
@@ -249,7 +353,8 @@ public class GenerateMusicActivity extends Activity {
                 List<Note> noteset = allNotesets.get(randomKey);
                 
                 if (lookingForNotesInKey.contains(noteset.get(0).getNotevalue())) {
-                    Log.d("MYLOG", "found a noteset to add to final result!");
+                    //Log.d("MYLOG", "found a noteset to add to final result!");
+                    Log.d("MYLOG", "looking for notes in key: " + lookingForNotesInKey.toString() + " -- note 0: " + noteset.get(0).getNotevalue());
                     
                     for (int k = 0; k < 4; k++) {
                         try {
@@ -258,12 +363,13 @@ public class GenerateMusicActivity extends Activity {
                             Log.d("MYLOG", e.getStackTrace().toString());
                         }
                     }
+                    lastNote = noteset.get(3);
                     break;
                 }
                 
             }
             
-            Log.d("MYLOG", Integer.valueOf(nsets.get(0).getNotevalue()).toString());
+            //Log.d("MYLOG", Integer.valueOf(nsets.get(0).getNotevalue()).toString());
         }
         
         return notes;
