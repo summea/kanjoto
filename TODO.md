@@ -4,6 +4,7 @@
 - think about doing something with "no" response from user in ApprenticeActivity
 - update main activity layout test
 - look into using graphics for note playback visualization
+- implement second stage of Apprentice logic ("no" response -> update Apprentice knowledge)
 
 
 ## DONE:
