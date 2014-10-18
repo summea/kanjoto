@@ -1,25 +1,39 @@
 package com.andrewsummers.otashu.test;
 
-import android.test.ActivityInstrumentationTestCase2;
-
+import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.activity.MainActivity;
 
-public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity>{
+import android.content.Intent;
+import android.test.ActivityUnitTestCase;
+import android.test.suitebuilder.annotation.MediumTest;
+import android.util.Log;
+import android.widget.GridView;
 
-    private MainActivity activity;
-    
+public class MainActivityTest extends ActivityUnitTestCase<MainActivity> {
+
+    private Intent mLaunchIntent;
+
     public MainActivityTest() {
         super(MainActivity.class);
     }
-    
+
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        activity = getActivity();
+        mLaunchIntent = new Intent(getInstrumentation().getTargetContext(), MainActivity.class);
     }
     
-    public void testLayout() {
-        assertNotNull("View All Button Exists", activity.findViewById(com.andrewsummers.otashu.R.id.button_view_all_notesets));
-        assertNotNull("Settings Button Exists", activity.findViewById(com.andrewsummers.otashu.R.id.button_settings));
+    @MediumTest
+    public void testLaunch() {
+        startActivity(mLaunchIntent, null, null);
+        final GridView gridview = (GridView) getActivity().findViewById(R.id.gridview);
+        
+        int gridItemTotal = gridview.getAdapter().getCount();
+        Log.d("MYLOG", "" + gridItemTotal);
+        
+        gridview.performItemClick(gridview, 0, 0);
+        
+        final Intent launchIntent = getStartedActivityIntent();
+        assertNotNull("Intent was null", launchIntent);
     }
 }

@@ -1,12 +1,12 @@
 # otashu
 
 ## TODO:
-- update main activity layout test
 - look into using graphics for note playback visualization
 - implement second stage of Apprentice logic ("no" response -> update Apprentice knowledge)
 
 
 ## DONE:
+- 20141017: fixed main activity layout test (added ViewAllNotesetsActivity test) 
 - 20141015: added plans for doing something with "no" response from user in ApprenticeActivity
 - 20141011: fixed prevent screen orientation change for generate music playback
 - 20141011: added more detail to Logic A
