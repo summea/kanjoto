@@ -24,7 +24,7 @@ public class MainActivityTest extends ActivityUnitTestCase<MainActivity> {
     }
     
     @MediumTest
-    public void testLaunch() {
+    public void testLaunchViewAllNotesetsActivity() {
         startActivity(mLaunchIntent, null, null);
         final GridView gridview = (GridView) getActivity().findViewById(R.id.gridview);
         
@@ -32,6 +32,20 @@ public class MainActivityTest extends ActivityUnitTestCase<MainActivity> {
         Log.d("MYLOG", "" + gridItemTotal);
         
         gridview.performItemClick(gridview, 0, 0);
+        
+        final Intent launchIntent = getStartedActivityIntent();
+        assertNotNull("Intent was null", launchIntent);
+    }
+    
+    @MediumTest
+    public void testLaunchGenerateMusicActivity() {
+        startActivity(mLaunchIntent, null, null);
+        final GridView gridview = (GridView) getActivity().findViewById(R.id.gridview);
+        
+        int gridItemTotal = gridview.getAdapter().getCount();
+        Log.d("MYLOG", "" + gridItemTotal);
+        
+        gridview.performItemClick(gridview, 1, 0);
         
         final Intent launchIntent = getStartedActivityIntent();
         assertNotNull("Intent was null", launchIntent);
