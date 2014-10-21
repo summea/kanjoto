@@ -64,4 +64,18 @@ public class MainActivityTest extends ActivityUnitTestCase<MainActivity> {
         final Intent launchIntent = getStartedActivityIntent();
         assertNotNull("Intent was null", launchIntent);
     }
+    
+    @MediumTest
+    public void testLaunchApprenticeActivity() {
+        startActivity(mLaunchIntent, null, null);
+        final GridView gridview = (GridView) getActivity().findViewById(R.id.gridview);
+        
+        int gridItemTotal = gridview.getAdapter().getCount();
+        Log.d("MYLOG", "" + gridItemTotal);
+        
+        gridview.performItemClick(gridview, 3, 0);
+        
+        final Intent launchIntent = getStartedActivityIntent();
+        assertNotNull("Intent was null", launchIntent);
+    }
 }
