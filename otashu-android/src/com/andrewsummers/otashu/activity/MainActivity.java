@@ -90,22 +90,19 @@ public class MainActivity extends Activity implements OnClickListener {
         switch (item.getItemId()) {
         case R.id.view_settings:
             intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
-            return true;
+            break;
         case R.id.export_database:
             intent = new Intent(this, ExportDatabaseActivity.class);
-            startActivity(intent);
-            return true;
+            break;
         case R.id.import_database:
             intent = new Intent(this, ImportDatabaseActivity.class);
-            startActivity(intent);
-            return true;
+            break;
         case R.id.database_dumper:
             intent = new Intent(this, DatabaseDumperActivity.class);
-            startActivity(intent);
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+            break;
         }
+        
+        startActivity(intent);
+        return super.onOptionsItemSelected(item);
     }
 }
