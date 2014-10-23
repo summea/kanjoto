@@ -95,9 +95,6 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
         // conversion issues...
         key = (int) (long) allNotesets[notesetId];
         
-        TextView notesetName = (TextView) findViewById(R.id.noteset_detail_name_value);
-        notesetName.setText(noteset.getName());
-        
         TextView emotionName = (TextView) findViewById(R.id.noteset_detail_emotion_value);
         emotionName.setText(emotion.getName());
         
