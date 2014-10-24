@@ -185,8 +185,6 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
             Noteset notesetToInsert = new Noteset();
             Note noteToInsert = new Note();
             
-            notesetName = ((EditText) findViewById(R.id.edittext_noteset_name)).getText().toString();
-            
             // get select emotion's id
             
             emotionsDataSource = new EmotionsDataSource(this);
@@ -209,9 +207,7 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
             
             Log.d("MYLOG", "selected emotion value: " + selectedEmotionValue);
             
-            notesetToInsert.setName(notesetName.toString());
             notesetToInsert.setEmotion(selectedEmotionValue);
-            Log.d("MYLOG", "new noteset: " + notesetName + " " + selectedEmotionValue);
             
             // first insert new noteset (parent of all related notes)
             saveNoteset(v, notesetToInsert);

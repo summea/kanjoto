@@ -3,9 +3,24 @@
 ## TODO:
 - look into using graphics for note playback visualization
 - implement second stage of Apprentice logic ("no" response -> update Apprentice knowledge)
+- add "edit noteset" menu item when viewing noteset details
+- add "delete noteset" menu item when viewing noteset details
+- create labels database table
+- create label
+- edit label
+- delete label
+- view all labels
+- add label to emotions database table
+- add label to "create emotion" activity
+- add label to "edit emotion" activity
+- add label to "view emotion details" activity
 
 
 ## DONE:
+- 20141023: removed noteset "name" field for now from views
+- 20141023: updated "create noteset" view
+- 20141023: updated "edit noteset" view
+- 20141022: updated "view noteset detail" view
 - 20141017: fixed main activity layout test (added ViewAllNotesetsActivity test) 
 - 20141015: added plans for doing something with "no" response from user in ApprenticeActivity
 - 20141011: fixed prevent screen orientation change for generate music playback
@@ -84,6 +99,11 @@
 #### emotions
 - id
 - name
+
+#### labels
+- id
+- name
+- color
 
 #### notes
 - id

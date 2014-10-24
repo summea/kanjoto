@@ -2,26 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp" >
 
     <TextView
-        android:id="@+id/create_noteset_title"
+        android:id="@+id/edit_noteset_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/create_noteset_title"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
-        android:id="@+id/noteset_name_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/noteset_name_label" />
+        android:text="@string/edit_noteset_title"
+        android:textSize="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp" />
         
-    <EditText
-        android:id="@+id/edittext_noteset_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
     <TextView
         android:id="@+id/spinner_emotion_label"
         android:layout_width="match_parent"
@@ -166,7 +159,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/button_play_noteset"
-        android:padding="20dp" />
+        android:padding="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp" />
     
     <Button
         android:id="@+id/button_save"
