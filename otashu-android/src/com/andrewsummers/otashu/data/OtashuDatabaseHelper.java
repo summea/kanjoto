@@ -15,7 +15,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Eclipse Public License: https://www.eclipse.org/legal/epl-v10.html
  */
 public class OtashuDatabaseHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "otashu_collection.db";
 
     public static final String COLUMN_ID = "_id";
@@ -32,6 +32,9 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_POSITION = "position";
     
     public static final String TABLE_EMOTIONS = "emotions";
+    
+    public static final String TABLE_LABELS = "labels";
+    public static final String COLUMN_COLOR = "color";
 
     private static final String CREATE_TABLE_NOTESETS = "CREATE TABLE " + TABLE_NOTESETS
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
@@ -49,6 +52,11 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_EMOTIONS = "CREATE TABLE " + TABLE_EMOTIONS
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
             + COLUMN_NAME + " text);";
+    
+    private static final String CREATE_TABLE_LABELS = "CREATE TABLE " + TABLE_LABELS
+            + " (" + COLUMN_ID + " integer primary key autoincrement, "
+            + COLUMN_NAME + " text, "
+            + COLUMN_COLOR + " text);";
 
     /**
      * NotesetCollectionOpenHelper constructor.
@@ -56,7 +64,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
      * @param context
      *            Current state.
      */
-    OtashuDatabaseHelper(Context context) {
+    public OtashuDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -71,6 +79,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_NOTESETS);
         db.execSQL(CREATE_TABLE_NOTES);
         db.execSQL(CREATE_TABLE_EMOTIONS);
+        db.execSQL(CREATE_TABLE_LABELS);
     }
 
     /**
@@ -85,6 +94,10 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // TODO Auto-generated method stub
+        // Log.d("MYLOG", ">>> new database version: " + newVersion);
+        //Log.d("MYLOG", "updating database...");
+        
+        // v3
+        // db.execSQL(CREATE_TABLE_LABELS);        
     }
 }

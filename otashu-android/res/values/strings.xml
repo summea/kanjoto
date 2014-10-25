@@ -29,6 +29,7 @@
     <string name="context_menu_delete">Delete</string>
     <string name="context_menu_view">View</string>
     <string name="create_emotion_title">Create Emotion</string>
+    <string name="create_label_title">Create Label</string>
     <string name="create_noteset_title">Create Noteset</string>
     
     <string name="edit_emotion_title">Edit Emotion</string>
@@ -40,12 +41,18 @@
     
     <string name="http_request_failed">HTTP request failed</string>
     
+    <string name="label_color">Color</string>
+    <string name="label_name">Name</string>
+    <string name="label_saved">Label saved!</string>
+    
     <string name="menu_button_create_emotion">New</string>
+    <string name="menu_button_create_label">New</string>
     <string name="menu_button_create_noteset">New</string>
     <string name="menu_button_database_dumper">Database Dumper</string>
     <string name="menu_button_export_database">Export Database</string>
     <string name="menu_button_import_database">Import Database</string>
     <string name="menu_button_settings">Settings</string>
+    <string name="menu_button_view_labels">Labels</string>
     
     <string name="noteset_detail_emotion_label">Emotion</string>
     <string name="noteset_detail_name_label">Name</string>
@@ -72,6 +79,7 @@
     <string name="view_all_notesets_title">View All Notesets</string>
     
     <string name="view_emotion_detail_title">Emotion Details</string>
+    <string name="view_label_detail_title">Label Details</string>
     <string name="view_noteset_detail_title">Noteset Details</string>
     <string name="noteset_detail_title_label">Noteset Name</string>
     

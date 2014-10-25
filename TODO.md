@@ -5,18 +5,31 @@
 - implement second stage of Apprentice logic ("no" response -> update Apprentice knowledge)
 - add "edit noteset" menu item when viewing noteset details
 - add "delete noteset" menu item when viewing noteset details
-- create labels database table
-- create label
 - edit label
 - delete label
-- view all labels
+- view all labels context menu
 - add label to emotions database table
 - add label to "create emotion" activity
 - add label to "edit emotion" activity
 - add label to "view emotion details" activity
+- read note velocity in "create noteset" activity
+- read note velocity in "edit noteset" activity
+- read note velocity in "view noteset details" activity
+- read note velocity in "generate music" activity
+- read note velocity in "apprentice" activity
+- read note length in "create noteset" activity
+- read note length in "edit noteset" activity
+- read note length in "view noteset details" activity
+- read note length in "generate music" activity
+- read note length in "apprentice" activity
 
 
 ## DONE:
+- 20141025: created labels database table
+- 20141025: added "view all labels" activity
+- 20141025: added "create label" activity
+- 20141025: added label table to "database dumper" activity
+- 20141025: added "view label details" activity
 - 20141023: removed noteset "name" field for now from views
 - 20141023: updated "create noteset" view
 - 20141023: updated "edit noteset" view

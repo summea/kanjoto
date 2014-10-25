@@ -4,6 +4,9 @@
         android:id="@+id/view_settings"
         android:title="@string/menu_button_settings" />
     <item
+        android:id="@+id/view_labels"
+        android:title="@string/menu_button_view_labels" />
+    <item
         android:id="@+id/export_database"
         android:title="@string/menu_button_export_database" />
     <item

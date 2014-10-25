@@ -100,8 +100,8 @@ public class EmotionsDataSource {
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         
-        // delete noteset
-        Log.d("OTASHULOG", "deleting noteset with id: " + id);
+        // delete emotion
+        Log.d("OTASHULOG", "deleting emotion with id: " + id);
         db.delete(OtashuDatabaseHelper.TABLE_EMOTIONS,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
     }
@@ -222,17 +222,17 @@ public class EmotionsDataSource {
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        // select all notesets from database
+        // select all emotions from database
         Cursor cursor = db.rawQuery(query, null);
 
         Emotion emotion = null;
         if (cursor.moveToFirst()) {
             do {                
-                // create noteset objects based on noteset data from database
+                // create emotion objects based on emotion data from database
                 emotion = new Emotion();
                 emotion.setId(Long.parseLong(cursor.getString(0)));
                 
-                // add noteset to notesets list
+                // add emotion to emotions list
                 emotions.add(emotion.getId());
             } while (cursor.moveToNext());
         }

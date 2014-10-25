@@ -4,10 +4,12 @@ import java.util.List;
 
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
+import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.data.NotesDataSource;
 import com.andrewsummers.otashu.data.NotesetsDataSource;
 import com.andrewsummers.otashu.data.OtashuDatabaseHelper;
 import com.andrewsummers.otashu.model.Emotion;
+import com.andrewsummers.otashu.model.Label;
 import com.andrewsummers.otashu.model.Note;
 import com.andrewsummers.otashu.model.Noteset;
 
@@ -32,6 +34,9 @@ public class DatabaseDumperActivity extends Activity {
         
         EmotionsDataSource eds = new EmotionsDataSource(this);
         List<Emotion> allEmotions = eds.getAllEmotions();
+        
+        LabelsDataSource lds = new LabelsDataSource(this);
+        List<Label> allLabels = lds.getAllLabels();
         
         EditText debugText = (EditText) findViewById(R.id.debug_text);
         
@@ -61,6 +66,16 @@ public class DatabaseDumperActivity extends Activity {
             
             String newText = debugText.getText().toString();
             newText += noteset.getId() + "|" + noteset.getName() + "|" + noteset.getEmotion() + "\n";
+            
+            debugText.setText(newText);
+        }
+        
+        debugText.setText(debugText.getText().toString() + "\nTable: Labels\n" + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NAME + "|" + OtashuDatabaseHelper.COLUMN_COLOR + "\n");
+        
+        for (Label label : allLabels) {
+            
+            String newText = debugText.getText().toString();
+            newText += label.getId() + "|" + label.getName() + "|" + label.getColor() + "\n";
             
             debugText.setText(newText);
         }
