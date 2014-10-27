@@ -120,9 +120,7 @@ public class ViewAllLabelsActivity extends ListActivity {
     public boolean onContextItemSelected(MenuItem item) {
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
         Intent intent = null;
-        
-        return false;
-        /*
+
         switch (item.getItemId()) {
             case R.id.context_menu_view:
                 intent = new Intent(this, ViewLabelDetailActivity.class);
@@ -141,7 +139,6 @@ public class ViewAllLabelsActivity extends ListActivity {
             default:
                 return super.onContextItemSelected(item);
         }
-        */
     }
     
     public void confirmDelete() {

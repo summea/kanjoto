@@ -5,9 +5,6 @@
 - implement second stage of Apprentice logic ("no" response -> update Apprentice knowledge)
 - add "edit noteset" menu item when viewing noteset details
 - add "delete noteset" menu item when viewing noteset details
-- edit label
-- delete label
-- view all labels context menu
 - add label to emotions database table
 - add label to "create emotion" activity
 - add label to "edit emotion" activity
@@ -25,6 +22,9 @@
 
 
 ## DONE:
+- 20141026: added "edit label" activity
+- 20141026: added "delete label" activity
+- 20141026: added "view all labels" activity context menu
 - 20141025: created labels database table
 - 20141025: added "view all labels" activity
 - 20141025: added "create label" activity
@@ -112,6 +112,7 @@
 #### emotions
 - id
 - name
+- label_id?
 
 #### labels
 - id
