@@ -181,7 +181,11 @@ public class NotesetsDataSource {
                     do {
                         Note note = null;
                         note = new Note();
-                        note.setNotevalue(Integer.parseInt(cursorForRelatedNotes.getString(2)));
+                        note.setNotesetId(cursorForRelatedNotes.getLong(1));
+                        note.setNotevalue(cursorForRelatedNotes.getInt(2));
+                        note.setVelocity(cursorForRelatedNotes.getInt(3));
+                        note.setLength(cursorForRelatedNotes.getFloat(4));
+                        note.setPosition(cursorForRelatedNotes.getInt(5));
                         notes.add(note);
                     } while (cursorForRelatedNotes.moveToNext());
                 }
@@ -231,7 +235,11 @@ public class NotesetsDataSource {
                     do {
                         Note note = null;
                         note = new Note();
-                        note.setNotevalue(Integer.parseInt(cursorForRelatedNotes.getString(2)));
+                        note.setNotesetId(cursorForRelatedNotes.getLong(1));
+                        note.setNotevalue(cursorForRelatedNotes.getInt(2));
+                        note.setVelocity(cursorForRelatedNotes.getInt(3));
+                        note.setLength(cursorForRelatedNotes.getFloat(4));
+                        note.setPosition(cursorForRelatedNotes.getInt(5));
                         notes.add(note);
                     } while (cursorForRelatedNotes.moveToNext());
                 }
@@ -276,7 +284,11 @@ public class NotesetsDataSource {
                     do {
                         Note note = null;
                         note = new Note();
-                        note.setNotevalue(Integer.parseInt(cursorForRelatedNotes.getString(2)));
+                        note.setNotesetId(cursorForRelatedNotes.getLong(1));
+                        note.setNotevalue(cursorForRelatedNotes.getInt(2));
+                        note.setVelocity(cursorForRelatedNotes.getInt(3));
+                        note.setLength(cursorForRelatedNotes.getFloat(4));
+                        note.setPosition(cursorForRelatedNotes.getInt(5));
                         notes.add(note);
                     } while (cursorForRelatedNotes.moveToNext());
                 }
@@ -418,7 +430,12 @@ public class NotesetsDataSource {
                 if (cursorForRelatedNotes.moveToFirst()) {
                     do {
                         note = new Note();
-                        note.setNotevalue(Integer.parseInt(cursorForRelatedNotes.getString(2)));
+                        note.setNotesetId(cursorForRelatedNotes.getLong(1));
+                        note.setNotevalue(cursorForRelatedNotes.getInt(2));
+                        note.setVelocity(cursorForRelatedNotes.getInt(3));
+                        note.setLength(cursorForRelatedNotes.getFloat(4));
+                        note.setPosition(cursorForRelatedNotes.getInt(5));
+                        
                         itemForList += note.getNotevalue(); 
                     } while (cursorForRelatedNotes.moveToNext());
                 }
@@ -470,7 +487,11 @@ public class NotesetsDataSource {
                 if (cursorForRelatedNotes.moveToFirst()) {
                     do {
                         note = new Note();
-                        note.setNotevalue(Integer.parseInt(cursorForRelatedNotes.getString(2)));
+                        note.setNotesetId(cursorForRelatedNotes.getLong(1));
+                        note.setNotevalue(cursorForRelatedNotes.getInt(2));
+                        note.setVelocity(cursorForRelatedNotes.getInt(3));
+                        note.setLength(cursorForRelatedNotes.getFloat(4));
+                        note.setPosition(cursorForRelatedNotes.getInt(5));
                         for (int i = 0; i < noteValuesArray.length; i++) {
                             // get actual note name (C3, D3, E3, etc.)
                             if (note.getNotevalue() == Integer.valueOf(noteValuesArray[i])) {

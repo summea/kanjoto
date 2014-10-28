@@ -8,9 +8,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.NotesetsDataSource;
 import com.andrewsummers.otashu.model.Note;
+import com.andrewsummers.otashu.view.PlaybackGLSurfaceView;
 import com.leff.midi.MidiFile;
 import com.leff.midi.MidiTrack;
 import com.leff.midi.event.NoteOff;
@@ -22,14 +22,16 @@ import android.app.Activity;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
+import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.util.SparseArray;
-import android.widget.TextView;
 
 public class GenerateMusicActivity extends Activity {
 
+    private GLSurfaceView mGLView;
+    
     File path = Environment.getExternalStorageDirectory();
     String externalDirectory = path.toString() + "/otashu/";
     File musicSource = new File(externalDirectory + "otashu.mid");
@@ -67,7 +69,12 @@ public class GenerateMusicActivity extends Activity {
         super.onCreate(savedInstanceState);
         
         // get specific layout for content view
-        setContentView(R.layout.activity_generate_music);
+        // setContentView(R.layout.activity_generate_music);
+        
+        // Create a GLSurfaceView instance and set it
+        // as the ContentView for this Activity.
+        mGLView = new PlaybackGLSurfaceView(this);
+        setContentView(mGLView);
         
         // TODO: double-check this section later
         
@@ -165,8 +172,9 @@ public class GenerateMusicActivity extends Activity {
             lineBreak++;
         }
         
-        TextView playbackText = (TextView) findViewById(R.id.generate_music_placeholder);
-        playbackText.setText(notesText);
+        //TextView playbackText = (TextView) findViewById(R.id.generate_music_placeholder);
+        //playbackText.setText(notesText);
+        Log.d("MYLOG", notesText);
         
         generateMusic(notes, musicSource);
         
@@ -215,8 +223,6 @@ public class GenerateMusicActivity extends Activity {
         Integer randomKey = keys.get(random.nextInt(keys.size()));
         notes = notesets.get(randomKey);
         
-        //Log.d("MYLOG", notes.toString());
-        
         return notes;
     }
     
@@ -233,19 +239,38 @@ public class GenerateMusicActivity extends Activity {
         tempoTrack.insertEvent(ts);
         tempoTrack.insertEvent(t);
         
+        int currentTotalNoteLength = 480;
+        
         for (int i = 0; i < notes.size(); i++) {
             int channel = 0;
             int pitch = notes.get(i).getNotevalue();
             int velocity = 100;
+            int length = 480;
+            float fLength = 480.0f;
+
+            Log.d("MYLOG", "length of current note: " + notes.get(i).getLength());
             
-            NoteOn on = new NoteOn(i * 480, channel, pitch, velocity);
-            NoteOff off = new NoteOff(i * 480 + 120, channel, pitch, 0);
+            fLength = notes.get(i).getLength();
+            
+            if (fLength > 0.0)
+                fLength = (480 * notes.get(i).getLength());
+            else
+                fLength = 480;
+            
+            length = (int) fLength;
+                        
+            NoteOn on = new NoteOn(i * currentTotalNoteLength, channel, pitch, velocity);
+            NoteOff off = new NoteOff(i * currentTotalNoteLength + length, channel, pitch, 0);
             
             noteTrack.insertEvent(on);
             noteTrack.insertEvent(off);
             
-            noteTrack.insertNote(channel, pitch, velocity, i * 480, 120);
-            //Log.d("MYLOG", "writing note: " + pitch);
+            noteTrack.insertNote(channel, pitch, velocity, i * currentTotalNoteLength, length);
+            
+            if (length > 0)
+                currentTotalNoteLength = 480; // TODO: make this match note length (better) somehow
+            else
+                currentTotalNoteLength = 480;
         }
         
         ArrayList<MidiTrack> tracks = new ArrayList<MidiTrack>();
@@ -316,34 +341,21 @@ public class GenerateMusicActivity extends Activity {
                 }
             }
             
-            // loop through all available musical keys
-            //for (Integer musicalKey : musicalKeys.keySet()) {
-            //for (int musicalKeyIndex = 0; musicalKeyIndex < musicalKeys.size(); musicalKeyIndex++) {
+            try {
+            // check if last note in current noteset sequence matches first note in a musical key list
+            //if (nsets.get(3).getNotevalue() == musicalKeys.keyAt(musicalKeyIndex)) {
+                //a match gives us criteria for finding another, similar noteset to append for playback
+                Log.d("MYLOG", "found matching musical key for end note: " + nsets.get(3).getNotevalue());
                 
-                try {
-                // check if last note in current noteset sequence matches first note in a musical key list
-                //if (nsets.get(3).getNotevalue() == musicalKeys.keyAt(musicalKeyIndex)) {
-                    //a match gives us criteria for finding another, similar noteset to append for playback
-                    Log.d("MYLOG", "found matching musical key for end note: " + nsets.get(3).getNotevalue());
-                    
-                    //lookingForNotesInKey = musicalKeys.get(nsets.get(3).getNotevalue());
-                    if (musicalKeys.get(nsets.get(3).getNotevalue()) != null) {
-                        lookingForNotesInKey = musicalKeys.get(nsets.get(3).getNotevalue());
-                    } else {
-                        lookingForNotesInKey = musicalKeys.get(60);
-                    }
-                } catch (Exception e) {
-                    //Log.d("MYLOG", e.getStackTrace().toString());
+                //lookingForNotesInKey = musicalKeys.get(nsets.get(3).getNotevalue());
+                if (musicalKeys.get(nsets.get(3).getNotevalue()) != null) {
+                    lookingForNotesInKey = musicalKeys.get(nsets.get(3).getNotevalue());
+                } else {
+                    lookingForNotesInKey = musicalKeys.get(60);
                 }
-                //finally {
-                //    if (lookingForNotesInKey == null)
-                //        lookingForNotesInKey = musicalKeys.get(60);
-                //}
-                
-                //Log.d("MYLOG", "looking for notes in key: " + lookingForNotesInKey.toString());
-                //}
-            //}
-        
+            } catch (Exception e) {
+                //Log.d("MYLOG", e.getStackTrace().toString());
+            }        
                 
             for (int j = 0; j < 50; j++) {
                 random = new Random();

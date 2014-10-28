@@ -14,14 +14,14 @@
 - read note velocity in "view noteset details" activity
 - read note velocity in "generate music" activity
 - read note velocity in "apprentice" activity
-- read note length in "create noteset" activity
-- read note length in "edit noteset" activity
-- read note length in "view noteset details" activity
-- read note length in "generate music" activity
 - read note length in "apprentice" activity
 
 
 ## DONE:
+- 20141027: added read note length in "create noteset" activity
+- 20141027: added read note length in "edit noteset" activity
+- 20141027: added read note length in "view noteset details" activity
+- 20141027: added read note length in "generate music" activity
 - 20141026: added "edit label" activity
 - 20141026: added "delete label" activity
 - 20141026: added "view all labels" activity context menu

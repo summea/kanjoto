@@ -147,6 +147,7 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
                 Note note = new Note();
                 note = notesetBundle.get(key).get(i);
                 notes.add(note);
+                Log.d("MYLOG", "note value: " + note.getLength());
             }
             
             GenerateMusicActivity generateMusic = new GenerateMusicActivity();
