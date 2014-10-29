@@ -199,13 +199,9 @@ public class GenerateMusicActivity extends Activity {
         // get selected emotion_id from spinner
         Bundle bundle = getIntent().getExtras();
         int selectedEmotionValue = bundle.getInt("emotion_id");
-        //Log.d("MYLOG", "emotion_id: " + selectedEmotionValue);
         
         NotesetsDataSource ds = new NotesetsDataSource(this);
-        
         allNotesetBundles = ds.getAllNotesetBundles(selectedEmotionValue);
-        
-        //Log.d("MYLOG", allNotesetBundles.toString());
         
         // prevent crashes due to lack of database data
         if (allNotesetBundles.isEmpty())
@@ -342,19 +338,17 @@ public class GenerateMusicActivity extends Activity {
             }
             
             try {
-            // check if last note in current noteset sequence matches first note in a musical key list
-            //if (nsets.get(3).getNotevalue() == musicalKeys.keyAt(musicalKeyIndex)) {
-                //a match gives us criteria for finding another, similar noteset to append for playback
+                // check if last note in current noteset sequence matches first note in a musical key list
+                // a match gives us criteria for finding another, similar noteset to append for playback
                 Log.d("MYLOG", "found matching musical key for end note: " + nsets.get(3).getNotevalue());
                 
-                //lookingForNotesInKey = musicalKeys.get(nsets.get(3).getNotevalue());
                 if (musicalKeys.get(nsets.get(3).getNotevalue()) != null) {
                     lookingForNotesInKey = musicalKeys.get(nsets.get(3).getNotevalue());
                 } else {
                     lookingForNotesInKey = musicalKeys.get(60);
                 }
             } catch (Exception e) {
-                //Log.d("MYLOG", e.getStackTrace().toString());
+                Log.d("MYLOG", e.getStackTrace().toString());
             }        
                 
             for (int j = 0; j < 50; j++) {
@@ -365,7 +359,6 @@ public class GenerateMusicActivity extends Activity {
                 List<Note> noteset = allNotesets.get(randomKey);
                 
                 if (lookingForNotesInKey.contains(noteset.get(0).getNotevalue())) {
-                    //Log.d("MYLOG", "found a noteset to add to final result!");
                     Log.d("MYLOG", "looking for notes in key: " + lookingForNotesInKey.toString() + " -- note 0: " + noteset.get(0).getNotevalue());
                     
                     for (int k = 0; k < 4; k++) {
@@ -380,8 +373,6 @@ public class GenerateMusicActivity extends Activity {
                 }
                 
             }
-            
-            //Log.d("MYLOG", Integer.valueOf(nsets.get(0).getNotevalue()).toString());
         }
         
         return notes;

@@ -82,9 +82,6 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
             emotionsDataSource.close();
             
             Log.d("MYLOG", "selected emotion value: " + selectedEmotionValue);
-            
-            
-            //int selectedEmotionValue = getResources().getIntArray(R.array.emotion_values_array)[emotionSpinner.getSelectedItemPosition()];
 
             Bundle bundle = new Bundle();
             bundle.putInt("emotion_id", selectedEmotionValue);

@@ -77,7 +77,6 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
         String randomNote = "";
         
         for (int i = 0; i < 4; i++) {
-            //randomIndex = new Random().nextInt(noteValuesArray.length);
             randomIndex = new Random().nextInt((toIndex - fromIndex) + 1) + fromIndex;
             randomNote = noteValuesArray[randomIndex];
 

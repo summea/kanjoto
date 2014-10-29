@@ -254,7 +254,6 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
         switch (v.getId()) {
         case R.id.button_save:
             // gather noteset data from form
-            String notesetName;
             Spinner spinner;
             
             Noteset notesetToInsert = new Noteset();
