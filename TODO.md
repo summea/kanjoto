@@ -9,15 +9,15 @@
 - add label to "create emotion" activity
 - add label to "edit emotion" activity
 - add label to "view emotion details" activity
-- read note velocity in "create noteset" activity
-- read note velocity in "edit noteset" activity
-- read note velocity in "view noteset details" activity
-- read note velocity in "generate music" activity
-- read note velocity in "apprentice" activity
-- read note length in "apprentice" activity
 
 
 ## DONE:
+- 20141030: added read note velocity in "create noteset" activity
+- 20141030: added read note velocity in "edit noteset" activity
+- 20141030: added read note velocity in "view noteset details" activity
+- 20141030: added read note velocity in "generate music" activity
+- 20141030: added read note velocity in "apprentice" activity
+- 20141030: added read note length in "apprentice" activity
 - 20141027: added read note length in "create noteset" activity
 - 20141027: added read note length in "edit noteset" activity
 - 20141027: added read note length in "view noteset details" activity

@@ -73,19 +73,30 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
     public List<Note> generateNotes(int fromIndex, int toIndex) {
         String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
         
-        int randomIndex = 0;
+        int randomNoteIndex = 0;
         String randomNote = "";
+        float randomLength = 0.0f;
+        int randomVelocity = 100;
+        float lengthValues[] = { 0.25f, 0.5f, 0.75f, 1.0f };
         
         for (int i = 0; i < 4; i++) {
-            randomIndex = new Random().nextInt((toIndex - fromIndex) + 1) + fromIndex;
-            randomNote = noteValuesArray[randomIndex];
-
+            randomNoteIndex = new Random().nextInt((toIndex - fromIndex) + 1) + fromIndex;
+            randomNote = noteValuesArray[randomNoteIndex];
+            int randomLengthIndex = new Random().nextInt(lengthValues.length);
+            randomLength = lengthValues[randomLengthIndex];            
+            randomVelocity = new Random().nextInt(120 - 60 + 1) + 60;
+            
             Note note = new Note();
             note.setNotevalue(Integer.valueOf((randomNote)));
+            note.setLength(randomLength);
+            note.setVelocity(randomVelocity);
+            note.setPosition(i + 1);
 
             notesToInsert.add(note);
             
             Log.d("MYLOG", "random note: " + randomNote);
+            Log.d("MYLOG", "random length: " + randomLength);
+            Log.d("MYLOG", "random velocity: " + randomVelocity);
         }
         
         return notesToInsert;
@@ -146,8 +157,9 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
         // clear old generated notes
         notesToInsert.clear();
         
-        // C4:39, B4:50
         List<Note> notes = new ArrayList<Note>();
+        
+        // stay within 39..50 for now (C4..B4)
         notes = generateNotes(39, 50);
         
         GenerateMusicActivity generateMusic = new GenerateMusicActivity();

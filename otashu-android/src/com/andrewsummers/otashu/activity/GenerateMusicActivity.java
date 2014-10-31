@@ -247,6 +247,8 @@ public class GenerateMusicActivity extends Activity {
             Log.d("MYLOG", "length of current note: " + notes.get(i).getLength());
             
             fLength = notes.get(i).getLength();
+            if (notes.get(i).getVelocity() > 0)
+                velocity = notes.get(i).getVelocity();
             
             if (fLength > 0.0)
                 fLength = (480 * notes.get(i).getLength());
