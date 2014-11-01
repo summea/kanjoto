@@ -3,15 +3,17 @@
 ## TODO:
 - look into using graphics for note playback visualization
 - implement second stage of Apprentice logic ("no" response -> update Apprentice knowledge)
-- add "edit noteset" menu item when viewing noteset details
-- add "delete noteset" menu item when viewing noteset details
 - add label to emotions database table
 - add label to "create emotion" activity
 - add label to "edit emotion" activity
 - add label to "view emotion details" activity
+- connect "edit noteset" menu item in "noteset details" activity to actual noteset id
+- connect "delete noteset" menu item in "noteset details" activity to actual noteset id
 
 
 ## DONE:
+- 20141031: added "edit noteset" menu item when viewing noteset details
+- 20141031: added "delete noteset" menu item when viewing noteset details
 - 20141030: added read note velocity in "create noteset" activity
 - 20141030: added read note velocity in "edit noteset" activity
 - 20141030: added read note velocity in "view noteset details" activity

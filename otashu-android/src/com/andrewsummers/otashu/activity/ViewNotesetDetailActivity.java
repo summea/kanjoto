@@ -14,15 +14,24 @@ import com.andrewsummers.otashu.model.Note;
 import com.andrewsummers.otashu.model.Noteset;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
 /**
  * View details of a particular noteset.
@@ -31,12 +40,14 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
     
     private int key = 0;
     private int notesetId = 0;
+    private long notesetTableId = 0;
     private HashMap<Integer, List<Note>> notesetBundle = new HashMap<Integer, List<Note>>();
     private Button buttonPlayNoteset = null;
     private File path = Environment.getExternalStorageDirectory();
     private String externalDirectory = path.toString() + "/otashu/";
     private File musicSource = new File(externalDirectory + "otashu_preview.mid");
     private MediaPlayer mediaPlayer = new MediaPlayer();
+    private int selectedListPosition = 0;
     
     /**
      * onCreate override used to get details view.
@@ -72,6 +83,8 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
                 .toArray(new Long[allNotesetsData.size()]);
         
         Log.d("MYLOG", "found noteset data: " + allNotesets[notesetId]);
+        
+        notesetTableId = allNotesets[notesetId];
         
         // get noteset and notes information        
         notesetBundle = ds.getNotesetBundle(allNotesets[notesetId]);
@@ -179,5 +192,109 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
         mediaPlayer.stop();
         
         super.onBackPressed();
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_noteset_details, menu);
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = null;
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+        
+        // handle menu item selection
+        switch (item.getItemId()) {
+        case R.id.context_menu_edit:
+            intent = new Intent(this, EditNotesetActivity.class);
+            intent.putExtra("menu_id", notesetTableId);
+            startActivity(intent);
+            finish();
+            return true;
+        case R.id.context_menu_delete:
+            Log.d("MYLOG", "confirming delete");
+            confirmDelete();
+            finish();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
+       
+    public void confirmDelete() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.dialog_confirm_delete_message).setTitle(R.string.dialog_confirm_delete_title);
+        builder.setPositiveButton(R.string.button_ok,  new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // user clicked ok
+                // go ahead and delete noteset
+                
+                // get correct noteset id to delete
+                Log.d("MYLOG", "selected row item: " + selectedListPosition);
+                
+                Noteset notesetToDelete = getNotesetFromListPosition(selectedListPosition);
+
+                Log.d("MYLOG", "deleting noteset: " + notesetToDelete.getId());
+                deleteNoteset(notesetToDelete);
+                
+                // refresh activity to reflect changes
+                finish();
+                startActivity(getIntent());
+            }
+        });
+        builder.setNegativeButton(R.string.button_cancel,  new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // user clicked cancel
+                // just go back to list for now
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+    
+    public Noteset getNotesetFromListPosition(long rowId) {
+        
+        long notesetId = rowId;
+        
+        List<Long> allNotesetsData = new LinkedList<Long>();
+        NotesetsDataSource ds = new NotesetsDataSource(this);
+
+        // get string version of returned noteset list
+        allNotesetsData = ds.getAllNotesetListDBTableIds();
+        
+        Log.d("MYLOG", allNotesetsData.toString());
+
+        // prevent crashes due to lack of database data
+        if (allNotesetsData.isEmpty())
+            allNotesetsData.add((long) 0);
+
+        Log.d("MYLOG", "notesetId:: " + notesetId);
+        
+        Long[] allNotesets = allNotesetsData
+                .toArray(new Long[allNotesetsData.size()]);
+        
+        Log.d("MYLOG", "found noteset data: " + allNotesets[(int) notesetId]);
+        
+        // get noteset and notes information
+        HashMap<Integer, List<Note>> notesetBundle = new HashMap<Integer, List<Note>>();
+        notesetBundle = ds.getNotesetBundle(allNotesets[(int) notesetId]);
+        
+        Log.d("MYLOG", "noteset bundle: " + notesetBundle);
+        Log.d("MYLOG", "notesetId::: " + allNotesets[(int) notesetId]);
+        
+        Noteset noteset = ds.getNoteset(allNotesets[(int) notesetId]);        
+        
+        ds.close();
+        
+        return noteset;
+    }
+    
+    public void deleteNoteset(Noteset noteset) {
+        NotesetsDataSource ds = new NotesetsDataSource(this);
+        ds.deleteNoteset(noteset);
+        ds.close();
     }
 }
