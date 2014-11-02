@@ -73,6 +73,14 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
         emotionsDataSource = new EmotionsDataSource(this);
         emotionsDataSource.open();
         
+        long notesetIdInTable = 0;
+        notesetIdInTable = getIntent().getExtras().getLong("menu_noteset_id");
+        
+        // get noteset and notes information
+        HashMap<Integer, List<Note>> notesetBundle = new HashMap<Integer, List<Note>>();
+        
+        
+        
         Log.d("MYLOG", "got list item id: " + getIntent().getExtras().getLong("list_id"));
         int notesetId = (int) getIntent().getExtras().getLong("list_id");
         
@@ -95,14 +103,23 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
         
         Log.d("MYLOG", "found noteset data: " + allNotesets[notesetId]);
         
-        // get noteset and notes information
-        HashMap<Integer, List<Note>> notesetBundle = new HashMap<Integer, List<Note>>();
         notesetBundle = ds.getNotesetBundle(allNotesets[notesetId]);
+        
         
         Log.d("MYLOG", "noteset bundle: " + notesetBundle);
         Log.d("MYLOG", "notesetId::: " + allNotesets[notesetId]);
         
-        Noteset noteset = ds.getNoteset(allNotesets[notesetId]); 
+        Noteset noteset = new Noteset();
+        
+        // if requested id is from ViewAllNotesetsActivity, get actual (long) id from allNotesets array
+        if (notesetIdInTable == 0) {
+            noteset = ds.getNoteset(allNotesets[notesetId]);
+        }
+        // otherwise, requested id is an actual (long) id (no extra lookup necessary)
+        else {
+            noteset = ds.getNoteset(notesetIdInTable);
+        }
+        
         editNoteset = ds.getNoteset(allNotesets[notesetId]);
         
         
