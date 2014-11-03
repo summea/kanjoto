@@ -21,6 +21,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -77,9 +78,7 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
         notesetIdInTable = getIntent().getExtras().getLong("menu_noteset_id");
         
         // get noteset and notes information
-        HashMap<Integer, List<Note>> notesetBundle = new HashMap<Integer, List<Note>>();
-        
-        
+        SparseArray<List<Note>> notesetBundle = new SparseArray<List<Note>>();
         
         Log.d("MYLOG", "got list item id: " + getIntent().getExtras().getLong("list_id"));
         int notesetId = (int) getIntent().getExtras().getLong("list_id");

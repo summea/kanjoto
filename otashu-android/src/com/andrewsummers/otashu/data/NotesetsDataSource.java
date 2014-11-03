@@ -14,6 +14,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.util.SparseArray;
 
 /**
  * NotesetsDataSource is a data source that provides database functionality for
@@ -254,8 +255,8 @@ public class NotesetsDataSource {
         return notesetBundles;
     }
 
-    public HashMap<Integer, List<Note>> getNotesetBundle(long id) {
-        HashMap<Integer, List<Note>> notesetBundle = new HashMap<Integer, List<Note>>();
+    public SparseArray<List<Note>> getNotesetBundle(long id) {
+        SparseArray<List<Note>> notesetBundle = new SparseArray<List<Note>>();
         
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + id;
         Log.d("MYLOG", "db query: " + query);
@@ -302,6 +303,7 @@ public class NotesetsDataSource {
 
         return notesetBundle;
     }
+
     
     public HashMap<String, List<Object>> getNotesetBundleDetail(long id) {
         HashMap<String, List<Object>> notesetBundle = new HashMap<String, List<Object>>();

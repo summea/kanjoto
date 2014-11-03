@@ -1,6 +1,5 @@
 package com.andrewsummers.otashu.activity;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,6 +14,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -201,7 +201,7 @@ public class ViewAllNotesetsActivity extends ListActivity {
         Log.d("MYLOG", "found noteset data: " + allNotesets[(int) notesetId]);
         
         // get noteset and notes information
-        HashMap<Integer, List<Note>> notesetBundle = new HashMap<Integer, List<Note>>();
+        SparseArray<List<Note>> notesetBundle = new SparseArray<List<Note>>();
         notesetBundle = ds.getNotesetBundle(allNotesets[(int) notesetId]);
         
         Log.d("MYLOG", "noteset bundle: " + notesetBundle);

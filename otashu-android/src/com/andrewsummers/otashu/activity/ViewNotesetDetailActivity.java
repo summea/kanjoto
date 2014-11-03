@@ -2,7 +2,6 @@ package com.andrewsummers.otashu.activity;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,6 +21,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,7 +29,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 
 /**
  * View details of a particular noteset.
@@ -39,7 +38,9 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
     private int key = 0;
     private int notesetId = 0;
     private long notesetIdInTable = 0;
-    private HashMap<Integer, List<Note>> notesetBundle = new HashMap<Integer, List<Note>>();
+    //private HashMap<Integer, List<Note>> notesetBundle = new HashMap<Integer, List<Note>>();
+    //private SparseArray<List<Integer>> musicalKeys = new SparseArray<List<Integer>>();
+    private SparseArray<List<Note>> notesetBundle = new SparseArray<List<Note>>();
     private Button buttonPlayNoteset = null;
     private File path = Environment.getExternalStorageDirectory();
     private String externalDirectory = path.toString() + "/otashu/";
@@ -202,7 +203,7 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent = null;
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+        //AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
         
         // handle menu item selection
         switch (item.getItemId()) {
