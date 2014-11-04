@@ -97,8 +97,6 @@ public class LabelsDataSource {
     public void deleteLabel(Label label) {
         long id = label.getId();
         
-        Log.d("MYLOG", "now really deleting id: " + id);
-        
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         
@@ -275,9 +273,6 @@ public class LabelsDataSource {
         
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        
-        Log.d("MYLOG", Long.toString(label.getId()));
-        Log.d("MYLOG", label.getName());
         
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, label.getId());

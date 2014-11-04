@@ -95,8 +95,6 @@ public class EmotionsDataSource {
     public void deleteEmotion(Emotion emotion) {
         long id = emotion.getId();
         
-        Log.d("MYLOG", "now really deleting id: " + id);
-        
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         
@@ -270,16 +268,9 @@ public class EmotionsDataSource {
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         
-        Log.d("MYLOG", Long.toString(emotion.getId()));
-        Log.d("MYLOG", emotion.getName());
-        
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, emotion.getId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, emotion.getName());
-
-        //db.update(OtashuDatabaseHelper.TABLE_NOTES, contentValues, OtashuDatabaseHelper.COLUMN_ID + "=" + emotion.getId(), null);
-        
-        Log.d("MYLOG", "sql update: " + OtashuDatabaseHelper.COLUMN_ID + "=" + emotion.getId());
         
         db.update(OtashuDatabaseHelper.TABLE_EMOTIONS, contentValues, OtashuDatabaseHelper.COLUMN_ID + "=" + emotion.getId(), null);
 

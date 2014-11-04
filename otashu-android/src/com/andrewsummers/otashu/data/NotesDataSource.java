@@ -70,18 +70,13 @@ public class NotesDataSource {
      *            String of note values to insert.
      * @return Note of newly-created note data.
      */
-    public Note createNote(Note note) {
-        Log.d("MYLOG", Long.toString(note.getNotesetId()));
-        Log.d("MYLOG", Integer.toString(note.getNotevalue()));
-        
+    public Note createNote(Note note) {        
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_NOTESET_ID, note.getNotesetId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_NOTEVALUE, note.getNotevalue());
         contentValues.put(OtashuDatabaseHelper.COLUMN_VELOCITY, note.getVelocity());
         contentValues.put(OtashuDatabaseHelper.COLUMN_LENGTH, note.getLength());
         contentValues.put(OtashuDatabaseHelper.COLUMN_POSITION, note.getPosition());
-
-        Log.d("MYLOG", "saving note contentValues: " + contentValues.toString());
         
         long insertId = database
                 .insert(OtashuDatabaseHelper.TABLE_NOTES, null,
@@ -205,9 +200,6 @@ public class NotesDataSource {
         
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        
-        Log.d("MYLOG", Long.toString(note.getNotesetId()));
-        Log.d("MYLOG", Integer.toString(note.getNotevalue()));
         
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_NOTESET_ID, note.getNotesetId());
