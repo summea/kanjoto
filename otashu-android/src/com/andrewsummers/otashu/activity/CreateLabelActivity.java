@@ -64,7 +64,6 @@ public class CreateLabelActivity extends Activity implements OnClickListener {
             labelName = ((EditText) findViewById(R.id.edittext_label_name)).getText().toString();
             
             labelToInsert.setName(labelName.toString());
-            Log.d("MYLOG", "new label: " + labelName);
             
             // first insert new label (parent of all related notes)
             saveLabel(v, labelToInsert);
@@ -104,8 +103,6 @@ public class CreateLabelActivity extends Activity implements OnClickListener {
 
         // save label in database
         newlyInsertedLabel = labelsDataSource.createLabel(label);
-
-        Log.d("MYLOG", "newly inserted label id: " + newlyInsertedLabel);
         
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;

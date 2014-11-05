@@ -64,7 +64,6 @@ public class CreateEmotionActivity extends Activity implements OnClickListener {
             emotionName = ((EditText) findViewById(R.id.edittext_emotion_name)).getText().toString();
             
             emotionToInsert.setName(emotionName.toString());
-            Log.d("MYLOG", "new emotion: " + emotionName);
             
             // first insert new emotion (parent of all related notes)
             saveEmotion(v, emotionToInsert);
@@ -104,8 +103,6 @@ public class CreateEmotionActivity extends Activity implements OnClickListener {
 
         // save emotion in database
         newlyInsertedEmotion = emotionsDataSource.createEmotion(emotion);
-
-        Log.d("MYLOG", "newly inserted emotion id: " + newlyInsertedEmotion);
         
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;

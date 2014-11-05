@@ -74,8 +74,6 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
         allEmotions = emotionsDataSource.getAllEmotions();
         
         emotionsDataSource.close();
-        
-        Log.d("MYLOG", "emotions: " + allEmotions);
 
         Spinner spinner = null;
 
@@ -203,8 +201,6 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
             
             emotionsDataSource.close();
             
-            Log.d("MYLOG", "selected emotion value: " + selectedEmotionValue);
-            
             notesetToInsert.setEmotion(selectedEmotionValue);
             
             // first insert new noteset (parent of all related notes)
@@ -216,13 +212,10 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
                 Spinner lengthSpinner = (Spinner) findViewById(lengthSpinnerIds[i]);
                 
                 noteToInsert.setNotesetId(newlyInsertedNoteset.getId());
-                noteToInsert.setPosition(i+1);  // positions 1, 2, 3, 4, etc.
+                noteToInsert.setNotevalue(Integer.parseInt(noteValuesArray[spinner.getSelectedItemPosition()]));
                 noteToInsert.setVelocity(Integer.parseInt(velocityValuesArray[velocitySpinner.getSelectedItemPosition()]));
                 noteToInsert.setLength(Float.parseFloat(lengthValuesArray[lengthSpinner.getSelectedItemPosition()]));
-                
-                Log.d("MYLOG", String.valueOf(noteValuesArray[spinner.getSelectedItemPosition()]));
-                noteToInsert.setNotevalue(Integer.parseInt(noteValuesArray[spinner.getSelectedItemPosition()]));
-                
+                noteToInsert.setPosition(i+1);  // positions 1, 2, 3, 4, etc.
                 saveNote(v, noteToInsert);
             }
             
@@ -301,9 +294,6 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
     
     private void saveNote(View v, Note note) {
 
-        Log.d("MYLOG", Long.toString(note.getNotesetId()));
-        Log.d("MYLOG", Integer.toString(note.getNotevalue()));
-                
         // save noteset in database
         notesDataSource.createNote(note);
 
@@ -329,7 +319,6 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
      */
     @Override
     public void onBackPressed() {
-        Log.d("MYLOG", "stop playing music!");
         
         // stop playing music
         mediaPlayer.stop();
