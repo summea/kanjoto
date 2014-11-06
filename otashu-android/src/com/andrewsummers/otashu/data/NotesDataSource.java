@@ -101,7 +101,6 @@ public class NotesDataSource {
      */
     public void deleteNote(Note note) {
         long id = note.getId();
-        Log.d("OTASHULOG", "deleting note with id: " + id);
         database.delete(OtashuDatabaseHelper.TABLE_NOTESETS,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
     }
@@ -190,8 +189,6 @@ public class NotesDataSource {
                 notes.add(note.toString());
             } while (cursor.moveToNext());
         }
-
-        Log.d("MYLOG", notes.toString());
 
         return notes;
     }

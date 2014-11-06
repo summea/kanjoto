@@ -95,7 +95,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Log.d("MYLOG", ">>> new database version: " + newVersion);
-        //Log.d("MYLOG", "updating database...");
+        // Log.d("MYLOG", "updating database...");
         
         // v3
         // db.execSQL(CREATE_TABLE_LABELS);        

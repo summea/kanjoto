@@ -88,7 +88,6 @@ public class NotesetsDataSource {
         cursor.moveToFirst();
         Noteset newNoteset = cursorToNoteset(cursor);
         cursor.close();
-        Log.d("MYLOG", newNoteset.toString());
         return newNoteset;
     }
 
@@ -101,18 +100,14 @@ public class NotesetsDataSource {
     public void deleteNoteset(Noteset noteset) {
         long id = noteset.getId();
         
-        Log.d("MYLOG", "now really deleting id: " + id);
-        
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         
         // delete noteset
-        Log.d("OTASHULOG", "deleting noteset with id: " + id);
         db.delete(OtashuDatabaseHelper.TABLE_NOTESETS,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
         
         // delete related notes
-        Log.d("OTASHULOG", "deleting notes with noteset_id: " + id);
         db.delete(OtashuDatabaseHelper.TABLE_NOTES,
                 OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = " + id, null);
     }
@@ -196,8 +191,6 @@ public class NotesetsDataSource {
             } while (cursor.moveToNext());
         }
 
-        Log.d("MYLOG", notesetBundles.toString());
-
         return notesetBundles;
     }
     
@@ -210,7 +203,6 @@ public class NotesetsDataSource {
         HashMap<Integer, List<Note>> notesetBundles = new HashMap<Integer, List<Note>>();
         
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS + " WHERE " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotion_id;
-        Log.d("MYLOG", "db query: " + query);
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -221,14 +213,12 @@ public class NotesetsDataSource {
         if (cursor.moveToFirst()) {
             do {
                 Integer notesetId = Integer.parseInt(cursor.getString(0));
-                Log.d("MYLOG", "noteset id: " + notesetId);
                 
                 // get all related notes inside this noteset
                 // TODO: make this query approach more efficient at some point, if necessary
                 String queryForRelatedNotes = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = " + notesetId;
                 Cursor cursorForRelatedNotes = db.rawQuery(queryForRelatedNotes, null);
                 
-                Log.d("MYLOG", "db query2: " + queryForRelatedNotes);
                 
                 List<Note> notes = new LinkedList<Note>();
                 
@@ -250,8 +240,6 @@ public class NotesetsDataSource {
             } while (cursor.moveToNext());
         }
 
-        Log.d("MYLOG", notesetBundles.toString());
-
         return notesetBundles;
     }
 
@@ -259,7 +247,6 @@ public class NotesetsDataSource {
         SparseArray<List<Note>> notesetBundle = new SparseArray<List<Note>>();
         
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + id;
-        Log.d("MYLOG", "db query: " + query);
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -270,14 +257,11 @@ public class NotesetsDataSource {
         if (cursor.moveToFirst()) {
             do {
                 Integer notesetId = Integer.parseInt(cursor.getString(0));
-                Log.d("MYLOG", "get noteset bundle noteset id: " + notesetId);
                 
                 // get all related notes inside this noteset
                 // TODO: make this query approach more efficient at some point, if necessary
                 String queryForRelatedNotes = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = " + id;
                 Cursor cursorForRelatedNotes = db.rawQuery(queryForRelatedNotes, null);
-                
-                Log.d("MYLOG", "db query2: " + queryForRelatedNotes);
                 
                 List<Note> notes = new LinkedList<Note>();
                 
@@ -299,8 +283,6 @@ public class NotesetsDataSource {
             } while (cursor.moveToNext());
         }
 
-        Log.d("MYLOG", notesetBundle.toString());
-
         return notesetBundle;
     }
 
@@ -309,7 +291,6 @@ public class NotesetsDataSource {
         HashMap<String, List<Object>> notesetBundle = new HashMap<String, List<Object>>();
         
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + id;
-        Log.d("MYLOG", "db query: " + query);
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -329,14 +310,10 @@ public class NotesetsDataSource {
                 
                 notesetBundle.put("noteset", notesets);
                 
-                Log.d("MYLOG", "get noteset bundle noteset id: " + noteset.getId());
-                
                 // get all related notes inside this noteset
                 // TODO: make this query approach more efficient at some point, if necessary
                 String queryForRelatedNotes = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = " + id;
                 Cursor cursorForRelatedNotes = db.rawQuery(queryForRelatedNotes, null);
-                
-                Log.d("MYLOG", "db query2: " + queryForRelatedNotes);
                 
                 List<Object> notes = new LinkedList<Object>();
                 
@@ -373,8 +350,6 @@ public class NotesetsDataSource {
                 
             } while (cursor.moveToNext());
         }
-
-        Log.d("MYLOG", notesetBundle.toString());
 
         return notesetBundle;
     }
@@ -448,8 +423,6 @@ public class NotesetsDataSource {
             } while (cursor.moveToNext());
         }
 
-        Log.d("MYLOG", notesets.toString());
-
         return notesets;
     }
     
@@ -509,8 +482,6 @@ public class NotesetsDataSource {
             } while (cursor.moveToNext());
         }
 
-        Log.d("MYLOG", notesets.toString());
-
         return notesets;
     }
     
@@ -542,8 +513,6 @@ public class NotesetsDataSource {
             } while (cursor.moveToNext());
         }
 
-        Log.d("MYLOG", notesets.toString());
-
         return notesets;
     }
     
@@ -568,8 +537,6 @@ public class NotesetsDataSource {
             } while (cursor.moveToNext());
         }
 
-        Log.d("MYLOG", noteset.toString());
-
         return noteset;
     }
 
@@ -582,10 +549,6 @@ public class NotesetsDataSource {
                 noteset.getName());
         contentValues.put(OtashuDatabaseHelper.COLUMN_EMOTION_ID,
                 noteset.getEmotion());
-
-        Log.d("MYLOG", "updating noteset name: " + noteset.getName());
-        Log.d("MYLOG", "updating noteset emotion: " + noteset.getEmotion());
-        Log.d("MYLOG", "sql update: " + OtashuDatabaseHelper.COLUMN_ID + "=" + noteset.getId());
         
         db.update(OtashuDatabaseHelper.TABLE_NOTESETS, contentValues, OtashuDatabaseHelper.COLUMN_ID + "=" + noteset.getId(), null);
         

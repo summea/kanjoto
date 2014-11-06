@@ -101,7 +101,6 @@ public class LabelsDataSource {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         
         // delete emotion
-        Log.d("OTASHULOG", "deleting emotion with id: " + id);
         db.delete(OtashuDatabaseHelper.TABLE_LABELS,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
     }
@@ -207,8 +206,6 @@ public class LabelsDataSource {
             } while (cursor.moveToNext());
         }
 
-        Log.d("MYLOG", labels.toString());
-
         return labels;
     }
 
@@ -239,8 +236,6 @@ public class LabelsDataSource {
                 labels.add(label.getId());
             } while (cursor.moveToNext());
         }
-
-        Log.d("MYLOG", labels.toString());
 
         return labels;
     }
@@ -278,8 +273,6 @@ public class LabelsDataSource {
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, label.getId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, label.getName());
         contentValues.put(OtashuDatabaseHelper.COLUMN_COLOR, label.getColor());
-        
-        Log.d("MYLOG", "sql update: " + OtashuDatabaseHelper.COLUMN_ID + "=" + label.getId());
         
         db.update(OtashuDatabaseHelper.TABLE_LABELS, contentValues, OtashuDatabaseHelper.COLUMN_ID + "=" + label.getId(), null);
 

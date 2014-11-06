@@ -99,7 +99,6 @@ public class EmotionsDataSource {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         
         // delete emotion
-        Log.d("OTASHULOG", "deleting emotion with id: " + id);
         db.delete(OtashuDatabaseHelper.TABLE_EMOTIONS,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
     }
@@ -202,8 +201,6 @@ public class EmotionsDataSource {
             } while (cursor.moveToNext());
         }
 
-        Log.d("MYLOG", emotions.toString());
-
         return emotions;
     }
 
@@ -234,8 +231,6 @@ public class EmotionsDataSource {
                 emotions.add(emotion.getId());
             } while (cursor.moveToNext());
         }
-
-        Log.d("MYLOG", emotions.toString());
 
         return emotions;
     }
