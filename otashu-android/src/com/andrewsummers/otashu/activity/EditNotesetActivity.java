@@ -80,7 +80,6 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
         // get noteset and notes information
         SparseArray<List<Note>> notesetBundle = new SparseArray<List<Note>>();
         
-        Log.d("MYLOG", "got list item id: " + getIntent().getExtras().getLong("list_id"));
         int notesetId = (int) getIntent().getExtras().getLong("list_id");
         
         List<Long> allNotesetsData = new LinkedList<Long>();
@@ -88,25 +87,15 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
 
         // get string version of returned noteset list
         allNotesetsData = ds.getAllNotesetListDBTableIds();
-        
-        Log.d("MYLOG", allNotesetsData.toString());
 
         // prevent crashes due to lack of database data
         if (allNotesetsData.isEmpty())
             allNotesetsData.add((long) 0);
-
-        Log.d("MYLOG", "notesetId:: " + notesetId);
         
         Long[] allNotesets = allNotesetsData
                 .toArray(new Long[allNotesetsData.size()]);
         
-        Log.d("MYLOG", "found noteset data: " + allNotesets[notesetId]);
-        
         notesetBundle = ds.getNotesetBundle(allNotesets[notesetId]);
-        
-        
-        Log.d("MYLOG", "noteset bundle: " + notesetBundle);
-        Log.d("MYLOG", "notesetId::: " + allNotesets[notesetId]);
         
         Noteset noteset = new Noteset();
         
@@ -132,21 +121,17 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
         List<Object> notes = editingNoteset.get("notes");
         //Note note = new Note();
         int sizeOfNotes = notes.size();
-        Log.d("MYLOG", String.valueOf(sizeOfNotes));
         
         for (int i = 0; i < notes.size(); i++) {
             Note note = new Note();
             note = (Note) notes.get(i);
             editNotes.add(note);
-            Log.d("MYLOG", "editing note: " + note.getId());
         }
 
         List<Emotion> allEmotions = new ArrayList<Emotion>();
         allEmotions = emotionsDataSource.getAllEmotions();
         
         emotionsDataSource.close();
-        
-        Log.d("MYLOG", "emotions: " + allEmotions);
 
         Spinner spinner = null;
 
@@ -287,8 +272,6 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
             int selectedEmotionValue = allEmotionIds.get(emotionSpinner.getSelectedItemPosition());
             
             emotionsDataSource.close();
-            
-            Log.d("MYLOG", "selected emotion value: " + selectedEmotionValue);
 
             notesetToInsert.setId(editNoteset.getId());
             notesetToInsert.setEmotion(selectedEmotionValue);
@@ -302,7 +285,6 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
                 Spinner lengthSpinner = (Spinner) findViewById(lengthSpinnerIds[i]);
                 
                 noteToInsert = editNotes.get(i);
-                Log.d("MYLOG", String.valueOf(noteValuesArray[spinner.getSelectedItemPosition()]));
                 noteToInsert.setNotevalue(Integer.parseInt(noteValuesArray[spinner.getSelectedItemPosition()]));
                 noteToInsert.setVelocity(Integer.parseInt(velocityValuesArray[velocitySpinner.getSelectedItemPosition()]));
                 noteToInsert.setLength(Float.parseFloat(lengthValuesArray[lengthSpinner.getSelectedItemPosition()]));
@@ -384,9 +366,6 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
     }
     
     private void saveNoteUpdates(View v, Note note) {
-
-        Log.d("MYLOG", Long.toString(note.getNotesetId()));
-        Log.d("MYLOG", Integer.toString(note.getNotevalue()));
         
         //  update note in database
         notesDataSource.updateNote(note);

@@ -10,7 +10,6 @@ import com.andrewsummers.otashu.model.Emotion;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -48,10 +47,7 @@ public class EditEmotionActivity extends Activity implements OnClickListener {
         emotionsDataSource = new EmotionsDataSource(this);
         emotionsDataSource.open();
         
-        Log.d("MYLOG", "got list item id: " + getIntent().getExtras().getLong("list_id"));
         int emotionId = (int) getIntent().getExtras().getLong("list_id");
-        
-        Log.d("MYLOG", "emotion id: " + emotionId);
         
         List<Emotion> allEmotions = new ArrayList<Emotion>();
         allEmotions = emotionsDataSource.getAllEmotions();
@@ -83,8 +79,6 @@ public class EditEmotionActivity extends Activity implements OnClickListener {
             
             emotionName = ((EditText) findViewById(R.id.edittext_emotion_name)).getText().toString();            
             emotionToUpdate.setName(emotionName.toString());
-            
-            Log.d("MYLOG", "new emotion: " + emotionName);
             
             // first insert new emotion (parent of all related notes)
             saveEmotionUpdates(v, emotionToUpdate);

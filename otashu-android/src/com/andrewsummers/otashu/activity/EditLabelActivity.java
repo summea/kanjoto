@@ -10,7 +10,6 @@ import com.andrewsummers.otashu.model.Label;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -48,10 +47,7 @@ public class EditLabelActivity extends Activity implements OnClickListener {
         labelsDataSource = new LabelsDataSource(this);
         labelsDataSource.open();
         
-        Log.d("MYLOG", "got list item id: " + getIntent().getExtras().getLong("list_id"));
         int labelId = (int) getIntent().getExtras().getLong("list_id");
-        
-        Log.d("MYLOG", "label id: " + labelId);
         
         List<Label> allLabels = new ArrayList<Label>();
         allLabels = labelsDataSource.getAllLabels();
@@ -90,8 +86,6 @@ public class EditLabelActivity extends Activity implements OnClickListener {
             
             labelToUpdate.setName(labelName.toString());
             labelToUpdate.setColor(labelColor.toString());
-            
-            Log.d("MYLOG", "new label: " + labelName);
             
             // first insert new label (parent of all related notes)
             saveLabelUpdates(v, labelToUpdate);

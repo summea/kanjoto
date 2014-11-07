@@ -10,7 +10,6 @@ import com.andrewsummers.otashu.model.Emotion;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -80,8 +79,6 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
             int selectedEmotionValue = allEmotionIds.get(emotionSpinner.getSelectedItemPosition());
             
             emotionsDataSource.close();
-            
-            Log.d("MYLOG", "selected emotion value: " + selectedEmotionValue);
 
             Bundle bundle = new Bundle();
             bundle.putInt("emotion_id", selectedEmotionValue);
