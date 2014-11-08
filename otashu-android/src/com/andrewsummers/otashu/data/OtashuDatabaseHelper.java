@@ -3,6 +3,7 @@ package com.andrewsummers.otashu.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * NotesetCollectionOpenHelper is an SQLiteOpenHelper that simplifies connection
@@ -15,7 +16,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Eclipse Public License: https://www.eclipse.org/legal/epl-v10.html
  */
 public class OtashuDatabaseHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     private static final String DATABASE_NAME = "otashu_collection.db";
 
     public static final String COLUMN_ID = "_id";
@@ -32,6 +33,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_POSITION = "position";
     
     public static final String TABLE_EMOTIONS = "emotions";
+    public static final String COLUMN_LABEL_ID = "label_id";
     
     public static final String TABLE_LABELS = "labels";
     public static final String COLUMN_COLOR = "color";
@@ -51,7 +53,8 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     
     private static final String CREATE_TABLE_EMOTIONS = "CREATE TABLE " + TABLE_EMOTIONS
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
-            + COLUMN_NAME + " text);";
+            + COLUMN_NAME + " text,"
+            + COLUMN_LABEL_ID + " integer);";
     
     private static final String CREATE_TABLE_LABELS = "CREATE TABLE " + TABLE_LABELS
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
@@ -94,10 +97,13 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Log.d("MYLOG", ">>> new database version: " + newVersion);
-        // Log.d("MYLOG", "updating database...");
+        Log.d("MYLOG", ">>> new database version: " + newVersion);
+        Log.d("MYLOG", "updating database...");
         
         // v3
-        // db.execSQL(CREATE_TABLE_LABELS);        
+        // db.execSQL(CREATE_TABLE_LABELS);
+        
+        // v4
+        // db.execSQL("ALTER TABLE " + TABLE_EMOTIONS + " ADD COLUMN " + COLUMN_LABEL_ID + " integer;");
     }
 }

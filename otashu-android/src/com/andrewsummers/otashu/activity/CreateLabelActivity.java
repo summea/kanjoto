@@ -20,7 +20,7 @@ import android.widget.Toast;
 public class CreateLabelActivity extends Activity implements OnClickListener {
     private Button buttonSave = null;
     private LabelsDataSource labelsDataSource;
-    private Label newlyInsertedLabel;
+    private Label newlyInsertedLabel = new Label();
 
     /**
      * onCreate override that provides label creation view to user .
@@ -101,7 +101,7 @@ public class CreateLabelActivity extends Activity implements OnClickListener {
     private void saveLabel(View v, Label label) {
 
         // save label in database
-        newlyInsertedLabel = labelsDataSource.createLabel(label);
+        setNewlyInsertedLabel(labelsDataSource.createLabel(label));
         
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
@@ -110,5 +110,13 @@ public class CreateLabelActivity extends Activity implements OnClickListener {
                 context.getResources().getString(R.string.label_saved),
                 duration);
         toast.show();
+    }
+
+    public Label getNewlyInsertedLabel() {
+        return newlyInsertedLabel;
+    }
+
+    public void setNewlyInsertedLabel(Label newlyInsertedLabel) {
+        this.newlyInsertedLabel = newlyInsertedLabel;
     }
 }

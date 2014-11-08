@@ -7,6 +7,8 @@
 - add label to "create emotion" activity
 - add label to "edit emotion" activity
 - add label to "view emotion details" activity
+- choose default playback instrument in settings
+- get spinner list of label options for emotion activities
 
 
 ## DONE:
@@ -114,7 +116,7 @@
 #### emotions
 - id
 - name
-- label_id?
+- label_id
 
 #### labels
 - id

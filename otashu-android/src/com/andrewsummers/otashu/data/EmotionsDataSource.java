@@ -30,7 +30,8 @@ public class EmotionsDataSource {
     // database table columns
     private String[] allColumns = {
             OtashuDatabaseHelper.COLUMN_ID,
-            OtashuDatabaseHelper.COLUMN_NAME
+            OtashuDatabaseHelper.COLUMN_NAME,
+            OtashuDatabaseHelper.COLUMN_LABEL_ID
     };
 
     /**
@@ -69,6 +70,7 @@ public class EmotionsDataSource {
     public Emotion createEmotion(Emotion emotion) {        
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, emotion.getName());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_LABEL_ID, emotion.getLabelId());
 
         long insertId = database
                 .insert(OtashuDatabaseHelper.TABLE_EMOTIONS, null,
@@ -123,8 +125,9 @@ public class EmotionsDataSource {
             do {
                 // create note objects based on note data from database
                 emotion = new Emotion();
-                emotion.setId(Integer.parseInt(cursor.getString(0)));
+                emotion.setId(cursor.getLong(0));
                 emotion.setName(cursor.getString(1));
+                emotion.setLabelId(cursor.getLong(2));
 
                 // add note string to list of strings
                 emotions.add(emotion);
@@ -167,7 +170,8 @@ public class EmotionsDataSource {
     private Emotion cursorToEmotion(Cursor cursor) {
         Emotion emotion = new Emotion();
         emotion.setId(cursor.getLong(0));
-        emotion.setName(cursor.getString(1));        
+        emotion.setName(cursor.getString(1));
+        emotion.setLabelId(cursor.getLong(2));
         return emotion;
     }
         
@@ -192,8 +196,9 @@ public class EmotionsDataSource {
             do {
                 // create emotion objects based on emotion data from database
                 emotion = new Emotion();
-                emotion.setId(Integer.parseInt(cursor.getString(0)));
+                emotion.setId(cursor.getLong(0));
                 emotion.setName(cursor.getString(1));
+                emotion.setId(cursor.getLong(2));
 
                 // add emotion string to list of strings
                 emotions.add(emotion.toString());
@@ -224,7 +229,9 @@ public class EmotionsDataSource {
             do {                
                 // create emotion objects based on emotion data from database
                 emotion = new Emotion();
-                emotion.setId(Long.parseLong(cursor.getString(0)));
+                emotion.setId(cursor.getLong(0));
+                emotion.setName(cursor.getString(1));
+                emotion.setLabelId(cursor.getLong(2));
                 
                 // add emotion to emotions list
                 emotions.add(emotion.getId());
@@ -249,8 +256,9 @@ public class EmotionsDataSource {
             do {
                 // create emotion objects based on emotion data from database
                 emotion = new Emotion();
-                emotion.setId(Integer.parseInt(cursor.getString(0)));
+                emotion.setId(cursor.getLong(0));
                 emotion.setName(cursor.getString(1));
+                emotion.setLabelId(cursor.getLong(2));
             } while (cursor.moveToNext());
         }
         
@@ -265,6 +273,7 @@ public class EmotionsDataSource {
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, emotion.getId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, emotion.getName());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_LABEL_ID, emotion.getLabelId());
         
         db.update(OtashuDatabaseHelper.TABLE_EMOTIONS, contentValues, OtashuDatabaseHelper.COLUMN_ID + "=" + emotion.getId(), null);
 

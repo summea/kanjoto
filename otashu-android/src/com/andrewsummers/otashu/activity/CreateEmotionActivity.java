@@ -20,7 +20,7 @@ import android.widget.Toast;
 public class CreateEmotionActivity extends Activity implements OnClickListener {
     private Button buttonSave = null;
     private EmotionsDataSource emotionsDataSource;
-    private Emotion newlyInsertedEmotion;
+    private Emotion newlyInsertedEmotion = new Emotion();
 
     /**
      * onCreate override that provides emotion creation view to user .
@@ -101,7 +101,7 @@ public class CreateEmotionActivity extends Activity implements OnClickListener {
     private void saveEmotion(View v, Emotion emotion) {
 
         // save emotion in database
-        newlyInsertedEmotion = emotionsDataSource.createEmotion(emotion);
+        setNewlyInsertedEmotion(emotionsDataSource.createEmotion(emotion));
         
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
@@ -110,5 +110,13 @@ public class CreateEmotionActivity extends Activity implements OnClickListener {
                 context.getResources().getString(R.string.emotion_saved),
                 duration);
         toast.show();
+    }
+
+    public Emotion getNewlyInsertedEmotion() {
+        return newlyInsertedEmotion;
+    }
+
+    public void setNewlyInsertedEmotion(Emotion newlyInsertedEmotion) {
+        this.newlyInsertedEmotion = newlyInsertedEmotion;
     }
 }

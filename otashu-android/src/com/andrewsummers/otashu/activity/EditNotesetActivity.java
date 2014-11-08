@@ -78,7 +78,6 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
         notesetIdInTable = getIntent().getExtras().getLong("menu_noteset_id");
         
         // get noteset and notes information
-        SparseArray<List<Note>> notesetBundle = new SparseArray<List<Note>>();
         
         int notesetId = (int) getIntent().getExtras().getLong("list_id");
         
@@ -94,8 +93,6 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
         
         Long[] allNotesets = allNotesetsData
                 .toArray(new Long[allNotesetsData.size()]);
-        
-        notesetBundle = ds.getNotesetBundle(allNotesets[notesetId]);
         
         Noteset noteset = new Noteset();
         
@@ -119,8 +116,6 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
         noteset = (Noteset) notesets.get(0);
         
         List<Object> notes = editingNoteset.get("notes");
-        //Note note = new Note();
-        int sizeOfNotes = notes.size();
         
         for (int i = 0; i < notes.size(); i++) {
             Note note = new Note();

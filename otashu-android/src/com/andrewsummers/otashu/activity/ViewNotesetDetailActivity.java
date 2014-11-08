@@ -38,15 +38,12 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
     private int key = 0;
     private int notesetId = 0;
     private long notesetIdInTable = 0;
-    //private HashMap<Integer, List<Note>> notesetBundle = new HashMap<Integer, List<Note>>();
-    //private SparseArray<List<Integer>> musicalKeys = new SparseArray<List<Integer>>();
     private SparseArray<List<Note>> notesetBundle = new SparseArray<List<Note>>();
     private Button buttonPlayNoteset = null;
     private File path = Environment.getExternalStorageDirectory();
     private String externalDirectory = path.toString() + "/otashu/";
     private File musicSource = new File(externalDirectory + "otashu_preview.mid");
-    private MediaPlayer mediaPlayer = new MediaPlayer();
-    private int selectedListPosition = 0;
+    private MediaPlayer mediaPlayer = new MediaPlayer();    
     
     /**
      * onCreate override used to get details view.

@@ -15,6 +15,7 @@ import com.leff.midi.MidiFile;
 import com.leff.midi.MidiTrack;
 import com.leff.midi.event.NoteOff;
 import com.leff.midi.event.NoteOn;
+import com.leff.midi.event.ProgramChange;
 import com.leff.midi.event.meta.Tempo;
 import com.leff.midi.event.meta.TimeSignature;
 
@@ -226,14 +227,17 @@ public class GenerateMusicActivity extends Activity {
         MidiTrack tempoTrack = new MidiTrack();
         MidiTrack noteTrack = new MidiTrack();
         
-        TimeSignature ts = new TimeSignature();        
+        TimeSignature ts = new TimeSignature();
         ts.setTimeSignature(4, 4, TimeSignature.DEFAULT_METER, TimeSignature.DEFAULT_DIVISION);
         
         Tempo t = new Tempo();
         t.setBpm(120);
         
+        ProgramChange pc = new ProgramChange(0, 0, 60);
+        
         tempoTrack.insertEvent(ts);
         tempoTrack.insertEvent(t);
+        tempoTrack.insertEvent(pc);
         
         int currentTotalNoteLength = 480;
         
