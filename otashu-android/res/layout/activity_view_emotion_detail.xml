@@ -24,5 +24,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+        
+    <TextView
+        android:id="@+id/emotion_detail_label_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/emotion_detail_label_label"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold" />
+        
+    <TextView
+        android:id="@+id/emotion_detail_label_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </LinearLayout>

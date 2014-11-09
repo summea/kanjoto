@@ -40,12 +40,12 @@ public class DatabaseDumperActivity extends Activity {
         
         EditText debugText = (EditText) findViewById(R.id.debug_text);
         
-        debugText.setText(debugText.getText().toString() + "Table: Emotions\n" + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NAME + "\n");
+        debugText.setText(debugText.getText().toString() + "Table: Emotions\n" + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NAME + "|" + OtashuDatabaseHelper.COLUMN_LABEL_ID + "\n");
         
         for (Emotion emotion : allEmotions) {
             
             String newText = debugText.getText().toString();
-            newText += emotion.getId() + "|" + emotion.getName() + "\n";
+            newText += emotion.getId() + "|" + emotion.getName() + "|" + emotion.getLabelId() + "\n";
             
             debugText.setText(newText);
         }

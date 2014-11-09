@@ -26,6 +26,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp" />
+        
+    <TextView
+        android:id="@+id/spinner_instrument_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/spinner_instrument_label" />
+        
+    <Spinner
+        android:id="@+id/spinner_instrument"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp" />
 		
     <Button
         android:id="@+id/button_go"

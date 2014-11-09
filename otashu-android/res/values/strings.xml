@@ -35,7 +35,9 @@
     <string name="edit_emotion_title">Edit Emotion</string>
     <string name="edit_label_title">Edit Label</string>
     <string name="edit_noteset_title">Edit Noteset</string>
+    <string name="emotion_detail_label_label">Label</string>
     <string name="emotion_detail_name_label">Name</string>
+    <string name="emotion_label_label">Label</string>
     <string name="emotion_name_label">Name</string>
     <string name="emotion_saved">emotion saved</string>
     <string name="generate_music_placeholder">Playing music...</string>
@@ -63,6 +65,8 @@
     <string name="pref_general_category">General</string>
     
     <string name="spinner_emotion_label">Emotion</string>
+    <string name="spinner_emotion_label_label">Label</string>
+    <string name="spinner_instrument_label">Instrument</string>
     <string name="spinner_notevalue_label">Note</string>
     <string name="spinner_note2_label">Note 2</string>
     <string name="spinner_note3_label">Note 3</string>

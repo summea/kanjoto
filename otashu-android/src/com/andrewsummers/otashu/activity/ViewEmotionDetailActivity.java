@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
+import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.model.Emotion;
 
 import android.app.Activity;
@@ -52,10 +53,12 @@ public class ViewEmotionDetailActivity extends Activity {
         emotion = ds.getEmotion(allEmotions[emotionId]);
         
         ds.close();
-        
-        Log.d("MYLOG", allEmotionsData.toString());
+        LabelsDataSource lds = new LabelsDataSource(this);
 
         TextView emotionName = (TextView) findViewById(R.id.emotion_detail_name_value);
         emotionName.setText(emotion.getName());
+        
+        TextView emotionLabel = (TextView) findViewById(R.id.emotion_detail_label_value);
+        emotionLabel.setText(lds.getLabel(emotion.getLabelId()).getName());
     }
 }

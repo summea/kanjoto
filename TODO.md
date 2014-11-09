@@ -3,7 +3,6 @@
 ## TODO:
 - look into using graphics for note playback visualization
 - implement second stage of Apprentice logic ("no" response -> update Apprentice knowledge)
-- add label to emotions database table
 - add label to "create emotion" activity
 - add label to "edit emotion" activity
 - add label to "view emotion details" activity
@@ -12,6 +11,8 @@
 
 
 ## DONE:
+- 20141108: change instrument in "choose emotion" activity
+- 20141107: added label to emotions database table
 - 20141101: connected "edit noteset" menu item in "noteset details" activity to actual noteset id
 - 20141101: connected "delete noteset" menu item in "noteset details" activity to actual noteset id
 - 20141031: added "edit noteset" menu item when viewing noteset details

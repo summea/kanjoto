@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="instrument_labels_array">
+        <item>Acoustic Grand Piano</item>
+        <item>Bright Acoustic Piano</item>
+        <item>Electric Grand Piano</item>
+        <item>Honky-tonk Piano</item>
+        <item>Electric Piano 1</item>
+        <item>Electric Piano 2</item>
+        <item>Harpsichord</item>
+        <item>Clavinet</item>
+        <item>Celesta</item>
+        <item>Glockenspiel</item>
+        <item>Music Box</item>
+        <item>Vibraphone</item>
+        <item>Marimba</item>
+        <item>Xylophone</item>
+        <item>Tubular Bells</item>
+        <item>Dulcimer</item>
+    </string-array>
+    <integer-array name="instrument_values_array">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+    </integer-array>    
+</resources>

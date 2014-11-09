@@ -230,8 +230,6 @@ public class EmotionsDataSource {
                 // create emotion objects based on emotion data from database
                 emotion = new Emotion();
                 emotion.setId(cursor.getLong(0));
-                emotion.setName(cursor.getString(1));
-                emotion.setLabelId(cursor.getLong(2));
                 
                 // add emotion to emotions list
                 emotions.add(emotion.getId());

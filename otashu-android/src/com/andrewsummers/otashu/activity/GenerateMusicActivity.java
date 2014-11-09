@@ -33,6 +33,7 @@ public class GenerateMusicActivity extends Activity {
 
     private GLSurfaceView mGLView;
     
+    int selectedInstrumentId = 0;
     File path = Environment.getExternalStorageDirectory();
     String externalDirectory = path.toString() + "/otashu/";
     File musicSource = new File(externalDirectory + "otashu.mid");
@@ -76,6 +77,11 @@ public class GenerateMusicActivity extends Activity {
         // as the ContentView for this Activity.
         mGLView = new PlaybackGLSurfaceView(this);
         setContentView(mGLView);
+        
+        // get selected instrument_id from spinner
+        Bundle bundle = getIntent().getExtras();
+        selectedInstrumentId = bundle.getInt("instrument_id");
+        Log.d("MYLOG", "selected instrument: " + selectedInstrumentId);
         
         // TODO: double-check this section later
         
@@ -199,7 +205,7 @@ public class GenerateMusicActivity extends Activity {
         
         // get selected emotion_id from spinner
         Bundle bundle = getIntent().getExtras();
-        int selectedEmotionValue = bundle.getInt("emotion_id");
+        int selectedEmotionValue = bundle.getInt("emotion_id");        
         
         NotesetsDataSource ds = new NotesetsDataSource(this);
         allNotesetBundles = ds.getAllNotesetBundles(selectedEmotionValue);
@@ -233,7 +239,8 @@ public class GenerateMusicActivity extends Activity {
         Tempo t = new Tempo();
         t.setBpm(120);
         
-        ProgramChange pc = new ProgramChange(0, 0, 60);
+        // set instrument type
+        ProgramChange pc = new ProgramChange(0, 0, selectedInstrumentId);
         
         tempoTrack.insertEvent(ts);
         tempoTrack.insertEvent(t);

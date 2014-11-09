@@ -5,15 +5,19 @@ import java.util.List;
 
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
+import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.model.Emotion;
+import com.andrewsummers.otashu.model.Label;
 
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 /**
@@ -58,6 +62,26 @@ public class EditEmotionActivity extends Activity implements OnClickListener {
         
         EditText emotionNameText = (EditText) findViewById(R.id.edittext_emotion_name);
         emotionNameText.setText(allEmotions.get(emotionId).getName());
+        
+        LabelsDataSource lds = new LabelsDataSource(this);
+        
+        List<Label> allLabels = new ArrayList<Label>();
+        allLabels = lds.getAllLabels();        
+        
+        Spinner spinner = null;
+
+        // locate next spinner in layout
+        spinner = (Spinner) findViewById(R.id.spinner_emotion_label);
+        
+        // create array adapter for list of emotions
+        ArrayAdapter<Label> labelsAdapter = new ArrayAdapter<Label>(this, android.R.layout.simple_spinner_item);
+        labelsAdapter.addAll(allLabels);
+        
+        // specify the default layout when list of choices appears
+        labelsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        
+        // apply this adapter to the spinner
+        spinner.setAdapter(labelsAdapter);
     }
 
     /**
