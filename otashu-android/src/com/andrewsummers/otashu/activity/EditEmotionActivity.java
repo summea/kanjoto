@@ -12,6 +12,7 @@ import com.andrewsummers.otashu.model.Label;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -65,8 +66,10 @@ public class EditEmotionActivity extends Activity implements OnClickListener {
         
         LabelsDataSource lds = new LabelsDataSource(this);
         
-        List<Label> allLabels = new ArrayList<Label>();
-        allLabels = lds.getAllLabels();        
+        List<String> allLabels = new ArrayList<String>();
+        allLabels = lds.getAllLabelListPreviews();        
+        
+        Label selectedLabel = lds.getLabel(editEmotion.getLabelId());
         
         Spinner spinner = null;
 
@@ -74,7 +77,7 @@ public class EditEmotionActivity extends Activity implements OnClickListener {
         spinner = (Spinner) findViewById(R.id.spinner_emotion_label);
         
         // create array adapter for list of emotions
-        ArrayAdapter<Label> labelsAdapter = new ArrayAdapter<Label>(this, android.R.layout.simple_spinner_item);
+        ArrayAdapter<String> labelsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
         labelsAdapter.addAll(allLabels);
         
         // specify the default layout when list of choices appears
@@ -82,6 +85,9 @@ public class EditEmotionActivity extends Activity implements OnClickListener {
         
         // apply this adapter to the spinner
         spinner.setAdapter(labelsAdapter);
+        //spinner.setSelection(editEmotion.getLabelId());
+        
+        spinner.setSelection(labelsAdapter.getPosition(selectedLabel.getName()));
     }
 
     /**
@@ -96,13 +102,19 @@ public class EditEmotionActivity extends Activity implements OnClickListener {
         case R.id.button_save:
             // gather emotion data from form
             String emotionName;
+            Spinner emotionLabel;
+
+            LabelsDataSource lds = new LabelsDataSource(this);
+            List<Long> allLabelIds = lds.getAllLabelListDBTableIds();
             
-            Emotion emotionToUpdate = new Emotion();
-            
+            Emotion emotionToUpdate = new Emotion();            
             emotionToUpdate.setId(editEmotion.getId());
             
-            emotionName = ((EditText) findViewById(R.id.edittext_emotion_name)).getText().toString();            
+            emotionName = ((EditText) findViewById(R.id.edittext_emotion_name)).getText().toString();
+            emotionLabel = (Spinner) findViewById(R.id.spinner_emotion_label);
+            
             emotionToUpdate.setName(emotionName.toString());
+            emotionToUpdate.setLabelId(allLabelIds.get(emotionLabel.getSelectedItemPosition()));
             
             // first insert new emotion (parent of all related notes)
             saveEmotionUpdates(v, emotionToUpdate);
