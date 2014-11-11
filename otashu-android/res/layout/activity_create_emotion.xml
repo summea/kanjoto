@@ -21,6 +21,17 @@
         android:id="@+id/edittext_emotion_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+        
+    <TextView
+        android:id="@+id/spinner_emotion_label_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/spinner_emotion_label_label" />
+
+    <Spinner
+        android:id="@+id/spinner_emotion_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/button_save"

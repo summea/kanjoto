@@ -3,12 +3,16 @@
 ## TODO:
 - look into using graphics for note playback visualization
 - implement second stage of Apprentice logic ("no" response -> update Apprentice knowledge)
-- add label to "create emotion" activity
+- finish fixing HashMap to SparseArray conversion
 - choose default playback instrument in settings
-- get spinner list of label options for emotion activities
+- save generated song to file
+- bookmark generated songs
+- clean up emotion details activity formatting
 
 
 ## DONE:
+- 20141110: added label to "create emotion" activity
+- 20141110: get spinner list of label options for emotion activities
 - 20141109: added label to "edit emotion" activity
 - 20141109: added label to "view emotion details" activity
 - 20141108: change instrument in "choose emotion" activity

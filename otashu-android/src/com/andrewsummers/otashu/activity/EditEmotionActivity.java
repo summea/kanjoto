@@ -12,7 +12,6 @@ import com.andrewsummers.otashu.model.Label;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -84,9 +83,7 @@ public class EditEmotionActivity extends Activity implements OnClickListener {
         labelsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         
         // apply this adapter to the spinner
-        spinner.setAdapter(labelsAdapter);
-        //spinner.setSelection(editEmotion.getLabelId());
-        
+        spinner.setAdapter(labelsAdapter);        
         spinner.setSelection(labelsAdapter.getPosition(selectedLabel.getName()));
     }
 

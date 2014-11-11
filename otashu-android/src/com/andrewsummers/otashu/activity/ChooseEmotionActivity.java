@@ -1,7 +1,6 @@
 package com.andrewsummers.otashu.activity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.andrewsummers.otashu.R;
@@ -11,7 +10,6 @@ import com.andrewsummers.otashu.model.Emotion;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
