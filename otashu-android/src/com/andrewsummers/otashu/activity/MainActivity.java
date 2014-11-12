@@ -109,6 +109,9 @@ public class MainActivity extends Activity implements OnClickListener {
         case R.id.database_dumper:
             intent = new Intent(this, DatabaseDumperActivity.class);
             break;
+        case R.id.view_bookmarks:
+            intent = new Intent(this, ViewAllBookmarksActivity.class);
+            break;
         }
         
         startActivity(intent);

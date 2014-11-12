@@ -15,4 +15,7 @@
     <item
         android:id="@+id/database_dumper"
         android:title="@string/menu_button_database_dumper" />
+    <item
+        android:id="@+id/view_bookmarks"
+        android:title="@string/menu_button_bookmarks" />
 </menu>

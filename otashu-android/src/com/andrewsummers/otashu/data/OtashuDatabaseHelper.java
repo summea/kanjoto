@@ -16,7 +16,7 @@ import android.util.Log;
  * Eclipse Public License: https://www.eclipse.org/legal/epl-v10.html
  */
 public class OtashuDatabaseHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
     private static final String DATABASE_NAME = "otashu_collection.db";
 
     public static final String COLUMN_ID = "_id";
@@ -37,6 +37,9 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     
     public static final String TABLE_LABELS = "labels";
     public static final String COLUMN_COLOR = "color";
+    
+    public static final String TABLE_BOOKMARKS = "bookmarks";
+    public static final String COLUMN_SERIALIZED_VALUE = "serialized_value";
 
     private static final String CREATE_TABLE_NOTESETS = "CREATE TABLE " + TABLE_NOTESETS
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
@@ -60,6 +63,11 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
             + COLUMN_NAME + " text, "
             + COLUMN_COLOR + " text);";
+    
+    private static final String CREATE_TABLE_BOOKMARKS = "CREATE TABLE " + TABLE_BOOKMARKS
+            + " (" + COLUMN_ID + " integer primary key autoincrement, "
+            + COLUMN_NAME + " text,"
+            + COLUMN_SERIALIZED_VALUE + " text);";
 
     /**
      * NotesetCollectionOpenHelper constructor.
@@ -83,6 +91,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_NOTES);
         db.execSQL(CREATE_TABLE_EMOTIONS);
         db.execSQL(CREATE_TABLE_LABELS);
+        db.execSQL(CREATE_TABLE_BOOKMARKS);
     }
 
     /**
@@ -105,5 +114,8 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         
         // v4
         // db.execSQL("ALTER TABLE " + TABLE_EMOTIONS + " ADD COLUMN " + COLUMN_LABEL_ID + " integer;");
+        
+        // v5
+        db.execSQL(CREATE_TABLE_BOOKMARKS);
     }
 }

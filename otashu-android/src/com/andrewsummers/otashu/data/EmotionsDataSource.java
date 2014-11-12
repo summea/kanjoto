@@ -198,7 +198,7 @@ public class EmotionsDataSource {
                 emotion = new Emotion();
                 emotion.setId(cursor.getLong(0));
                 emotion.setName(cursor.getString(1));
-                emotion.setId(cursor.getLong(2));
+                emotion.setLabelId(cursor.getLong(2));
 
                 // add emotion string to list of strings
                 emotions.add(emotion.toString());

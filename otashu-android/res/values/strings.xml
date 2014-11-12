@@ -4,6 +4,8 @@
     <string name="apprentice_title">Apprentice</string>
     <string name="menu_title">otashu</string>
     
+    <string name="bookmark_detail_name_label">Name</string>
+    <string name="bookmark_detail_serialized_value_label">Serialized Value</string>
     <string name="button_apprentice">Apprentice</string>
     <string name="button_cancel">Cancel</string>
     <string name="button_choose_emotion">Choose Emotion</string>
@@ -48,6 +50,7 @@
     <string name="label_name">Name</string>
     <string name="label_saved">Label saved!</string>
     
+    <string name="menu_button_bookmarks">Bookmarks</string>
     <string name="menu_button_create_emotion">New</string>
     <string name="menu_button_create_label">New</string>
     <string name="menu_button_create_noteset">New</string>
@@ -83,6 +86,7 @@
     
     <string name="view_all_notesets_title">View All Notesets</string>
     
+    <string name="view_bookmark_detail_title">Bookmark Details</string>
     <string name="view_emotion_detail_title">Emotion Details</string>
     <string name="view_label_detail_title">Label Details</string>
     <string name="view_noteset_detail_title">Noteset Details</string>

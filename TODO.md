@@ -8,6 +8,8 @@
 - save generated song to file
 - bookmark generated songs
 - clean up emotion details activity formatting
+- clean up bookmark details activity formatting
+- add bookmark button to "choose emotion" activity
 
 
 ## DONE:
