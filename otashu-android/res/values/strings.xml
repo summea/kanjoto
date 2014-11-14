@@ -7,6 +7,7 @@
     <string name="bookmark_detail_name_label">Name</string>
     <string name="bookmark_detail_serialized_value_label">Serialized Value</string>
     <string name="button_apprentice">Apprentice</string>
+    <string name="button_bookmark">Bookmark</string>
     <string name="button_cancel">Cancel</string>
     <string name="button_choose_emotion">Choose Emotion</string>
     <string name="button_create_emotion">New Emotion</string>

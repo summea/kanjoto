@@ -116,6 +116,6 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         // db.execSQL("ALTER TABLE " + TABLE_EMOTIONS + " ADD COLUMN " + COLUMN_LABEL_ID + " integer;");
         
         // v5
-        db.execSQL(CREATE_TABLE_BOOKMARKS);
+        // db.execSQL(CREATE_TABLE_BOOKMARKS);
     }
 }

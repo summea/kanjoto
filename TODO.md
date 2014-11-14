@@ -151,3 +151,5 @@
     - randomly choose from list of "noteset bundles"
   - Approach 2:
     - randomly query database for notesets and notes based on given emotion
+- serializedValue is a serialized value of notesets (with the following properties):
+  notevalue:velocity:length:position|

@@ -20,6 +20,7 @@ import com.leff.midi.event.meta.Tempo;
 import com.leff.midi.event.meta.TimeSignature;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
@@ -160,8 +161,10 @@ public class GenerateMusicActivity extends Activity {
         HashMap<Integer, List<Note>> allNotesets = gatherRelatedEmotions();
         
         List<Note> notes = new ArrayList<Note>();
-        
+
         notes = logicA(allNotesets);
+        
+        final List<Note> finalNotes = notes;
         
         /*
         // original logic
@@ -191,6 +194,11 @@ public class GenerateMusicActivity extends Activity {
         mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer aMediaPlayer) {
+                Intent output = new Intent();
+                String serializedFinalNotes = serializeNotes(finalNotes);
+                Log.d("MYLOG", serializedFinalNotes);
+                output.putExtra("serialized notes", serializedFinalNotes);
+                setResult(RESULT_OK, output);
                 finish();
             }
         });
@@ -293,6 +301,8 @@ public class GenerateMusicActivity extends Activity {
         } catch (IOException e) {
             Log.d("MYLOG", e.getStackTrace().toString());
         }
+        
+        serializeNotes(notes);
     }
     
     public void playMusic(File musicSource) {
@@ -387,7 +397,38 @@ public class GenerateMusicActivity extends Activity {
                 
             }
         }
-        
+
         return notes;
+    }
+    
+    public String serializeNotes(List<Note> notes) {
+        String outerDelimiter = "|";
+        String innerDelimiter = ":";
+        StringBuilder serializedNotes = new StringBuilder();
+        
+        /*
+         * serialized file format:
+         * notevalue:velocity:length:position|
+         */
+        
+        for (Note note : notes) {
+            serializedNotes.append(note.getNotevalue());
+            serializedNotes.append(innerDelimiter);
+            serializedNotes.append(note.getVelocity());
+            serializedNotes.append(innerDelimiter);
+            serializedNotes.append(note.getLength());
+            serializedNotes.append(innerDelimiter);
+            serializedNotes.append(note.getLength());
+            serializedNotes.append(outerDelimiter);
+        }
+        
+        Log.d("MYLOG", serializedNotes.toString());
+        return serializedNotes.toString();
+    }
+    
+    public int saveLastGeneratedNotes() {
+        
+        
+        return 0;
     }
 }

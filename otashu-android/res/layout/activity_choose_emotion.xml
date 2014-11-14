@@ -40,6 +40,12 @@
         android:layout_marginBottom="20dp" />
 		
     <Button
+        android:id="@+id/button_bookmark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_bookmark" />
+        
+    <Button
         android:id="@+id/button_go"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

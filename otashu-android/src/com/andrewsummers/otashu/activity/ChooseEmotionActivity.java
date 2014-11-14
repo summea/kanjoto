@@ -10,6 +10,7 @@ import com.andrewsummers.otashu.model.Emotion;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -19,6 +20,7 @@ import android.widget.Spinner;
 public class ChooseEmotionActivity extends Activity implements OnClickListener {
 
     private Button buttonGo = null;
+    private Button buttonBookmark = null;
     
     /**
      * onCreate override that provides emotion-choose view to user.
@@ -34,7 +36,9 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
         setContentView(R.layout.activity_choose_emotion);
 
         // add listeners to buttons
-        // have to cast to Button in this case
+        buttonBookmark = (Button) findViewById(R.id.button_bookmark);
+        buttonBookmark.setOnClickListener(this);
+        
         buttonGo = (Button) findViewById(R.id.button_go);
         buttonGo.setOnClickListener(this);
         
@@ -79,7 +83,6 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
 
         switch (v.getId()) {
         case R.id.button_go:
-            
             EmotionsDataSource emotionsDataSource = new EmotionsDataSource(this);
             emotionsDataSource.open();
 
@@ -100,8 +103,21 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
 
             intent = new Intent(this, GenerateMusicActivity.class);
             intent.putExtras(bundle);            
-            startActivity(intent);
+            startActivityForResult(intent, 1);
             break;
+        case R.id.button_bookmark:
+            // save last generated noteset as a bookmark
+            
+            break;
+        }
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                Log.d("MYLOG", "serialized notes: " + data.getStringExtra("serialized_notes"));
+            }
         }
     }
 }
