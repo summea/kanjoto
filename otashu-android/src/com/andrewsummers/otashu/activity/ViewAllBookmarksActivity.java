@@ -123,6 +123,11 @@ private int selectedListPosition = 0;
                 intent.putExtra("list_id", info.id);
                 startActivity(intent);
                 return true;
+            case R.id.context_menu_edit:
+                intent = new Intent(this, EditBookmarkActivity.class);
+                intent.putExtra("list_id", info.id);
+                startActivity(intent);
+                return true;
             case R.id.context_menu_delete:
                 Log.d("MYLOG", "confirming delete");
                 confirmDelete();

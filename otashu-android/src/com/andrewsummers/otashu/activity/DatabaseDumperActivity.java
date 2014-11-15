@@ -3,11 +3,13 @@ package com.andrewsummers.otashu.activity;
 import java.util.List;
 
 import com.andrewsummers.otashu.R;
+import com.andrewsummers.otashu.data.BookmarksDataSource;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.data.NotesDataSource;
 import com.andrewsummers.otashu.data.NotesetsDataSource;
 import com.andrewsummers.otashu.data.OtashuDatabaseHelper;
+import com.andrewsummers.otashu.model.Bookmark;
 import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.Label;
 import com.andrewsummers.otashu.model.Note;
@@ -26,6 +28,9 @@ public class DatabaseDumperActivity extends Activity {
         // get specific layout for content view
         setContentView(R.layout.activity_database_dumper);
         
+        BookmarksDataSource bds = new BookmarksDataSource(this);
+        List<Bookmark> allBookmarks = bds.getAllBookmarks();
+        
         NotesetsDataSource nsds = new NotesetsDataSource(this);
         List<Noteset> allNotesets = nsds.getAllNotesets();
         
@@ -39,6 +44,16 @@ public class DatabaseDumperActivity extends Activity {
         List<Label> allLabels = lds.getAllLabels();
         
         EditText debugText = (EditText) findViewById(R.id.debug_text);
+        
+        debugText.setText(debugText.getText().toString() + "Table: Bookmarks\n" + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NAME + "|" + OtashuDatabaseHelper.COLUMN_SERIALIZED_VALUE + "\n");
+        
+        for (Bookmark bookmark : allBookmarks) {
+            
+            String newText = debugText.getText().toString();
+            newText += bookmark.getId() + "|" + bookmark.getName() + "|" + bookmark.getSerializedValue() + "\n";
+            
+            debugText.setText(newText);
+        }
         
         debugText.setText(debugText.getText().toString() + "Table: Emotions\n" + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NAME + "|" + OtashuDatabaseHelper.COLUMN_LABEL_ID + "\n");
         

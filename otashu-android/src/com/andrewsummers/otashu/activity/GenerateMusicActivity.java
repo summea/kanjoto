@@ -195,9 +195,7 @@ public class GenerateMusicActivity extends Activity {
             @Override
             public void onCompletion(MediaPlayer aMediaPlayer) {
                 Intent output = new Intent();
-                String serializedFinalNotes = serializeNotes(finalNotes);
-                Log.d("MYLOG", serializedFinalNotes);
-                output.putExtra("serialized notes", serializedFinalNotes);
+                output.putExtra("serialized_notes", serializeNotes(finalNotes));
                 setResult(RESULT_OK, output);
                 finish();
             }

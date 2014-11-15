@@ -6,13 +6,15 @@
 - finish fixing HashMap to SparseArray conversion
 - choose default playback instrument in settings
 - save generated song to file
-- bookmark generated songs
 - clean up emotion details activity formatting
 - clean up bookmark details activity formatting
-- add bookmark button to "choose emotion" activity
+- play bookmark from "bookmark details" activity
+- play bookmark from "view all bookmarks" activity
 
 
 ## DONE:
+- 20141114: added "bookmark generated songs" feature
+- 20141114: added bookmark button to "choose emotion" activity
 - 20141110: added label to "create emotion" activity
 - 20141110: get spinner list of label options for emotion activities
 - 20141109: added label to "edit emotion" activity
@@ -120,6 +122,11 @@
 
 
 ## DATABASE:
+#### bookmarks
+- id
+- name
+- serialized_value
+
 #### emotions
 - id
 - name

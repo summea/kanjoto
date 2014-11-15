@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.andrewsummers.otashu.R;
+import com.andrewsummers.otashu.data.BookmarksDataSource;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
+import com.andrewsummers.otashu.model.Bookmark;
 import com.andrewsummers.otashu.model.Emotion;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,11 +19,13 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 public class ChooseEmotionActivity extends Activity implements OnClickListener {
 
     private Button buttonGo = null;
     private Button buttonBookmark = null;
+    private String lastSerializedNotes = "";
     
     /**
      * onCreate override that provides emotion-choose view to user.
@@ -107,7 +112,7 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
             break;
         case R.id.button_bookmark:
             // save last generated noteset as a bookmark
-            
+            save_bookmark();
             break;
         }
     }
@@ -117,7 +122,31 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 Log.d("MYLOG", "serialized notes: " + data.getStringExtra("serialized_notes"));
+                lastSerializedNotes = data.getStringExtra("serialized_notes");
             }
         }
+    }
+    
+    public int save_bookmark() {
+        Bookmark bookmark = new Bookmark();
+        bookmark.setName("Untitled");
+        bookmark.setSerializedValue(lastSerializedNotes);
+        saveBookmark(bookmark);
+        return 0;
+    }
+    
+    private void saveBookmark(Bookmark bookmark) {
+
+        // save bookmark in database
+        BookmarksDataSource bds = new BookmarksDataSource(this);
+        bds.createBookmark(bookmark);
+        
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context,
+                context.getResources().getString(R.string.bookmark_saved),
+                duration);
+        toast.show();
     }
 }

@@ -45,6 +45,7 @@
         <activity android:name="com.andrewsummers.otashu.activity.EditLabelActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.ViewAllBookmarksActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.ViewBookmarkDetailActivity" />
+        <activity android:name="com.andrewsummers.otashu.activity.EditBookmarkActivity" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

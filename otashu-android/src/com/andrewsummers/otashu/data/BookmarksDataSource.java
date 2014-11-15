@@ -12,6 +12,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 /**
  * BookmarksDataSource is a data source that provides database functionality for
@@ -72,16 +73,21 @@ public class BookmarksDataSource {
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, bookmark.getName());
         contentValues.put(OtashuDatabaseHelper.COLUMN_SERIALIZED_VALUE, bookmark.getSerializedValue());
 
-        long insertId = database
+        Log.d("MYLOG", contentValues.toString());
+        
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        
+        long insertId = db
                 .insert(OtashuDatabaseHelper.TABLE_BOOKMARKS, null,
                         contentValues);
 
-        Cursor cursor = database.query(
+        Cursor cursor = db.query(
                 OtashuDatabaseHelper.TABLE_BOOKMARKS, allColumns,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + insertId, null,
                 null, null, null);
 
         cursor.moveToFirst();
+        
         Bookmark newBookmark = cursorToBookmark(cursor);
         cursor.close();
         return newBookmark;

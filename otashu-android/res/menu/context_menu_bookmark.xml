@@ -4,6 +4,9 @@
         android:id="@+id/context_menu_view"
         android:title="@string/context_menu_view" />
     <item
+        android:id="@+id/context_menu_edit"
+        android:title="@string/context_menu_edit" />
+    <item
         android:id="@+id/context_menu_delete"
         android:title="@string/context_menu_delete" />
 </menu>
