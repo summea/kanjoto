@@ -1,42 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" 
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent">
     
-    <TextView
-        android:id="@+id/view_bookmark_detail_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/view_bookmark_detail_title"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp" >
+    
+        <TextView
+            android:id="@+id/view_bookmark_detail_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/view_bookmark_detail_title"
+            android:textSize="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp" />
 
-    <TextView
-        android:id="@+id/bookmark_detail_name_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/bookmark_detail_name_label"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/bookmark_detail_name_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bookmark_detail_name_label"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textStyle="bold" />
         
-    <TextView
-        android:id="@+id/bookmark_detail_name_value"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        <TextView
+            android:id="@+id/bookmark_detail_name_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_marginBottom="20dp" />
         
-    <TextView
-        android:id="@+id/bookmark_detail_serialized_value_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/bookmark_detail_serialized_value_label"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/bookmark_detail_serialized_value_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bookmark_detail_serialized_value_label"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textStyle="bold" />
         
-    <TextView
-        android:id="@+id/bookmark_detail_serialized_value_value"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        <TextView
+            android:id="@+id/bookmark_detail_serialized_value_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>
