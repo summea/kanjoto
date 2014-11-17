@@ -19,6 +19,7 @@
     <string name="button_go">Go</string>
     <string name="button_no">No</string>
     <string name="button_ok">OK</string>
+    <string name="button_play_bookmark">Play</string>
     <string name="button_play_noteset">Play</string>
     <string name="button_view_all_emotions">View All Emotions</string>
     <string name="button_view_all_notesets">View All Notesets</string>

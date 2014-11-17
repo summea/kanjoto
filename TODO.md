@@ -6,11 +6,12 @@
 - finish fixing HashMap to SparseArray conversion
 - choose default playback instrument in settings
 - save generated song to file
-- play bookmark from "bookmark details" activity
 - play bookmark from "view all bookmarks" activity
+- connect label color to emotion details activit
 
 
 ## DONE:
+- 20141116: added play bookmark from "bookmark details" activity
 - 20141115: cleaned up emotion details activity formatting
 - 20141115: cleaned up bookmark details activity formatting
 - 20141114: added "bookmark generated songs" feature

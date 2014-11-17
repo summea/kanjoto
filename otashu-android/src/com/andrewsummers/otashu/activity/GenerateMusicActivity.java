@@ -416,7 +416,7 @@ public class GenerateMusicActivity extends Activity {
             serializedNotes.append(innerDelimiter);
             serializedNotes.append(note.getLength());
             serializedNotes.append(innerDelimiter);
-            serializedNotes.append(note.getLength());
+            serializedNotes.append(note.getPosition());
             serializedNotes.append(outerDelimiter);
         }
         
