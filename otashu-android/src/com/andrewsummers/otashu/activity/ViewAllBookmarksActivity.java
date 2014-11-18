@@ -1,17 +1,23 @@
 package com.andrewsummers.otashu.activity;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.BookmarksDataSource;
 import com.andrewsummers.otashu.model.Bookmark;
+import com.andrewsummers.otashu.model.Note;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -21,13 +27,21 @@ import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class ViewAllBookmarksActivity extends ListActivity {
 
 private int selectedListPosition = 0;
+private String currentBookmarkSerializedValue = "";
+private Button buttonPlayBookmark = null;
+private File path = Environment.getExternalStorageDirectory();
+private String externalDirectory = path.toString() + "/otashu/";
+private File musicSource = new File(externalDirectory + "otashu_bookmark.mid");
+private MediaPlayer mediaPlayer = new MediaPlayer();
     
     /**
      * onCreate override used to gather and display a list of all bookmarks saved
@@ -118,6 +132,15 @@ private int selectedListPosition = 0;
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
         Intent intent = null;
         switch (item.getItemId()) {
+            case R.id.context_menu_play:
+                //intent = new Intent(this, ViewBookmarkDetailActivity.class);
+                //intent.putExtra("list_id", info.id);
+                //startActivity(intent);
+                
+                // play bookmark
+                play_bookmark(info.id);
+                
+                return true;
             case R.id.context_menu_view:
                 intent = new Intent(this, ViewBookmarkDetailActivity.class);
                 intent.putExtra("list_id", info.id);
@@ -246,5 +269,82 @@ private int selectedListPosition = 0;
 
         // register context menu
         registerForContextMenu(listView);
+    }
+    
+    void play_bookmark(long listId) {
+        
+        // TODO: get bookmark serialized value here
+        
+        int bookmarkId = (int) listId;
+        
+        Log.d("MYLOG", "bookmark id: " + bookmarkId);
+        
+        List<Long> allBookmarksData = new LinkedList<Long>();
+        BookmarksDataSource ds = new BookmarksDataSource(this);
+
+        allBookmarksData = ds.getAllBookmarkListDBTableIds();
+
+        // prevent crashes due to lack of database data
+        if (allBookmarksData.isEmpty())
+            allBookmarksData.add((long) 0);
+
+        
+        Long[] allBookmarks = allBookmarksData
+                .toArray(new Long[allBookmarksData.size()]);
+        
+        Bookmark bookmark = new Bookmark();
+        bookmark = ds.getBookmark(allBookmarks[bookmarkId]);
+        
+        ds.close();
+        
+        currentBookmarkSerializedValue = bookmark.getSerializedValue();
+        
+        Log.d("MYLOG", "note value: " + currentBookmarkSerializedValue);
+        
+        //List<String> notesFromString = Arrays.asList(currentBookmarkSerializedValue.split("\\|"));
+        String[] notesFromString = currentBookmarkSerializedValue.split("\\|");
+        List<Note> notes = new ArrayList<Note>();
+                    
+        
+        for (String nextNote : notesFromString) {
+            
+            Log.d("MYLOG", "note value: " + nextNote);
+                            
+            String[] itemsFromNotes = nextNote.split(":");
+            
+            Note note = new Note();
+            note.setNotevalue(Integer.parseInt(itemsFromNotes[0]));
+            note.setVelocity(Integer.parseInt(itemsFromNotes[1]));
+            note.setLength(Float.parseFloat(itemsFromNotes[2]));
+            note.setPosition(Integer.parseInt(itemsFromNotes[3]));
+            notes.add(note);
+        }
+        
+        GenerateMusicActivity generateMusic = new GenerateMusicActivity();
+        generateMusic.generateMusic(notes, musicSource);
+
+        // play generated notes for user
+        playMusic(musicSource);
+    }
+    
+    public void playMusic(File musicSource) {
+        // get media player ready
+        mediaPlayer = MediaPlayer.create(this, Uri.fromFile(musicSource));
+        
+        // play music
+        mediaPlayer.start();
+    }
+    
+    /**
+     * onBackPressed override used to stop playing music when done with activity
+     */
+    @Override
+    public void onBackPressed() {
+        Log.d("MYLOG", "stop playing music!");
+        
+        // stop playing music
+        mediaPlayer.stop();
+        
+        super.onBackPressed();
     }
 }
