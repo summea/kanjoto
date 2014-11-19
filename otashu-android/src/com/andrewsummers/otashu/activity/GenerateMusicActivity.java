@@ -203,6 +203,12 @@ public class GenerateMusicActivity extends Activity {
         
     }
 
+    /**
+     * Gather related notesets for a given emotion from datastore.
+     * Emotion selection is made via a bundle variable.
+     * 
+     * @return HashMap of notes related to given emotion
+     */
     public HashMap<Integer, List<Note>> gatherRelatedEmotions() {
         HashMap<Integer, List<Note>> allNotesetBundles = new HashMap<Integer, List<Note>>();
         Note emptyNote = new Note();
@@ -223,6 +229,13 @@ public class GenerateMusicActivity extends Activity {
         return allNotesetBundles;
     }
     
+    /**
+     * Get a random noteset from a HashMap of notesets.
+     * 
+     * @param notesets
+     *            HashMap of notesets from which to choose.
+     * @return List of notes related to chosen noteset.
+     */
     public List<Note> getRandomNoteset(HashMap<Integer, List<Note>> notesets) {
         List<Note> notes = new LinkedList<Note>();
         
@@ -235,6 +248,14 @@ public class GenerateMusicActivity extends Activity {
         return notes;
     }
     
+    /**
+     * Generate music and write results to a MIDI file.
+     * 
+     * @param notes
+     *            List<Note> of notes to write to file.
+     * @param musicSource
+     *            File location of musicSource file for writing. 
+     */
     public void generateMusic(List<Note> notes, File musicSource) {
         MidiTrack tempoTrack = new MidiTrack();
         MidiTrack noteTrack = new MidiTrack();
