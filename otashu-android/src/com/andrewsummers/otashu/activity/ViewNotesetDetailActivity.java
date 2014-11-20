@@ -17,6 +17,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -150,6 +151,10 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
         switch (v.getId()) {
         case R.id.button_play_noteset:
             
+            // disable play button while playing
+            buttonPlayNoteset = (Button) findViewById(R.id.button_play_noteset);
+            buttonPlayNoteset.setClickable(false);
+            
             List<Note> notes = new ArrayList<Note>();
             
             for (int i = 0; i < notesetBundle.get(key).size(); i++) {
@@ -164,6 +169,15 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
 
             // play generated notes for user
             playMusic(musicSource);
+            
+            // return to previous activity when done playing
+            mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer aMediaPlayer) {
+                    // enable play button again
+                    buttonPlayNoteset.setClickable(true);
+                }
+            });
             
             break;
         }
@@ -186,7 +200,7 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
         
         // stop playing music
         mediaPlayer.stop();
-        
+
         super.onBackPressed();
     }
     

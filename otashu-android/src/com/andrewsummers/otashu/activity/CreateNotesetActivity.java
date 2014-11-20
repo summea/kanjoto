@@ -15,6 +15,7 @@ import com.andrewsummers.otashu.model.Noteset;
 import android.app.Activity;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -114,7 +115,7 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
                             android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
-            spinner.setSelection(adapter.getPosition(String.valueOf("80")));  // start at 80 velocity
+            spinner.setSelection(adapter.getPosition(String.valueOf("100")));  // start at 80 velocity
         }
         
         int[] lengthSpinnerItems = {R.id.spinner_note1_length, R.id.spinner_note2_length, R.id.spinner_note3_length, R.id.spinner_note4_length};
@@ -223,6 +224,11 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
             break;
             
         case R.id.button_play_noteset:
+
+            // disable play button while playing
+            buttonPlayNoteset = (Button) findViewById(R.id.button_play_noteset);
+            buttonPlayNoteset.setClickable(false);
+
             List<Note> notes = new ArrayList<Note>();
             
             for (int i = 0; i < spinnerIds.length; i++) {
@@ -243,6 +249,15 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
 
             // play generated notes for user
             playMusic(musicSource);
+            
+            // return to previous activity when done playing
+            mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer aMediaPlayer) {
+                    // enable play button again
+                    buttonPlayNoteset.setClickable(true);
+                }
+            });
             
             break;
         }

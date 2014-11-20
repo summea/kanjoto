@@ -6,10 +6,11 @@
 - finish fixing HashMap to SparseArray conversion
 - choose default playback instrument in settings
 - save generated song to file
-- connect label color to emotion details activit
+- connect label color to emotion details activity
 
 
 ## DONE:
+- 20141119: prevent noteset from playing twice when "play" button pressed
 - 20141117: added play bookmark from "view all bookmarks" activity
 - 20141116: added play bookmark from "bookmark details" activity
 - 20141115: cleaned up emotion details activity formatting
