@@ -32,12 +32,6 @@ public class MainActivity extends Activity implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // database updates
-        // Context context = this;
-        // OtashuDatabaseHelper dbHelper = new OtashuDatabaseHelper(context);
-        // SQLiteDatabase db = dbHelper.getWritableDatabase();
-        // dbHelper.getWritableDatabase();
-        
         // set default preferences
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         

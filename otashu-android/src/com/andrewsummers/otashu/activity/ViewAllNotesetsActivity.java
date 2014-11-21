@@ -3,6 +3,7 @@ package com.andrewsummers.otashu.activity;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.andrewsummers.com.otashu.adapter.NotesetAdapter;
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.NotesetsDataSource;
 import com.andrewsummers.otashu.model.Note;
@@ -46,7 +47,11 @@ public class ViewAllNotesetsActivity extends ListActivity {
         super.onCreate(savedInstanceState);
 
         List<String> allNotesetsData = new LinkedList<String>();
+        List<Noteset> allNotesets = new LinkedList<Noteset>();
+        
         NotesetsDataSource ds = new NotesetsDataSource(this);
+        
+        allNotesets = ds.getAllNotesets();
 
         String[] noteLabelsArray = getResources().getStringArray(R.array.note_labels_array);
         String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
@@ -60,7 +65,8 @@ public class ViewAllNotesetsActivity extends ListActivity {
 
         // pass list data to adapter
         setListAdapter(new ArrayAdapter<String>(this, R.layout.list_noteset,
-                allNotesetsData));
+                 allNotesetsData));
+        //setListAdapter(new NotesetAdapter(this, allNotesets));
 
         ListView listView = getListView();
         listView.setTextFilterEnabled(true);
@@ -223,7 +229,7 @@ public class ViewAllNotesetsActivity extends ListActivity {
     @Override
     public void onResume() {
         super.onResume();
-
+/*
         List<String> allNotesetsData = new LinkedList<String>();
         NotesetsDataSource ds = new NotesetsDataSource(this);
 
@@ -262,5 +268,6 @@ public class ViewAllNotesetsActivity extends ListActivity {
         
         // register context menu
         registerForContextMenu(listView);
-    }
+        */
+    }    
 }
