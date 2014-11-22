@@ -2,14 +2,18 @@
 
 ## TODO:
 - look into using graphics for note playback visualization
+- noteset folders (lists by label or emotion)
+- connect label color to emotion details activity
 - implement second stage of Apprentice logic ("no" response -> update Apprentice knowledge)
 - finish fixing HashMap to SparseArray conversion
 - choose default playback instrument in settings
 - save generated song to file
-- connect label color to emotion details activity
+- create emotion fingerprint
 
 
 ## DONE:
+- 20141121: added custom adapter for list all notesets activity listview
+- 20141121: trying out a better way to get both notesets and related notes for "list all notesets" activity
 - 20141119: prevent noteset from playing twice when "play" button pressed
 - 20141117: added play bookmark from "view all bookmarks" activity
 - 20141116: added play bookmark from "bookmark details" activity

@@ -139,6 +139,42 @@ public class NotesDataSource {
 
         return notes;
     }
+    
+    /**
+     * Get all notes with specific noteset_id from database table.
+     * 
+     * @return List of Notes.
+     */
+    public List<Note> getAllNotes(long notesetId) {
+        List<Note> notes = new ArrayList<Note>();
+
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + "=" + notesetId;
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notes from database
+        Cursor cursor = db.rawQuery(query, null);
+
+        Note note = null;
+        if (cursor.moveToFirst()) {
+            do {
+                // create note objects based on note data from database
+                note = new Note();
+                note.setId(Integer.parseInt(cursor.getString(0)));
+                note.setNotesetId(cursor.getLong(1));
+                note.setNotevalue(cursor.getInt(2));
+                note.setVelocity(cursor.getInt(3));
+                note.setLength(cursor.getFloat(4));
+                note.setPosition(cursor.getInt(5));
+
+                // add note string to list of strings
+                notes.add(note);
+            } while (cursor.moveToNext());
+        }
+
+        return notes;
+    }
 
     /**
      * Access column data at current position of result.

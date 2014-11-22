@@ -5,9 +5,11 @@ import java.util.List;
 
 import com.andrewsummers.com.otashu.adapter.NotesetAdapter;
 import com.andrewsummers.otashu.R;
+import com.andrewsummers.otashu.data.NotesDataSource;
 import com.andrewsummers.otashu.data.NotesetsDataSource;
 import com.andrewsummers.otashu.model.Note;
 import com.andrewsummers.otashu.model.Noteset;
+import com.andrewsummers.otashu.model.NotesetNote;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -48,10 +50,23 @@ public class ViewAllNotesetsActivity extends ListActivity {
 
         List<String> allNotesetsData = new LinkedList<String>();
         List<Noteset> allNotesets = new LinkedList<Noteset>();
+        List<Note> relatedNotes = new LinkedList<Note>();
+        
+        List<NotesetNote> allNotesetsAndNotes = new LinkedList<NotesetNote>();
         
         NotesetsDataSource ds = new NotesetsDataSource(this);
+        NotesDataSource nds = new NotesDataSource(this);
         
         allNotesets = ds.getAllNotesets();
+        //allNotes = nds.getAllNotes();
+        
+        for (Noteset noteset : allNotesets) {
+            relatedNotes = nds.getAllNotes(noteset.getId());
+            NotesetNote notesetNote = new NotesetNote();            
+            notesetNote.setNoteset(noteset);
+            notesetNote.setNotes(relatedNotes);
+            allNotesetsAndNotes.add(notesetNote);
+        }
 
         String[] noteLabelsArray = getResources().getStringArray(R.array.note_labels_array);
         String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
@@ -64,9 +79,10 @@ public class ViewAllNotesetsActivity extends ListActivity {
             allNotesetsData.add("empty");
 
         // pass list data to adapter
-        setListAdapter(new ArrayAdapter<String>(this, R.layout.list_noteset,
-                 allNotesetsData));
+        //setListAdapter(new ArrayAdapter<String>(this, R.layout.list_noteset,
+                 //allNotesetsData));
         //setListAdapter(new NotesetAdapter(this, allNotesets));
+        setListAdapter(new NotesetAdapter(this, allNotesetsAndNotes));
 
         ListView listView = getListView();
         listView.setTextFilterEnabled(true);

@@ -8,12 +8,6 @@ import android.util.Log;
 /**
  * NotesetCollectionOpenHelper is an SQLiteOpenHelper that simplifies connection
  * access to application database.
- * 
- * Note: Data source based on tutorial by vogella
- * http://www.vogella.com/tutorials/AndroidSQLite/article.html
- * Licensed under: CC BY-NC-SA 3.0 DE:
- * http://creativecommons.org/licenses/by-nc-sa/3.0/de/deed.en
- * Eclipse Public License: https://www.eclipse.org/legal/epl-v10.html
  */
 public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 5;
