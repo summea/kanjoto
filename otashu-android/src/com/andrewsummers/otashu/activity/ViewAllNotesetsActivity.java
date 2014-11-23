@@ -82,23 +82,24 @@ public class ViewAllNotesetsActivity extends ListActivity {
         //setListAdapter(new ArrayAdapter<String>(this, R.layout.list_noteset,
                  //allNotesetsData));
         //setListAdapter(new NotesetAdapter(this, allNotesets));
-        setListAdapter(new NotesetAdapter(this, allNotesetsAndNotes));
+        //setListAdapter(new NotesetAdapter(this, allNotesetsAndNotes));
 
-        ListView listView = getListView();
+        final NotesetAdapter adapter = new NotesetAdapter(this, allNotesetsAndNotes);
+        
+        final ListView listView = getListView();
         listView.setTextFilterEnabled(true);
+        listView.setAdapter(adapter);
         
         // get individual noteset details
         listView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
-                
-                Log.d("MYLOG", "list item id: " + id);
-                
+
                 // launch details activity
                 Intent intent = new Intent(view.getContext(),
                         ViewNotesetDetailActivity.class);
-                
-                intent.putExtra("list_id", id);
+ 
+                intent.putExtra("list_id", adapter.getItemId(position));
                 startActivity(intent);
             }
         });

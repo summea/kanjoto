@@ -62,34 +62,12 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
         Log.d("MYLOG", "got list item id: " + getIntent().getExtras().getLong("list_id"));
         notesetId = (int) getIntent().getExtras().getLong("list_id");
         
-        List<Long> allNotesetsData = new LinkedList<Long>();
         NotesetsDataSource ds = new NotesetsDataSource(this);
-
-        // get string version of returned noteset list
-        allNotesetsData = ds.getAllNotesetListDBTableIds();
-        
-        Log.d("MYLOG", allNotesetsData.toString());
-
-        // prevent crashes due to lack of database data
-        if (allNotesetsData.isEmpty())
-            allNotesetsData.add((long) 0);
-
-        Log.d("MYLOG", "notesetId:: " + notesetId);
-        
-        Long[] allNotesets = allNotesetsData
-                .toArray(new Long[allNotesetsData.size()]);
-        
-        Log.d("MYLOG", "found noteset data: " + allNotesets[notesetId]);
-        
-        notesetIdInTable = allNotesets[notesetId];
         
         // get noteset and notes information        
-        notesetBundle = ds.getNotesetBundle(allNotesets[notesetId]);
-        
-        Log.d("MYLOG", "noteset bundle: " + notesetBundle);
-        Log.d("MYLOG", "notesetId::: " + allNotesets[notesetId]);
-        
-        Noteset noteset = ds.getNoteset(allNotesets[notesetId]);        
+        notesetBundle = ds.getNotesetBundle(notesetId);
+
+        Noteset noteset = ds.getNoteset(notesetId);        
         
         ds.close();
         
@@ -102,8 +80,7 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
         String[] noteLabelsArray = getResources().getStringArray(R.array.note_labels_array);
         String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
         
-        // conversion issues...
-        key = (int) (long) allNotesets[notesetId];
+        //key = notesetId;
         
         TextView emotionName = (TextView) findViewById(R.id.noteset_detail_emotion_value);
         emotionName.setText(emotion.getName());
@@ -123,7 +100,7 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
             note = (TextView) findViewById(textViewIds[i]);
             for (int j = 0; j < noteValuesArray.length; j++) {
                 // get actual note name (C3, D3, E3, etc.)
-                if (notesetBundle.get(key).get(i).getNotevalue() == Integer.valueOf(noteValuesArray[j])) {
+                if (notesetBundle.get(notesetId).get(i).getNotevalue() == Integer.valueOf(noteValuesArray[j])) {
                     note.setText(noteLabelsArray[j]);
                     break;
                 }
@@ -131,8 +108,7 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
         }
         
         try {
-            // add listeners to buttons
-            // have to cast to Button in this case    
+            // add listeners to buttons    
             buttonPlayNoteset = (Button) findViewById(R.id.button_play_noteset);
             buttonPlayNoteset.setOnClickListener(this);
         } catch (Exception e) {
@@ -196,10 +172,10 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
      */
     @Override
     public void onBackPressed() {
-        Log.d("MYLOG", "stop playing music!");
-        
-        // stop playing music
-        mediaPlayer.stop();
+        if (mediaPlayer.isPlaying()) {
+            // stop playing music
+            mediaPlayer.stop();
+        }
 
         super.onBackPressed();
     }

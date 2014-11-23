@@ -337,10 +337,10 @@ public class GenerateMusicActivity extends Activity {
      */
     @Override
     public void onBackPressed() {
-        Log.d("MYLOG", "stop playing music!");
-        
-        // stop playing music
-        mediaPlayer.stop();
+        if (mediaPlayer.isPlaying()) {
+            // stop playing music
+            mediaPlayer.stop();
+        }
         
         super.onBackPressed();
     }
@@ -446,8 +446,7 @@ public class GenerateMusicActivity extends Activity {
     }
     
     public int saveLastGeneratedNotes() {
-        
-        
+        // TODO        
         return 0;
     }
 }
