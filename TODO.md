@@ -12,6 +12,8 @@
 
 
 ## DONE:
+- 20141123: show note values as note names in "view all notesets" activity
+- 20141123: show noteset emotion in "view all notesets" activity list
 - 20141122: fixed noteset-view issue when choosing row outside array bounds in "view all notesets" activity
 - 20141121: added custom adapter for list all notesets activity listview
 - 20141121: trying out a better way to get both notesets and related notes for "list all notesets" activity

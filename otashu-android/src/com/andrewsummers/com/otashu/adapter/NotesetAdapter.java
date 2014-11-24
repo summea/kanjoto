@@ -1,9 +1,10 @@
 package com.andrewsummers.com.otashu.adapter;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.andrewsummers.otashu.R;
-import com.andrewsummers.otashu.model.NotesetNote;
+import com.andrewsummers.otashu.model.NotesetAndRelated;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,12 +16,10 @@ import android.widget.TextView;
 public class NotesetAdapter extends BaseAdapter {
 
     private Context mContext;
-    private LayoutInflater inflater;
-    private List<NotesetNote> notesetsAndNotes;
+    private List<NotesetAndRelated> notesetsAndNotes;
     
-    public NotesetAdapter(Context context, List<NotesetNote> allNotesetsAndNotes) {
+    public NotesetAdapter(Context context, List<NotesetAndRelated> allNotesetsAndNotes) {
         mContext = context;
-        inflater = LayoutInflater.from(context);
         notesetsAndNotes = allNotesetsAndNotes;
     }
     
@@ -44,15 +43,30 @@ public class NotesetAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = ((LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.row_noteset, null);
         }
-        TextView note1 = (TextView) convertView.findViewById(R.id.note_1);
-        note1.setText(Long.toString(notesetsAndNotes.get(position).getNotes().get(0).getNotevalue()));
-        TextView note2 = (TextView) convertView.findViewById(R.id.note_2);
-        note2.setText(Long.toString(notesetsAndNotes.get(position).getNotes().get(1).getNotevalue()));
-        TextView note3 = (TextView) convertView.findViewById(R.id.note_3);
-        note3.setText(Long.toString(notesetsAndNotes.get(position).getNotes().get(2).getNotevalue()));
-        TextView note4 = (TextView) convertView.findViewById(R.id.note_4);
-        note4.setText(Long.toString(notesetsAndNotes.get(position).getNotes().get(3).getNotevalue()));
         
+        TextView emotion = (TextView) convertView.findViewById(R.id.emotion);
+        emotion.setText(notesetsAndNotes.get(position).getEmotion().getName());
+        
+        int[] noteItems = {R.id.note_1, R.id.note_2, R.id.note_3, R.id.note_4};
+        TextView note = null;
+
+        // fill in note names for each note in each row of this custom list
+        for (int i = 0; i < noteItems.length; i++) {
+            note = (TextView) convertView.findViewById(noteItems[i]);
+            note.setText(getNoteName(notesetsAndNotes.get(position).getNotes().get(i).getNotevalue()));
+        }
+
         return convertView;
+    }
+    
+    public String getNoteName(int noteValue) {
+        String[] noteNamesArray = mContext.getResources().getStringArray(R.array.note_labels_array);
+        String[] noteValuesArray = mContext.getResources().getStringArray(R.array.note_values_array);
+        
+        // get array index position of note value (so we can get correct note name later)
+        int noteIndex = Arrays.asList(noteValuesArray).indexOf(String.valueOf(noteValue));
+
+        // return correct note name from note names array
+        return noteNamesArray[noteIndex];
     }
 }

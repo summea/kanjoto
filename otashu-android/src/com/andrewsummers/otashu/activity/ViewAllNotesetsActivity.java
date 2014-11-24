@@ -5,11 +5,13 @@ import java.util.List;
 
 import com.andrewsummers.com.otashu.adapter.NotesetAdapter;
 import com.andrewsummers.otashu.R;
+import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.NotesDataSource;
 import com.andrewsummers.otashu.data.NotesetsDataSource;
+import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.Note;
 import com.andrewsummers.otashu.model.Noteset;
-import com.andrewsummers.otashu.model.NotesetNote;
+import com.andrewsummers.otashu.model.NotesetAndRelated;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -26,7 +28,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -49,11 +50,13 @@ public class ViewAllNotesetsActivity extends ListActivity {
         super.onCreate(savedInstanceState);
 
         List<String> allNotesetsData = new LinkedList<String>();
-        List<Noteset> allNotesets = new LinkedList<Noteset>();
+        Emotion relatedEmotion;
+        List<Noteset> allNotesets = new LinkedList<Noteset>();        
         List<Note> relatedNotes = new LinkedList<Note>();
         
-        List<NotesetNote> allNotesetsAndNotes = new LinkedList<NotesetNote>();
+        List<NotesetAndRelated> allNotesetsAndNotes = new LinkedList<NotesetAndRelated>();
         
+        EmotionsDataSource eds = new EmotionsDataSource(this);
         NotesetsDataSource ds = new NotesetsDataSource(this);
         NotesDataSource nds = new NotesDataSource(this);
         
@@ -62,28 +65,21 @@ public class ViewAllNotesetsActivity extends ListActivity {
         
         for (Noteset noteset : allNotesets) {
             relatedNotes = nds.getAllNotes(noteset.getId());
-            NotesetNote notesetNote = new NotesetNote();            
-            notesetNote.setNoteset(noteset);
-            notesetNote.setNotes(relatedNotes);
-            allNotesetsAndNotes.add(notesetNote);
+            relatedEmotion = eds.getEmotion(noteset.getEmotion());
+            NotesetAndRelated notesetAndRelated = new NotesetAndRelated();
+            notesetAndRelated.setEmotion(relatedEmotion);
+            notesetAndRelated.setNoteset(noteset);
+            notesetAndRelated.setNotes(relatedNotes);
+            allNotesetsAndNotes.add(notesetAndRelated);
         }
 
-        String[] noteLabelsArray = getResources().getStringArray(R.array.note_labels_array);
-        String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
-        
-        // get string version of returned noteset list
-        allNotesetsData = ds.getAllNotesetListPreviews(noteLabelsArray, noteValuesArray);
+        // TODO: check if crash still happens when there is no database data...
         
         // prevent crashes due to lack of database data
-        if (allNotesetsData.isEmpty())
-            allNotesetsData.add("empty");
+        //if (allNotesetsData.isEmpty())
+            //allNotesetsData.add("empty");
 
         // pass list data to adapter
-        //setListAdapter(new ArrayAdapter<String>(this, R.layout.list_noteset,
-                 //allNotesetsData));
-        //setListAdapter(new NotesetAdapter(this, allNotesets));
-        //setListAdapter(new NotesetAdapter(this, allNotesetsAndNotes));
-
         final NotesetAdapter adapter = new NotesetAdapter(this, allNotesetsAndNotes);
         
         final ListView listView = getListView();

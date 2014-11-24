@@ -27,9 +27,7 @@ import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -37,7 +35,6 @@ public class ViewAllBookmarksActivity extends ListActivity {
 
 private int selectedListPosition = 0;
 private String currentBookmarkSerializedValue = "";
-private Button buttonPlayBookmark = null;
 private File path = Environment.getExternalStorageDirectory();
 private String externalDirectory = path.toString() + "/otashu/";
 private File musicSource = new File(externalDirectory + "otashu_bookmark.mid");

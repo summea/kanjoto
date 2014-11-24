@@ -2,7 +2,6 @@ package com.andrewsummers.otashu.activity;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import com.andrewsummers.otashu.R;
@@ -80,13 +79,12 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
         String[] noteLabelsArray = getResources().getStringArray(R.array.note_labels_array);
         String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
         
-        //key = notesetId;
+        // used for playback
+        key = notesetId;
         
         TextView emotionName = (TextView) findViewById(R.id.noteset_detail_emotion_value);
         emotionName.setText(emotion.getName());
-        
-        //String noteName = "C4";
-        
+
         int[] textViewIds = {
                 R.id.noteset_detail_note1,
                 R.id.noteset_detail_note2,
