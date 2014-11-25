@@ -36,21 +36,10 @@ public class ViewEmotionDetailActivity extends Activity {
         Log.d("MYLOG", "got list item id: " + getIntent().getExtras().getLong("list_id"));
         emotionId = (int) getIntent().getExtras().getLong("list_id");
         
-        List<Long> allEmotionsData = new LinkedList<Long>();
         EmotionsDataSource ds = new EmotionsDataSource(this);
-
-        allEmotionsData = ds.getAllEmotionListDBTableIds();
-
-        // prevent crashes due to lack of database data
-        if (allEmotionsData.isEmpty())
-            allEmotionsData.add((long) 0);
-
-        
-        Long[] allEmotions = allEmotionsData
-                .toArray(new Long[allEmotionsData.size()]);
         
         Emotion emotion = new Emotion();
-        emotion = ds.getEmotion(allEmotions[emotionId]);
+        emotion = ds.getEmotion(emotionId);
         
         ds.close();
         LabelsDataSource lds = new LabelsDataSource(this);

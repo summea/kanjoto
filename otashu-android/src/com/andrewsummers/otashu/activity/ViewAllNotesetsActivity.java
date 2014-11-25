@@ -6,9 +6,11 @@ import java.util.List;
 import com.andrewsummers.com.otashu.adapter.NotesetAdapter;
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
+import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.data.NotesDataSource;
 import com.andrewsummers.otashu.data.NotesetsDataSource;
 import com.andrewsummers.otashu.model.Emotion;
+import com.andrewsummers.otashu.model.Label;
 import com.andrewsummers.otashu.model.Note;
 import com.andrewsummers.otashu.model.Noteset;
 import com.andrewsummers.otashu.model.NotesetAndRelated;
@@ -49,25 +51,28 @@ public class ViewAllNotesetsActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        List<String> allNotesetsData = new LinkedList<String>();
         Emotion relatedEmotion;
+        Label relatedLabel;
         List<Noteset> allNotesets = new LinkedList<Noteset>();        
         List<Note> relatedNotes = new LinkedList<Note>();
         
         List<NotesetAndRelated> allNotesetsAndNotes = new LinkedList<NotesetAndRelated>();
         
         EmotionsDataSource eds = new EmotionsDataSource(this);
+        LabelsDataSource lds = new LabelsDataSource(this);
         NotesetsDataSource ds = new NotesetsDataSource(this);
         NotesDataSource nds = new NotesDataSource(this);
         
         allNotesets = ds.getAllNotesets();
         //allNotes = nds.getAllNotes();
         
-        for (Noteset noteset : allNotesets) {
+        for (Noteset noteset : allNotesets) {            
             relatedNotes = nds.getAllNotes(noteset.getId());
             relatedEmotion = eds.getEmotion(noteset.getEmotion());
+            relatedLabel = lds.getLabel(relatedEmotion.getLabelId());
             NotesetAndRelated notesetAndRelated = new NotesetAndRelated();
             notesetAndRelated.setEmotion(relatedEmotion);
+            notesetAndRelated.setLabel(relatedLabel);
             notesetAndRelated.setNoteset(noteset);
             notesetAndRelated.setNotes(relatedNotes);
             allNotesetsAndNotes.add(notesetAndRelated);

@@ -9,6 +9,7 @@ import java.util.List;
 public class NotesetAndRelated {
     
     private Emotion emotion = new Emotion();
+    private Label label = new Label();
     private Noteset noteset = new Noteset();
     private List<Note> notes = new ArrayList<Note>();
     
@@ -29,6 +30,25 @@ public class NotesetAndRelated {
      */
     public void setEmotion(Emotion emotion) {
         this.emotion = emotion;
+    }
+    
+    /**
+     * getLabel gets related Label
+     * 
+     * @return <code>Label</code> label object
+     */
+    public Label getLabel() {
+        return label;
+    }
+
+    /**
+     * setLabel sets label
+     * 
+     * @param label
+     *            New label object.
+     */
+    public void setLabel(Label label) {
+        this.label = label;
     }
     
     /**

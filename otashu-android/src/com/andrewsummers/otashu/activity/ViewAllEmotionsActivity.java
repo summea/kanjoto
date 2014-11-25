@@ -3,9 +3,18 @@ package com.andrewsummers.otashu.activity;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.andrewsummers.com.otashu.adapter.EmotionAdapter;
+import com.andrewsummers.com.otashu.adapter.NotesetAdapter;
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
+import com.andrewsummers.otashu.data.LabelsDataSource;
+import com.andrewsummers.otashu.data.NotesDataSource;
+import com.andrewsummers.otashu.data.NotesetsDataSource;
 import com.andrewsummers.otashu.model.Emotion;
+import com.andrewsummers.otashu.model.Label;
+import com.andrewsummers.otashu.model.Note;
+import com.andrewsummers.otashu.model.Noteset;
+import com.andrewsummers.otashu.model.EmotionAndRelated;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -43,25 +52,37 @@ public class ViewAllEmotionsActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        List<String> allEmotionsData = new LinkedList<String>();
-        EmotionsDataSource ds = new EmotionsDataSource(this);
+        Label relatedLabel = new Label();
+        List<Emotion> allEmotions = new LinkedList<Emotion>();
+        
+        List<EmotionAndRelated> allEmotionsAndRelated = new LinkedList<EmotionAndRelated>();
+        
+        EmotionsDataSource eds = new EmotionsDataSource(this);
+        LabelsDataSource lds = new LabelsDataSource(this);
+        
+        allEmotions = eds.getAllEmotions();
+        //allNotes = nds.getAllNotes();
+        
+        for (Emotion emotion : allEmotions) {
+            relatedLabel = lds.getLabel(emotion.getLabelId());
+            EmotionAndRelated emotionAndRelated = new EmotionAndRelated();
+            emotionAndRelated.setEmotion(emotion);
+            emotionAndRelated.setLabel(relatedLabel);
+            allEmotionsAndRelated.add(emotionAndRelated);
+        }
 
-        // get string version of returned emotion list
-        allEmotionsData = ds.getAllEmotionListPreviews();
-
+        // TODO: check if crash still happens when there is no database data...
+        
         // prevent crashes due to lack of database data
-        if (allEmotionsData.isEmpty())
-            allEmotionsData.add("empty");
-
-        String[] allEmotions = allEmotionsData
-                .toArray(new String[allEmotionsData.size()]);
+        //if (allNotesetsData.isEmpty())
+            //allNotesetsData.add("empty");
 
         // pass list data to adapter
-        setListAdapter(new ArrayAdapter<String>(this, R.layout.list_emotion,
-                allEmotions));
-
-        ListView listView = getListView();
+        final EmotionAdapter adapter = new EmotionAdapter(this, allEmotionsAndRelated);
+        
+        final ListView listView = getListView();
         listView.setTextFilterEnabled(true);
+        listView.setAdapter(adapter);
         
         // get individual emotion details
         listView.setOnItemClickListener(new OnItemClickListener() {
@@ -215,6 +236,7 @@ public class ViewAllEmotionsActivity extends ListActivity {
     public void onResume() {
         super.onResume();
 
+        /*
         List<String> allEmotionsData = new LinkedList<String>();
         EmotionsDataSource ds = new EmotionsDataSource(this);
 
@@ -253,5 +275,6 @@ public class ViewAllEmotionsActivity extends ListActivity {
 
         // register context menu
         registerForContextMenu(listView);
+        */
     }
 }
