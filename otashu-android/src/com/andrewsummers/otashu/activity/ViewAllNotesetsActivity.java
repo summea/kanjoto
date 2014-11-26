@@ -38,7 +38,9 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 public class ViewAllNotesetsActivity extends ListActivity {
     
-    private int selectedListPosition = 0;
+    private int selectedPositionInList = 0;
+    private NotesetAdapter adapter = null;
+    List<NotesetAndRelated> allNotesetsAndNotes = new LinkedList<NotesetAndRelated>();
     
     /**
      * onCreate override used to gather and display a list of all notesets saved
@@ -50,13 +52,14 @@ public class ViewAllNotesetsActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        fillList();
+    }
+    
+    public void fillList() {
         Emotion relatedEmotion;
         Label relatedLabel;
         List<Noteset> allNotesets = new LinkedList<Noteset>();        
         List<Note> relatedNotes = new LinkedList<Note>();
-        
-        List<NotesetAndRelated> allNotesetsAndNotes = new LinkedList<NotesetAndRelated>();
         
         EmotionsDataSource eds = new EmotionsDataSource(this);
         LabelsDataSource lds = new LabelsDataSource(this);
@@ -64,7 +67,6 @@ public class ViewAllNotesetsActivity extends ListActivity {
         NotesDataSource nds = new NotesDataSource(this);
         
         allNotesets = ds.getAllNotesets();
-        //allNotes = nds.getAllNotes();
         
         for (Noteset noteset : allNotesets) {            
             relatedNotes = nds.getAllNotes(noteset.getId());
@@ -85,11 +87,12 @@ public class ViewAllNotesetsActivity extends ListActivity {
             //allNotesetsData.add("empty");
 
         // pass list data to adapter
-        final NotesetAdapter adapter = new NotesetAdapter(this, allNotesetsAndNotes);
+        adapter = new NotesetAdapter(this, allNotesetsAndNotes);
         
         final ListView listView = getListView();
         listView.setTextFilterEnabled(true);
         listView.setAdapter(adapter);
+        
         
         // get individual noteset details
         listView.setOnItemClickListener(new OnItemClickListener() {
@@ -140,7 +143,7 @@ public class ViewAllNotesetsActivity extends ListActivity {
         super.onCreateContextMenu(menu, v, menuInfo);
         
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        selectedListPosition = info.position;
+        selectedPositionInList = info.position;
         
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.context_menu_noteset, menu);
@@ -177,18 +180,16 @@ public class ViewAllNotesetsActivity extends ListActivity {
             public void onClick(DialogInterface dialog, int id) {
                 // user clicked ok
                 // go ahead and delete noteset
-                
-                // get correct noteset id to delete
-                Log.d("MYLOG", "selected row item: " + selectedListPosition);
-                
-                Noteset notesetToDelete = getNotesetFromListPosition(selectedListPosition);
+
+                // get noteset id to delete (from chosen item in list)
+                Noteset notesetToDelete = allNotesetsAndNotes.get(selectedPositionInList).getNoteset();  
 
                 Log.d("MYLOG", "deleting noteset: " + notesetToDelete.getId());
                 deleteNoteset(notesetToDelete);
                 
-                // refresh activity to reflect changes
-                finish();
-                startActivity(getIntent());
+                // refresh list
+                adapter.removeItem(selectedPositionInList);
+                adapter.notifyDataSetChanged();
             }
         });
         builder.setNegativeButton(R.string.button_cancel,  new DialogInterface.OnClickListener() {
@@ -199,44 +200,7 @@ public class ViewAllNotesetsActivity extends ListActivity {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-    
-    public Noteset getNotesetFromListPosition(long rowId) {
-        
-        long notesetId = rowId;
-        
-        List<Long> allNotesetsData = new LinkedList<Long>();
-        NotesetsDataSource ds = new NotesetsDataSource(this);
-
-        // get string version of returned noteset list
-        allNotesetsData = ds.getAllNotesetListDBTableIds();
-        
-        Log.d("MYLOG", allNotesetsData.toString());
-
-        // prevent crashes due to lack of database data
-        if (allNotesetsData.isEmpty())
-            allNotesetsData.add((long) 0);
-
-        Log.d("MYLOG", "notesetId:: " + notesetId);
-        
-        Long[] allNotesets = allNotesetsData
-                .toArray(new Long[allNotesetsData.size()]);
-        
-        Log.d("MYLOG", "found noteset data: " + allNotesets[(int) notesetId]);
-        
-        // get noteset and notes information
-        SparseArray<List<Note>> notesetBundle = new SparseArray<List<Note>>();
-        notesetBundle = ds.getNotesetBundle(allNotesets[(int) notesetId]);
-        
-        Log.d("MYLOG", "noteset bundle: " + notesetBundle);
-        Log.d("MYLOG", "notesetId::: " + allNotesets[(int) notesetId]);
-        
-        Noteset noteset = ds.getNoteset(allNotesets[(int) notesetId]);        
-        
-        ds.close();
-        
-        return noteset;
-    }
+    }    
     
     public void deleteNoteset(Noteset noteset) {
         NotesetsDataSource ds = new NotesetsDataSource(this);
@@ -247,6 +211,11 @@ public class ViewAllNotesetsActivity extends ListActivity {
     @Override
     public void onResume() {
         super.onResume();
+        
+        // refresh list
+        adapter.clear();
+        fillList();
+
 /*
         List<String> allNotesetsData = new LinkedList<String>();
         NotesetsDataSource ds = new NotesetsDataSource(this);

@@ -49,6 +49,8 @@ public class NotesetAdapter extends BaseAdapter {
         emotion.setText(notesetsAndRelated.get(position).getEmotion().getName());
         if (notesetsAndRelated.get(position).getLabel().getColor() != null) {
             emotion.setBackgroundColor(Color.parseColor(notesetsAndRelated.get(position).getLabel().getColor()));
+        } else {
+            emotion.setBackgroundColor(Color.parseColor("#dddddd"));
         }
         
         int[] noteItems = {R.id.note_1, R.id.note_2, R.id.note_3, R.id.note_4};
@@ -72,5 +74,13 @@ public class NotesetAdapter extends BaseAdapter {
 
         // return correct note name from note names array
         return noteNamesArray[noteIndex];
+    }
+    
+    public Object removeItem(int position) {
+        return notesetsAndRelated.remove(position);
+    }
+
+    public void clear() {
+        notesetsAndRelated.clear();
     }
 }

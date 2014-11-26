@@ -12,6 +12,9 @@
 
 
 ## DONE:
+- 20141125: fixed get correct list item for noteset edit on "view all notesets" activity
+- 20141125: fixed get correct list item for noteset delete on "view all notesets" activity
+- 20141125: fixed unintentional "emotion paint" on "view all notesets" activity when scrolling
 - 20141123: show note values as note names in "view all notesets" activity
 - 20141123: show noteset emotion in "view all notesets" activity list
 - 20141122: fixed noteset-view issue when choosing row outside array bounds in "view all notesets" activity

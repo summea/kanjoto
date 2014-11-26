@@ -66,7 +66,7 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
         // get noteset and notes information        
         notesetBundle = ds.getNotesetBundle(notesetId);
 
-        Noteset noteset = ds.getNoteset(notesetId);        
+        Noteset noteset = ds.getNoteset(notesetId);
         
         ds.close();
         

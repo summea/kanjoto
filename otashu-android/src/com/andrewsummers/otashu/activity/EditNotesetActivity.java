@@ -81,31 +81,33 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
         
         int notesetId = (int) getIntent().getExtras().getLong("list_id");
         
-        List<Long> allNotesetsData = new LinkedList<Long>();
+        //List<Long> allNotesetsData = new LinkedList<Long>();
         NotesetsDataSource ds = new NotesetsDataSource(this);
 
         // get string version of returned noteset list
-        allNotesetsData = ds.getAllNotesetListDBTableIds();
+        //allNotesetsData = ds.getAllNotesetListDBTableIds();
 
+        /*
         // prevent crashes due to lack of database data
         if (allNotesetsData.isEmpty())
             allNotesetsData.add((long) 0);
         
         Long[] allNotesets = allNotesetsData
                 .toArray(new Long[allNotesetsData.size()]);
+        */
         
         Noteset noteset = new Noteset();
         
         // if requested id is from ViewAllNotesetsActivity, get actual (long) id from allNotesets array
         if (notesetIdInTable == 0) {
-            noteset = ds.getNoteset(allNotesets[notesetId]);
+            noteset = ds.getNoteset(notesetId);
         }
         // otherwise, requested id is an actual (long) id (no extra lookup necessary)
         else {
             noteset = ds.getNoteset(notesetIdInTable);
         }
         
-        editNoteset = ds.getNoteset(allNotesets[notesetId]);
+        editNoteset = ds.getNoteset(notesetId);
         
         
         // get data for noteset that is being edited
