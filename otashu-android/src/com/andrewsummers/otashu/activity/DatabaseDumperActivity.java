@@ -30,18 +30,23 @@ public class DatabaseDumperActivity extends Activity {
         
         BookmarksDataSource bds = new BookmarksDataSource(this);
         List<Bookmark> allBookmarks = bds.getAllBookmarks();
+        bds.close();
         
         NotesetsDataSource nsds = new NotesetsDataSource(this);
         List<Noteset> allNotesets = nsds.getAllNotesets();
+        nsds.close();
         
         NotesDataSource nds = new NotesDataSource(this);
         List<Note> allNotes = nds.getAllNotes();
+        nds.close();
         
         EmotionsDataSource eds = new EmotionsDataSource(this);
         List<Emotion> allEmotions = eds.getAllEmotions();
+        eds.close();
         
         LabelsDataSource lds = new LabelsDataSource(this);
         List<Label> allLabels = lds.getAllLabels();
+        lds.close();
         
         EditText debugText = (EditText) findViewById(R.id.debug_text);
         

@@ -23,7 +23,6 @@ import android.widget.Toast;
  */
 public class EditBookmarkActivity extends Activity implements OnClickListener {
     private Button buttonSave = null;
-    private BookmarksDataSource bookmarksDataSource;
     private Bookmark editBookmark;
 
     /**
@@ -45,15 +44,15 @@ public class EditBookmarkActivity extends Activity implements OnClickListener {
         buttonSave.setOnClickListener(this);
 
         // open data source handle
-        bookmarksDataSource = new BookmarksDataSource(this);
-        bookmarksDataSource.open();
+        BookmarksDataSource bds = new BookmarksDataSource(this);
+        bds.open();
         
         int bookmarkId = (int) getIntent().getExtras().getLong("list_id");
         
         List<Bookmark> allBookmarks = new ArrayList<Bookmark>();
-        allBookmarks = bookmarksDataSource.getAllBookmarks();
+        allBookmarks = bds.getAllBookmarks();
         
-        bookmarksDataSource.close();
+        bds.close();
 
         editBookmark = allBookmarks.get(bookmarkId);
         
@@ -101,7 +100,6 @@ public class EditBookmarkActivity extends Activity implements OnClickListener {
      */
     @Override
     protected void onResume() {
-        bookmarksDataSource.open();
         super.onResume();
     }
 
@@ -110,7 +108,6 @@ public class EditBookmarkActivity extends Activity implements OnClickListener {
      */
     @Override
     protected void onPause() {
-        bookmarksDataSource.close();
         super.onPause();
     }
 
@@ -125,7 +122,9 @@ public class EditBookmarkActivity extends Activity implements OnClickListener {
     private void saveBookmarkUpdates(View v, Bookmark bookmark) {
 
         // save bookmark in database
-        bookmarksDataSource.updateBookmark(bookmark);
+        BookmarksDataSource bds = new BookmarksDataSource(this);
+        bds.updateBookmark(bookmark);
+        bds.close();
         
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;

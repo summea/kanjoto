@@ -47,13 +47,13 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
         buttonGo = (Button) findViewById(R.id.button_go);
         buttonGo.setOnClickListener(this);
         
-        EmotionsDataSource emotionsDataSource = new EmotionsDataSource(this);
-        emotionsDataSource.open();
+        EmotionsDataSource eds = new EmotionsDataSource(this);
+        eds.open();
 
         List<Emotion> allEmotions = new ArrayList<Emotion>();
-        allEmotions = emotionsDataSource.getAllEmotions();
+        allEmotions = eds.getAllEmotions();
         
-        emotionsDataSource.close();
+        eds.close();
         
         Spinner spinner = null;
         
@@ -88,15 +88,15 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
 
         switch (v.getId()) {
         case R.id.button_go:
-            EmotionsDataSource emotionsDataSource = new EmotionsDataSource(this);
-            emotionsDataSource.open();
+            EmotionsDataSource eds = new EmotionsDataSource(this);
+            eds.open();
 
             List<Integer> allEmotionIds = new ArrayList<Integer>();
-            allEmotionIds = emotionsDataSource.getAllEmotionIds();
+            allEmotionIds = eds.getAllEmotionIds();
             
             Spinner emotionSpinner = (Spinner) findViewById(R.id.spinner_emotion);
             int selectedEmotionValue = allEmotionIds.get(emotionSpinner.getSelectedItemPosition());
-            emotionsDataSource.close();
+            eds.close();
 
             Spinner instrumentSpinner = (Spinner) findViewById(R.id.spinner_instrument);
             int[] allInstrumentIds = getResources().getIntArray(R.array.instrument_values_array);
@@ -140,6 +140,7 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
         // save bookmark in database
         BookmarksDataSource bds = new BookmarksDataSource(this);
         bds.createBookmark(bookmark);
+        bds.close();
         
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;

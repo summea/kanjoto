@@ -1,4 +1,4 @@
-package com.andrewsummers.com.otashu.adapter;
+package com.andrewsummers.otashu.adapter;
 
 import java.util.List;
 

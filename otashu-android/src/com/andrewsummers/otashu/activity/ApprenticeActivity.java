@@ -33,8 +33,6 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
     private File musicSource = new File(externalDirectory + "otashu_preview.mid");
     private MediaPlayer mediaPlayer = new MediaPlayer();
     private List<Note> notesToInsert = new ArrayList<Note>();
-    private NotesetsDataSource notesetsDataSource;
-    private NotesDataSource notesDataSource;
     private Noteset newlyInsertedNoteset = new Noteset();
     private Noteset notesetToInsert = new Noteset();
     private Emotion chosenEmotion = new Emotion();
@@ -45,14 +43,7 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
 
         // get specific layout for content view
         setContentView(R.layout.activity_apprentice);
-        
-        // open data source handle
-        notesetsDataSource = new NotesetsDataSource(this);
-        notesetsDataSource.open();
-        
-        notesDataSource = new NotesDataSource(this);
-        notesDataSource.open();
-        
+
         try {
             // add listeners to buttons    
             Button buttonNo = (Button) findViewById(R.id.button_yes);
@@ -108,6 +99,7 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
         // get random emotion
         EmotionsDataSource eds = new EmotionsDataSource(this);
         chosenEmotion = eds.getRandomEmotion();
+        eds.close();
         
         apprenticeText.setText("Does this sound " + chosenEmotion.getName() + "?");
     }
@@ -183,7 +175,9 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
     private void saveNoteset(View v, Noteset noteset) {
 
         // save noteset in database
-        newlyInsertedNoteset = notesetsDataSource.createNoteset(noteset);
+        NotesetsDataSource nds = new NotesetsDataSource(this);
+        newlyInsertedNoteset = nds.createNoteset(noteset);
+        nds.close();
 
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
@@ -200,7 +194,9 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
         Log.d("MYLOG", Integer.toString(note.getNotevalue()));
                 
         // save noteset in database
-        notesDataSource.createNote(note);
+        NotesDataSource nds = new NotesDataSource(this);
+        nds.createNote(note);
+        nds.close();
 
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;

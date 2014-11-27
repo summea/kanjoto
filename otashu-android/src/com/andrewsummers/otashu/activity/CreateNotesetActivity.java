@@ -33,9 +33,6 @@ import android.widget.Toast;
  */
 public class CreateNotesetActivity extends Activity implements OnClickListener {
     private Button buttonSave = null;
-    private EmotionsDataSource emotionsDataSource;
-    private NotesetsDataSource notesetsDataSource;
-    private NotesDataSource notesDataSource;
     private Noteset newlyInsertedNoteset;
     private Button buttonPlayNoteset = null;
     private File path = Environment.getExternalStorageDirectory();
@@ -62,19 +59,13 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
         buttonSave.setOnClickListener(this);
 
         // open data source handle
-        notesetsDataSource = new NotesetsDataSource(this);
-        notesetsDataSource.open();
-        
-        notesDataSource = new NotesDataSource(this);
-        notesDataSource.open();
-        
-        emotionsDataSource = new EmotionsDataSource(this);
-        emotionsDataSource.open();
+        EmotionsDataSource eds = new EmotionsDataSource(this);
+        eds.open();
 
         List<Emotion> allEmotions = new ArrayList<Emotion>();
-        allEmotions = emotionsDataSource.getAllEmotions();
+        allEmotions = eds.getAllEmotions();
         
-        emotionsDataSource.close();
+        eds.close();
 
         Spinner spinner = null;
 
@@ -184,11 +175,12 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
             
             // get select emotion's id
             
-            emotionsDataSource = new EmotionsDataSource(this);
-            emotionsDataSource.open();
+            EmotionsDataSource eds = new EmotionsDataSource(this);
+            eds.open();
 
             List<Integer> allEmotionIds = new ArrayList<Integer>();
-            allEmotionIds = emotionsDataSource.getAllEmotionIds();
+            allEmotionIds = eds.getAllEmotionIds();
+            eds.close();
             
             Spinner emotionSpinner = (Spinner) findViewById(R.id.spinner_emotion);
             int selectedEmotionValue = 0;
@@ -200,7 +192,7 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
                 Log.d("MYLOG", e.getStackTrace().toString());
             }
             
-            emotionsDataSource.close();
+            eds.close();
             
             notesetToInsert.setEmotion(selectedEmotionValue);
             
@@ -268,9 +260,6 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
      */
     @Override
     protected void onResume() {
-        emotionsDataSource.open();
-        notesetsDataSource.open();
-        notesDataSource.open();
         super.onResume();
     }
 
@@ -279,9 +268,6 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
      */
     @Override
     protected void onPause() {
-        emotionsDataSource.close();
-        notesetsDataSource.close();
-        notesDataSource.close();
         super.onPause();
     }
 
@@ -296,7 +282,9 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
     private void saveNoteset(View v, Noteset noteset) {
 
         // save noteset in database
-        newlyInsertedNoteset = notesetsDataSource.createNoteset(noteset);
+        NotesetsDataSource nds = new NotesetsDataSource(this);
+        newlyInsertedNoteset = nds.createNoteset(noteset);
+        nds.close();
 
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
@@ -310,8 +298,10 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
     private void saveNote(View v, Note note) {
 
         // save noteset in database
-        notesDataSource.createNote(note);
-
+        NotesDataSource nds = new NotesDataSource(this);
+        nds.createNote(note);
+        nds.close();
+        
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
 

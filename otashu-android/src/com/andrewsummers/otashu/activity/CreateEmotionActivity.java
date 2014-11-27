@@ -24,8 +24,7 @@ import android.widget.Toast;
  * create new emotions.
  */
 public class CreateEmotionActivity extends Activity implements OnClickListener {
-    private Button buttonSave = null;
-    private EmotionsDataSource emotionsDataSource;
+    private Button buttonSave = null;    
     private Emotion newlyInsertedEmotion = new Emotion();
 
     /**
@@ -46,14 +45,11 @@ public class CreateEmotionActivity extends Activity implements OnClickListener {
         buttonSave = (Button) findViewById(R.id.button_save);
         buttonSave.setOnClickListener(this);
 
-        // open data source handle
-        emotionsDataSource = new EmotionsDataSource(this);
-        emotionsDataSource.open();
-        
         LabelsDataSource lds = new LabelsDataSource(this);
         
         List<String> allLabels = new ArrayList<String>();
         allLabels = lds.getAllLabelListPreviews();
+        lds.close();
         
         Spinner spinner = null;
 
@@ -87,6 +83,7 @@ public class CreateEmotionActivity extends Activity implements OnClickListener {
             
             LabelsDataSource lds = new LabelsDataSource(this);
             List<Long> allLabelIds = lds.getAllLabelListDBTableIds();
+            lds.close();
             
             Emotion emotionToInsert = new Emotion();
             
@@ -109,7 +106,6 @@ public class CreateEmotionActivity extends Activity implements OnClickListener {
      */
     @Override
     protected void onResume() {
-        emotionsDataSource.open();
         super.onResume();
     }
 
@@ -118,7 +114,6 @@ public class CreateEmotionActivity extends Activity implements OnClickListener {
      */
     @Override
     protected void onPause() {
-        emotionsDataSource.close();
         super.onPause();
     }
 
@@ -133,7 +128,9 @@ public class CreateEmotionActivity extends Activity implements OnClickListener {
     private void saveEmotion(View v, Emotion emotion) {
 
         // save emotion in database
-        setNewlyInsertedEmotion(emotionsDataSource.createEmotion(emotion));
+        EmotionsDataSource eds = new EmotionsDataSource(this);
+        setNewlyInsertedEmotion(eds.createEmotion(emotion));
+        eds.close();
         
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;

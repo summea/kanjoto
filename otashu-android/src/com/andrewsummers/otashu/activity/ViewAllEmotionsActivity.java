@@ -3,9 +3,9 @@ package com.andrewsummers.otashu.activity;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.andrewsummers.com.otashu.adapter.EmotionAdapter;
-import com.andrewsummers.com.otashu.adapter.NotesetAdapter;
 import com.andrewsummers.otashu.R;
+import com.andrewsummers.otashu.adapter.EmotionAdapter;
+import com.andrewsummers.otashu.adapter.NotesetAdapter;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.data.NotesDataSource;

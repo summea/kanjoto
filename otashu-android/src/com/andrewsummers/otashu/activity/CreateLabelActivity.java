@@ -19,7 +19,6 @@ import android.widget.Toast;
  */
 public class CreateLabelActivity extends Activity implements OnClickListener {
     private Button buttonSave = null;
-    private LabelsDataSource labelsDataSource;
     private Label newlyInsertedLabel = new Label();
 
     /**
@@ -39,10 +38,6 @@ public class CreateLabelActivity extends Activity implements OnClickListener {
         // have to cast to Button in this case
         buttonSave = (Button) findViewById(R.id.button_save);
         buttonSave.setOnClickListener(this);
-
-        // open data source handle
-        labelsDataSource = new LabelsDataSource(this);
-        labelsDataSource.open();
     }
 
     /**
@@ -77,7 +72,6 @@ public class CreateLabelActivity extends Activity implements OnClickListener {
      */
     @Override
     protected void onResume() {
-        labelsDataSource.open();
         super.onResume();
     }
 
@@ -86,7 +80,6 @@ public class CreateLabelActivity extends Activity implements OnClickListener {
      */
     @Override
     protected void onPause() {
-        labelsDataSource.close();
         super.onPause();
     }
 
@@ -101,7 +94,9 @@ public class CreateLabelActivity extends Activity implements OnClickListener {
     private void saveLabel(View v, Label label) {
 
         // save label in database
-        setNewlyInsertedLabel(labelsDataSource.createLabel(label));
+        LabelsDataSource lds = new LabelsDataSource(this);
+        setNewlyInsertedLabel(lds.createLabel(label));
+        lds.close();
         
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
