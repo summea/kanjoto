@@ -39,7 +39,8 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 public class ViewAllEmotionsActivity extends ListActivity {
     
-    private int selectedListPosition = 0;
+    private int selectedPositionInList = 0;
+    private EmotionAdapter adapter = null;
     
     /**
      * onCreate override used to gather and display a list of all emotions saved
@@ -51,7 +52,10 @@ public class ViewAllEmotionsActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        fillList();
+    }
+    
+    public void fillList() {
         Label relatedLabel = new Label();
         List<Emotion> allEmotions = new LinkedList<Emotion>();
         
@@ -78,7 +82,7 @@ public class ViewAllEmotionsActivity extends ListActivity {
             //allNotesetsData.add("empty");
 
         // pass list data to adapter
-        final EmotionAdapter adapter = new EmotionAdapter(this, allEmotionsAndRelated);
+        adapter = new EmotionAdapter(this, allEmotionsAndRelated);
         
         final ListView listView = getListView();
         listView.setTextFilterEnabled(true);
@@ -135,7 +139,7 @@ public class ViewAllEmotionsActivity extends ListActivity {
         super.onCreateContextMenu(menu, v, menuInfo);
         
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        selectedListPosition = info.position;
+        selectedPositionInList = info.position;
         
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.context_menu_emotion, menu);
@@ -174,17 +178,16 @@ public class ViewAllEmotionsActivity extends ListActivity {
                 // go ahead and delete emotion
                 
                 // get correct emotion id to delete
-                Log.d("MYLOG", "selected row item: " + selectedListPosition);
+                Log.d("MYLOG", "selected row item: " + selectedPositionInList);
                 
-                Emotion emotionToDelete = getEmotionFromListPosition(selectedListPosition);
+                Emotion emotionToDelete = getEmotionFromListPosition(selectedPositionInList);
 
                 Log.d("MYLOG", "deleting emotion: " + emotionToDelete.getId());
                 deleteEmotion(emotionToDelete);
                 
-                // refresh activity to reflect changes
-                finish();
-                startActivity(getIntent());
-
+                // refresh list
+                adapter.removeItem(selectedPositionInList);
+                adapter.notifyDataSetChanged();
             }
         });
         builder.setNegativeButton(R.string.button_cancel,  new DialogInterface.OnClickListener() {
@@ -235,46 +238,9 @@ public class ViewAllEmotionsActivity extends ListActivity {
     @Override
     public void onResume() {
         super.onResume();
-
-        /*
-        List<String> allEmotionsData = new LinkedList<String>();
-        EmotionsDataSource ds = new EmotionsDataSource(this);
-
-        // get string version of returned emotion list
-        allEmotionsData = ds.getAllEmotionListPreviews();
-
-        // prevent crashes due to lack of database data
-        if (allEmotionsData.isEmpty())
-            allEmotionsData.add("empty");
-
-        String[] allEmotions = allEmotionsData
-                .toArray(new String[allEmotionsData.size()]);
-
-        // pass list data to adapter
-        setListAdapter(new ArrayAdapter<String>(this, R.layout.list_emotion,
-                allEmotions));
-
-        ListView listView = getListView();
-        listView.setTextFilterEnabled(true);
         
-        // get individual emotion details
-        listView.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
-                
-                Log.d("MYLOG", "list item id: " + id);
-                
-                // launch details activity
-                Intent intent = new Intent(view.getContext(),
-                        ViewEmotionDetailActivity.class);
-                
-                intent.putExtra("list_id", id);
-                startActivity(intent);
-            }
-        });
-
-        // register context menu
-        registerForContextMenu(listView);
-        */
+        // refresh list
+        adapter.clear();
+        fillList();
     }
 }

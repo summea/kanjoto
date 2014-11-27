@@ -9,9 +9,13 @@
 - choose default playback instrument in settings
 - save generated song to file
 - create emotion fingerprint
+- work on fixing database leaks
 
 
 ## DONE:
+- 20141126: added "infinite scroll" for "view all notesets" activity
+- 20141126: fixed get correct list item for emotion delete on "view all emotions" activity
+- 20141126: fixed get correct list item for emotion edit on "view all emotions" activity
 - 20141125: fixed get correct list item for noteset edit on "view all notesets" activity
 - 20141125: fixed get correct list item for noteset delete on "view all notesets" activity
 - 20141125: fixed unintentional "emotion paint" on "view all notesets" activity when scrolling

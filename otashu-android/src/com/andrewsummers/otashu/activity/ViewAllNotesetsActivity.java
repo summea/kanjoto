@@ -28,6 +28,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
@@ -41,6 +42,9 @@ public class ViewAllNotesetsActivity extends ListActivity {
     private int selectedPositionInList = 0;
     private NotesetAdapter adapter = null;
     List<NotesetAndRelated> allNotesetsAndNotes = new LinkedList<NotesetAndRelated>();
+    private int currentOffset = 0;
+    private int totalNotesetsAvailable = 0;
+    private int limit = 15;
     
     /**
      * onCreate override used to gather and display a list of all notesets saved
@@ -52,6 +56,11 @@ public class ViewAllNotesetsActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        NotesetsDataSource ds = new NotesetsDataSource(this);
+        
+        totalNotesetsAvailable = ds.getCount();
+
         fillList();
     }
     
@@ -66,50 +75,116 @@ public class ViewAllNotesetsActivity extends ListActivity {
         NotesetsDataSource ds = new NotesetsDataSource(this);
         NotesDataSource nds = new NotesDataSource(this);
         
-        allNotesets = ds.getAllNotesets();
+        totalNotesetsAvailable = ds.getCount();
         
-        for (Noteset noteset : allNotesets) {            
-            relatedNotes = nds.getAllNotes(noteset.getId());
-            relatedEmotion = eds.getEmotion(noteset.getEmotion());
-            relatedLabel = lds.getLabel(relatedEmotion.getLabelId());
-            NotesetAndRelated notesetAndRelated = new NotesetAndRelated();
-            notesetAndRelated.setEmotion(relatedEmotion);
-            notesetAndRelated.setLabel(relatedLabel);
-            notesetAndRelated.setNoteset(noteset);
-            notesetAndRelated.setNotes(relatedNotes);
-            allNotesetsAndNotes.add(notesetAndRelated);
-        }
-
-        // TODO: check if crash still happens when there is no database data...
-        
-        // prevent crashes due to lack of database data
-        //if (allNotesetsData.isEmpty())
-            //allNotesetsData.add("empty");
-
-        // pass list data to adapter
-        adapter = new NotesetAdapter(this, allNotesetsAndNotes);
-        
-        final ListView listView = getListView();
-        listView.setTextFilterEnabled(true);
-        listView.setAdapter(adapter);
-        
-        
-        // get individual noteset details
-        listView.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
-
-                // launch details activity
-                Intent intent = new Intent(view.getContext(),
-                        ViewNotesetDetailActivity.class);
- 
-                intent.putExtra("list_id", adapter.getItemId(position));
-                startActivity(intent);
+        if (currentOffset <= totalNotesetsAvailable) {
+            allNotesets = ds.getAllNotesets(limit, currentOffset);
+            
+            for (Noteset noteset : allNotesets) {
+                relatedNotes = nds.getAllNotes(noteset.getId());
+                relatedEmotion = eds.getEmotion(noteset.getEmotion());
+                relatedLabel = lds.getLabel(relatedEmotion.getLabelId());
+                NotesetAndRelated notesetAndRelated = new NotesetAndRelated();
+                notesetAndRelated.setEmotion(relatedEmotion);
+                notesetAndRelated.setLabel(relatedLabel);
+                notesetAndRelated.setNoteset(noteset);
+                notesetAndRelated.setNotes(relatedNotes);
+                allNotesetsAndNotes.add(notesetAndRelated);
             }
-        });
+    
+            // TODO: check if crash still happens when there is no database data...
+            
+            // prevent crashes due to lack of database data
+            //if (allNotesetsData.isEmpty())
+                //allNotesetsData.add("empty");
+    
+            // pass list data to adapter
+            adapter = new NotesetAdapter(this, allNotesetsAndNotes);
+            
+            final ListView listView = getListView();
+            listView.setTextFilterEnabled(true);
+            listView.setAdapter(adapter);
+            listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+                
+                @Override
+                public void onScrollStateChanged(AbsListView view, int scrollState) {
+                    // TODO Auto-generated method stub
+                    
+                }
+                
+                @Override
+                public void onScroll(AbsListView view, int firstVisibleItem,
+                        int visibleItemCount, int totalItemCount) {
+                    try {
+                        // if we've reached the end of the visible list, get more items (if available)
+                        if ((getListView().getLastVisiblePosition() == adapter.getCount() - 1)
+                            && (getListView().getChildAt(getListView().getChildCount() - 1).getBottom() <= getListView().getHeight())) {
+
+                            // get more items for list
+                            currentOffset += 5;
+                            addToList();
+                        }
+                    } catch (Exception e) {
+                        Log.d("MYLOG", e.getStackTrace().toString());
+                    }
+                }
+            });
+            
+            
+            // get individual noteset details
+            listView.setOnItemClickListener(new OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View view,
+                        int position, long id) {
+    
+                    // launch details activity
+                    Intent intent = new Intent(view.getContext(),
+                            ViewNotesetDetailActivity.class);
+     
+                    intent.putExtra("list_id", adapter.getItemId(position));
+                    startActivity(intent);
+                }
+            });
+            
+            // register context menu
+            registerForContextMenu(listView);
+        } else {
+            Log.d("MYLOG", "sorry, that's all of the available notesets...");
+        }
+    }
+    
+    public void addToList() {
+        Emotion relatedEmotion;
+        Label relatedLabel;
+        List<Noteset> allNotesets = new LinkedList<Noteset>();        
+        List<Note> relatedNotes = new LinkedList<Note>();
         
-        // register context menu
-        registerForContextMenu(listView);
+        EmotionsDataSource eds = new EmotionsDataSource(this);
+        LabelsDataSource lds = new LabelsDataSource(this);
+        NotesetsDataSource ds = new NotesetsDataSource(this);
+        NotesDataSource nds = new NotesDataSource(this);
+        
+        totalNotesetsAvailable = ds.getCount();
+        
+        if (currentOffset <= totalNotesetsAvailable) {
+            allNotesets = ds.getAllNotesets(limit, currentOffset);
+            
+            for (Noteset noteset : allNotesets) {
+                relatedNotes = nds.getAllNotes(noteset.getId());
+                relatedEmotion = eds.getEmotion(noteset.getEmotion());
+                relatedLabel = lds.getLabel(relatedEmotion.getLabelId());
+                NotesetAndRelated notesetAndRelated = new NotesetAndRelated();
+                notesetAndRelated.setEmotion(relatedEmotion);
+                notesetAndRelated.setLabel(relatedLabel);
+                notesetAndRelated.setNoteset(noteset);
+                notesetAndRelated.setNotes(relatedNotes);
+                //allNotesetsAndNotes.add(notesetAndRelated);
+                adapter.addItem(notesetAndRelated);
+            }
+            
+            adapter.notifyDataSetChanged();
+        } else {
+            Log.d("MYLOG", "sorry, that's all of the available notesets...");
+        }
     }
     
     @Override
@@ -213,48 +288,9 @@ public class ViewAllNotesetsActivity extends ListActivity {
         super.onResume();
         
         // refresh list
+        currentOffset = 0;
         adapter.clear();
+        adapter.notifyDataSetChanged();
         fillList();
-
-/*
-        List<String> allNotesetsData = new LinkedList<String>();
-        NotesetsDataSource ds = new NotesetsDataSource(this);
-
-        String[] noteLabelsArray = getResources().getStringArray(R.array.note_labels_array);
-        String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
-        
-        // get string version of returned noteset list
-        allNotesetsData = ds.getAllNotesetListPreviews(noteLabelsArray, noteValuesArray);
-        
-        // prevent crashes due to lack of database data
-        if (allNotesetsData.isEmpty())
-            allNotesetsData.add("empty");
-
-        // pass list data to adapter
-        setListAdapter(new ArrayAdapter<String>(this, R.layout.list_noteset,
-                allNotesetsData));
-
-        ListView listView = getListView();
-        listView.setTextFilterEnabled(true);
-        
-        // get individual noteset details
-        listView.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
-                
-                Log.d("MYLOG", "list item id: " + id);
-                
-                // launch details activity
-                Intent intent = new Intent(view.getContext(),
-                        ViewNotesetDetailActivity.class);
-                
-                intent.putExtra("list_id", id);
-                startActivity(intent);
-            }
-        });
-        
-        // register context menu
-        registerForContextMenu(listView);
-        */
     }    
 }

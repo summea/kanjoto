@@ -76,6 +76,10 @@ public class NotesetAdapter extends BaseAdapter {
         return noteNamesArray[noteIndex];
     }
     
+    public void addItem(NotesetAndRelated notesetAndRelatedToBeAdded) {
+        notesetsAndRelated.add(notesetAndRelatedToBeAdded);
+    }
+    
     public Object removeItem(int position) {
         return notesetsAndRelated.remove(position);
     }

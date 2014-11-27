@@ -53,4 +53,12 @@ public class EmotionAdapter extends BaseAdapter {
 
         return convertView;
     }
+    
+    public Object removeItem(int position) {
+        return emotionsAndRelated.remove(position);
+    }
+
+    public void clear() {
+        emotionsAndRelated.clear();
+    }
 }

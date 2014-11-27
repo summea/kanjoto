@@ -144,6 +144,43 @@ public class NotesetsDataSource {
 
         return notesets;
     }
+    
+    /**
+     * Get all notesets from database table.
+     * 
+     * @return List of Notesets.
+     */
+    public List<Noteset> getAllNotesets(int limit, int offset) {
+        List<Noteset> notesets = new ArrayList<Noteset>();
+
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS;
+        if (limit > 0)
+            query += " LIMIT " + limit;
+        if (offset > 0)
+            query += " OFFSET " + offset;
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notes from database
+        Cursor cursor = db.rawQuery(query, null);
+
+        Noteset noteset = null;
+        if (cursor.moveToFirst()) {
+            do {
+                // create note objects based on note data from database
+                noteset = new Noteset();
+                noteset.setId(Long.parseLong(cursor.getString(0)));
+                noteset.setName(cursor.getString(1));
+                noteset.setEmotion(Integer.parseInt(cursor.getString(2)));
+
+                // add note string to list of strings
+                notesets.add(noteset);
+            } while (cursor.moveToNext());
+        }
+
+        return notesets;
+    }
 
     /**
      * Get all notesets bundles from database table.
@@ -553,5 +590,21 @@ public class NotesetsDataSource {
         db.update(OtashuDatabaseHelper.TABLE_NOTESETS, contentValues, OtashuDatabaseHelper.COLUMN_ID + "=" + noteset.getId(), null);
         
         return noteset;
+    }
+
+    public int getCount() {
+        int count = 0;
+        
+        String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM " + OtashuDatabaseHelper.TABLE_NOTESETS;
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notesets from database
+        Cursor cursor = db.rawQuery(query, null);
+
+        count = cursor.getCount();
+        
+        return count;
     }
 }

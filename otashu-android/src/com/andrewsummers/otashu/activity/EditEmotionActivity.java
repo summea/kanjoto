@@ -53,15 +53,17 @@ public class EditEmotionActivity extends Activity implements OnClickListener {
         
         int emotionId = (int) getIntent().getExtras().getLong("list_id");
         
-        List<Emotion> allEmotions = new ArrayList<Emotion>();
-        allEmotions = emotionsDataSource.getAllEmotions();
+        //List<Emotion> allEmotions = new ArrayList<Emotion>();
+        //allEmotions = emotionsDataSource.getAllEmotions();
         
         emotionsDataSource.close();
 
-        editEmotion = allEmotions.get(emotionId);
+        //editEmotion = allEmotions.get(emotionId);
+        editEmotion = emotionsDataSource.getEmotion(emotionId);
         
         EditText emotionNameText = (EditText) findViewById(R.id.edittext_emotion_name);
-        emotionNameText.setText(allEmotions.get(emotionId).getName());
+        //emotionNameText.setText(allEmotions.get(emotionId).getName());
+        emotionNameText.setText(editEmotion.getName());
         
         LabelsDataSource lds = new LabelsDataSource(this);
         
