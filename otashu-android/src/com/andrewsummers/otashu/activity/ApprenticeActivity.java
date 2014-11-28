@@ -16,6 +16,7 @@ import com.andrewsummers.otashu.model.Noteset;
 import android.app.Activity;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -36,6 +37,7 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
     private Noteset newlyInsertedNoteset = new Noteset();
     private Noteset notesetToInsert = new Noteset();
     private Emotion chosenEmotion = new Emotion();
+    private Button buttonPlayNoteset = null;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -138,8 +140,22 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
             apprenticeAskProcess();
             break;
         case R.id.button_play_noteset:
+
+            // disable play button while playing
+            buttonPlayNoteset = (Button) findViewById(R.id.button_play_noteset);
+            buttonPlayNoteset.setClickable(false);
+
             // play generated notes for user
             playMusic(musicSource);
+            
+            // return to previous activity when done playing
+            mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer aMediaPlayer) {
+                    // enable play button again
+                    buttonPlayNoteset.setClickable(true);
+                }
+            });
             break;
         }
     }
@@ -160,8 +176,21 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
         // does generated noteset sounds like chosen emotion?
         askQuestion();
         
+        // disable play button while playing
+        buttonPlayNoteset = (Button) findViewById(R.id.button_play_noteset);
+        buttonPlayNoteset.setClickable(false);
+
         // play generated notes for user
         playMusic(musicSource);
+        
+        // return to previous activity when done playing
+        mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer aMediaPlayer) {
+                // enable play button again
+                buttonPlayNoteset.setClickable(true);
+            }
+        });
     }
     
     /**
@@ -212,10 +241,10 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
      */
     @Override
     public void onBackPressed() {
-        Log.d("MYLOG", "stop playing music!");
-        
-        // stop playing music
-        mediaPlayer.stop();
+        if (mediaPlayer.isPlaying()) {
+            // stop playing music
+            mediaPlayer.stop();
+        }
         
         super.onBackPressed();
     }

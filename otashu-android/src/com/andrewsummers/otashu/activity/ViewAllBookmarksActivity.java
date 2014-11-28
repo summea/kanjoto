@@ -6,12 +6,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.andrewsummers.otashu.R;
+import com.andrewsummers.otashu.adapter.BookmarkAdapter;
 import com.andrewsummers.otashu.data.BookmarksDataSource;
 import com.andrewsummers.otashu.model.Bookmark;
 import com.andrewsummers.otashu.model.Note;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -26,19 +28,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class ViewAllBookmarksActivity extends ListActivity {
 
-private int selectedListPosition = 0;
+private int selectedPositionInList = 0;
 private String currentBookmarkSerializedValue = "";
 private File path = Environment.getExternalStorageDirectory();
 private String externalDirectory = path.toString() + "/otashu/";
 private File musicSource = new File(externalDirectory + "otashu_bookmark.mid");
 private MediaPlayer mediaPlayer = new MediaPlayer();
+private BookmarkAdapter adapter = null;
     
     /**
      * onCreate override used to gather and display a list of all bookmarks saved
@@ -50,26 +53,27 @@ private MediaPlayer mediaPlayer = new MediaPlayer();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fillList();
+    }
+    
+    public void fillList() {
+        List<Bookmark> allBookmarks = new LinkedList<Bookmark>();
+        BookmarksDataSource bds = new BookmarksDataSource(this);
+        allBookmarks = bds.getAllBookmarks();
+        bds.close();
 
-        List<String> allBookmarksData = new LinkedList<String>();
-        BookmarksDataSource ds = new BookmarksDataSource(this);
-
-        // get string version of returned bookmark list
-        allBookmarksData = ds.getAllBookmarkListPreviews();
-
+        /*
         // prevent crashes due to lack of database data
         if (allBookmarksData.isEmpty())
             allBookmarksData.add("empty");
-
-        String[] allBookmarks = allBookmarksData
-                .toArray(new String[allBookmarksData.size()]);
+        */
 
         // pass list data to adapter
-        setListAdapter(new ArrayAdapter<String>(this, R.layout.list_bookmark,
-                allBookmarks));
+        adapter = new BookmarkAdapter(this, allBookmarks);
 
-        ListView listView = getListView();
+        final ListView listView = getListView();
         listView.setTextFilterEnabled(true);
+        listView.setAdapter(adapter);
         
         // get individual bookmark details
         listView.setOnItemClickListener(new OnItemClickListener() {
@@ -118,7 +122,7 @@ private MediaPlayer mediaPlayer = new MediaPlayer();
         super.onCreateContextMenu(menu, v, menuInfo);
         
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        selectedListPosition = info.position;
+        selectedPositionInList = info.position;
         
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.context_menu_bookmark, menu);
@@ -166,17 +170,24 @@ private MediaPlayer mediaPlayer = new MediaPlayer();
                 // go ahead and delete bookmark
                 
                 // get correct bookmark id to delete
-                Log.d("MYLOG", "selected row item: " + selectedListPosition);
+                Log.d("MYLOG", "selected row item: " + selectedPositionInList);
                 
-                Bookmark bookmarkToDelete = getBookmarkFromListPosition(selectedListPosition);
+                Bookmark bookmarkToDelete = getBookmarkFromListPosition(selectedPositionInList);
 
                 Log.d("MYLOG", "deleting bookmark: " + bookmarkToDelete.getId());
                 deleteBookmark(bookmarkToDelete);
                 
-                // refresh activity to reflect changes
-                finish();
-                startActivity(getIntent());
+                Context context = getApplicationContext();
+                int duration = Toast.LENGTH_SHORT;
 
+                Toast toast = Toast.makeText(context,
+                        context.getResources().getString(R.string.bookmark_deleted),
+                        duration);
+                toast.show();
+                
+                // refresh list
+                adapter.removeItem(selectedPositionInList);
+                adapter.notifyDataSetChanged();
             }
         });
         builder.setNegativeButton(R.string.button_cancel,  new DialogInterface.OnClickListener() {
@@ -194,10 +205,11 @@ private MediaPlayer mediaPlayer = new MediaPlayer();
         long bookmarkId = rowId;
         
         List<Long> allBookmarksData = new LinkedList<Long>();
-        BookmarksDataSource ds = new BookmarksDataSource(this);
+        BookmarksDataSource bds = new BookmarksDataSource(this);
 
         // get string version of returned bookmark list
-        allBookmarksData = ds.getAllBookmarkListDBTableIds();
+        allBookmarksData = bds.getAllBookmarkListDBTableIds();
+        bds.close();
         
         Log.d("MYLOG", allBookmarksData.toString());
 
@@ -211,61 +223,26 @@ private MediaPlayer mediaPlayer = new MediaPlayer();
         Log.d("MYLOG", "rowId: " + rowId);
         Log.d("MYLOG", "found bookmark data: " + allBookmarks[(int) bookmarkId]);
                 
-        Bookmark bookmark = ds.getBookmark(allBookmarks[(int) bookmarkId]);        
+        Bookmark bookmark = bds.getBookmark(allBookmarks[(int) bookmarkId]);        
         
-        ds.close();
+        bds.close();
         
         return bookmark;
     }
     
     public void deleteBookmark(Bookmark bookmark) {
-        BookmarksDataSource ds = new BookmarksDataSource(this);
-        ds.deleteBookmark(bookmark);
-        ds.close();
+        BookmarksDataSource bds = new BookmarksDataSource(this);
+        bds.deleteBookmark(bookmark);
+        bds.close();
     }
     
     @Override
     public void onResume() {
         super.onResume();
 
-        List<String> allBookmarksData = new LinkedList<String>();
-        BookmarksDataSource ds = new BookmarksDataSource(this);
-
-        // get string version of returned bookmark list
-        allBookmarksData = ds.getAllBookmarkListPreviews();
-
-        // prevent crashes due to lack of database data
-        if (allBookmarksData.isEmpty())
-            allBookmarksData.add("empty");
-
-        String[] allBookmarks = allBookmarksData
-                .toArray(new String[allBookmarksData.size()]);
-
-        // pass list data to adapter
-        setListAdapter(new ArrayAdapter<String>(this, R.layout.list_bookmark,
-                allBookmarks));
-
-        ListView listView = getListView();
-        listView.setTextFilterEnabled(true);
-        
-        // get individual bookmark details
-        listView.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
-                
-                Log.d("MYLOG", "list item id: " + id);
-                
-                // launch details activity
-                Intent intent = new Intent(view.getContext(),
-                        ViewBookmarkDetailActivity.class);
-                
-                intent.putExtra("list_id", id);
-                startActivity(intent);
-            }
-        });
-
-        // register context menu
-        registerForContextMenu(listView);
+        // refresh list
+        adapter.clear();
+        fillList();
     }
     
     void play_bookmark(long listId) {
@@ -277,9 +254,10 @@ private MediaPlayer mediaPlayer = new MediaPlayer();
         Log.d("MYLOG", "bookmark id: " + bookmarkId);
         
         List<Long> allBookmarksData = new LinkedList<Long>();
-        BookmarksDataSource ds = new BookmarksDataSource(this);
+        BookmarksDataSource bds = new BookmarksDataSource(this);
 
-        allBookmarksData = ds.getAllBookmarkListDBTableIds();
+        allBookmarksData = bds.getAllBookmarkListDBTableIds();
+        bds.close();
 
         // prevent crashes due to lack of database data
         if (allBookmarksData.isEmpty())
@@ -290,9 +268,9 @@ private MediaPlayer mediaPlayer = new MediaPlayer();
                 .toArray(new Long[allBookmarksData.size()]);
         
         Bookmark bookmark = new Bookmark();
-        bookmark = ds.getBookmark(allBookmarks[bookmarkId]);
+        bookmark = bds.getBookmark(allBookmarks[bookmarkId]);
         
-        ds.close();
+        bds.close();
         
         currentBookmarkSerializedValue = bookmark.getSerializedValue();
         

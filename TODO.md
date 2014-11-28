@@ -1,18 +1,25 @@
 # otashu
 
 ## TODO:
-- look into using graphics for note playback visualization
 - noteset folders (lists by label or emotion)
-- connect label color to emotion details activity
 - implement second stage of Apprentice logic ("no" response -> update Apprentice knowledge)
 - finish fixing HashMap to SparseArray conversion
 - choose default playback instrument in settings
 - save generated song to file
 - create emotion fingerprint
-- work on fixing database leaks
 
 
 ## DONE:
+- 20141128: fixed new emotions not being created
+- 20141128: fixed new notesets not being created
+- 20141128: worked on fixing database leaks
+- 20141128: cleaned up label details activity formatting
+- 20141128: connected label color to emotion details activity
+- 20141128: created custom adapter for "list all labels" activity
+- 20141128: added custom adapter for "list all bookmarks" activity listview
+- 20141128: fixed double playback for apprentice activity
+- 20141128: looked into using graphics for note playback visualization
+- 20141128: added simple noteset visualizer to "generate" activity
 - 20141126: added "infinite scroll" for "view all notesets" activity
 - 20141126: fixed get correct list item for emotion delete on "view all emotions" activity
 - 20141126: fixed get correct list item for emotion edit on "view all emotions" activity

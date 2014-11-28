@@ -61,19 +61,16 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
         Log.d("MYLOG", "got list item id: " + getIntent().getExtras().getLong("list_id"));
         notesetId = (int) getIntent().getExtras().getLong("list_id");
         
-        NotesetsDataSource ds = new NotesetsDataSource(this);
+        NotesetsDataSource nds = new NotesetsDataSource(this);
         
         // get noteset and notes information        
-        notesetBundle = ds.getNotesetBundle(notesetId);
+        notesetBundle = nds.getNotesetBundle(notesetId);
 
-        Noteset noteset = ds.getNoteset(notesetId);
-        
-        ds.close();
+        Noteset noteset = nds.getNoteset(notesetId);        
+        nds.close();
         
         EmotionsDataSource eds = new EmotionsDataSource(this);
-        
         Emotion emotion = eds.getEmotion(noteset.getEmotion());
-        
         eds.close();
         
         String[] noteLabelsArray = getResources().getStringArray(R.array.note_labels_array);
@@ -208,14 +205,14 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
     }
        
     public void confirmDelete() {
-        final NotesetsDataSource ds = new NotesetsDataSource(this);
+        final NotesetsDataSource nds = new NotesetsDataSource(this);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.dialog_confirm_delete_message).setTitle(R.string.dialog_confirm_delete_title);
         builder.setPositiveButton(R.string.button_ok,  new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // user clicked ok
                 // go ahead and delete noteset
-                Noteset notesetToDelete = ds.getNoteset(notesetIdInTable);
+                Noteset notesetToDelete = nds.getNoteset(notesetIdInTable);
 
                 Log.d("MYLOG", "deleting noteset: " + notesetToDelete.getId());
                 deleteNoteset(notesetToDelete);
@@ -231,11 +228,12 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+        nds.close();
     }
 
     public void deleteNoteset(Noteset noteset) {
-        NotesetsDataSource ds = new NotesetsDataSource(this);
-        ds.deleteNoteset(noteset);
-        ds.close();
+        NotesetsDataSource nds = new NotesetsDataSource(this);
+        nds.deleteNoteset(noteset);
+        nds.close();
     }
 }

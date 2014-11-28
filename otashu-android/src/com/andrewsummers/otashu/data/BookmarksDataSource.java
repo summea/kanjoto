@@ -12,7 +12,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 /**
  * BookmarksDataSource is a data source that provides database functionality for
@@ -72,9 +71,8 @@ public class BookmarksDataSource {
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, bookmark.getName());
         contentValues.put(OtashuDatabaseHelper.COLUMN_SERIALIZED_VALUE, bookmark.getSerializedValue());
-
-        Log.d("MYLOG", contentValues.toString());
         
+        // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         
         long insertId = db

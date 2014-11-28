@@ -35,9 +35,6 @@ import android.widget.Toast;
  */
 public class EditNotesetActivity extends Activity implements OnClickListener {
     private Button buttonSave = null;
-    private EmotionsDataSource emotionsDataSource;
-    private NotesetsDataSource notesetsDataSource;
-    private NotesDataSource notesDataSource;
     private Noteset editNoteset;
     private List<Note> editNotes = new LinkedList<Note>();
     private Button buttonPlayNoteset = null;
@@ -62,17 +59,7 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
         // add listeners to buttons
         // have to cast to Button in this case
         buttonSave = (Button) findViewById(R.id.button_save);
-        buttonSave.setOnClickListener(this);
-
-        // open data source handle
-        notesetsDataSource = new NotesetsDataSource(this);
-        notesetsDataSource.open();
-        
-        notesDataSource = new NotesDataSource(this);
-        notesDataSource.open();
-        
-        emotionsDataSource = new EmotionsDataSource(this);
-        emotionsDataSource.open();
+        buttonSave.setOnClickListener(this);        
         
         long notesetIdInTable = 0;
         notesetIdInTable = getIntent().getExtras().getLong("menu_noteset_id");
@@ -82,10 +69,7 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
         int notesetId = (int) getIntent().getExtras().getLong("list_id");
         
         //List<Long> allNotesetsData = new LinkedList<Long>();
-        NotesetsDataSource ds = new NotesetsDataSource(this);
-
-        // get string version of returned noteset list
-        //allNotesetsData = ds.getAllNotesetListDBTableIds();
+        NotesetsDataSource nds = new NotesetsDataSource(this);
 
         /*
         // prevent crashes due to lack of database data
@@ -100,19 +84,18 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
         
         // if requested id is from ViewAllNotesetsActivity, get actual (long) id from allNotesets array
         if (notesetIdInTable == 0) {
-            noteset = ds.getNoteset(notesetId);
+            noteset = nds.getNoteset(notesetId);
         }
         // otherwise, requested id is an actual (long) id (no extra lookup necessary)
         else {
-            noteset = ds.getNoteset(notesetIdInTable);
+            noteset = nds.getNoteset(notesetIdInTable);
         }
         
-        editNoteset = ds.getNoteset(notesetId);
-        
+        editNoteset = nds.getNoteset(notesetId);
         
         // get data for noteset that is being edited
         HashMap<String, List<Object>> editingNoteset = new HashMap<String, List<Object>>();
-        editingNoteset = notesetsDataSource.getNotesetBundleDetail(noteset.getId());
+        editingNoteset = nds.getNotesetBundleDetail(noteset.getId());
                 
         List<Object> notesets = editingNoteset.get("noteset");
         noteset = (Noteset) notesets.get(0);
@@ -124,11 +107,14 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
             note = (Note) notes.get(i);
             editNotes.add(note);
         }
+        
+        nds.close();
 
         List<Emotion> allEmotions = new ArrayList<Emotion>();
-        allEmotions = emotionsDataSource.getAllEmotions();
+        EmotionsDataSource eds = new EmotionsDataSource(this);
+        allEmotions = eds.getAllEmotions();
         
-        emotionsDataSource.close();
+        eds.close();
 
         Spinner spinner = null;
 
@@ -265,16 +251,16 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
             
             // get select emotion's id
             
-            emotionsDataSource = new EmotionsDataSource(this);
-            emotionsDataSource.open();
+            EmotionsDataSource eds = new EmotionsDataSource(this);
+            eds.open();
 
             List<Integer> allEmotionIds = new ArrayList<Integer>();
-            allEmotionIds = emotionsDataSource.getAllEmotionIds();
+            allEmotionIds = eds.getAllEmotionIds();
             
             Spinner emotionSpinner = (Spinner) findViewById(R.id.spinner_emotion);
             int selectedEmotionValue = allEmotionIds.get(emotionSpinner.getSelectedItemPosition());
             
-            emotionsDataSource.close();
+            eds.close();
 
             notesetToInsert.setId(editNoteset.getId());
             notesetToInsert.setEmotion(selectedEmotionValue);
@@ -343,9 +329,6 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
      */
     @Override
     protected void onResume() {
-        emotionsDataSource.open();
-        notesetsDataSource.open();
-        notesDataSource.open();
         super.onResume();
     }
 
@@ -354,9 +337,6 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
      */
     @Override
     protected void onPause() {
-        emotionsDataSource.close();
-        notesetsDataSource.close();
-        notesDataSource.close();
         super.onPause();
     }
 
@@ -371,7 +351,9 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
     private void saveNotesetUpdates(View v, Noteset noteset) {
 
         // update noteset in database
-        notesetsDataSource.updateNoteset(noteset);
+        NotesetsDataSource nds = new NotesetsDataSource(this);
+        nds.updateNoteset(noteset);
+        nds.close();
 
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
@@ -385,7 +367,9 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
     private void saveNoteUpdates(View v, Note note) {
         
         //  update note in database
-        notesDataSource.updateNote(note);
+        NotesDataSource nds = new NotesDataSource(this);
+        nds.updateNote(note);
+        nds.close();
 
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;

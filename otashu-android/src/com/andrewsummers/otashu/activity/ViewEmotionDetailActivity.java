@@ -1,8 +1,5 @@
 package com.andrewsummers.otashu.activity;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.LabelsDataSource;
@@ -36,12 +33,12 @@ public class ViewEmotionDetailActivity extends Activity {
         Log.d("MYLOG", "got list item id: " + getIntent().getExtras().getLong("list_id"));
         emotionId = (int) getIntent().getExtras().getLong("list_id");
         
-        EmotionsDataSource ds = new EmotionsDataSource(this);
+        EmotionsDataSource eds = new EmotionsDataSource(this);
         
         Emotion emotion = new Emotion();
-        emotion = ds.getEmotion(emotionId);
+        emotion = eds.getEmotion(emotionId);        
+        eds.close();
         
-        ds.close();
         LabelsDataSource lds = new LabelsDataSource(this);
 
         TextView emotionName = (TextView) findViewById(R.id.emotion_detail_name_value);
@@ -49,5 +46,7 @@ public class ViewEmotionDetailActivity extends Activity {
         
         TextView emotionLabel = (TextView) findViewById(R.id.emotion_detail_label_value);
         emotionLabel.setText(lds.getLabel(emotion.getLabelId()).getName());
+        
+        lds.close();
     }
 }

@@ -72,11 +72,13 @@ public class LabelsDataSource {
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, label.getName());
         contentValues.put(OtashuDatabaseHelper.COLUMN_COLOR, label.getColor());
 
-        long insertId = database
-                .insert(OtashuDatabaseHelper.TABLE_LABELS, null,
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        long insertId = db.insert(OtashuDatabaseHelper.TABLE_LABELS, null,
                         contentValues);
 
-        Cursor cursor = database.query(
+        Cursor cursor = db.query(
                 OtashuDatabaseHelper.TABLE_LABELS, allColumns,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + insertId, null,
                 null, null, null);

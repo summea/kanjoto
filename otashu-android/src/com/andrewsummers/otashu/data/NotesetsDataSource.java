@@ -27,7 +27,6 @@ import android.util.SparseArray;
  * Eclipse Public License: https://www.eclipse.org/legal/epl-v10.html
  */
 public class NotesetsDataSource {
-    private SQLiteDatabase database;
     private OtashuDatabaseHelper dbHelper;
 
     // database table columns
@@ -52,7 +51,7 @@ public class NotesetsDataSource {
      * @throws SQLException
      */
     public void open() throws SQLException {
-        database = dbHelper.getWritableDatabase();
+        dbHelper.getWritableDatabase();
     }
 
     /**
@@ -76,11 +75,13 @@ public class NotesetsDataSource {
         contentValues.put(OtashuDatabaseHelper.COLUMN_EMOTION_ID,
                 noteset.getEmotion());
 
-        long insertId = database
-                .insert(OtashuDatabaseHelper.TABLE_NOTESETS, null,
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        long insertId = db.insert(OtashuDatabaseHelper.TABLE_NOTESETS, null,
                         contentValues);
 
-        Cursor cursor = database.query(
+        Cursor cursor = db.query(
                 OtashuDatabaseHelper.TABLE_NOTESETS, allColumns,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + insertId, null,
                 null, null, null);

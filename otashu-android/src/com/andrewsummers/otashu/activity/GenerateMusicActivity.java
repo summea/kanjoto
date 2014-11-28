@@ -74,15 +74,10 @@ public class GenerateMusicActivity extends Activity {
         // get specific layout for content view
         // setContentView(R.layout.activity_generate_music);
         
-        // Create a GLSurfaceView instance and set it
-        // as the ContentView for this Activity.
-        mGLView = new PlaybackGLSurfaceView(this);
-        setContentView(mGLView);
-        
         // get selected instrument_id from spinner
         Bundle bundle = getIntent().getExtras();
         selectedInstrumentId = bundle.getInt("instrument_id");
-        Log.d("MYLOG", "selected instrument: " + selectedInstrumentId);
+        //Log.d("MYLOG", "selected instrument: " + selectedInstrumentId);
         
         // TODO: double-check this section later
         
@@ -163,7 +158,6 @@ public class GenerateMusicActivity extends Activity {
         List<Note> notes = new ArrayList<Note>();
 
         notes = logicA(allNotesets);
-        
         final List<Note> finalNotes = notes;
         
         /*
@@ -184,11 +178,15 @@ public class GenerateMusicActivity extends Activity {
         
         //TextView playbackText = (TextView) findViewById(R.id.generate_music_placeholder);
         //playbackText.setText(notesText);
-        Log.d("MYLOG", notesText);
+        //Log.d("MYLOG", notesText);
         
         generateMusic(notes, musicSource);
         
         playMusic(musicSource);
+        
+        // Use GLSurfaceView as ContentView for this Activity
+        mGLView = new PlaybackGLSurfaceView(this, notes);
+        setContentView(mGLView);
         
         // return to previous activity when done playing
         mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
@@ -200,7 +198,6 @@ public class GenerateMusicActivity extends Activity {
                 finish();
             }
         });
-        
     }
 
     /**
@@ -219,8 +216,9 @@ public class GenerateMusicActivity extends Activity {
         Bundle bundle = getIntent().getExtras();
         int selectedEmotionValue = bundle.getInt("emotion_id");        
         
-        NotesetsDataSource ds = new NotesetsDataSource(this);
-        allNotesetBundles = ds.getAllNotesetBundles(selectedEmotionValue);
+        NotesetsDataSource nds = new NotesetsDataSource(this);
+        allNotesetBundles = nds.getAllNotesetBundles(selectedEmotionValue);
+        nds.close();
         
         // prevent crashes due to lack of database data
         if (allNotesetBundles.isEmpty())
@@ -281,8 +279,6 @@ public class GenerateMusicActivity extends Activity {
             int velocity = 100;
             int length = 480;
             float fLength = 480.0f;
-
-            Log.d("MYLOG", "length of current note: " + notes.get(i).getLength());
             
             fLength = notes.get(i).getLength();
             if (notes.get(i).getVelocity() > 0)
@@ -361,7 +357,7 @@ public class GenerateMusicActivity extends Activity {
         
             List<Note> nsets = new ArrayList<Note>();
             
-            Log.d("MYLOG", "> last note: " + lastNote.getNotevalue());
+            //Log.d("MYLOG", "> last note: " + lastNote.getNotevalue());
             
             if (lastNote.getNotevalue() == 0) {
             // get random noteset (and try to find one that matches the new musical key search focus)
@@ -382,7 +378,7 @@ public class GenerateMusicActivity extends Activity {
             try {
                 // check if last note in current noteset sequence matches first note in a musical key list
                 // a match gives us criteria for finding another, similar noteset to append for playback
-                Log.d("MYLOG", "found matching musical key for end note: " + nsets.get(3).getNotevalue());
+                //Log.d("MYLOG", "found matching musical key for end note: " + nsets.get(3).getNotevalue());
                 
                 if (musicalKeys.get(nsets.get(3).getNotevalue()) != null) {
                     lookingForNotesInKey = musicalKeys.get(nsets.get(3).getNotevalue());
@@ -401,7 +397,7 @@ public class GenerateMusicActivity extends Activity {
                 List<Note> noteset = allNotesets.get(randomKey);
                 
                 if (lookingForNotesInKey.contains(noteset.get(0).getNotevalue())) {
-                    Log.d("MYLOG", "looking for notes in key: " + lookingForNotesInKey.toString() + " -- note 0: " + noteset.get(0).getNotevalue());
+                    //Log.d("MYLOG", "looking for notes in key: " + lookingForNotesInKey.toString() + " -- note 0: " + noteset.get(0).getNotevalue());
                     
                     for (int k = 0; k < 4; k++) {
                         try {

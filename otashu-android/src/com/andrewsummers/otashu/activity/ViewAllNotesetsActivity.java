@@ -17,11 +17,11 @@ import com.andrewsummers.otashu.model.NotesetAndRelated;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -30,6 +30,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -57,9 +58,9 @@ public class ViewAllNotesetsActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        NotesetsDataSource ds = new NotesetsDataSource(this);
-        
-        totalNotesetsAvailable = ds.getCount();
+        NotesetsDataSource nds = new NotesetsDataSource(this);
+        totalNotesetsAvailable = nds.getCount();
+        nds.close();
 
         fillList();
     }
@@ -72,13 +73,13 @@ public class ViewAllNotesetsActivity extends ListActivity {
         
         EmotionsDataSource eds = new EmotionsDataSource(this);
         LabelsDataSource lds = new LabelsDataSource(this);
-        NotesetsDataSource ds = new NotesetsDataSource(this);
+        NotesetsDataSource nsds = new NotesetsDataSource(this);
         NotesDataSource nds = new NotesDataSource(this);
         
-        totalNotesetsAvailable = ds.getCount();
+        totalNotesetsAvailable = nsds.getCount();
         
         if (currentOffset <= totalNotesetsAvailable) {
-            allNotesets = ds.getAllNotesets(limit, currentOffset);
+            allNotesets = nsds.getAllNotesets(limit, currentOffset);
             
             for (Noteset noteset : allNotesets) {
                 relatedNotes = nds.getAllNotes(noteset.getId());
@@ -150,6 +151,11 @@ public class ViewAllNotesetsActivity extends ListActivity {
         } else {
             Log.d("MYLOG", "sorry, that's all of the available notesets...");
         }
+        
+        eds.close();
+        lds.close();
+        nsds.close();
+        nds.close();
     }
     
     public void addToList() {
@@ -160,13 +166,13 @@ public class ViewAllNotesetsActivity extends ListActivity {
         
         EmotionsDataSource eds = new EmotionsDataSource(this);
         LabelsDataSource lds = new LabelsDataSource(this);
-        NotesetsDataSource ds = new NotesetsDataSource(this);
+        NotesetsDataSource nsds = new NotesetsDataSource(this);
         NotesDataSource nds = new NotesDataSource(this);
         
-        totalNotesetsAvailable = ds.getCount();
+        totalNotesetsAvailable = nsds.getCount();
         
         if (currentOffset <= totalNotesetsAvailable) {
-            allNotesets = ds.getAllNotesets(limit, currentOffset);
+            allNotesets = nsds.getAllNotesets(limit, currentOffset);
             
             for (Noteset noteset : allNotesets) {
                 relatedNotes = nds.getAllNotes(noteset.getId());
@@ -185,6 +191,11 @@ public class ViewAllNotesetsActivity extends ListActivity {
         } else {
             Log.d("MYLOG", "sorry, that's all of the available notesets...");
         }
+        
+        eds.close();
+        lds.close();
+        nsds.close();
+        nds.close();
     }
     
     @Override
@@ -262,6 +273,14 @@ public class ViewAllNotesetsActivity extends ListActivity {
                 Log.d("MYLOG", "deleting noteset: " + notesetToDelete.getId());
                 deleteNoteset(notesetToDelete);
                 
+                Context context = getApplicationContext();
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context,
+                        context.getResources().getString(R.string.noteset_deleted),
+                        duration);
+                toast.show();
+                
                 // refresh list
                 adapter.removeItem(selectedPositionInList);
                 adapter.notifyDataSetChanged();
@@ -278,9 +297,9 @@ public class ViewAllNotesetsActivity extends ListActivity {
     }    
     
     public void deleteNoteset(Noteset noteset) {
-        NotesetsDataSource ds = new NotesetsDataSource(this);
-        ds.deleteNoteset(noteset);
-        ds.close();
+        NotesetsDataSource nds = new NotesetsDataSource(this);
+        nds.deleteNoteset(noteset);
+        nds.close();
     }
     
     @Override

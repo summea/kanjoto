@@ -5,19 +5,15 @@ import java.util.List;
 
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.adapter.EmotionAdapter;
-import com.andrewsummers.otashu.adapter.NotesetAdapter;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.LabelsDataSource;
-import com.andrewsummers.otashu.data.NotesDataSource;
-import com.andrewsummers.otashu.data.NotesetsDataSource;
 import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.Label;
-import com.andrewsummers.otashu.model.Note;
-import com.andrewsummers.otashu.model.Noteset;
 import com.andrewsummers.otashu.model.EmotionAndRelated;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,8 +25,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -65,7 +61,6 @@ public class ViewAllEmotionsActivity extends ListActivity {
         LabelsDataSource lds = new LabelsDataSource(this);
         
         allEmotions = eds.getAllEmotions();
-        //allNotes = nds.getAllNotes();
         
         for (Emotion emotion : allEmotions) {
             relatedLabel = lds.getLabel(emotion.getLabelId());
@@ -74,6 +69,9 @@ public class ViewAllEmotionsActivity extends ListActivity {
             emotionAndRelated.setLabel(relatedLabel);
             allEmotionsAndRelated.add(emotionAndRelated);
         }
+        
+        eds.close();
+        lds.close();
 
         // TODO: check if crash still happens when there is no database data...
         
@@ -185,6 +183,14 @@ public class ViewAllEmotionsActivity extends ListActivity {
                 Log.d("MYLOG", "deleting emotion: " + emotionToDelete.getId());
                 deleteEmotion(emotionToDelete);
                 
+                Context context = getApplicationContext();
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context,
+                        context.getResources().getString(R.string.emotion_deleted),
+                        duration);
+                toast.show();
+                
                 // refresh list
                 adapter.removeItem(selectedPositionInList);
                 adapter.notifyDataSetChanged();
@@ -205,10 +211,11 @@ public class ViewAllEmotionsActivity extends ListActivity {
         long emotionId = rowId;
         
         List<Long> allEmotionsData = new LinkedList<Long>();
-        EmotionsDataSource ds = new EmotionsDataSource(this);
+        EmotionsDataSource eds = new EmotionsDataSource(this);
 
         // get string version of returned emotion list
-        allEmotionsData = ds.getAllEmotionListDBTableIds();
+        allEmotionsData = eds.getAllEmotionListDBTableIds();
+        eds.close();
         
         Log.d("MYLOG", allEmotionsData.toString());
 
@@ -222,17 +229,17 @@ public class ViewAllEmotionsActivity extends ListActivity {
         Log.d("MYLOG", "rowId: " + rowId);
         Log.d("MYLOG", "found emotion data: " + allEmotions[(int) emotionId]);
                 
-        Emotion emotion = ds.getEmotion(allEmotions[(int) emotionId]);        
+        Emotion emotion = eds.getEmotion(allEmotions[(int) emotionId]);        
         
-        ds.close();
+        eds.close();
         
         return emotion;
     }
     
     public void deleteEmotion(Emotion emotion) {
-        EmotionsDataSource ds = new EmotionsDataSource(this);
-        ds.deleteEmotion(emotion);
-        ds.close();
+        EmotionsDataSource eds = new EmotionsDataSource(this);
+        eds.deleteEmotion(emotion);
+        eds.close();
     }
     
     @Override

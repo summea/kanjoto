@@ -1,8 +1,5 @@
 package com.andrewsummers.otashu.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.model.Label;
@@ -22,7 +19,6 @@ import android.widget.Toast;
  */
 public class EditLabelActivity extends Activity implements OnClickListener {
     private Button buttonSave = null;
-    private LabelsDataSource labelsDataSource;
     private Label editLabel;
 
     /**
@@ -44,23 +40,17 @@ public class EditLabelActivity extends Activity implements OnClickListener {
         buttonSave.setOnClickListener(this);
 
         // open data source handle
-        labelsDataSource = new LabelsDataSource(this);
-        labelsDataSource.open();
-        
+        LabelsDataSource lds = new LabelsDataSource(this);        
         int labelId = (int) getIntent().getExtras().getLong("list_id");
         
-        List<Label> allLabels = new ArrayList<Label>();
-        allLabels = labelsDataSource.getAllLabels();
-        
-        labelsDataSource.close();
-
-        editLabel = allLabels.get(labelId);
+        editLabel = lds.getLabel(labelId);
+        lds.close();        
         
         EditText labelNameText = (EditText) findViewById(R.id.edittext_label_name);
-        labelNameText.setText(allLabels.get(labelId).getName());
+        labelNameText.setText(editLabel.getName());
         
         EditText labelColorText = (EditText) findViewById(R.id.edittext_label_color);
-        labelColorText.setText(allLabels.get(labelId).getColor());
+        labelColorText.setText(editLabel.getColor());
     }
 
     /**
@@ -100,7 +90,6 @@ public class EditLabelActivity extends Activity implements OnClickListener {
      */
     @Override
     protected void onResume() {
-        labelsDataSource.open();
         super.onResume();
     }
 
@@ -109,7 +98,6 @@ public class EditLabelActivity extends Activity implements OnClickListener {
      */
     @Override
     protected void onPause() {
-        labelsDataSource.close();
         super.onPause();
     }
 
@@ -124,7 +112,9 @@ public class EditLabelActivity extends Activity implements OnClickListener {
     private void saveLabelUpdates(View v, Label label) {
 
         // save label in database
-        labelsDataSource.updateLabel(label);
+        LabelsDataSource lds = new LabelsDataSource(this);
+        lds.updateLabel(label);
+        lds.close();
         
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;

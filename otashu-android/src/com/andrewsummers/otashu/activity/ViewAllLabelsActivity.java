@@ -4,11 +4,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.andrewsummers.otashu.R;
+import com.andrewsummers.otashu.adapter.LabelAdapter;
 import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.model.Label;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,8 +22,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -30,7 +32,8 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 public class ViewAllLabelsActivity extends ListActivity {
     
-    private int selectedListPosition = 0;
+    private int selectedPositionInList = 0;
+    private LabelAdapter adapter = null;
     
     /**
      * onCreate override used to gather and display a list of all labels saved
@@ -42,26 +45,29 @@ public class ViewAllLabelsActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fillList();
+    }
+    
+    public void fillList() {
+        List<Label> allLabels = new LinkedList<Label>();
+        LabelsDataSource lds = new LabelsDataSource(this);
+        
+        allLabels = lds.getAllLabels();
+        
+        lds.close();
 
-        List<String> allLabelsData = new LinkedList<String>();
-        LabelsDataSource ds = new LabelsDataSource(this);
-
-        // get string version of returned label list
-        allLabelsData = ds.getAllLabelListPreviews();
-
+        /*
         // prevent crashes due to lack of database data
-        if (allLabelsData.isEmpty())
-            allLabelsData.add("empty");
-
-        String[] allLabels = allLabelsData
-                .toArray(new String[allLabelsData.size()]);
-
+        if (allLabels.isEmpty())
+            allLabels.add("empty");
+        */
+        
         // pass list data to adapter
-        setListAdapter(new ArrayAdapter<String>(this, R.layout.list_label,
-                allLabels));
-
-        ListView listView = getListView();
+        adapter = new LabelAdapter(this, allLabels);
+        
+        final ListView listView = getListView();
         listView.setTextFilterEnabled(true);
+        listView.setAdapter(adapter);
         
         // get individual label details
         listView.setOnItemClickListener(new OnItemClickListener() {
@@ -110,7 +116,7 @@ public class ViewAllLabelsActivity extends ListActivity {
         super.onCreateContextMenu(menu, v, menuInfo);
         
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        selectedListPosition = info.position;
+        selectedPositionInList = info.position;
         
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.context_menu_label, menu);
@@ -150,17 +156,24 @@ public class ViewAllLabelsActivity extends ListActivity {
                 // go ahead and delete label
                 
                 // get correct label id to delete
-                Log.d("MYLOG", "selected row item: " + selectedListPosition);
+                Log.d("MYLOG", "selected row item: " + selectedPositionInList);
                 
-                Label labelToDelete = getLabelFromListPosition(selectedListPosition);
+                Label labelToDelete = getLabelFromListPosition(selectedPositionInList);
 
                 Log.d("MYLOG", "deleting label: " + labelToDelete.getId());
                 deleteLabel(labelToDelete);
                 
-                // refresh activity to reflect changes
-                finish();
-                startActivity(getIntent());
+                Context context = getApplicationContext();
+                int duration = Toast.LENGTH_SHORT;
 
+                Toast toast = Toast.makeText(context,
+                        context.getResources().getString(R.string.label_deleted),
+                        duration);
+                toast.show();
+                
+                // refresh list
+                adapter.removeItem(selectedPositionInList);
+                adapter.notifyDataSetChanged();
             }
         });
         builder.setNegativeButton(R.string.button_cancel,  new DialogInterface.OnClickListener() {
@@ -178,10 +191,11 @@ public class ViewAllLabelsActivity extends ListActivity {
         long labelId = rowId;
         
         List<Long> allLabelsData = new LinkedList<Long>();
-        LabelsDataSource ds = new LabelsDataSource(this);
+        LabelsDataSource lds = new LabelsDataSource(this);
 
         // get string version of returned label list
-        allLabelsData = ds.getAllLabelListDBTableIds();
+        allLabelsData = lds.getAllLabelListDBTableIds();
+        lds.close();
         
         Log.d("MYLOG", allLabelsData.toString());
 
@@ -195,60 +209,25 @@ public class ViewAllLabelsActivity extends ListActivity {
         Log.d("MYLOG", "rowId: " + rowId);
         Log.d("MYLOG", "found label data: " + allLabels[(int) labelId]);
                 
-        Label label = ds.getLabel(allLabels[(int) labelId]);        
+        Label label = lds.getLabel(allLabels[(int) labelId]);        
         
-        ds.close();
+        lds.close();
         
         return label;
     }
     
     public void deleteLabel(Label label) {
-        LabelsDataSource ds = new LabelsDataSource(this);
-        ds.deleteLabel(label);
-        ds.close();
+        LabelsDataSource lds = new LabelsDataSource(this);
+        lds.deleteLabel(label);
+        lds.close();
     }
     
     @Override
     public void onResume() {
         super.onResume();
 
-        List<String> allLabelsData = new LinkedList<String>();
-        LabelsDataSource ds = new LabelsDataSource(this);
-
-        // get string version of returned label list
-        allLabelsData = ds.getAllLabelListPreviews();
-
-        // prevent crashes due to lack of database data
-        if (allLabelsData.isEmpty())
-            allLabelsData.add("empty");
-
-        String[] allLabels = allLabelsData
-                .toArray(new String[allLabelsData.size()]);
-
-        // pass list data to adapter
-        setListAdapter(new ArrayAdapter<String>(this, R.layout.list_label,
-                allLabels));
-
-        ListView listView = getListView();
-        listView.setTextFilterEnabled(true);
-        
-        // get individual label details
-        listView.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
-                
-                Log.d("MYLOG", "list item id: " + id);
-                
-                // launch details activity
-                Intent intent = new Intent(view.getContext(),
-                        ViewLabelDetailActivity.class);
-                
-                intent.putExtra("list_id", id);
-                startActivity(intent);
-            }
-        });
-
-        // register context menu
-        registerForContextMenu(listView);
+        // refresh list
+        adapter.clear();
+        fillList();
     }
 }

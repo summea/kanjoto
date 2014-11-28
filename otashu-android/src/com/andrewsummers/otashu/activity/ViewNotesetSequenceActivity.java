@@ -41,10 +41,11 @@ public class ViewNotesetSequenceActivity extends FragmentActivity {
         setContentView(R.layout.activity_view_noteset_sequence);
 
         try {
-            NotesetsDataSource ds = new NotesetsDataSource(this);
+            NotesetsDataSource nds = new NotesetsDataSource(this);
 
             // get string version of returned noteset list
-            List<String> allNotesetsData = ds.getAllNotesetListPreviews();
+            List<String> allNotesetsData = nds.getAllNotesetListPreviews();
+            nds.close();
 
             // prevent crashes due to lack of database data
             if (allNotesetsData.isEmpty())

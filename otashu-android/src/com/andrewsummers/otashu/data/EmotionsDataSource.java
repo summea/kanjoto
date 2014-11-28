@@ -72,11 +72,13 @@ public class EmotionsDataSource {
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, emotion.getName());
         contentValues.put(OtashuDatabaseHelper.COLUMN_LABEL_ID, emotion.getLabelId());
 
-        long insertId = database
-                .insert(OtashuDatabaseHelper.TABLE_EMOTIONS, null,
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        
+        long insertId = db.insert(OtashuDatabaseHelper.TABLE_EMOTIONS, null,
                         contentValues);
 
-        Cursor cursor = database.query(
+        Cursor cursor = db.query(
                 OtashuDatabaseHelper.TABLE_EMOTIONS, allColumns,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + insertId, null,
                 null, null, null);

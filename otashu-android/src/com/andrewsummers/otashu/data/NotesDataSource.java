@@ -76,12 +76,14 @@ public class NotesDataSource {
         contentValues.put(OtashuDatabaseHelper.COLUMN_VELOCITY, note.getVelocity());
         contentValues.put(OtashuDatabaseHelper.COLUMN_LENGTH, note.getLength());
         contentValues.put(OtashuDatabaseHelper.COLUMN_POSITION, note.getPosition());
-        
-        long insertId = database
-                .insert(OtashuDatabaseHelper.TABLE_NOTES, null,
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        long insertId = db.insert(OtashuDatabaseHelper.TABLE_NOTES, null,
                         contentValues);
 
-        Cursor cursor = database.query(
+        Cursor cursor = db.query(
                 OtashuDatabaseHelper.TABLE_NOTES, allColumns,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + insertId, null,
                 null, null, null);

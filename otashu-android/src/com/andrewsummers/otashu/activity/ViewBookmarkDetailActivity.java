@@ -2,7 +2,6 @@ package com.andrewsummers.otashu.activity;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import com.andrewsummers.otashu.R;
@@ -48,25 +47,18 @@ public class ViewBookmarkDetailActivity extends Activity implements OnClickListe
         setContentView(R.layout.activity_view_bookmark_detail);
         
         Log.d("MYLOG", "got list item id: " + getIntent().getExtras().getLong("list_id"));
-        bookmarkId = (int) getIntent().getExtras().getLong("list_id");
-        
-        List<Long> allBookmarksData = new LinkedList<Long>();
-        BookmarksDataSource ds = new BookmarksDataSource(this);
+        bookmarkId = (int) getIntent().getExtras().getLong("list_id");        
 
-        allBookmarksData = ds.getAllBookmarkListDBTableIds();
-
+        /*
         // prevent crashes due to lack of database data
         if (allBookmarksData.isEmpty())
             allBookmarksData.add((long) 0);
-
-        
-        Long[] allBookmarks = allBookmarksData
-                .toArray(new Long[allBookmarksData.size()]);
+        */
         
         Bookmark bookmark = new Bookmark();
-        bookmark = ds.getBookmark(allBookmarks[bookmarkId]);
-        
-        ds.close();
+        BookmarksDataSource bds = new BookmarksDataSource(this);
+        bookmark = bds.getBookmark(bookmarkId);
+        bds.close();
 
         TextView bookmarkName = (TextView) findViewById(R.id.bookmark_detail_name_value);
         bookmarkName.setText(bookmark.getName());

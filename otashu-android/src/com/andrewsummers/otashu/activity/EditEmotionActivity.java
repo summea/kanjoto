@@ -26,7 +26,6 @@ import android.widget.Toast;
  */
 public class EditEmotionActivity extends Activity implements OnClickListener {
     private Button buttonSave = null;
-    private EmotionsDataSource emotionsDataSource;
     private Emotion editEmotion;
 
     /**
@@ -48,18 +47,14 @@ public class EditEmotionActivity extends Activity implements OnClickListener {
         buttonSave.setOnClickListener(this);
 
         // open data source handle
-        emotionsDataSource = new EmotionsDataSource(this);
-        emotionsDataSource.open();
+        EmotionsDataSource eds = new EmotionsDataSource(this);
+        eds.open();
         
         int emotionId = (int) getIntent().getExtras().getLong("list_id");
-        
-        //List<Emotion> allEmotions = new ArrayList<Emotion>();
-        //allEmotions = emotionsDataSource.getAllEmotions();
-        
-        emotionsDataSource.close();
 
-        //editEmotion = allEmotions.get(emotionId);
-        editEmotion = emotionsDataSource.getEmotion(emotionId);
+        eds.close();
+
+        editEmotion = eds.getEmotion(emotionId);
         
         EditText emotionNameText = (EditText) findViewById(R.id.edittext_emotion_name);
         //emotionNameText.setText(allEmotions.get(emotionId).getName());
@@ -71,6 +66,7 @@ public class EditEmotionActivity extends Activity implements OnClickListener {
         allLabels = lds.getAllLabelListPreviews();        
         
         Label selectedLabel = lds.getLabel(editEmotion.getLabelId());
+        lds.close();
         
         Spinner spinner = null;
 
@@ -105,6 +101,7 @@ public class EditEmotionActivity extends Activity implements OnClickListener {
 
             LabelsDataSource lds = new LabelsDataSource(this);
             List<Long> allLabelIds = lds.getAllLabelListDBTableIds();
+            lds.close();
             
             Emotion emotionToUpdate = new Emotion();            
             emotionToUpdate.setId(editEmotion.getId());
@@ -128,7 +125,6 @@ public class EditEmotionActivity extends Activity implements OnClickListener {
      */
     @Override
     protected void onResume() {
-        emotionsDataSource.open();
         super.onResume();
     }
 
@@ -137,7 +133,6 @@ public class EditEmotionActivity extends Activity implements OnClickListener {
      */
     @Override
     protected void onPause() {
-        emotionsDataSource.close();
         super.onPause();
     }
 
@@ -152,7 +147,9 @@ public class EditEmotionActivity extends Activity implements OnClickListener {
     private void saveEmotionUpdates(View v, Emotion emotion) {
 
         // save emotion in database
-        emotionsDataSource.updateEmotion(emotion);
+        EmotionsDataSource eds = new EmotionsDataSource(this);
+        eds.updateEmotion(emotion);
+        eds.close();
         
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
