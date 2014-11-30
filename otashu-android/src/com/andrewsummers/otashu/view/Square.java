@@ -21,7 +21,6 @@ import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
 import android.opengl.GLES20;
-import android.util.Log;
 
 /**
  * A two-dimensional square for use as a drawn object in OpenGL ES 2.0.
@@ -158,8 +157,6 @@ public class Square {
         color[1] = newColor[1];
         color[2] = newColor[2];
         color[3] = newColor[3];
-
-        Log.d("MYLOG", "setting square color...");
     }
 
     public void setX(float x) {

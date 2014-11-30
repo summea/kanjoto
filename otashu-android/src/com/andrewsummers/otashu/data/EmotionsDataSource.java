@@ -13,16 +13,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-/**
- * EmotionsDataSource is a data source that provides database functionality for
- * emotion-related data (e.g. CRUD) actions.
- * 
- * Emotion: Data source based on tutorial by vogella
- * http://www.vogella.com/tutorials/AndroidSQLite/article.html
- * Licensed under: CC BY-NC-SA 3.0 DE:
- * http://creativecommons.org/licenses/by-nc-sa/3.0/de/deed.en
- * Eclipse Public License: https://www.eclipse.org/legal/epl-v10.html
- */
 public class EmotionsDataSource {
     private SQLiteDatabase database;
     private OtashuDatabaseHelper dbHelper;

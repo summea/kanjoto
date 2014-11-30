@@ -8,6 +8,13 @@ import com.andrewsummers.otashu.model.NotesetAndRelated;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,12 +54,18 @@ public class NotesetAdapter extends BaseAdapter {
         
         TextView emotion = (TextView) convertView.findViewById(R.id.emotion);
         emotion.setText(notesetsAndRelated.get(position).getEmotion().getName());
-        if (notesetsAndRelated.get(position).getLabel().getColor() != null) {
-            emotion.setBackgroundColor(Color.parseColor(notesetsAndRelated.get(position).getLabel().getColor()));
-        } else {
-            emotion.setBackgroundColor(Color.parseColor("#dddddd"));
-        }
         
+        String backgroundColor = "#dddddd";
+        if (notesetsAndRelated.get(position).getLabel().getColor() != null)
+            backgroundColor = notesetsAndRelated.get(position).getLabel().getColor();
+
+        // add correct color to background (but maintain default state "pressed" and "selected" effects)
+        StateListDrawable drawable = new StateListDrawable();        
+        drawable.addState(new int[] { android.R.attr.state_pressed }, mContext.getResources().getDrawable(R.drawable.row_selector));
+        drawable.addState(new int[] { android.R.attr.state_selected }, mContext.getResources().getDrawable(R.drawable.row_selector));
+        drawable.addState(new int[] { }, new ColorDrawable(Color.parseColor(backgroundColor)));
+        emotion.setBackground(drawable);
+                
         int[] noteItems = {R.id.note_1, R.id.note_2, R.id.note_3, R.id.note_4};
         TextView note = null;
 

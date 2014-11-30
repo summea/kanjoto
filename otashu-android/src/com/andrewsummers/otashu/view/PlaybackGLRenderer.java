@@ -62,7 +62,6 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
     }
     
     public PlaybackGLRenderer(List<Note> notes) {
-        Log.d("MYLOG", Integer.valueOf(notes.get(0).getNotevalue()).toString());
         noteSequence = notes;
         
         noteColorTable.put(21, noteAColor);
