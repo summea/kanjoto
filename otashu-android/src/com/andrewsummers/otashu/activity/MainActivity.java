@@ -106,6 +106,9 @@ public class MainActivity extends Activity implements OnClickListener {
         case R.id.view_bookmarks:
             intent = new Intent(this, ViewAllBookmarksActivity.class);
             break;
+        case R.id.view_notevalues:
+            intent = new Intent(this, ViewAllNotevaluesActivity.class);
+            break;
         }
         
         startActivity(intent);

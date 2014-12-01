@@ -37,6 +37,8 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
     private Noteset newlyInsertedNoteset = new Noteset();
     private Noteset notesetToInsert = new Noteset();
     private Emotion chosenEmotion = new Emotion();
+    private Button buttonYes = null;
+    private Button buttonNo = null;
     private Button buttonPlayNoteset = null;
     
     @Override
@@ -46,12 +48,12 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
         // get specific layout for content view
         setContentView(R.layout.activity_apprentice);
 
+        buttonNo = (Button) findViewById(R.id.button_yes);
+        buttonYes = (Button) findViewById(R.id.button_no);
+        
         try {
             // add listeners to buttons    
-            Button buttonNo = (Button) findViewById(R.id.button_yes);
             buttonNo.setOnClickListener(this);
-
-            Button buttonYes = (Button) findViewById(R.id.button_no);
             buttonYes.setOnClickListener(this);
             
             Button buttonPlayNoteset = (Button) findViewById(R.id.button_play_noteset);
@@ -60,7 +62,23 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
             Log.d("MYLOG", e.getStackTrace().toString());
         }
 
+        // disable buttons while playing
+        buttonYes.setClickable(false);
+        buttonNo.setClickable(false);
+        buttonPlayNoteset = (Button) findViewById(R.id.button_play_noteset);
+        buttonPlayNoteset.setClickable(false);
+
         apprenticeAskProcess();
+        
+        mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer aMediaPlayer) {
+                // enable play button again
+                buttonYes.setClickable(true);
+                buttonNo.setClickable(true);
+                buttonPlayNoteset.setClickable(true);
+            }
+        });
     }
 
     public List<Note> generateNotes(int fromIndex, int toIndex) {
@@ -120,10 +138,38 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
         case R.id.button_no:
             // TODO: do something with "no" response (learning)
             
+            // disable buttons while playing
+            buttonYes = (Button) findViewById(R.id.button_yes);
+            buttonYes.setClickable(false);
+            buttonNo = (Button) findViewById(R.id.button_no);
+            buttonNo.setClickable(false);
+            buttonPlayNoteset = (Button) findViewById(R.id.button_play_noteset);
+            buttonPlayNoteset.setClickable(false);
+            
             // try another noteset
             apprenticeAskProcess();
+            
+            mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer aMediaPlayer) {
+                    // enable play button again
+                    buttonYes.setClickable(true);
+                    buttonNo.setClickable(true);
+                    buttonPlayNoteset.setClickable(true);
+                }
+            });
+            
             break;
         case R.id.button_yes:
+            
+            // disable buttons while playing
+            buttonYes = (Button) findViewById(R.id.button_yes);
+            buttonYes.setClickable(false);
+            buttonNo = (Button) findViewById(R.id.button_no);
+            buttonNo.setClickable(false);
+            buttonPlayNoteset = (Button) findViewById(R.id.button_play_noteset);
+            buttonPlayNoteset.setClickable(false);
+            
             // save noteset
             notesetToInsert.setEmotion((int) chosenEmotion.getId());
             saveNoteset(v, notesetToInsert);
@@ -138,24 +184,41 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
             
             // try another noteset
             apprenticeAskProcess();
-            break;
-        case R.id.button_play_noteset:
-
-            // disable play button while playing
-            buttonPlayNoteset = (Button) findViewById(R.id.button_play_noteset);
-            buttonPlayNoteset.setClickable(false);
-
-            // play generated notes for user
-            playMusic(musicSource);
             
-            // return to previous activity when done playing
             mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer aMediaPlayer) {
                     // enable play button again
+                    buttonYes.setClickable(true);
+                    buttonNo.setClickable(true);
                     buttonPlayNoteset.setClickable(true);
                 }
             });
+            
+            break;
+        case R.id.button_play_noteset:
+
+            // disable buttons while playing
+            buttonYes = (Button) findViewById(R.id.button_yes);
+            buttonYes.setClickable(false);
+            buttonNo = (Button) findViewById(R.id.button_no);
+            buttonNo.setClickable(false);
+            buttonPlayNoteset = (Button) findViewById(R.id.button_play_noteset);
+            buttonPlayNoteset.setClickable(false);
+            
+            // play generated notes for user
+            playMusic(musicSource);
+            
+            mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer aMediaPlayer) {
+                    // enable play button again
+                    buttonYes.setClickable(true);
+                    buttonNo.setClickable(true);
+                    buttonPlayNoteset.setClickable(true);
+                }
+            });
+            
             break;
         }
     }

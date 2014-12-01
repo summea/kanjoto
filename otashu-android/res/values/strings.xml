@@ -39,6 +39,8 @@
     <string name="context_menu_view">View</string>
     <string name="create_emotion_title">Create Emotion</string>
     <string name="create_label_title">Create Label</string>
+    <string name="create_notevalue">Create Notevalue</string>
+    <string name="create_notevalue_title">Create Notevalue</string>
     <string name="create_noteset_title">Create Noteset</string>
 
     <string name="edit_bookmark_title">Edit Bookmark</string>
@@ -63,10 +65,12 @@
     <string name="menu_button_bookmarks">Bookmarks</string>
     <string name="menu_button_create_emotion">New</string>
     <string name="menu_button_create_label">New</string>
+    <string name="menu_button_create_notevalue">New</string>
     <string name="menu_button_create_noteset">New</string>
     <string name="menu_button_database_dumper">Database Dumper</string>
     <string name="menu_button_export_database">Export Database</string>
     <string name="menu_button_import_database">Import Database</string>
+    <string name="menu_button_notevalues">Notevalues</string>
     <string name="menu_button_settings">Settings</string>
     <string name="menu_button_view_labels">Labels</string>
     
@@ -81,7 +85,11 @@
     <string name="spinner_emotion_label">Emotion</string>
     <string name="spinner_emotion_label_label">Label</string>
     <string name="spinner_instrument_label">Instrument</string>
+    <string name="spinner_label_label">Label</string>
+    <string name="spinner_notelabel_label">Note Label</string>
+    <string name="spinner_notevalue">Note</string>
     <string name="spinner_notevalue_label">Note</string>
+    <string name="notevalue_saved">notevalue label saved</string>
     <string name="spinner_note2_label">Note 2</string>
     <string name="spinner_note3_label">Note 3</string>
     <string name="spinner_note4_label">Note 4</string>
@@ -101,6 +109,7 @@
     <string name="view_emotion_detail_title">Emotion Details</string>
     <string name="view_label_detail_title">Label Details</string>
     <string name="view_noteset_detail_title">Noteset Details</string>
+    <string name="view_notevalues">Notevalues</string>
     <string name="noteset_detail_title_label">Noteset Name</string>
     
     <string name="button_generate">Generate</string>

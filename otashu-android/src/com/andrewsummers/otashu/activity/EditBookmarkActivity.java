@@ -1,8 +1,5 @@
 package com.andrewsummers.otashu.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.BookmarksDataSource;
 import com.andrewsummers.otashu.model.Bookmark;
@@ -45,22 +42,16 @@ public class EditBookmarkActivity extends Activity implements OnClickListener {
 
         // open data source handle
         BookmarksDataSource bds = new BookmarksDataSource(this);
-        bds.open();
-        
         int bookmarkId = (int) getIntent().getExtras().getLong("list_id");
         
-        List<Bookmark> allBookmarks = new ArrayList<Bookmark>();
-        allBookmarks = bds.getAllBookmarks();
-        
+        editBookmark = bds.getBookmark(bookmarkId);
         bds.close();
 
-        editBookmark = allBookmarks.get(bookmarkId);
-        
         EditText bookmarkNameText = (EditText) findViewById(R.id.edittext_bookmark_name);
-        bookmarkNameText.setText(allBookmarks.get(bookmarkId).getName());
+        bookmarkNameText.setText(editBookmark.getName());
         
         TextView bookmarkColorText = (TextView) findViewById(R.id.textview_bookmark_serialized_value);
-        bookmarkColorText.setText(allBookmarks.get(bookmarkId).getSerializedValue());
+        bookmarkColorText.setText(editBookmark.getSerializedValue());
     }
 
     /**

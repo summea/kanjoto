@@ -8,12 +8,14 @@ import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.data.NotesDataSource;
 import com.andrewsummers.otashu.data.NotesetsDataSource;
+import com.andrewsummers.otashu.data.NotevaluesDataSource;
 import com.andrewsummers.otashu.data.OtashuDatabaseHelper;
 import com.andrewsummers.otashu.model.Bookmark;
 import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.Label;
 import com.andrewsummers.otashu.model.Note;
 import com.andrewsummers.otashu.model.Noteset;
+import com.andrewsummers.otashu.model.Notevalue;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -47,6 +49,10 @@ public class DatabaseDumperActivity extends Activity {
         LabelsDataSource lds = new LabelsDataSource(this);
         List<Label> allLabels = lds.getAllLabels();
         lds.close();
+        
+        NotevaluesDataSource nvds = new NotevaluesDataSource(this);
+        List<Notevalue> allNotevalues = nvds.getAllNotevalues();
+        nvds.close();
         
         EditText debugText = (EditText) findViewById(R.id.debug_text);
         
@@ -96,6 +102,16 @@ public class DatabaseDumperActivity extends Activity {
             
             String newText = debugText.getText().toString();
             newText += label.getId() + "|" + label.getName() + "|" + label.getColor() + "\n";
+            
+            debugText.setText(newText);
+        }
+        
+        debugText.setText(debugText.getText().toString() + "\nTable: Notevalues\n" + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "|" + OtashuDatabaseHelper.COLUMN_NOTELABEL + "|" + OtashuDatabaseHelper.COLUMN_LABEL_ID + "\n");
+        
+        for (Notevalue notevalue : allNotevalues) {
+            
+            String newText = debugText.getText().toString();
+            newText += notevalue.getId() + "|" + notevalue.getNotevalue() + "|" + notevalue.getNotelabel() + "|" + notevalue.getLabelId() + "\n";
             
             debugText.setText(newText);
         }

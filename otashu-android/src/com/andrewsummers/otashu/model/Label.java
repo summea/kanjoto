@@ -52,7 +52,10 @@ public class Label {
      * @return <code>String</code> of Label color.
      */
     public String getColor() {
-        return color;
+        String colorToReturn = "#dddddd";
+        if (!color.isEmpty())
+            colorToReturn = color;
+        return colorToReturn;
     }
 
     /**

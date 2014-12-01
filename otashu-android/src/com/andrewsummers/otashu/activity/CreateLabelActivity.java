@@ -52,12 +52,15 @@ public class CreateLabelActivity extends Activity implements OnClickListener {
         case R.id.button_save:
             // gather label data from form
             String labelName;
+            String labelColor;
             
             Label labelToInsert = new Label();
             
             labelName = ((EditText) findViewById(R.id.edittext_label_name)).getText().toString();
+            labelColor = ((EditText) findViewById(R.id.edittext_label_color)).getText().toString();
             
             labelToInsert.setName(labelName.toString());
+            labelToInsert.setColor(labelColor.toString());
             
             // first insert new label (parent of all related notes)
             saveLabel(v, labelToInsert);

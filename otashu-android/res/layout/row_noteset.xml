@@ -17,7 +17,7 @@
             android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:background="#ccc"
+            android:background="@drawable/row_selector"
             android:padding="15dp"
             android:gravity="center_horizontal" />
             

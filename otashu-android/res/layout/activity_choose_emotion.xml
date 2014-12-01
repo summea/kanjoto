@@ -44,12 +44,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/button_bookmark"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/button_bookmark_selector" />
         
     <Button
         android:id="@+id/button_go"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/button_go" />
+        android:layout_weight="1"
+        android:text="@string/button_go"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/button_play_selector" />
 		
 </LinearLayout>

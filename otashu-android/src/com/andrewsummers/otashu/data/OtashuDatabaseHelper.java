@@ -10,7 +10,7 @@ import android.util.Log;
  * access to application database.
  */
 public class OtashuDatabaseHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 11;
     private static final String DATABASE_NAME = "otashu_collection.db";
 
     public static final String COLUMN_ID = "_id";
@@ -34,6 +34,9 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     
     public static final String TABLE_BOOKMARKS = "bookmarks";
     public static final String COLUMN_SERIALIZED_VALUE = "serialized_value";
+    
+    public static final String TABLE_NOTEVALUES = "notevalues";
+    public static final String COLUMN_NOTELABEL = "notelabel";
 
     private static final String CREATE_TABLE_NOTESETS = "CREATE TABLE " + TABLE_NOTESETS
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
@@ -62,6 +65,12 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
             + COLUMN_NAME + " text,"
             + COLUMN_SERIALIZED_VALUE + " text);";
+    
+    private static final String CREATE_TABLE_NOTEVALUES = "CREATE TABLE " + TABLE_NOTEVALUES
+            + " (" + COLUMN_ID + " integer primary key autoincrement, "
+            + COLUMN_NOTEVALUE + " integer, "
+            + COLUMN_NOTELABEL + " text, "
+            + COLUMN_LABEL_ID + " integer);";
 
     /**
      * NotesetCollectionOpenHelper constructor.
@@ -86,6 +95,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_EMOTIONS);
         db.execSQL(CREATE_TABLE_LABELS);
         db.execSQL(CREATE_TABLE_BOOKMARKS);
+        db.execSQL(CREATE_TABLE_NOTEVALUES);
     }
 
     /**
@@ -103,13 +113,8 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         Log.d("MYLOG", ">>> new database version: " + newVersion);
         Log.d("MYLOG", "updating database...");
         
-        // v3
-        // db.execSQL(CREATE_TABLE_LABELS);
-        
-        // v4
-        // db.execSQL("ALTER TABLE " + TABLE_EMOTIONS + " ADD COLUMN " + COLUMN_LABEL_ID + " integer;");
-        
-        // v5
-        // db.execSQL(CREATE_TABLE_BOOKMARKS);
+        // v11
+        db.execSQL("DROP TABLE " + TABLE_NOTEVALUES);
+        db.execSQL(CREATE_TABLE_NOTEVALUES);
     }
 }

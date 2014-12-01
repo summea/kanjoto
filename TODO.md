@@ -172,6 +172,7 @@
 - id
 - name
 
+#### notevalues
 
 ## NOTES:
 - approaches to try first for generating music:
