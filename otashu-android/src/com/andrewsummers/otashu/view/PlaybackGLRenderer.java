@@ -21,8 +21,12 @@ import java.util.List;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import com.andrewsummers.otashu.data.NotevaluesDataSource;
+import com.andrewsummers.otashu.model.Label;
 import com.andrewsummers.otashu.model.Note;
+import com.andrewsummers.otashu.model.Notevalue;
 
+import android.graphics.Color;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
@@ -43,9 +47,13 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
     private final float[] mModelMatrix = new float[16];
     
     //private HashMap<float[], List<Integer>> noteColorTable = new HashMap<float[], List<Integer>>();
-    private SparseArray<float[]> noteColorTable = new SparseArray<float[]>();
+    private SparseArray<float[]> noteColorTable = new SparseArray<float[]>();    
     
-    private float[] noteAColor = { 1.0f, 0.0f, 0.0f, 1.0f }; 
+    
+    /*
+    int color = Color.parseColor("#ff0000");
+    //private float[] noteAColor = { 1.0f, 0.0f, 0.0f, 1.0f };
+    private float[] noteAColor = { Color.red(color) / 255.0f, Color.green(color) / 255.0f, Color.blue(color) / 255.0f };
     private float[] noteAsColor = { 1.0f, 0.2f, 0.0f, 1.0f };
     private float[] noteBColor = { 1.0f, 0.4f, 0.0f, 1.0f };
     private float[] noteCColor = { 1.0f, 0.6f, 0.0f, 1.0f };
@@ -57,13 +65,17 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
     private float[] noteFsColor = { 1.0f, 0.0f, 0.8f, 1.0f };
     private float[] noteGColor = { 1.0f, 0.0f, 1.0f, 1.0f };
     private float[] noteGsColor = { 1.0f, 0.2f, 1.0f, 1.0f };
-
+     */
+    
     public PlaybackGLRenderer() {        
     }
     
-    public PlaybackGLRenderer(List<Note> notes) {
+    public PlaybackGLRenderer(List<Note> notes, SparseArray<float[]> incomingNoteColorTable) {
         noteSequence = notes;
+    
+        noteColorTable = incomingNoteColorTable;
         
+        /*
         noteColorTable.put(21, noteAColor);
         noteColorTable.put(33, noteAColor);
         noteColorTable.put(45, noteAColor);
@@ -163,6 +175,7 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
         noteColorTable.put(80, noteGsColor);
         noteColorTable.put(92, noteGsColor);
         noteColorTable.put(104, noteGsColor);
+        */
     }
     
     @Override

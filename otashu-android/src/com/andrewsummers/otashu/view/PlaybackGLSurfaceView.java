@@ -21,6 +21,7 @@ import com.andrewsummers.otashu.model.Note;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
+import android.util.SparseArray;
 
 /**
  * A view container where OpenGL ES graphics can be drawn on screen.
@@ -42,14 +43,14 @@ public class PlaybackGLSurfaceView extends GLSurfaceView {
         setRenderer(mRenderer);
     }
     
-    public PlaybackGLSurfaceView(Context context, List<Note> notes) {
+    public PlaybackGLSurfaceView(Context context, List<Note> notes, SparseArray<float[]> noteColorTable) {
         super(context);
 
         // Create an OpenGL ES 2.0 context.
         setEGLContextClientVersion(2);
 
         // Set the Renderer for drawing on the GLSurfaceView
-        mRenderer = new PlaybackGLRenderer(notes);
+        mRenderer = new PlaybackGLRenderer(notes, noteColorTable);
         setRenderer(mRenderer);
 
         // Render the view only when there is a change in the drawing data

@@ -8,8 +8,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.data.NotesetsDataSource;
+import com.andrewsummers.otashu.data.NotevaluesDataSource;
+import com.andrewsummers.otashu.model.Label;
 import com.andrewsummers.otashu.model.Note;
+import com.andrewsummers.otashu.model.Notevalue;
 import com.andrewsummers.otashu.view.PlaybackGLSurfaceView;
 import com.leff.midi.MidiFile;
 import com.leff.midi.MidiTrack;
@@ -21,6 +25,7 @@ import com.leff.midi.event.meta.TimeSignature;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
@@ -41,6 +46,8 @@ public class GenerateMusicActivity extends Activity {
     MediaPlayer mediaPlayer = new MediaPlayer();
     
     private SparseArray<List<Integer>> musicalKeys = new SparseArray<List<Integer>>(); 
+    
+    private SparseArray<float[]> noteColorTable = new SparseArray<float[]>();
     
     private static SparseArray<String> noteMap;
     static
@@ -184,8 +191,42 @@ public class GenerateMusicActivity extends Activity {
         
         playMusic(musicSource);
         
+        List<Notevalue> allNotevalues = new ArrayList<Notevalue>();
+        List<Label> allLabels = new ArrayList<Label>();
+
+        NotevaluesDataSource nvds = new NotevaluesDataSource(this);
+        allNotevalues = nvds.getAllNotevalues();
+        nvds.close();
+        
+        LabelsDataSource lds = new LabelsDataSource(this);
+        allLabels = lds.getAllLabels();
+        lds.close();
+        
+        int color = 0;
+        
+        for (Notevalue notevalue : allNotevalues) {
+            boolean found = false;
+            for (Label label : allLabels) {
+                Log.d("MYLOG", "checking notevalue: " + notevalue.getNotevalue());
+                if (notevalue.getLabelId() == label.getId()) {
+                    color = Color.parseColor(label.getColor());
+                    float[] noteColor = { Color.red(color) / 255.0f, Color.green(color) / 255.0f, Color.blue(color) / 255.0f, 1.0f };
+                    noteColorTable.put(notevalue.getNotevalue(), noteColor);
+                    found = true;
+                    break;
+                }
+            }
+            
+            if (!found) {
+                color = Color.parseColor("#dddddd");
+                float[] noteColor = { Color.red(color) / 255.0f, Color.green(color) / 255.0f, Color.blue(color) / 255.0f };
+                noteColorTable.put(notevalue.getNotevalue(), noteColor);
+            }
+        }
+        
+        
         // Use GLSurfaceView as ContentView for this Activity
-        mGLView = new PlaybackGLSurfaceView(this, notes);
+        mGLView = new PlaybackGLSurfaceView(this, notes, noteColorTable);
         setContentView(mGLView);
         
         // return to previous activity when done playing

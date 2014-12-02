@@ -173,6 +173,10 @@
 - name
 
 #### notevalues
+- id
+- notevalue
+- notelabel
+
 
 ## NOTES:
 - approaches to try first for generating music:
