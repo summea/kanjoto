@@ -1,6 +1,7 @@
 package com.andrewsummers.otashu.activity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.andrewsummers.otashu.R;
@@ -12,7 +13,9 @@ import com.andrewsummers.otashu.model.Emotion;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -78,8 +81,19 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
                         android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        spinner.setSelection(adapter.getPosition(String.valueOf("0")));
-
+        
+        // get default instrument for playback
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String defaultInstrument = sharedPref.getString("pref_default_instrument", "");
+        
+        String[] instrumentLabels = getResources().getStringArray(R.array.instrument_labels_array);
+        String[] instrumentValues = getResources().getStringArray(R.array.instrument_values_array);
+        
+        int position = 0;
+        if (Arrays.asList(instrumentValues).indexOf(defaultInstrument) > 0)
+            position = Arrays.asList(instrumentValues).indexOf(defaultInstrument);
+        
+        spinner.setSelection(adapter.getPosition(instrumentLabels[position]));
     }
 
     @Override
@@ -99,8 +113,8 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
             eds.close();
 
             Spinner instrumentSpinner = (Spinner) findViewById(R.id.spinner_instrument);
-            int[] allInstrumentIds = getResources().getIntArray(R.array.instrument_values_array);
-            int selectedInstrumentId = allInstrumentIds[instrumentSpinner.getSelectedItemPosition()];
+            String[] allInstrumentIds = getResources().getStringArray(R.array.instrument_values_array);
+            int selectedInstrumentId = Integer.valueOf(allInstrumentIds[instrumentSpinner.getSelectedItemPosition()]);
             
             Bundle bundle = new Bundle();
             bundle.putInt("emotion_id", selectedEmotionValue);

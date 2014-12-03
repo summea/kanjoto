@@ -5,13 +5,16 @@
         android:title="@string/pref_general_category">
     
         <CheckBoxPreference
-            android:title="@string/pref_touch_feedback"
-            android:key="pref_touch_feedback_enabled" />
+            android:key="pref_touch_feedback_enabled"
+            android:title="@string/pref_touch_feedback" />
 
         <EditTextPreference
-
-            android:title="@string/pref_import_database_location"
-            android:key="pref_import_database_location" />
+            android:key="pref_import_database_location"
+            android:title="@string/pref_import_database_location" />
+            
+        <ListPreference
+            android:key="pref_default_instrument"
+            android:title="@string/pref_default_instrument" />
         
     </PreferenceCategory>
 
