@@ -21,12 +21,8 @@ import java.util.List;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import com.andrewsummers.otashu.data.NotevaluesDataSource;
-import com.andrewsummers.otashu.model.Label;
 import com.andrewsummers.otashu.model.Note;
-import com.andrewsummers.otashu.model.Notevalue;
 
-import android.graphics.Color;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;

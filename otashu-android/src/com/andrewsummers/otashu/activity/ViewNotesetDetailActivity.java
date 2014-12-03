@@ -15,11 +15,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
@@ -43,7 +45,7 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
     private File path = Environment.getExternalStorageDirectory();
     private String externalDirectory = path.toString() + "/otashu/";
     private File musicSource = new File(externalDirectory + "otashu_preview.mid");
-    private MediaPlayer mediaPlayer = new MediaPlayer();    
+    private MediaPlayer mediaPlayer = new MediaPlayer();
     
     /**
      * onCreate override used to get details view.
@@ -60,7 +62,7 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
         
         Log.d("MYLOG", "got list item id: " + getIntent().getExtras().getLong("list_id"));
         notesetId = (int) getIntent().getExtras().getLong("list_id");
-        
+                
         NotesetsDataSource nds = new NotesetsDataSource(this);
         
         // get noteset and notes information        
@@ -134,9 +136,13 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
                 notes.add(note);
                 Log.d("MYLOG", "note value: " + note.getLength());
             }
+        
+            // get default instrument for playback
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+            String defaultInstrument = sharedPref.getString("pref_default_instrument", "");
             
             GenerateMusicActivity generateMusic = new GenerateMusicActivity();
-            generateMusic.generateMusic(notes, musicSource);
+            generateMusic.generateMusic(notes, musicSource, defaultInstrument);
 
             // play generated notes for user
             playMusic(musicSource);

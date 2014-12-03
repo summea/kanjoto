@@ -4,12 +4,12 @@
 - noteset folders (lists by label or emotion)
 - implement second stage of Apprentice logic ("no" response -> update Apprentice knowledge)
 - finish fixing HashMap to SparseArray conversion
-- choose default playback instrument in settings
 - save generated song to file
 - create emotion fingerprint
 
 
 ## DONE:
+- 20141203: added default playback instrument in settings
 - 20141128: fixed new emotions not being created
 - 20141128: fixed new notesets not being created
 - 20141128: worked on fixing database leaks

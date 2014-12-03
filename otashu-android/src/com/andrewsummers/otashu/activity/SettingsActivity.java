@@ -4,9 +4,7 @@ import com.andrewsummers.otashu.fragment.SettingsFragment;
 
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.ListPreference;
 
 /**
  * Settings are general settings for the overall application.

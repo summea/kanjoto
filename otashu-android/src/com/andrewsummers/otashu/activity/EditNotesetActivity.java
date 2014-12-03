@@ -16,11 +16,13 @@ import com.andrewsummers.otashu.model.Noteset;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -305,8 +307,12 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
                 notes.add(note);
             }
             
+            // get default instrument for playback
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+            String defaultInstrument = sharedPref.getString("pref_default_instrument", "");
+            
             GenerateMusicActivity generateMusic = new GenerateMusicActivity();
-            generateMusic.generateMusic(notes, musicSource);
+            generateMusic.generateMusic(notes, musicSource, defaultInstrument);
 
             // play generated notes for user
             playMusic(musicSource);

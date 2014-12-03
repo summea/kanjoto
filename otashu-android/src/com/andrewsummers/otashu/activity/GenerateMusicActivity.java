@@ -3,13 +3,11 @@ package com.andrewsummers.otashu.activity;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.data.NotesetsDataSource;
 import com.andrewsummers.otashu.data.NotevaluesDataSource;
@@ -43,7 +41,7 @@ public class GenerateMusicActivity extends Activity {
 
     private GLSurfaceView mGLView;
     
-    int selectedInstrumentId = 0;
+    int selectedInstrumentId = -1;
     File path = Environment.getExternalStorageDirectory();
     String externalDirectory = path.toString() + "/otashu/";
     File musicSource = new File(externalDirectory + "otashu.mid");
@@ -85,14 +83,6 @@ public class GenerateMusicActivity extends Activity {
         // get selected instrument_id from spinner
         Bundle bundle = getIntent().getExtras();
         selectedInstrumentId = bundle.getInt("instrument_id");
-        
-        /*
-        // get default instrument for playback
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences();
-        String defaultInstrument = sharedPref.getString("pref_default_instrument", "");
-        if (defaultInstrument != null) {
-            selectedInstrumentId = Integer.valueOf(defaultInstrument);
-        }*/
         
         // TODO: double-check this section later
         
@@ -191,11 +181,11 @@ public class GenerateMusicActivity extends Activity {
             lineBreak++;
         }
         
-        //TextView playbackText = (TextView) findViewById(R.id.generate_music_placeholder);
-        //playbackText.setText(notesText);
-        //Log.d("MYLOG", notesText);
+        // get default instrument for playback
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String defaultInstrument = sharedPref.getString("pref_default_instrument", "");
         
-        generateMusic(notes, musicSource);
+        generateMusic(notes, musicSource, defaultInstrument);
         
         playMusic(musicSource);
         
@@ -215,7 +205,6 @@ public class GenerateMusicActivity extends Activity {
         for (Notevalue notevalue : allNotevalues) {
             boolean found = false;
             for (Label label : allLabels) {
-                Log.d("MYLOG", "checking notevalue: " + notevalue.getNotevalue());
                 if (notevalue.getLabelId() == label.getId()) {
                     color = Color.parseColor(label.getColor());
                     float[] noteColor = { Color.red(color) / 255.0f, Color.green(color) / 255.0f, Color.blue(color) / 255.0f, 1.0f };
@@ -302,8 +291,9 @@ public class GenerateMusicActivity extends Activity {
      *            List<Note> of notes to write to file.
      * @param musicSource
      *            File location of musicSource file for writing. 
+     * @param defaultInstrument 
      */
-    public void generateMusic(List<Note> notes, File musicSource) {
+    public void generateMusic(List<Note> notes, File musicSource, String defaultInstrument) {
         MidiTrack tempoTrack = new MidiTrack();
         MidiTrack noteTrack = new MidiTrack();
         
@@ -312,13 +302,9 @@ public class GenerateMusicActivity extends Activity {
         
         Tempo t = new Tempo();
         t.setBpm(120);
-    
-        /*
-        // get default instrument for playback
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String defaultInstrument = sharedPref.getString("pref_default_instrument", "");
-         */
-        //selectedInstrumentId = Integer.valueOf(defaultInstrument);
+
+        if ((selectedInstrumentId < 0) && (defaultInstrument != null))
+            selectedInstrumentId = Integer.valueOf(defaultInstrument);
         
         // set instrument type
         ProgramChange pc = new ProgramChange(0, 0, selectedInstrumentId);

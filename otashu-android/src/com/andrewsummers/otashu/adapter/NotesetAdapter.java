@@ -52,7 +52,6 @@ public class NotesetAdapter extends BaseAdapter {
         
         for (Label label : allLabels) {
             labels.put( (int) label.getId(), label);
-            Log.d("MYLOG", "putting label in: " + label.getId() + " ... " + label.getColor());
         }
     }
     

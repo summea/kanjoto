@@ -3,12 +3,10 @@ package com.andrewsummers.otashu.adapter;
 import java.util.List;
 
 import com.andrewsummers.otashu.R;
-import com.andrewsummers.otashu.model.Notevalue;
 import com.andrewsummers.otashu.model.NotevalueAndRelated;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
