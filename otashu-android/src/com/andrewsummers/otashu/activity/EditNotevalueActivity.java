@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -98,7 +97,6 @@ public class EditNotevalueActivity extends Activity implements OnClickListener {
         case R.id.button_save:
          // gather notevalue data from form
             Spinner notevalueNotevalue;
-            Spinner notevalueNotelabel;
             Spinner notevalueLabel;
             String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
             String[] noteLabelsArray = getResources().getStringArray(R.array.note_labels_array);

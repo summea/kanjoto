@@ -31,7 +31,7 @@ public class NotevaluesDataSource {
      * @param context
      *            Current state.
      */
-    public NotevaluesDataSource(Context context) {
+    public NotevaluesDataSource(Context context) {        
         dbHelper = new OtashuDatabaseHelper(context);
     }
 

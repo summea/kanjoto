@@ -11,12 +11,10 @@ import com.andrewsummers.otashu.model.Notevalue;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -90,7 +88,6 @@ public class CreateNotevalueActivity extends Activity implements OnClickListener
         case R.id.button_save:
             // gather notevalue data from form
             Spinner notevalueNotevalue;
-            Spinner notevalueNotelabel;
             Spinner notevalueLabel;
             String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
             String[] noteLabelsArray = getResources().getStringArray(R.array.note_labels_array);

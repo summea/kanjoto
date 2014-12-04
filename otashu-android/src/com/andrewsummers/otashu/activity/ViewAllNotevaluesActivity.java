@@ -184,12 +184,10 @@ public class ViewAllNotevaluesActivity extends ListActivity {
                 Context context = getApplicationContext();
                 int duration = Toast.LENGTH_SHORT;
 
-                /*
                 Toast toast = Toast.makeText(context,
                         context.getResources().getString(R.string.notevalue_deleted),
                         duration);
                 toast.show();
-                */
                 
                 // refresh list
                 adapter.removeItem(selectedPositionInList);

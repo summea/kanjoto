@@ -172,12 +172,12 @@ public class GenerateMusicActivity extends Activity {
         }
         */
         
-        String notesText = "";
+        StringBuilder notesText = new StringBuilder();
         int lineBreak = 1;
         for (Note note : notes) {
-            notesText += noteMap.get(note.getNotevalue()) + ", ";
+            notesText.append(noteMap.get(note.getNotevalue()) + ", ");
             if (lineBreak % 4 == 0)
-                notesText += "\n";
+                notesText.append("\n");
             lineBreak++;
         }
         
