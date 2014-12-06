@@ -63,8 +63,9 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
         buttonSave = (Button) findViewById(R.id.button_save);
         buttonSave.setOnClickListener(this);        
         
-        long notesetIdInTable = 0;
-        notesetIdInTable = getIntent().getExtras().getLong("menu_noteset_id");
+        int notesetIdInTable = 0;
+        notesetIdInTable = getIntent().getExtras().getInt("menu_noteset_id");
+        Log.d("MYLOG", "noteset id: " + notesetIdInTable);
         
         // get noteset and notes information
         

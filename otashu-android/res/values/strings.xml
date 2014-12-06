@@ -103,7 +103,6 @@
     <string name="remote_noteset">getting remote noteset...</string>
     
     <string name="pref_import_database_location">Import Database from Location</string>
-    <string name="pref_touch_feedback">Enable touch feedback</string>
     
     <string name="view_all_notesets_title">View All Notesets</string>
     

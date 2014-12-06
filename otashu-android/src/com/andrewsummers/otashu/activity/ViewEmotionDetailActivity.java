@@ -4,8 +4,10 @@ import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.model.Emotion;
+import com.andrewsummers.otashu.model.Label;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -40,6 +42,8 @@ public class ViewEmotionDetailActivity extends Activity {
         eds.close();
         
         LabelsDataSource lds = new LabelsDataSource(this);
+        Label label = lds.getLabel(emotion.getLabelId());
+        lds.close();
 
         TextView emotionName = (TextView) findViewById(R.id.emotion_detail_name_value);
         emotionName.setText(emotion.getName());
@@ -47,6 +51,8 @@ public class ViewEmotionDetailActivity extends Activity {
         TextView emotionLabel = (TextView) findViewById(R.id.emotion_detail_label_value);
         emotionLabel.setText(lds.getLabel(emotion.getLabelId()).getName());
         
-        lds.close();
+        if (label.getColor() != null) {
+            emotionLabel.setBackgroundColor(Color.parseColor(label.getColor()));
+        }
     }
 }

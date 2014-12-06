@@ -2,14 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp" >
 
     <TextView
         android:id="@+id/edit_bookmark_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/edit_bookmark_title"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textSize="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp" />
 
     <TextView
         android:id="@+id/bookmark_name"
@@ -20,7 +24,8 @@
     <EditText
         android:id="@+id/edittext_bookmark_name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp" />
 
     <TextView
         android:id="@+id/bookmark_serialized_value"
@@ -31,12 +36,14 @@
     <TextView
         android:id="@+id/textview_bookmark_serialized_value"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp" />
 
     <Button
         android:id="@+id/button_save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/button_save" />
+        android:text="@string/button_save"
+        android:background="@drawable/button_save_selector" />
 
 </LinearLayout>

@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:text="@string/button_bookmark"
         android:layout_marginBottom="20dp"
-        android:background="@drawable/button_bookmark_selector" />
+        android:background="@drawable/button_save_selector" />
         
     <Button
         android:id="@+id/button_go"

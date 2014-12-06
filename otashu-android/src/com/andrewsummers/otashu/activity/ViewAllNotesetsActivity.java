@@ -46,6 +46,7 @@ public class ViewAllNotesetsActivity extends ListActivity {
     private int currentOffset = 0;
     private int totalNotesetsAvailable = 0;
     private int limit = 15;
+    private Boolean doneLoading = false;
     
     /**
      * onCreate override used to gather and display a list of all notesets saved
@@ -78,7 +79,7 @@ public class ViewAllNotesetsActivity extends ListActivity {
         
         totalNotesetsAvailable = nsds.getCount();
         
-        if (currentOffset <= totalNotesetsAvailable) {
+        if (currentOffset <= totalNotesetsAvailable && !doneLoading) {
             allNotesets = nsds.getAllNotesets(limit, currentOffset);
             
             for (Noteset noteset : allNotesets) {
@@ -122,7 +123,7 @@ public class ViewAllNotesetsActivity extends ListActivity {
                             && (getListView().getChildAt(getListView().getChildCount() - 1).getBottom() <= getListView().getHeight())) {
 
                             // get more items for list
-                            currentOffset += 5;
+                            currentOffset += limit;
                             addToList();
                         }
                     } catch (Exception e) {
@@ -149,6 +150,7 @@ public class ViewAllNotesetsActivity extends ListActivity {
             // register context menu
             registerForContextMenu(listView);
         } else {
+            doneLoading = true;
             Log.d("MYLOG", "sorry, that's all of the available notesets...");
         }
         
@@ -170,6 +172,8 @@ public class ViewAllNotesetsActivity extends ListActivity {
         NotesDataSource nds = new NotesDataSource(this);
         
         totalNotesetsAvailable = nsds.getCount();
+        
+        Log.d("MYLOG", "limit: " + limit + " currentOffset: " + currentOffset);
         
         if (currentOffset <= totalNotesetsAvailable) {
             allNotesets = nsds.getAllNotesets(limit, currentOffset);

@@ -9,6 +9,7 @@
 
 
 ## DONE:
+- 20141205: added note color on "noteset details" activity
 - 20141203: added default playback instrument in settings
 - 20141128: fixed new emotions not being created
 - 20141128: fixed new notesets not being created

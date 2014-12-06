@@ -12,6 +12,7 @@ public class NotesetAndRelated {
     private Label label = new Label();
     private Noteset noteset = new Noteset();
     private List<Note> notes = new ArrayList<Note>();
+    private List<Notevalue> notevalues = new ArrayList<Notevalue>();
     
     /**
      * getEmotion gets emotion
@@ -87,6 +88,25 @@ public class NotesetAndRelated {
      */
     public void setNotes(List<Note> notes) {
         this.notes = notes;
+    }
+    
+    /**
+     * getNotevalues gets related notevalues
+     * 
+     * @return <code>List<Notevalue></code> notevalues list
+     */
+    public List<Notevalue> getNotevalues() {
+        return notevalues;
+    }
+
+    /**
+     * setNotevalues sets related notevalues
+     * 
+     * @param 
+     *            New notevalues list value.
+     */
+    public void setNotevalues(List<Notevalue> notevalues) {
+        this.notevalues = notevalues;
     }
     
     /**

@@ -161,13 +161,15 @@
         android:text="@string/button_play_noteset"
         android:padding="20dp"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/button_play_selector" />
     
     <Button
         android:id="@+id/button_save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/button_save"
-        android:padding="20dp" />
+        android:padding="20dp"
+        android:background="@drawable/button_save_selector" />
 
 </LinearLayout>
