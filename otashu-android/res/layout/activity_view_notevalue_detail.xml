@@ -7,24 +7,24 @@
     android:layout_marginRight="20dp" >
     
     <TextView
-        android:id="@+id/view_label_detail_title"
+        android:id="@+id/view_notevalue_detail_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/view_label_detail_title"
+        android:text="@string/view_notevalue_detail_title"
         android:textSize="30dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp" />
 
     <TextView
-        android:id="@+id/label_name"
+        android:id="@+id/notevalue_notevalue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/label_detail_name_label"
+        android:text="@string/notevalue_detail_notevalue_label"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textStyle="bold" />
         
     <TextView
-        android:id="@+id/label_name_value"
+        android:id="@+id/notevalue_notevalue_value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -32,15 +32,15 @@
         android:padding="15dp" />
         
     <TextView
-        android:id="@+id/label_detail_color_label"
+        android:id="@+id/notevalue_detail_label_notevalue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/label_color"
+        android:text="@string/notevalue_label"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textStyle="bold" />
         
     <TextView
-        android:id="@+id/label_color_value"
+        android:id="@+id/notevalue_label_value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"

@@ -61,6 +61,7 @@
     <string name="label_deleted">label deleted</string>
     <string name="label_name">Name</string>
     <string name="label_saved">label saved</string>
+    <string name="label_detail_name_label">Name</string>
     
     <string name="menu_button_bookmarks">Bookmarks</string>
     <string name="menu_button_create_emotion">New</string>
@@ -111,6 +112,9 @@
     <string name="view_label_detail_title">Label Details</string>
     <string name="view_noteset_detail_title">Noteset Details</string>
     <string name="view_notevalues">Notevalues</string>
+    <string name="view_notevalue_detail_title">Notevalue Details</string>
+    <string name="notevalue_detail_notevalue_label">Notevalue</string>
+    <string name="notevalue_label">Note Label</string>
     <string name="noteset_detail_title_label">Noteset Name</string>
     
     <string name="button_generate">Generate</string>

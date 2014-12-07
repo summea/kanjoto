@@ -93,14 +93,12 @@ public class ViewAllNotevaluesActivity extends ListActivity {
                 
                 Log.d("MYLOG", "list item id: " + id);
               
-                /*
                 // launch details activity
                 Intent intent = new Intent(view.getContext(),
                         ViewNotevalueDetailActivity.class);
                 
                 intent.putExtra("list_id", id);
                 startActivity(intent);
-                */
             }
         });
 
@@ -147,9 +145,9 @@ public class ViewAllNotevaluesActivity extends ListActivity {
         Intent intent = null;
         switch (item.getItemId()) {
             case R.id.context_menu_view:
-                //intent = new Intent(this, ViewNotevalueDetailActivity.class);
-                //intent.putExtra("list_id", info.id);
-                //startActivity(intent);
+                intent = new Intent(this, ViewNotevalueDetailActivity.class);
+                intent.putExtra("list_id", info.id);
+                startActivity(intent);
                 return true;
             case R.id.context_menu_edit:
                 intent = new Intent(this, EditNotevalueActivity.class);
@@ -209,11 +207,11 @@ public class ViewAllNotevaluesActivity extends ListActivity {
         long notevalueId = rowId;
         
         List<Long> allNotevaluesData = new LinkedList<Long>();
-        NotevaluesDataSource eds = new NotevaluesDataSource(this);
+        NotevaluesDataSource nvds = new NotevaluesDataSource(this);
 
         // get string version of returned notevalue list
-        //allNotevaluesData = eds.getAllNotevalueListDBTableIds();
-        eds.close();
+        allNotevaluesData = nvds.getAllNotevalueListDBTableIds();
+        nvds.close();
         
         Log.d("MYLOG", allNotevaluesData.toString());
 
@@ -227,9 +225,9 @@ public class ViewAllNotevaluesActivity extends ListActivity {
         Log.d("MYLOG", "rowId: " + rowId);
         Log.d("MYLOG", "found notevalue data: " + allNotevalues[(int) notevalueId]);
                 
-        Notevalue notevalue = eds.getNotevalue(allNotevalues[(int) notevalueId]);        
+        Notevalue notevalue = nvds.getNotevalue(allNotevalues[(int) notevalueId]);        
         
-        eds.close();
+        nvds.close();
         
         return notevalue;
     }

@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import com.andrewsummers.otashu.model.Label;
 import com.andrewsummers.otashu.model.Notevalue;
 
 import android.content.ContentValues;
@@ -182,6 +183,37 @@ public class NotevaluesDataSource {
         return notevalues;
     }
 
+    /**
+     * Get a list of all notevalue ids.
+     * 
+     * @return List of Notevalue ids.
+     */
+    public List<Long> getAllNotevalueListDBTableIds() {
+        List<Long> notevalues = new LinkedList<Long>();
+        
+        String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM " + OtashuDatabaseHelper.TABLE_NOTEVALUES;
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all emotions from database
+        Cursor cursor = db.rawQuery(query, null);
+
+        Notevalue notevalue = null;
+        if (cursor.moveToFirst()) {
+            do {                
+                // create emotion objects based on emotion data from database
+                notevalue = new Notevalue();
+                notevalue.setId(Long.parseLong(cursor.getString(0)));
+                
+                // add emotion to emotions list
+                notevalues.add(notevalue.getId());
+            } while (cursor.moveToNext());
+        }
+
+        return notevalues;
+    }
+    
     public Notevalue getNotevalue(long notevalueId) {
         Notevalue notevalue = new Notevalue();
         

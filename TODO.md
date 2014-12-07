@@ -9,6 +9,8 @@
 
 
 ## DONE:
+- 20141206: added notevalue details activity
+- 20141206: added delete notevalue feature
 - 20141205: added note color on "noteset details" activity
 - 20141203: added default playback instrument in settings
 - 20141128: fixed new emotions not being created
