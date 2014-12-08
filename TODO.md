@@ -9,6 +9,11 @@
 
 
 ## DONE:
+- 20141207: cleaned up "create emotion" activity UI formatting
+- 20141207: cleaned up "create label" activity UI formatting
+- 20141207: cleaned up "edit label" activity UI formatting
+- 20141207: cleaned up "create notevalue" activity UI formatting
+- 20141207: cleaned up "create noteset" activity UI formatting
 - 20141206: added notevalue details activity
 - 20141206: added delete notevalue feature
 - 20141205: added note color on "noteset details" activity

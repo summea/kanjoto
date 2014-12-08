@@ -47,6 +47,7 @@
     <string name="edit_emotion_title">Edit Emotion</string>
     <string name="edit_label_title">Edit Label</string>
     <string name="edit_noteset_title">Edit Noteset</string>
+    <string name="edit_notevalue_title">Edit Notevalue</string>
     <string name="emotion_deleted">emotion deleted</string>
     <string name="emotion_detail_label_label">Label</string>
     <string name="emotion_detail_name_label">Name</string>
