@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import com.andrewsummers.otashu.model.Label;
 import com.andrewsummers.otashu.model.Notevalue;
 
 import android.content.ContentValues;

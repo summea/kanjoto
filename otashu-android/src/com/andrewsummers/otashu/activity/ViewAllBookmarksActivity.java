@@ -136,13 +136,7 @@ private BookmarkAdapter adapter = null;
         Intent intent = null;
         switch (item.getItemId()) {
             case R.id.context_menu_play:
-                //intent = new Intent(this, ViewBookmarkDetailActivity.class);
-                //intent.putExtra("list_id", info.id);
-                //startActivity(intent);
-                
-                // play bookmark
                 play_bookmark(info.id);
-                
                 return true;
             case R.id.context_menu_view:
                 intent = new Intent(this, ViewBookmarkDetailActivity.class);
@@ -172,8 +166,6 @@ private BookmarkAdapter adapter = null;
                 // go ahead and delete bookmark
                 
                 // get correct bookmark id to delete
-                Log.d("MYLOG", "selected row item: " + selectedPositionInList);
-                
                 Bookmark bookmarkToDelete = getBookmarkFromListPosition(selectedPositionInList);
 
                 Log.d("MYLOG", "deleting bookmark: " + bookmarkToDelete.getId());
@@ -248,9 +240,6 @@ private BookmarkAdapter adapter = null;
     }
     
     void play_bookmark(long listId) {
-        
-        // TODO: get bookmark serialized value here
-        
         int bookmarkId = (int) listId;
         
         Log.d("MYLOG", "bookmark id: " + bookmarkId);
@@ -264,7 +253,6 @@ private BookmarkAdapter adapter = null;
         // prevent crashes due to lack of database data
         if (allBookmarksData.isEmpty())
             allBookmarksData.add((long) 0);
-
         
         Long[] allBookmarks = allBookmarksData
                 .toArray(new Long[allBookmarksData.size()]);
@@ -274,19 +262,13 @@ private BookmarkAdapter adapter = null;
         
         bds.close();
         
+        // get bookmark's serialized value
         currentBookmarkSerializedValue = bookmark.getSerializedValue();
-        
-        Log.d("MYLOG", "note value: " + currentBookmarkSerializedValue);
-        
-        //List<String> notesFromString = Arrays.asList(currentBookmarkSerializedValue.split("\\|"));
+
         String[] notesFromString = currentBookmarkSerializedValue.split("\\|");
         List<Note> notes = new ArrayList<Note>();
-                    
         
         for (String nextNote : notesFromString) {
-            
-            Log.d("MYLOG", "note value: " + nextNote);
-                            
             String[] itemsFromNotes = nextNote.split(":");
             
             Note note = new Note();
@@ -321,10 +303,10 @@ private BookmarkAdapter adapter = null;
      */
     @Override
     public void onBackPressed() {
-        Log.d("MYLOG", "stop playing music!");
-        
-        // stop playing music
-        mediaPlayer.stop();
+        if (mediaPlayer.isPlaying()) {
+            // stop playing music
+            mediaPlayer.stop();
+        }
         
         super.onBackPressed();
     }
