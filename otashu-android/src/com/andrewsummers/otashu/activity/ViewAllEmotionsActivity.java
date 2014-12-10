@@ -17,7 +17,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -91,8 +90,6 @@ public class ViewAllEmotionsActivity extends ListActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
                 
-                Log.d("MYLOG", "list item id: " + id);
-                
                 // launch details activity
                 Intent intent = new Intent(view.getContext(),
                         ViewEmotionDetailActivity.class);
@@ -159,7 +156,6 @@ public class ViewAllEmotionsActivity extends ListActivity {
                 startActivity(intent);
                 return true;
             case R.id.context_menu_delete:
-                Log.d("MYLOG", "confirming delete");
                 confirmDelete();
                 return true;
             default:
@@ -176,11 +172,8 @@ public class ViewAllEmotionsActivity extends ListActivity {
                 // go ahead and delete emotion
                 
                 // get correct emotion id to delete
-                Log.d("MYLOG", "selected row item: " + selectedPositionInList);
-                
                 Emotion emotionToDelete = getEmotionFromListPosition(selectedPositionInList);
 
-                Log.d("MYLOG", "deleting emotion: " + emotionToDelete.getId());
                 deleteEmotion(emotionToDelete);
                 
                 Context context = getApplicationContext();
@@ -216,8 +209,6 @@ public class ViewAllEmotionsActivity extends ListActivity {
         // get string version of returned emotion list
         allEmotionsData = eds.getAllEmotionListDBTableIds();
         eds.close();
-        
-        Log.d("MYLOG", allEmotionsData.toString());
 
         // prevent crashes due to lack of database data
         if (allEmotionsData.isEmpty())
@@ -226,9 +217,6 @@ public class ViewAllEmotionsActivity extends ListActivity {
         Long[] allEmotions = allEmotionsData
                 .toArray(new Long[allEmotionsData.size()]);
         
-        Log.d("MYLOG", "rowId: " + rowId);
-        Log.d("MYLOG", "found emotion data: " + allEmotions[(int) emotionId]);
-                
         Emotion emotion = eds.getEmotion(allEmotions[(int) emotionId]);        
         
         eds.close();
