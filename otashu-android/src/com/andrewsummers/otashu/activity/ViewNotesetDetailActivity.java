@@ -47,7 +47,6 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
     private int key = 0;
     private int notesetId = 0;
     private SparseArray<List<Note>> notesetBundle = new SparseArray<List<Note>>();
-    private NotesetAndRelated notesetAndRelated;
     private Button buttonPlayNoteset = null;
     private File path = Environment.getExternalStorageDirectory();
     private String externalDirectory = path.toString() + "/otashu/";

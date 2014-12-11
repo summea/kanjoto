@@ -41,7 +41,7 @@ public class NotevaluesDataSource {
      * @throws SQLException
      */
     public void open() throws SQLException {
-        database = dbHelper.getWritableDatabase();
+        setDatabase(dbHelper.getWritableDatabase());
     }
 
     /**
@@ -291,5 +291,13 @@ public class NotevaluesDataSource {
         notevalue = allNotevalues.get(chosenIndex);
         
         return notevalue;
+    }
+
+    public SQLiteDatabase getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(SQLiteDatabase database) {
+        this.database = database;
     }
 }
