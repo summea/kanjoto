@@ -92,10 +92,7 @@ public class ExportDatabaseActivity extends Activity {
             if (backupDB.exists()) {
                 Log.d("MYLOG", "new file exists!");
             }
-            
-            Log.d("MYLOG", currentDB.toString());
-            Log.d("MYLOG", backupDB.toString());
-            
+
             FileChannel src = null;
             FileChannel dst = null;
             

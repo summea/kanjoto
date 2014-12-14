@@ -65,7 +65,6 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
         
         int notesetIdInTable = 0;
         notesetIdInTable = getIntent().getExtras().getInt("menu_noteset_id");
-        Log.d("MYLOG", "noteset id: " + notesetIdInTable);
         
         // get noteset and notes information
         
@@ -400,8 +399,6 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
      */
     @Override
     public void onBackPressed() {
-        Log.d("MYLOG", "stop playing music!");
-        
         // stop playing music
         mediaPlayer.stop();
         
