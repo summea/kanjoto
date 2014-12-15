@@ -395,7 +395,7 @@ public class GenerateMusicActivity extends Activity {
         Integer randomKey = keys.get(random.nextInt(keys.size()));
         
         // loop through all found emotion-related notesets
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 16; i++) {
         
             List<Note> nsets = new ArrayList<Note>();
             

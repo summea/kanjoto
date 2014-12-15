@@ -50,6 +50,8 @@
         <activity android:name="com.andrewsummers.otashu.activity.CreateNotevalueActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.EditNotevalueActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.ViewNotevalueDetailActivity" />
+        <activity android:name="com.andrewsummers.otashu.OtashuReceiver" />
+        <receiver android:name="OtashuReceiver"></receiver>
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

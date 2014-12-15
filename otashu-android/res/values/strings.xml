@@ -83,8 +83,10 @@
     <string name="noteset_name_label">Name</string>
     <string name="notevalue_deleted">notevalue deleted</string>
 
+    <string name="pref_alarm_enabled">Alarm Enabled</string>
     <string name="pref_general_category">General</string>
     <string name="pref_default_instrument">Default Instrument</string>
+    <string name="pref_screen_alarm">Alarm</string>
     
     <string name="spinner_emotion_label">Emotion</string>
     <string name="spinner_emotion_label_label">Label</string>

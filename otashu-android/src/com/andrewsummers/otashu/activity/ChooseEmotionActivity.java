@@ -97,6 +97,18 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
             position = Arrays.asList(instrumentValues).indexOf(defaultInstrument);
         
         spinner.setSelection(adapter.getPosition(instrumentLabels[position]));
+        
+        try {
+            // auto play order sent?
+            Bundle bundle = getIntent().getExtras();
+            boolean autoPlay = bundle.getBoolean("auto_play", false);
+            
+            if (autoPlay) {
+                buttonGo.performClick();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

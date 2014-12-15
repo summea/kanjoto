@@ -9,7 +9,23 @@
             android:title="@string/pref_default_instrument"
             android:entries="@array/instrument_labels_array"
             android:entryValues="@array/instrument_values_array" />
+
+        <PreferenceScreen
+            android:key="pref_screen_alarm"
+            android:title="@string/pref_screen_alarm"
+            android:persistent="false">
             
+            <CheckBoxPreference
+                android:key="pref_alarm_enabled"
+                android:title="@string/pref_alarm_enabled"
+                android:defaultValue="false" />
+                
+            <Preference 
+                android:key="button"
+                android:title="temp time picker" />
+
+        </PreferenceScreen>
+        
         <EditTextPreference
             android:key="pref_import_database_location"
             android:title="@string/pref_import_database_location"
