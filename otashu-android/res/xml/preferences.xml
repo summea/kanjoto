@@ -22,7 +22,7 @@
                 
             <Preference 
                 android:key="button"
-                android:title="temp time picker" />
+                android:title="@string/pref_alarm_time_picker" />
 
         </PreferenceScreen>
         

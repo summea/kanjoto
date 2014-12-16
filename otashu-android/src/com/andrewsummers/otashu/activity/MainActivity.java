@@ -40,26 +40,6 @@ public class MainActivity extends Activity implements OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // TODO: move this into a setting or something
-        
-        // load preferences
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean alarmEnabled = sharedPref.getBoolean("pref_alarm_enabled", false);
-        
-        // set alarm, if enabled
-        if (alarmEnabled) {
-            AlarmManager am = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-            Calendar alarmDate = Calendar.getInstance();
-            //alarmDate.add(Calendar.SECOND, 10);
-            alarmDate.add(Calendar.HOUR, 8);
-
-            Intent intent = new Intent(this, OtashuReceiver.class);
-            PendingIntent sender = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-            
-            am.set(AlarmManager.RTC_WAKEUP, alarmDate.getTimeInMillis(), sender);
-            Log.d("MYLOG", "alarm set: " + alarmDate.getTimeInMillis());
-        }
         
         // set default preferences
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);

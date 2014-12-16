@@ -84,6 +84,7 @@
     <string name="notevalue_deleted">notevalue deleted</string>
 
     <string name="pref_alarm_enabled">Alarm Enabled</string>
+    <string name="pref_alarm_time_picker">Choose Time</string>
     <string name="pref_general_category">General</string>
     <string name="pref_default_instrument">Default Instrument</string>
     <string name="pref_screen_alarm">Alarm</string>
