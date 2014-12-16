@@ -60,19 +60,27 @@ public class SettingsFragment extends PreferenceFragment implements TimePickerDi
         if (alarmEnabled) {
             AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
             
+            // get current time
             Date dateNow = new Date();
             Calendar calAlarm = Calendar.getInstance();
             Calendar calNow = Calendar.getInstance();
             
+            // init time
             calNow.setTime(dateNow);
             calAlarm.setTime(dateNow);
             
+            // set calendar alarm
             calAlarm.set(Calendar.HOUR_OF_DAY, hourOfDay);
             calAlarm.set(Calendar.MINUTE, minute);
             calAlarm.set(Calendar.SECOND, second);
+            
+            // make sure time starts for following day (if necessary)
+            if (calAlarm.before(calNow)) {
+                calAlarm.add(Calendar.DATE, 1);
+            }
     
             Intent intent = new Intent(getActivity(), OtashuReceiver.class);
-            PendingIntent sender = PendingIntent.getBroadcast(getActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent sender = PendingIntent.getBroadcast(getActivity(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
             
             am.set(AlarmManager.RTC_WAKEUP, calAlarm.getTimeInMillis(), sender);
             Log.d("MYLOG", "alarm set: hour: " + hourOfDay + " minute: " + minute);

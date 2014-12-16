@@ -105,7 +105,7 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
             
             if (autoPlay) {
                 buttonGo.performClick();
-            }
+            }                    
         } catch (Exception e) {
             e.printStackTrace();
         }
