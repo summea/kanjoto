@@ -1,21 +1,12 @@
 package com.andrewsummers.otashu.activity;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import com.andrewsummers.otashu.ImageAdapter;
-import com.andrewsummers.otashu.OtashuReceiver;
 import com.andrewsummers.otashu.R;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
