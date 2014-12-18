@@ -29,12 +29,46 @@ public class SettingsFragment extends PreferenceFragment implements TimePickerDi
         // load preferences from XML resource
         addPreferencesFromResource(R.xml.preferences);
         
+        Preference alarmEnabled = (Preference)this.findPreference("pref_alarm_enabled");
+        alarmEnabled.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                
+                if ((Boolean) newValue) {
+                    int second = 0; // used to set seconds for calendar alarm
+                    
+                    // load preferences
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                    int hourOfDay = sharedPref.getInt("alarm_hour_of_day", -1);
+                    int minute = sharedPref.getInt("alarm_minute", -1);
+
+                    Log.d("MYLOG", "hour of day: " + hourOfDay);
+                    Log.d("MYLOG", "minute: " + minute);
+
+                    // set alarm, if enabled
+                    if ((hourOfDay >= 0) && (minute >= 0)) {
+                        setAlarm(hourOfDay, minute, second);
+                    }
+                } else {
+                    // cancel alarm
+                    AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+                    Intent intent = new Intent(getActivity(), OtashuReceiver.class);
+                    PendingIntent sender = PendingIntent.getBroadcast(getActivity(), 0, intent, 0);
+                    am.cancel(sender);
+                    
+                    Log.d("MYLOG", "alarm disabled");
+                }
+
+                return true;
+            }
+        });
+        
         Preference button = (Preference)this.findPreference("button");
         button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                // TODO Auto-generated method stub
                 showTimeDialog();
                 return false;
             }
@@ -58,32 +92,7 @@ public class SettingsFragment extends PreferenceFragment implements TimePickerDi
         
         // set alarm, if enabled
         if (alarmEnabled) {
-            AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-            
-            // get current time
-            Date dateNow = new Date();
-            Calendar calAlarm = Calendar.getInstance();
-            Calendar calNow = Calendar.getInstance();
-            
-            // init time
-            calNow.setTime(dateNow);
-            calAlarm.setTime(dateNow);
-            
-            // set calendar alarm
-            calAlarm.set(Calendar.HOUR_OF_DAY, hourOfDay);
-            calAlarm.set(Calendar.MINUTE, minute);
-            calAlarm.set(Calendar.SECOND, second);
-            
-            // make sure time starts for following day (if necessary)
-            if (calAlarm.before(calNow)) {
-                calAlarm.add(Calendar.DATE, 1);
-            }
-    
-            Intent intent = new Intent(getActivity(), OtashuReceiver.class);
-            PendingIntent sender = PendingIntent.getBroadcast(getActivity(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
-            
-            am.set(AlarmManager.RTC_WAKEUP, calAlarm.getTimeInMillis(), sender);
-            Log.d("MYLOG", "alarm set: hour: " + hourOfDay + " minute: " + minute);
+            setAlarm(hourOfDay, minute, second);
         }
     }
 
@@ -106,5 +115,35 @@ public class SettingsFragment extends PreferenceFragment implements TimePickerDi
         OnTimeSetListener timeSetListener = (OnTimeSetListener) this;
         
         new TimePickerDialog(getActivity(), 0, timeSetListener, hourOfDay, minute, true).show();
+    }
+    
+    public void setAlarm(int hourOfDay, int minute, int second) {
+        AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+        
+        // get current time
+        Date dateNow = new Date();
+        Calendar calAlarm = Calendar.getInstance();
+        Calendar calNow = Calendar.getInstance();
+        
+        // init time
+        calNow.setTime(dateNow);
+        calAlarm.setTime(dateNow);
+        
+        // set calendar alarm
+        calAlarm.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        calAlarm.set(Calendar.MINUTE, minute);
+        calAlarm.set(Calendar.SECOND, second);
+        
+        // make sure time starts for following day (if necessary)
+        if (calAlarm.before(calNow)) {
+            calAlarm.add(Calendar.DATE, 1);
+        }
+
+        Intent intent = new Intent(getActivity(), OtashuReceiver.class);
+        PendingIntent sender = PendingIntent.getBroadcast(getActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        
+        am.setRepeating(AlarmManager.RTC_WAKEUP, calAlarm.getTimeInMillis(), AlarmManager.INTERVAL_DAY, sender);
+        
+        Log.d("MYLOG", "alarm set: hour: " + hourOfDay + " minute: " + minute);
     }
 }
