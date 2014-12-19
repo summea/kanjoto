@@ -1,3 +1,4 @@
+
 package com.andrewsummers.otashu.data;
 
 import java.util.ArrayList;
@@ -29,8 +30,7 @@ public class NotesDataSource {
     /**
      * NotesDataSource constructor.
      * 
-     * @param context
-     *            Current state.
+     * @param context Current state.
      */
     public NotesDataSource(Context context) {
         dbHelper = new OtashuDatabaseHelper(context);
@@ -55,11 +55,10 @@ public class NotesDataSource {
     /**
      * Create note row in database.
      * 
-     * @param notevalues
-     *            String of note values to insert.
+     * @param notevalues String of note values to insert.
      * @return Note of newly-created note data.
      */
-    public Note createNote(Note note) {        
+    public Note createNote(Note note) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_NOTESET_ID, note.getNotesetId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_NOTEVALUE, note.getNotevalue());
@@ -71,7 +70,7 @@ public class NotesDataSource {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         long insertId = db.insert(OtashuDatabaseHelper.TABLE_NOTES, null,
-                        contentValues);
+                contentValues);
 
         Cursor cursor = db.query(
                 OtashuDatabaseHelper.TABLE_NOTES, allColumns,
@@ -87,8 +86,7 @@ public class NotesDataSource {
     /**
      * Delete note row from database.
      * 
-     * @param note
-     *            Note to delete.
+     * @param note Note to delete.
      */
     public void deleteNote(Note note) {
         long id = note.getId();
@@ -131,7 +129,7 @@ public class NotesDataSource {
 
         return notes;
     }
-    
+
     /**
      * Get all notes with specific noteset_id from database table.
      * 
@@ -140,7 +138,8 @@ public class NotesDataSource {
     public List<Note> getAllNotes(long notesetId) {
         List<Note> notes = new ArrayList<Note>();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + "=" + notesetId;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES + " WHERE "
+                + OtashuDatabaseHelper.COLUMN_NOTESET_ID + "=" + notesetId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -171,8 +170,7 @@ public class NotesDataSource {
     /**
      * Access column data at current position of result.
      * 
-     * @param cursor
-     *            Current cursor location.
+     * @param cursor Current cursor location.
      * @return Note
      */
     private Note cursorToNote(Cursor cursor) {
@@ -184,7 +182,7 @@ public class NotesDataSource {
         note.setPosition(cursor.getInt(4));
         return note;
     }
-        
+
     /**
      * getAllNotes gets a preview list of all notes.
      * 
@@ -221,10 +219,10 @@ public class NotesDataSource {
     }
 
     public Note updateNote(Note note) {
-        
+
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        
+
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_NOTESET_ID, note.getNotesetId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_NOTEVALUE, note.getNotevalue());
@@ -232,7 +230,8 @@ public class NotesDataSource {
         contentValues.put(OtashuDatabaseHelper.COLUMN_LENGTH, note.getLength());
         contentValues.put(OtashuDatabaseHelper.COLUMN_POSITION, note.getPosition());
 
-        db.update(OtashuDatabaseHelper.TABLE_NOTES, contentValues, OtashuDatabaseHelper.COLUMN_ID + "=" + note.getId(), null);
+        db.update(OtashuDatabaseHelper.TABLE_NOTES, contentValues, OtashuDatabaseHelper.COLUMN_ID
+                + "=" + note.getId(), null);
 
         return note;
     }

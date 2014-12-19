@@ -1,3 +1,4 @@
+
 package com.andrewsummers.otashu.activity;
 
 import com.andrewsummers.otashu.R;
@@ -15,8 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * CreateBookmarkActivity is an Activity which provides users the ability to
- * create new bookmarks.
+ * CreateBookmarkActivity is an Activity which provides users the ability to create new bookmarks.
  */
 public class EditBookmarkActivity extends Activity implements OnClickListener {
     private Button buttonSave = null;
@@ -25,8 +25,7 @@ public class EditBookmarkActivity extends Activity implements OnClickListener {
     /**
      * onCreate override that provides bookmark creation view to user .
      * 
-     * @param savedInstanceState
-     *            Current application state data.
+     * @param savedInstanceState Current application state data.
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,13 +42,13 @@ public class EditBookmarkActivity extends Activity implements OnClickListener {
         // open data source handle
         BookmarksDataSource bds = new BookmarksDataSource(this);
         int bookmarkId = (int) getIntent().getExtras().getLong("list_id");
-        
+
         editBookmark = bds.getBookmark(bookmarkId);
         bds.close();
 
         EditText bookmarkNameText = (EditText) findViewById(R.id.edittext_bookmark_name);
         bookmarkNameText.setText(editBookmark.getName());
-        
+
         TextView bookmarkColorText = (TextView) findViewById(R.id.textview_bookmark_serialized_value);
         bookmarkColorText.setText(editBookmark.getSerializedValue());
     }
@@ -57,32 +56,33 @@ public class EditBookmarkActivity extends Activity implements OnClickListener {
     /**
      * onClick override used to save bookmark data once user clicks save button.
      * 
-     * @param view
-     *            Incoming view.
+     * @param view Incoming view.
      */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-        case R.id.button_save:
-            // gather bookmark data from form
-            String bookmarkName;
-            String bookmarkSerializedValue;
-            
-            Bookmark bookmarkToUpdate = new Bookmark();
-            
-            bookmarkToUpdate.setId(editBookmark.getId());
-            
-            bookmarkName = ((EditText) findViewById(R.id.edittext_bookmark_name)).getText().toString();            
-            bookmarkSerializedValue = ((TextView) findViewById(R.id.textview_bookmark_serialized_value)).getText().toString();
-            
-            bookmarkToUpdate.setName(bookmarkName.toString());
-            bookmarkToUpdate.setSerializedValue(bookmarkSerializedValue.toString());
-            
-            // first insert new bookmark (parent of all related notes)
-            saveBookmarkUpdates(v, bookmarkToUpdate);
-            
-            finish();
-            break;
+            case R.id.button_save:
+                // gather bookmark data from form
+                String bookmarkName;
+                String bookmarkSerializedValue;
+
+                Bookmark bookmarkToUpdate = new Bookmark();
+
+                bookmarkToUpdate.setId(editBookmark.getId());
+
+                bookmarkName = ((EditText) findViewById(R.id.edittext_bookmark_name)).getText()
+                        .toString();
+                bookmarkSerializedValue = ((TextView) findViewById(R.id.textview_bookmark_serialized_value))
+                        .getText().toString();
+
+                bookmarkToUpdate.setName(bookmarkName.toString());
+                bookmarkToUpdate.setSerializedValue(bookmarkSerializedValue.toString());
+
+                // first insert new bookmark (parent of all related notes)
+                saveBookmarkUpdates(v, bookmarkToUpdate);
+
+                finish();
+                break;
         }
     }
 
@@ -105,10 +105,8 @@ public class EditBookmarkActivity extends Activity implements OnClickListener {
     /**
      * Save bookmark data.
      * 
-     * @param v
-     *            Incoming view.
-     * @param data
-     *            Incoming string of data to be saved.
+     * @param v Incoming view.
+     * @param data Incoming string of data to be saved.
      */
     private void saveBookmarkUpdates(View v, Bookmark bookmark) {
 
@@ -116,7 +114,7 @@ public class EditBookmarkActivity extends Activity implements OnClickListener {
         BookmarksDataSource bds = new BookmarksDataSource(this);
         bds.updateBookmark(bookmark);
         bds.close();
-        
+
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
 

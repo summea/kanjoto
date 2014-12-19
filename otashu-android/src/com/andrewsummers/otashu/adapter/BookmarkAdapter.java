@@ -1,3 +1,4 @@
+
 package com.andrewsummers.otashu.adapter;
 
 import java.util.List;
@@ -16,12 +17,12 @@ public class BookmarkAdapter extends BaseAdapter {
 
     private Context mContext;
     private List<Bookmark> bookmarks;
-    
+
     public BookmarkAdapter(Context context, List<Bookmark> allBookmarks) {
         mContext = context;
         bookmarks = allBookmarks;
     }
-    
+
     @Override
     public int getCount() {
         return bookmarks.size();
@@ -38,17 +39,19 @@ public class BookmarkAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {        
+    public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = ((LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.row_bookmark, null);
+            convertView = ((LayoutInflater) mContext
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
+                    R.layout.row_bookmark, null);
         }
-        
+
         TextView bookmark = (TextView) convertView.findViewById(R.id.bookmark);
         bookmark.setText(bookmarks.get(position).getName());
 
         return convertView;
     }
-    
+
     public Object removeItem(int position) {
         return bookmarks.remove(position);
     }

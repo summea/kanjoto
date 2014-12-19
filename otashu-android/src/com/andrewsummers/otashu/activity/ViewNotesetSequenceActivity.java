@@ -1,3 +1,4 @@
+
 package com.andrewsummers.otashu.activity;
 
 import java.util.List;
@@ -27,11 +28,9 @@ public class ViewNotesetSequenceActivity extends FragmentActivity {
     private PagerAdapter mPagerAdapter;
 
     /**
-     * onCreate override used to gather data and display using a view pager and
-     * a pager adapter.
+     * onCreate override used to gather data and display using a view pager and a pager adapter.
      * 
-     * @param savedInstanceState
-     *            Current application state data.
+     * @param savedInstanceState Current application state data.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +66,7 @@ public class ViewNotesetSequenceActivity extends FragmentActivity {
 
             // load preferences
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-            
+
             // check if touch feedback is enabled
             // pass current setting value to bundle (for later delivery to
             // fragment view)
@@ -88,8 +87,8 @@ public class ViewNotesetSequenceActivity extends FragmentActivity {
     }
 
     /**
-     * onBackPressed override used to page back through previously-viewed
-     * noteset pages (until reaching the main menu).
+     * onBackPressed override used to page back through previously-viewed noteset pages (until
+     * reaching the main menu).
      */
     @Override
     public void onBackPressed() {
@@ -113,10 +112,8 @@ public class ViewNotesetSequenceActivity extends FragmentActivity {
         /**
          * ScreenSlidePagerAdapter constructor.
          * 
-         * @param fm
-         *            <code>FragmentManager</code> object.
-         * @param data
-         *            <code>String</code> value of data to later display.
+         * @param fm <code>FragmentManager</code> object.
+         * @param data <code>String</code> value of data to later display.
          */
         public ScreenSlidePagerAdapter(FragmentManager fm, String data) {
             super(fm);
@@ -124,11 +121,10 @@ public class ViewNotesetSequenceActivity extends FragmentActivity {
         }
 
         /**
-         * getItem override used to get next set of data for the specific page
-         * currently being viewed.
+         * getItem override used to get next set of data for the specific page currently being
+         * viewed.
          * 
-         * @param position
-         *            <code>int</code> of current page
+         * @param position <code>int</code> of current page
          */
         @Override
         public Fragment getItem(int position) {
@@ -136,22 +132,22 @@ public class ViewNotesetSequenceActivity extends FragmentActivity {
 
             // prepare data to be sent inside bundle for fragment view
             switch (position) {
-            case 0:
-                bundle.putString("textforfragment",
-                        Character.toString(data.charAt(0)));
-                break;
-            case 1:
-                bundle.putString("textforfragment",
-                        Character.toString(data.charAt(1)));
-                break;
-            case 2:
-                bundle.putString("textforfragment",
-                        Character.toString(data.charAt(2)));
-                break;
-            case 3:
-                bundle.putString("textforfragment",
-                        Character.toString(data.charAt(3)));
-                break;
+                case 0:
+                    bundle.putString("textforfragment",
+                            Character.toString(data.charAt(0)));
+                    break;
+                case 1:
+                    bundle.putString("textforfragment",
+                            Character.toString(data.charAt(1)));
+                    break;
+                case 2:
+                    bundle.putString("textforfragment",
+                            Character.toString(data.charAt(2)));
+                    break;
+                case 3:
+                    bundle.putString("textforfragment",
+                            Character.toString(data.charAt(3)));
+                    break;
             }
 
             ViewNotesetSequencePageFragment sspf = new ViewNotesetSequencePageFragment();

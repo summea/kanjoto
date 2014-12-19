@@ -1,3 +1,4 @@
+
 package com.andrewsummers.otashu.data;
 
 import java.util.ArrayList;
@@ -28,8 +29,7 @@ public class NotesetsDataSource {
     /**
      * NotesetsDataSource constructor.
      * 
-     * @param context
-     *            Current state.
+     * @param context Current state.
      */
     public NotesetsDataSource(Context context) {
         dbHelper = new OtashuDatabaseHelper(context);
@@ -54,8 +54,7 @@ public class NotesetsDataSource {
     /**
      * Create noteset row in database.
      * 
-     * @param notevalues
-     *            String of note values to insert.
+     * @param notevalues String of note values to insert.
      * @return Noteset of newly-created noteset data.
      */
     public Noteset createNoteset(Noteset noteset) {
@@ -69,7 +68,7 @@ public class NotesetsDataSource {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         long insertId = db.insert(OtashuDatabaseHelper.TABLE_NOTESETS, null,
-                        contentValues);
+                contentValues);
 
         Cursor cursor = db.query(
                 OtashuDatabaseHelper.TABLE_NOTESETS, allColumns,
@@ -85,24 +84,23 @@ public class NotesetsDataSource {
     /**
      * Delete noteset row from database.
      * 
-     * @param noteset
-     *            Noteset to delete.
+     * @param noteset Noteset to delete.
      */
     public void deleteNoteset(Noteset noteset) {
         long id = noteset.getId();
-        
+
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        
+
         // delete noteset
         db.delete(OtashuDatabaseHelper.TABLE_NOTESETS,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
-        
+
         // delete related notes
         db.delete(OtashuDatabaseHelper.TABLE_NOTES,
                 OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = " + id, null);
     }
-    
+
     /**
      * Get all notesets from database table.
      * 
@@ -135,7 +133,7 @@ public class NotesetsDataSource {
 
         return notesets;
     }
-    
+
     /**
      * Get all notesets from database table.
      * 
@@ -178,9 +176,9 @@ public class NotesetsDataSource {
      * 
      * @return List of noteset bundles.
      */
-    public HashMap<Integer, List<Note>> getAllNotesetBundles() {        
+    public HashMap<Integer, List<Note>> getAllNotesetBundles() {
         HashMap<Integer, List<Note>> notesetBundles = new HashMap<Integer, List<Note>>();
-        
+
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS;
 
         // create database handle
@@ -192,15 +190,15 @@ public class NotesetsDataSource {
         if (cursor.moveToFirst()) {
             do {
                 Integer notesetId = Integer.parseInt(cursor.getString(0));
-                
+
                 // get all related notes inside this noteset
                 // TODO: make this query approach more efficient at some point, if necessary
-                String queryForRelatedNotes = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = " + notesetId;
+                String queryForRelatedNotes = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES
+                        + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = " + notesetId;
                 Cursor cursorForRelatedNotes = db.rawQuery(queryForRelatedNotes, null);
-                
-                
+
                 List<Note> notes = new LinkedList<Note>();
-                
+
                 if (cursorForRelatedNotes.moveToFirst()) {
                     do {
                         Note note = null;
@@ -213,15 +211,15 @@ public class NotesetsDataSource {
                         notes.add(note);
                     } while (cursorForRelatedNotes.moveToNext());
                 }
-                
+
                 notesetBundles.put(notesetId, notes);
-                
+
             } while (cursor.moveToNext());
         }
 
         return notesetBundles;
     }
-    
+
     /**
      * Get all notesets bundles from database table.
      * 
@@ -229,8 +227,9 @@ public class NotesetsDataSource {
      */
     public HashMap<Integer, List<Note>> getAllNotesetBundles(int emotion_id) {
         HashMap<Integer, List<Note>> notesetBundles = new HashMap<Integer, List<Note>>();
-        
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS + " WHERE " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotion_id;
+
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS + " WHERE "
+                + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotion_id;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -241,15 +240,15 @@ public class NotesetsDataSource {
         if (cursor.moveToFirst()) {
             do {
                 Integer notesetId = Integer.parseInt(cursor.getString(0));
-                
+
                 // get all related notes inside this noteset
                 // TODO: make this query approach more efficient at some point, if necessary
-                String queryForRelatedNotes = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = " + notesetId;
+                String queryForRelatedNotes = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES
+                        + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = " + notesetId;
                 Cursor cursorForRelatedNotes = db.rawQuery(queryForRelatedNotes, null);
-                
-                
+
                 List<Note> notes = new LinkedList<Note>();
-                
+
                 if (cursorForRelatedNotes.moveToFirst()) {
                     do {
                         Note note = null;
@@ -262,9 +261,9 @@ public class NotesetsDataSource {
                         notes.add(note);
                     } while (cursorForRelatedNotes.moveToNext());
                 }
-                
+
                 notesetBundles.put(notesetId, notes);
-                
+
             } while (cursor.moveToNext());
         }
 
@@ -273,8 +272,9 @@ public class NotesetsDataSource {
 
     public SparseArray<List<Note>> getNotesetBundle(long id) {
         SparseArray<List<Note>> notesetBundle = new SparseArray<List<Note>>();
-        
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + id;
+
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS + " WHERE "
+                + OtashuDatabaseHelper.COLUMN_ID + "=" + id;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -285,14 +285,15 @@ public class NotesetsDataSource {
         if (cursor.moveToFirst()) {
             do {
                 Integer notesetId = Integer.parseInt(cursor.getString(0));
-                
+
                 // get all related notes inside this noteset
                 // TODO: make this query approach more efficient at some point, if necessary
-                String queryForRelatedNotes = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = " + id;
+                String queryForRelatedNotes = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES
+                        + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = " + id;
                 Cursor cursorForRelatedNotes = db.rawQuery(queryForRelatedNotes, null);
-                
+
                 List<Note> notes = new LinkedList<Note>();
-                
+
                 if (cursorForRelatedNotes.moveToFirst()) {
                     do {
                         Note note = null;
@@ -305,20 +306,20 @@ public class NotesetsDataSource {
                         notes.add(note);
                     } while (cursorForRelatedNotes.moveToNext());
                 }
-                
+
                 notesetBundle.put(notesetId, notes);
-                
+
             } while (cursor.moveToNext());
         }
 
         return notesetBundle;
     }
 
-    
     public HashMap<String, List<Object>> getNotesetBundleDetail(long id) {
         HashMap<String, List<Object>> notesetBundle = new HashMap<String, List<Object>>();
-        
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + id;
+
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS + " WHERE "
+                + OtashuDatabaseHelper.COLUMN_ID + "=" + id;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -332,27 +333,28 @@ public class NotesetsDataSource {
                 noteset.setId(Integer.parseInt(cursor.getString(0)));
                 noteset.setName(cursor.getString(1));
                 noteset.setEmotion(Integer.parseInt(cursor.getString(2)));
-                
+
                 List<Object> notesets = new LinkedList<Object>();
                 notesets.add(noteset);
-                
+
                 notesetBundle.put("noteset", notesets);
-                
+
                 // get all related notes inside this noteset
                 // TODO: make this query approach more efficient at some point, if necessary
-                String queryForRelatedNotes = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = " + id;
+                String queryForRelatedNotes = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES
+                        + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = " + id;
                 Cursor cursorForRelatedNotes = db.rawQuery(queryForRelatedNotes, null);
-                
+
                 List<Object> notes = new LinkedList<Object>();
-                
+
                 if (cursorForRelatedNotes.moveToFirst()) {
-                    do {                        
+                    do {
                         Long nId = 0L;
                         Long nNotesetId = 0L;
                         int nNotevalue = 0;
                         int nVelocity = 0;
                         float nLength = 0.0f;
-                        
+
                         try {
                             nId = cursorForRelatedNotes.getLong(0);
                             nNotesetId = cursorForRelatedNotes.getLong(1);
@@ -362,32 +364,30 @@ public class NotesetsDataSource {
                         } catch (Exception e) {
                             Log.d("MYLOG", e.getStackTrace().toString());
                         }
-                        
+
                         Note note = new Note();
                         note.setId(nId);
                         note.setNotesetId(nNotesetId);
                         note.setNotevalue(nNotevalue);
                         note.setVelocity(nVelocity);
                         note.setLength(nLength);
-                        
+
                         notes.add(note);
                     } while (cursorForRelatedNotes.moveToNext());
                 }
-                
+
                 notesetBundle.put("notes", notes);
-                
+
             } while (cursor.moveToNext());
         }
 
         return notesetBundle;
     }
 
-    
     /**
      * Access column data at current position of result.
      * 
-     * @param cursor
-     *            Current cursor location.
+     * @param cursor Current cursor location.
      * @return Noteset
      */
     private Noteset cursorToNoteset(Cursor cursor) {
@@ -396,7 +396,7 @@ public class NotesetsDataSource {
         noteset.setName(cursor.getString(1));
         return noteset;
     }
-        
+
     /**
      * getAllNotesets gets a preview list of all notesets.
      * 
@@ -405,8 +405,8 @@ public class NotesetsDataSource {
     public List<String> getAllNotesetListPreviews() {
         List<String> notesets = new LinkedList<String>();
 
-        //String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
-        
+        // String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
+
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS;
 
         // create database handle
@@ -419,7 +419,7 @@ public class NotesetsDataSource {
         if (cursor.moveToFirst()) {
             do {
                 String itemForList = "";
-                
+
                 // create noteset objects based on noteset data from database
                 noteset = new Noteset();
                 noteset.setId(Integer.parseInt(cursor.getString(0)));
@@ -428,9 +428,11 @@ public class NotesetsDataSource {
 
                 // get all related notes inside this noteset
                 // TODO: make this query approach more efficient at some point, if necessary
-                String queryForRelatedNotes = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = " + noteset.getId();
+                String queryForRelatedNotes = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES
+                        + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = "
+                        + noteset.getId();
                 Cursor cursorForRelatedNotes = db.rawQuery(queryForRelatedNotes, null);
-                
+
                 Note note = null;
                 if (cursorForRelatedNotes.moveToFirst()) {
                     do {
@@ -440,20 +442,20 @@ public class NotesetsDataSource {
                         note.setVelocity(cursorForRelatedNotes.getInt(3));
                         note.setLength(cursorForRelatedNotes.getFloat(4));
                         note.setPosition(cursorForRelatedNotes.getInt(5));
-                        
-                        itemForList += note.getNotevalue(); 
+
+                        itemForList += note.getNotevalue();
                     } while (cursorForRelatedNotes.moveToNext());
                 }
-                
+
                 // add noteset string to list of strings
-                //notesets.add(noteset.toString() + " " + itemForList);
+                // notesets.add(noteset.toString() + " " + itemForList);
                 notesets.add(itemForList);
             } while (cursor.moveToNext());
         }
 
         return notesets;
     }
-    
+
     /**
      * getAllNotesets gets a preview list of all notesets.
      * 
@@ -461,7 +463,7 @@ public class NotesetsDataSource {
      */
     public List<String> getAllNotesetListPreviews(String[] noteLabelsArray, String[] noteValuesArray) {
         List<String> notesets = new LinkedList<String>();
-        
+
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS;
 
         // create database handle
@@ -474,7 +476,7 @@ public class NotesetsDataSource {
         if (cursor.moveToFirst()) {
             do {
                 String itemForList = "";
-                
+
                 // create noteset objects based on noteset data from database
                 noteset = new Noteset();
                 noteset.setId(Integer.parseInt(cursor.getString(0)));
@@ -483,9 +485,11 @@ public class NotesetsDataSource {
 
                 // get all related notes inside this noteset
                 // TODO: make this query approach more efficient at some point, if necessary
-                String queryForRelatedNotes = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = " + noteset.getId();
+                String queryForRelatedNotes = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES
+                        + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = "
+                        + noteset.getId();
                 Cursor cursorForRelatedNotes = db.rawQuery(queryForRelatedNotes, null);
-                
+
                 Note note = null;
                 if (cursorForRelatedNotes.moveToFirst()) {
                     do {
@@ -503,16 +507,16 @@ public class NotesetsDataSource {
                         }
                     } while (cursorForRelatedNotes.moveToNext());
                 }
-                
+
                 // add noteset string to list of strings
-                //notesets.add(noteset.toString() + " " + itemForList);
+                // notesets.add(noteset.toString() + " " + itemForList);
                 notesets.add(itemForList);
             } while (cursor.moveToNext());
         }
 
         return notesets;
     }
-    
+
     /**
      * Get a list of all notesets ids.
      * 
@@ -520,8 +524,9 @@ public class NotesetsDataSource {
      */
     public List<Long> getAllNotesetListDBTableIds() {
         List<Long> notesets = new LinkedList<Long>();
-        
-        String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM " + OtashuDatabaseHelper.TABLE_NOTESETS;
+
+        String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
+                + OtashuDatabaseHelper.TABLE_NOTESETS;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -531,11 +536,11 @@ public class NotesetsDataSource {
 
         Noteset noteset = null;
         if (cursor.moveToFirst()) {
-            do {                
+            do {
                 // create noteset objects based on noteset data from database
                 noteset = new Noteset();
                 noteset.setId(Long.parseLong(cursor.getString(0)));
-                
+
                 // add noteset to notesets list
                 notesets.add(noteset.getId());
             } while (cursor.moveToNext());
@@ -543,11 +548,12 @@ public class NotesetsDataSource {
 
         return notesets;
     }
-    
+
     public Noteset getNoteset(long id) {
         Noteset noteset = new Noteset();
-        
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + id;
+
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS + " WHERE "
+                + OtashuDatabaseHelper.COLUMN_ID + "=" + id;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -556,7 +562,7 @@ public class NotesetsDataSource {
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToFirst()) {
-            do {                
+            do {
                 // create noteset objects based on noteset data from database
                 noteset = new Noteset();
                 noteset.setId(Integer.parseInt(cursor.getString(0)));
@@ -571,22 +577,24 @@ public class NotesetsDataSource {
     public Noteset updateNoteset(Noteset noteset) {
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        
+
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME,
                 noteset.getName());
         contentValues.put(OtashuDatabaseHelper.COLUMN_EMOTION_ID,
                 noteset.getEmotion());
-        
-        db.update(OtashuDatabaseHelper.TABLE_NOTESETS, contentValues, OtashuDatabaseHelper.COLUMN_ID + "=" + noteset.getId(), null);
-        
+
+        db.update(OtashuDatabaseHelper.TABLE_NOTESETS, contentValues,
+                OtashuDatabaseHelper.COLUMN_ID + "=" + noteset.getId(), null);
+
         return noteset;
     }
 
     public int getCount() {
         int count = 0;
-        
-        String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM " + OtashuDatabaseHelper.TABLE_NOTESETS;
+
+        String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
+                + OtashuDatabaseHelper.TABLE_NOTESETS;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -595,7 +603,7 @@ public class NotesetsDataSource {
         Cursor cursor = db.rawQuery(query, null);
 
         count = cursor.getCount();
-        
+
         return count;
     }
 }

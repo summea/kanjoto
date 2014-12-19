@@ -1,3 +1,4 @@
+
 package com.andrewsummers.otashu.model;
 
 /**
@@ -20,8 +21,7 @@ public class Emotion {
     /**
      * setId sets Emotion id
      * 
-     * @param id
-     *            New id value.
+     * @param id New id value.
      */
     public void setId(long id) {
         this.id = id;
@@ -39,13 +39,12 @@ public class Emotion {
     /**
      * setName sets Emotion name.
      * 
-     * @param name
-     *            New Emotion name.
+     * @param name New Emotion name.
      */
     public void setName(String name) {
         this.name = name;
     }
-    
+
     /**
      * getLabelId gets related Label id
      * 
@@ -54,17 +53,16 @@ public class Emotion {
     public long getLabelId() {
         return labelId;
     }
-    
+
     /**
      * setLabelId sets Label id
      * 
-     * @param id
-     *            New id value.
+     * @param id New id value.
      */
     public void setLabelId(long labelId) {
         this.labelId = labelId;
     }
-    
+
     /**
      * toString override to return Emotion name.
      * 

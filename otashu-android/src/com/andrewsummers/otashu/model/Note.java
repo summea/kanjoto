@@ -1,3 +1,4 @@
+
 package com.andrewsummers.otashu.model;
 
 /**
@@ -23,8 +24,7 @@ public class Note {
     /**
      * setId sets Note id
      * 
-     * @param id
-     *            New id value.
+     * @param id New id value.
      */
     public void setId(long id) {
         this.id = id;
@@ -42,13 +42,12 @@ public class Note {
     /**
      * setNotesetId sets Note parent noteset_id.
      * 
-     * @param notesetId
-     *            New parent noteset_id.
+     * @param notesetId New parent noteset_id.
      */
     public void setNotesetId(long noteset_id) {
         this.noteset_id = noteset_id;
     }
-    
+
     /**
      * getNotevalue gets Note notevalue.
      * 
@@ -61,13 +60,12 @@ public class Note {
     /**
      * setNotevalue sets Note notevalue.
      * 
-     * @param notevalue
-     *            New notevalue.
+     * @param notevalue New notevalue.
      */
     public void setNotevalue(int notevalue) {
         this.notevalue = notevalue;
     }
-    
+
     /**
      * getVelocity gets Note velocity.
      * 
@@ -80,13 +78,12 @@ public class Note {
     /**
      * setVelocity sets Note velocity.
      * 
-     * @param velocity
-     *            New velocity.
+     * @param velocity New velocity.
      */
     public void setVelocity(int velocity) {
         this.velocity = velocity;
     }
-    
+
     /**
      * getLength gets Note length.
      * 
@@ -99,13 +96,12 @@ public class Note {
     /**
      * setLength sets Note length.
      * 
-     * @param length
-     *            New length.
+     * @param length New length.
      */
     public void setLength(float length) {
         this.length = length;
     }
-    
+
     /**
      * getPosition gets Note position.
      * 
@@ -118,8 +114,7 @@ public class Note {
     /**
      * setPosition sets Note position.
      * 
-     * @param position
-     *            New position.
+     * @param position New position.
      */
     public void setPosition(int position) {
         this.position = position;

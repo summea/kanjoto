@@ -1,3 +1,4 @@
+
 package com.andrewsummers.otashu.data;
 
 import java.util.ArrayList;
@@ -27,8 +28,7 @@ public class EmotionsDataSource {
     /**
      * EmotionsDataSource constructor.
      * 
-     * @param context
-     *            Current state.
+     * @param context Current state.
      */
     public EmotionsDataSource(Context context) {
         dbHelper = new OtashuDatabaseHelper(context);
@@ -53,20 +53,19 @@ public class EmotionsDataSource {
     /**
      * Create emotion row in database.
      * 
-     * @param emotionvalues
-     *            String of emotion values to insert.
+     * @param emotionvalues String of emotion values to insert.
      * @return Emotion of newly-created emotion data.
      */
-    public Emotion createEmotion(Emotion emotion) {        
+    public Emotion createEmotion(Emotion emotion) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, emotion.getName());
         contentValues.put(OtashuDatabaseHelper.COLUMN_LABEL_ID, emotion.getLabelId());
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        
+
         long insertId = db.insert(OtashuDatabaseHelper.TABLE_EMOTIONS, null,
-                        contentValues);
+                contentValues);
 
         Cursor cursor = db.query(
                 OtashuDatabaseHelper.TABLE_EMOTIONS, allColumns,
@@ -82,15 +81,14 @@ public class EmotionsDataSource {
     /**
      * Delete emotion row from database.
      * 
-     * @param emotion
-     *            Emotion to delete.
+     * @param emotion Emotion to delete.
      */
     public void deleteEmotion(Emotion emotion) {
         long id = emotion.getId();
-        
+
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        
+
         // delete emotion
         db.delete(OtashuDatabaseHelper.TABLE_EMOTIONS,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
@@ -128,7 +126,7 @@ public class EmotionsDataSource {
 
         return emotions;
     }
-    
+
     /**
      * Get all emotion ids from database table.
      * 
@@ -155,8 +153,7 @@ public class EmotionsDataSource {
     /**
      * Access column data at current position of result.
      * 
-     * @param cursor
-     *            Current cursor location.
+     * @param cursor Current cursor location.
      * @return Emotion
      */
     private Emotion cursorToEmotion(Cursor cursor) {
@@ -166,7 +163,7 @@ public class EmotionsDataSource {
         emotion.setLabelId(cursor.getLong(2));
         return emotion;
     }
-        
+
     /**
      * getAllEmotions gets a preview list of all emotions.
      * 
@@ -207,8 +204,9 @@ public class EmotionsDataSource {
      */
     public List<Long> getAllEmotionListDBTableIds() {
         List<Long> emotions = new LinkedList<Long>();
-        
-        String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM " + OtashuDatabaseHelper.TABLE_EMOTIONS;
+
+        String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
+                + OtashuDatabaseHelper.TABLE_EMOTIONS;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -218,11 +216,11 @@ public class EmotionsDataSource {
 
         Emotion emotion = null;
         if (cursor.moveToFirst()) {
-            do {                
+            do {
                 // create emotion objects based on emotion data from database
                 emotion = new Emotion();
                 emotion.setId(cursor.getLong(0));
-                
+
                 // add emotion to emotions list
                 emotions.add(emotion.getId());
             } while (cursor.moveToNext());
@@ -230,11 +228,12 @@ public class EmotionsDataSource {
 
         return emotions;
     }
-    
+
     public Emotion getEmotion(long emotionId) {
         Emotion emotion = new Emotion();
-        
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EMOTIONS + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + emotionId;
+
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EMOTIONS + " WHERE "
+                + OtashuDatabaseHelper.COLUMN_ID + "=" + emotionId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -251,36 +250,37 @@ public class EmotionsDataSource {
                 emotion.setLabelId(cursor.getLong(2));
             } while (cursor.moveToNext());
         }
-        
+
         return emotion;
     }
-    
+
     public Emotion updateEmotion(Emotion emotion) {
-        
+
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        
+
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, emotion.getId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, emotion.getName());
         contentValues.put(OtashuDatabaseHelper.COLUMN_LABEL_ID, emotion.getLabelId());
-        
-        db.update(OtashuDatabaseHelper.TABLE_EMOTIONS, contentValues, OtashuDatabaseHelper.COLUMN_ID + "=" + emotion.getId(), null);
+
+        db.update(OtashuDatabaseHelper.TABLE_EMOTIONS, contentValues,
+                OtashuDatabaseHelper.COLUMN_ID + "=" + emotion.getId(), null);
 
         return emotion;
     }
 
     public Emotion getRandomEmotion() {
         Emotion emotion = new Emotion();
-        
+
         // get all emotions first
         List<Emotion> allEmotions = getAllEmotions();
 
         // choose random emotion
-        int chosenIndex = new Random().nextInt(allEmotions.size());        
+        int chosenIndex = new Random().nextInt(allEmotions.size());
 
         emotion = allEmotions.get(chosenIndex);
-        
+
         return emotion;
     }
 }

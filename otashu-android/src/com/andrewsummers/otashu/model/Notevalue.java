@@ -1,3 +1,4 @@
+
 package com.andrewsummers.otashu.model;
 
 /**
@@ -8,7 +9,7 @@ public class Notevalue {
     private int notevalue;
     private String notelabel;
     private long label_id;
-    
+
     /**
      * getId gets Notevalue id
      * 
@@ -21,8 +22,7 @@ public class Notevalue {
     /**
      * setId sets Notevalue id
      * 
-     * @param id
-     *            New id value.
+     * @param id New id value.
      */
     public void setId(long id) {
         this.id = id;
@@ -40,13 +40,12 @@ public class Notevalue {
     /**
      * setNotevalue sets Notevalue notevalue.
      * 
-     * @param notevalue
-     *            New notevalue.
+     * @param notevalue New notevalue.
      */
     public void setNotevalue(int notevalue) {
         this.notevalue = notevalue;
     }
-    
+
     /**
      * getNotelabel gets Notevalue notelabel.
      * 
@@ -59,13 +58,12 @@ public class Notevalue {
     /**
      * setNotelabel sets Notevalue notelabel.
      * 
-     * @param notelabel
-     *            New notelabel.
+     * @param notelabel New notelabel.
      */
     public void setNotelabel(String notelabel) {
         this.notelabel = notelabel;
     }
-    
+
     /**
      * getLabelId gets Notevalue label_id.
      * 
@@ -78,8 +76,7 @@ public class Notevalue {
     /**
      * setLabelId sets Notevalue label_id.
      * 
-     * @param label_id
-     *            New label_id.
+     * @param label_id New label_id.
      */
     public void setLabelId(long label_id) {
         this.label_id = label_id;

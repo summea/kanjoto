@@ -1,3 +1,4 @@
+
 package com.andrewsummers.otashu.data;
 
 import java.util.ArrayList;
@@ -27,8 +28,7 @@ public class LabelsDataSource {
     /**
      * LabelsDataSource constructor.
      * 
-     * @param context
-     *            Current state.
+     * @param context Current state.
      */
     public LabelsDataSource(Context context) {
         dbHelper = new OtashuDatabaseHelper(context);
@@ -53,11 +53,10 @@ public class LabelsDataSource {
     /**
      * Create label row in database.
      * 
-     * @param labelvalues
-     *            String of label values to insert.
+     * @param labelvalues String of label values to insert.
      * @return Label of newly-created label data.
      */
-    public Label createLabel(Label label) {        
+    public Label createLabel(Label label) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, label.getName());
         contentValues.put(OtashuDatabaseHelper.COLUMN_COLOR, label.getColor());
@@ -66,7 +65,7 @@ public class LabelsDataSource {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         long insertId = db.insert(OtashuDatabaseHelper.TABLE_LABELS, null,
-                        contentValues);
+                contentValues);
 
         Cursor cursor = db.query(
                 OtashuDatabaseHelper.TABLE_LABELS, allColumns,
@@ -82,15 +81,14 @@ public class LabelsDataSource {
     /**
      * Delete label row from database.
      * 
-     * @param label
-     *            Label to delete.
+     * @param label Label to delete.
      */
     public void deleteLabel(Label label) {
         long id = label.getId();
-        
+
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        
+
         // delete emotion
         db.delete(OtashuDatabaseHelper.TABLE_LABELS,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
@@ -128,7 +126,7 @@ public class LabelsDataSource {
 
         return labels;
     }
-    
+
     /**
      * Get all label ids from database table.
      * 
@@ -155,8 +153,7 @@ public class LabelsDataSource {
     /**
      * Access column data at current position of result.
      * 
-     * @param cursor
-     *            Current cursor location.
+     * @param cursor Current cursor location.
      * @return Label
      */
     private Label cursorToLabel(Cursor cursor) {
@@ -166,7 +163,7 @@ public class LabelsDataSource {
         label.setColor(cursor.getString(2));
         return label;
     }
-        
+
     /**
      * getAllLabels gets a preview list of all labels.
      * 
@@ -207,8 +204,9 @@ public class LabelsDataSource {
      */
     public List<Long> getAllLabelListDBTableIds() {
         List<Long> labels = new LinkedList<Long>();
-        
-        String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM " + OtashuDatabaseHelper.TABLE_LABELS;
+
+        String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
+                + OtashuDatabaseHelper.TABLE_LABELS;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -218,11 +216,11 @@ public class LabelsDataSource {
 
         Label label = null;
         if (cursor.moveToFirst()) {
-            do {                
+            do {
                 // create emotion objects based on emotion data from database
                 label = new Label();
                 label.setId(Long.parseLong(cursor.getString(0)));
-                
+
                 // add emotion to emotions list
                 labels.add(label.getId());
             } while (cursor.moveToNext());
@@ -230,11 +228,12 @@ public class LabelsDataSource {
 
         return labels;
     }
-    
+
     public Label getLabel(long labelId) {
         Label label = new Label();
-        
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_LABELS + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + labelId;
+
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_LABELS + " WHERE "
+                + OtashuDatabaseHelper.COLUMN_ID + "=" + labelId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -251,36 +250,37 @@ public class LabelsDataSource {
                 label.setColor(cursor.getString(2));
             } while (cursor.moveToNext());
         }
-        
+
         return label;
     }
-    
+
     public Label updateLabel(Label label) {
-        
+
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        
+
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, label.getId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, label.getName());
         contentValues.put(OtashuDatabaseHelper.COLUMN_COLOR, label.getColor());
-        
-        db.update(OtashuDatabaseHelper.TABLE_LABELS, contentValues, OtashuDatabaseHelper.COLUMN_ID + "=" + label.getId(), null);
+
+        db.update(OtashuDatabaseHelper.TABLE_LABELS, contentValues, OtashuDatabaseHelper.COLUMN_ID
+                + "=" + label.getId(), null);
 
         return label;
     }
 
     public Label getRandomLabel() {
         Label label = new Label();
-        
+
         // get all labels first
         List<Label> allLabels = getAllLabels();
 
         // choose random label
-        int chosenIndex = new Random().nextInt(allLabels.size());        
+        int chosenIndex = new Random().nextInt(allLabels.size());
 
         label = allLabels.get(chosenIndex);
-        
+
         return label;
     }
 }

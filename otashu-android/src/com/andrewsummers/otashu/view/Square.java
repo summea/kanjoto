@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.andrewsummers.otashu.view;
 
 import java.nio.ByteBuffer;
@@ -26,7 +27,7 @@ import android.opengl.GLES20;
  * A two-dimensional square for use as a drawn object in OpenGL ES 2.0.
  */
 public class Square {
-    
+
     private float positionX = 0.0f;
     private float positionY = 0.0f;
 
@@ -34,21 +35,21 @@ public class Square {
             // This matrix member variable provides a hook to manipulate
             // the coordinates of the objects that use this vertex shader
             "uniform mat4 uMVPMatrix;" +
-            "attribute vec4 vPosition;" +
-            "attribute vec4 objColor;" +
-            "void main() {" +
-            // The matrix must be included as a modifier of gl_Position.
-            // Note that the uMVPMatrix factor *must be first* in order
-            // for the matrix multiplication product to be correct.
-            "  gl_Position = uMVPMatrix * vPosition;" +
-            "}";
+                    "attribute vec4 vPosition;" +
+                    "attribute vec4 objColor;" +
+                    "void main() {" +
+                    // The matrix must be included as a modifier of gl_Position.
+                    // Note that the uMVPMatrix factor *must be first* in order
+                    // for the matrix multiplication product to be correct.
+                    "  gl_Position = uMVPMatrix * vPosition;" +
+                    "}";
 
     private final String fragmentShaderCode =
             "precision mediump float;" +
-            "uniform vec4 vColor;" +
-            "void main() {" +
-            "  gl_FragColor = vColor;" +
-            "}";
+                    "uniform vec4 vColor;" +
+                    "void main() {" +
+                    "  gl_FragColor = vColor;" +
+                    "}";
 
     private final FloatBuffer vertexBuffer;
     private final ShortBuffer drawListBuffer;
@@ -60,16 +61,21 @@ public class Square {
     // number of coordinates per vertex in this array
     static final int COORDS_PER_VERTEX = 3;
     static float squareCoords[] = {
-            -0.5f,  0.5f, 0.0f,   // top left
-            -0.5f, -0.5f, 0.0f,   // bottom left
-             0.5f, -0.5f, 0.0f,   // bottom right
-             0.5f,  0.5f, 0.0f }; // top right
+            -0.5f, 0.5f, 0.0f, // top left
+            -0.5f, -0.5f, 0.0f, // bottom left
+            0.5f, -0.5f, 0.0f, // bottom right
+            0.5f, 0.5f, 0.0f
+    }; // top right
 
-    private final short drawOrder[] = { 0, 1, 2, 0, 2, 3 }; // order to draw vertices
+    private final short drawOrder[] = {
+            0, 1, 2, 0, 2, 3
+    }; // order to draw vertices
 
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
 
-    private float color[] = { 0.2f, 0.709803922f, 0.898039216f, 1.0f };
+    private float color[] = {
+            0.2f, 0.709803922f, 0.898039216f, 1.0f
+    };
 
     /**
      * Sets up the drawing object data for use in an OpenGL ES context.
@@ -77,7 +83,7 @@ public class Square {
     public Square() {
         // initialize vertex byte buffer for shape coordinates
         ByteBuffer bb = ByteBuffer.allocateDirect(
-        // (# of coordinate values * 4 bytes per float)
+                // (# of coordinate values * 4 bytes per float)
                 squareCoords.length * 4);
         bb.order(ByteOrder.nativeOrder());
         vertexBuffer = bb.asFloatBuffer();
@@ -101,17 +107,16 @@ public class Square {
                 GLES20.GL_FRAGMENT_SHADER,
                 fragmentShaderCode);
 
-        mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
-        GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
+        mProgram = GLES20.glCreateProgram(); // create empty OpenGL Program
+        GLES20.glAttachShader(mProgram, vertexShader); // add the vertex shader to program
         GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
-        GLES20.glLinkProgram(mProgram);                  // create OpenGL program executables
+        GLES20.glLinkProgram(mProgram); // create OpenGL program executables
     }
 
     /**
      * Encapsulates the OpenGL ES instructions for drawing this shape.
-     *
-     * @param mvpMatrix - The Model View Project matrix in which to draw
-     * this shape.
+     * 
+     * @param mvpMatrix - The Model View Project matrix in which to draw this shape.
      */
     public void draw(float[] mvpMatrix) {
         // Add program to OpenGL environment
@@ -162,15 +167,15 @@ public class Square {
     public void setX(float x) {
         positionX = x;
     }
-    
+
     public void setY(float y) {
         positionY = y;
     }
-    
+
     public float getX() {
         return positionX;
     }
-    
+
     public float getY() {
         return positionY;
     }

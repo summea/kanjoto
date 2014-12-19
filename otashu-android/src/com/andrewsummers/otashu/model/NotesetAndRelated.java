@@ -1,3 +1,4 @@
+
 package com.andrewsummers.otashu.model;
 
 import java.util.ArrayList;
@@ -7,13 +8,13 @@ import java.util.List;
  * Noteset is a model for Noteset objects.
  */
 public class NotesetAndRelated {
-    
+
     private Emotion emotion = new Emotion();
     private Label label = new Label();
     private Noteset noteset = new Noteset();
     private List<Note> notes = new ArrayList<Note>();
     private List<Notevalue> notevalues = new ArrayList<Notevalue>();
-    
+
     /**
      * getEmotion gets emotion
      * 
@@ -26,13 +27,12 @@ public class NotesetAndRelated {
     /**
      * setEmotion sets emotion
      * 
-     * @param emotion
-     *            New Emotion object.
+     * @param emotion New Emotion object.
      */
     public void setEmotion(Emotion emotion) {
         this.emotion = emotion;
     }
-    
+
     /**
      * getLabel gets related Label
      * 
@@ -45,13 +45,12 @@ public class NotesetAndRelated {
     /**
      * setLabel sets label
      * 
-     * @param label
-     *            New label object.
+     * @param label New label object.
      */
     public void setLabel(Label label) {
         this.label = label;
     }
-    
+
     /**
      * getNoteset gets noteset
      * 
@@ -64,13 +63,12 @@ public class NotesetAndRelated {
     /**
      * setNoteset sets noteset
      * 
-     * @param noteset
-     *            New noteset object.
+     * @param noteset New noteset object.
      */
     public void setNoteset(Noteset noteset) {
         this.noteset = noteset;
     }
-    
+
     /**
      * getNotes gets related notes
      * 
@@ -83,13 +81,12 @@ public class NotesetAndRelated {
     /**
      * setNotes sets related notes
      * 
-     * @param 
-     *            New notes list value.
+     * @param New notes list value.
      */
     public void setNotes(List<Note> notes) {
         this.notes = notes;
     }
-    
+
     /**
      * getNotevalues gets related notevalues
      * 
@@ -102,13 +99,12 @@ public class NotesetAndRelated {
     /**
      * setNotevalues sets related notevalues
      * 
-     * @param 
-     *            New notevalues list value.
+     * @param New notevalues list value.
      */
     public void setNotevalues(List<Notevalue> notevalues) {
         this.notevalues = notevalues;
     }
-    
+
     /**
      * toString override to return noteset name.
      * 

@@ -1,3 +1,4 @@
+
 package com.andrewsummers.otashu;
 
 import android.os.Bundle;
@@ -6,26 +7,21 @@ import android.view.HapticFeedbackConstants;
 import android.view.View;
 
 /**
- * DepthPageTransformer used for simple animation.
- * 
- * DepthPageTransformer structure based upon structure explained in this
- * tutorial: http://developer.android.com/training/animation/screen-slide.html
- * 
- * Portions of this page/code are modifications based on work created and shared
- * by the Android Open Source Project and used according to terms described in
- * the Creative Commons 2.5 Attribution License
+ * DepthPageTransformer used for simple animation. DepthPageTransformer structure based upon
+ * structure explained in this tutorial:
+ * http://developer.android.com/training/animation/screen-slide.html Portions of this page/code are
+ * modifications based on work created and shared by the Android Open Source Project and used
+ * according to terms described in the Creative Commons 2.5 Attribution License
  */
 public class DepthPageTransformer implements ViewPager.PageTransformer {
     private static final float MIN_SCALE = 0.5f;
     private boolean pref_touch_feedback_enabled = false;
 
     /**
-     * DepthPageTransformer constructor primarily used to get general
-     * application settings in order to use the values of the settings
-     * throughout this class.
+     * DepthPageTransformer constructor primarily used to get general application settings in order
+     * to use the values of the settings throughout this class.
      * 
-     * @param savedInstanceState
-     *            Current application state data.
+     * @param savedInstanceState Current application state data.
      */
     public DepthPageTransformer(Bundle savedInstanceState) {
         // get (and enable) current app settings
@@ -35,17 +31,12 @@ public class DepthPageTransformer implements ViewPager.PageTransformer {
     }
 
     /**
-     * transformPage used to apply a custom transformation (animation) to page
-     * view scrolling.
+     * transformPage used to apply a custom transformation (animation) to page view scrolling.
      * 
-     * @param view
-     *            Incoming view.
-     * @param position
-     *            Current position of page relative to current
-     *            "front and center" page. As per the official ViewPager
-     *            documentation, possible values are: -1 is one page position to
-     *            the left 0 is front and center. 1 is one page position to the
-     *            right
+     * @param view Incoming view.
+     * @param position Current position of page relative to current "front and center" page. As per
+     *            the official ViewPager documentation, possible values are: -1 is one page position
+     *            to the left 0 is front and center. 1 is one page position to the right
      */
     public void transformPage(View view, float position) {
         int pageWidth = view.getWidth();

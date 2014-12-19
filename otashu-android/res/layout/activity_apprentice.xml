@@ -25,23 +25,32 @@
         android:textSize="24dp"
         android:layout_marginBottom="20dp" />
 
-    <Button
-        android:id="@+id/button_no"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/button_no"
-        android:padding="20dp"
-        android:layout_marginBottom="5dp"
-        android:background="#d9534f" />
+        android:orientation="horizontal" >
         
-    <Button
-        android:id="@+id/button_yes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/button_yes"
-        android:padding="20dp"
-        android:layout_marginBottom="5dp"
-        android:background="#5cb85c" />
+        <Button
+            android:id="@+id/button_no"
+            android:text="@string/button_no"
+            android:padding="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="0dp"        
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@drawable/button_no_selector" />
+        
+        <Button
+            android:id="@+id/button_yes"
+            android:text="@string/button_yes"
+            android:padding="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="0dp"        
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@drawable/button_yes_selector" />
+            
+    </LinearLayout>
         
     <Button
         android:id="@+id/button_play_noteset"
@@ -49,6 +58,8 @@
         android:layout_height="wrap_content"
         android:text="@string/button_play_noteset"
         android:padding="20dp"
-        android:background="#dddddd" />
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/button_play_alternate_selector" />
 
 </LinearLayout>

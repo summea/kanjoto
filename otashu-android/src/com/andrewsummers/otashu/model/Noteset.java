@@ -1,3 +1,4 @@
+
 package com.andrewsummers.otashu.model;
 
 /**
@@ -20,8 +21,7 @@ public class Noteset {
     /**
      * setId sets Noteset id
      * 
-     * @param id
-     *            New id value.
+     * @param id New id value.
      */
     public void setId(long id) {
         this.id = id;
@@ -39,13 +39,12 @@ public class Noteset {
     /**
      * setName sets Noteset name.
      * 
-     * @param name
-     *            New noteset name.
+     * @param name New noteset name.
      */
     public void setName(String name) {
         this.name = name;
     }
-    
+
     /**
      * getEmotion gets Noteset emotion_id.
      * 
@@ -58,8 +57,7 @@ public class Noteset {
     /**
      * setEmotion sets Noteset emotion_id.
      * 
-     * @param name
-     *            New noteset emotion_id.
+     * @param name New noteset emotion_id.
      */
     public void setEmotion(int emotion_id) {
         this.emotion_id = emotion_id;

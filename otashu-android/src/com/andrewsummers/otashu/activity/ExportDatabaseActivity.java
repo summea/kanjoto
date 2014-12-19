@@ -1,3 +1,4 @@
+
 package com.andrewsummers.otashu.activity;
 
 import java.io.File;
@@ -23,7 +24,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class ExportDatabaseActivity extends Activity {
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,32 +36,32 @@ public class ExportDatabaseActivity extends Activity {
         if (!newFile.exists()) {
             newFile.mkdirs();
         }
-        
+
         File externalStorage = Environment.getExternalStorageDirectory();
-        
+
         if (externalStorage.canWrite()) {
             Context context = this;
             File currentDB = context.getDatabasePath("otashu_collection.db");
             File backupDB = new File(newFile, "otashu_collection_backup.db");
-            
+
             // get JSON folder path
             File jsonFolder = new File(Environment.getExternalStorageDirectory(), "json_folder");
-            
+
             // create JSON folder if necessary
             if (!jsonFolder.exists()) {
                 jsonFolder.mkdirs();
             }
-            
-            // TODO: possibly relocate this JSON part later on... 
+
+            // TODO: possibly relocate this JSON part later on...
             // export JSON test
             // get all notesets from database
             NotesetsDataSource nsds = new NotesetsDataSource(this);
             List<Noteset> allNotesets = nsds.getAllNotesets();
             nsds.close();
-            
+
             JSONObject mainJsonObj = new JSONObject();
             JSONArray jsonArr = new JSONArray();
-            
+
             try {
                 // add each noteset into JSON object
                 for (Noteset noteset : allNotesets) {
@@ -69,37 +70,38 @@ public class ExportDatabaseActivity extends Activity {
                     jsonObj.put("emotion_id", noteset.getEmotion());
                     jsonArr.put(jsonObj);
                 }
-            
-                mainJsonObj.put("notesets",  jsonArr);                
-                
+
+                mainJsonObj.put("notesets", jsonArr);
+
                 // save JSON string to file
-                FileOutputStream outputStream = new FileOutputStream(new File(jsonFolder, "json_export.txt"));
+                FileOutputStream outputStream = new FileOutputStream(new File(jsonFolder,
+                        "json_export.txt"));
                 outputStream.write(mainJsonObj.toString().getBytes());
                 outputStream.close();
-            
-            } catch(JSONException e) {
+
+            } catch (JSONException e) {
                 e.printStackTrace();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            
+
             if (currentDB.exists()) {
                 Log.d("MYLOG", "current database exists!");
             }
-            
+
             if (backupDB.exists()) {
                 Log.d("MYLOG", "new file exists!");
             }
 
             FileChannel src = null;
             FileChannel dst = null;
-            
+
             try {
                 src = new FileInputStream(currentDB).getChannel();
                 dst = new FileOutputStream(backupDB).getChannel();
-                
+
                 // copy source file to destination
                 dst.transferFrom(src, 0, src.size());
             } catch (IOException e) {
@@ -115,7 +117,7 @@ public class ExportDatabaseActivity extends Activity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                
+
                 Toast.makeText(getBaseContext(), "Database exported!",
                         Toast.LENGTH_SHORT).show();
             }
@@ -124,5 +126,5 @@ public class ExportDatabaseActivity extends Activity {
         // return to main menu
         finish();
     }
-    
+
 }

@@ -1,3 +1,4 @@
+
 package com.andrewsummers.otashu.adapter;
 
 import java.util.List;
@@ -17,12 +18,12 @@ public class NotevalueAdapter extends BaseAdapter {
 
     private Context mContext;
     private List<NotevalueAndRelated> notevaluesAndRelated;
-    
+
     public NotevalueAdapter(Context context, List<NotevalueAndRelated> allNotevaluesAndRelated) {
         mContext = context;
         notevaluesAndRelated = allNotevaluesAndRelated;
     }
-    
+
     @Override
     public int getCount() {
         return notevaluesAndRelated.size();
@@ -39,20 +40,23 @@ public class NotevalueAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {        
+    public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = ((LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.row_notevalue, null);
+            convertView = ((LayoutInflater) mContext
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
+                    R.layout.row_notevalue, null);
         }
 
         TextView notevalue = (TextView) convertView.findViewById(R.id.notevalue);
         notevalue.setText(notevaluesAndRelated.get(position).getNotevalue().getNotelabel());
         if (notevaluesAndRelated.get(position).getLabel().getColor() != null) {
-            notevalue.setBackgroundColor(Color.parseColor(notevaluesAndRelated.get(position).getLabel().getColor()));
+            notevalue.setBackgroundColor(Color.parseColor(notevaluesAndRelated.get(position)
+                    .getLabel().getColor()));
         }
 
         return convertView;
     }
-    
+
     public Object removeItem(int position) {
         return notevaluesAndRelated.remove(position);
     }

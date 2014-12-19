@@ -1,13 +1,14 @@
+
 package com.andrewsummers.otashu.model;
 
 /**
  * Notevalue is a model for Notevalue objects.
  */
 public class NotevalueAndRelated {
-    
+
     private Notevalue notevalue = new Notevalue();
     private Label label = new Label();
-    
+
     /**
      * getNotevalue gets notevalue
      * 
@@ -20,13 +21,12 @@ public class NotevalueAndRelated {
     /**
      * setNotevalue sets notevalue
      * 
-     * @param notevalue
-     *            New Notevalue object.
+     * @param notevalue New Notevalue object.
      */
     public void setNotevalue(Notevalue notevalue) {
         this.notevalue = notevalue;
     }
-    
+
     /**
      * getLabel gets related Label
      * 
@@ -39,13 +39,12 @@ public class NotevalueAndRelated {
     /**
      * setLabel sets label
      * 
-     * @param label
-     *            New label object.
+     * @param label New label object.
      */
     public void setLabel(Label label) {
         this.label = label;
     }
-        
+
     /**
      * toString override to return notevalue name.
      * 

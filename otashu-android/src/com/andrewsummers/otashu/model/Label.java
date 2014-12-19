@@ -1,3 +1,4 @@
+
 package com.andrewsummers.otashu.model;
 
 /**
@@ -20,8 +21,7 @@ public class Label {
     /**
      * setId sets Label id
      * 
-     * @param id
-     *            New id value.
+     * @param id New id value.
      */
     public void setId(long id) {
         this.id = id;
@@ -39,13 +39,12 @@ public class Label {
     /**
      * setName sets Label name.
      * 
-     * @param name
-     *            New Label name.
+     * @param name New Label name.
      */
     public void setName(String name) {
         this.name = name;
     }
-    
+
     /**
      * getColor gets Label name.
      * 
@@ -61,13 +60,12 @@ public class Label {
     /**
      * setColor sets Label color.
      * 
-     * @param color
-     *            New Label color.
+     * @param color New Label color.
      */
     public void setColor(String color) {
         this.color = color;
     }
-    
+
     /**
      * toString override to return Label name.
      * 

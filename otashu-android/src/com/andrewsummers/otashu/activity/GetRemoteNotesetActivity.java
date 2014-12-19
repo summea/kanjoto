@@ -1,3 +1,4 @@
+
 package com.andrewsummers.otashu.activity;
 
 import java.io.BufferedReader;
@@ -22,18 +23,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * GetRemoteNotesetActivity is used to get a remote source of noteset data which
- * can then be used in a variety of ways.
+ * GetRemoteNotesetActivity is used to get a remote source of noteset data which can then be used in
+ * a variety of ways.
  */
 public class GetRemoteNotesetActivity extends Activity {
     private TextView notesetData;
 
     /**
-     * onCreate override used to start async task that makes a remote REST GET
-     * call in order to obtain remote noteset data.
+     * onCreate override used to start async task that makes a remote REST GET call in order to
+     * obtain remote noteset data.
      * 
-     * @param savedInstanceState
-     *            Current application state data.
+     * @param savedInstanceState Current application state data.
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,18 +50,14 @@ public class GetRemoteNotesetActivity extends Activity {
     }
 
     /**
-     * HttpAsyncTask is used as an HTTP wrapper for AsyncTask.
-     * 
-     * HttpAsyncTask originally based on a code tutorial which can be found at:
-     * http://hmkcode.com/android-parsing-json-data/
+     * HttpAsyncTask is used as an HTTP wrapper for AsyncTask. HttpAsyncTask originally based on a
+     * code tutorial which can be found at: http://hmkcode.com/android-parsing-json-data/
      */
     private class HttpAsyncTask extends AsyncTask<String, Void, String> {
         /**
-         * doInBackground implements the HTTP wrapper for this particular
-         * asynchronous task.
+         * doInBackground implements the HTTP wrapper for this particular asynchronous task.
          * 
-         * @param urls
-         *            Incoming URLs (though only the first URL is used).
+         * @param urls Incoming URLs (though only the first URL is used).
          */
         @Override
         protected String doInBackground(String... urls) {
@@ -96,8 +92,7 @@ public class GetRemoteNotesetActivity extends Activity {
         /**
          * convertInputStreamToString turns an input stream into a string.
          * 
-         * @param inputStream
-         *            The incoming input stream to be converted.
+         * @param inputStream The incoming input stream to be converted.
          * @return <String> of converted input stream.
          */
         private String convertInputStreamToString(InputStream inputStream) {
@@ -127,8 +122,7 @@ public class GetRemoteNotesetActivity extends Activity {
         /**
          * onPostExecute displays incoming, remote data once received.
          * 
-         * @param result
-         *            Incoming, remote data source.
+         * @param result Incoming, remote data source.
          */
         @Override
         protected void onPostExecute(String result) {

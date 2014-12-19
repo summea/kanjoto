@@ -1,3 +1,4 @@
+
 package com.andrewsummers.otashu.activity;
 
 import java.io.File;
@@ -43,7 +44,7 @@ import android.widget.TextView;
  * View details of a particular noteset.
  */
 public class ViewNotesetDetailActivity extends Activity implements OnClickListener {
-    
+
     private int key = 0;
     private int notesetId = 0;
     private SparseArray<List<Note>> notesetBundle = new SparseArray<List<Note>>();
@@ -52,12 +53,11 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
     private String externalDirectory = path.toString() + "/otashu/";
     private File musicSource = new File(externalDirectory + "otashu_preview.mid");
     private MediaPlayer mediaPlayer = new MediaPlayer();
-    
+
     /**
      * onCreate override used to get details view.
      * 
-     * @param savedInstanceState
-     *            Current application state data.
+     * @param savedInstanceState Current application state data.
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,47 +65,47 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
 
         // get specific layout for content view
         setContentView(R.layout.activity_view_noteset_detail);
-        
+
         Log.d("MYLOG", "got list item id: " + getIntent().getExtras().getLong("list_id"));
         notesetId = (int) getIntent().getExtras().getLong("list_id");
-                
+
         NotesetsDataSource nsds = new NotesetsDataSource(this);
-        
-        // get noteset and notes information        
+
+        // get noteset and notes information
         notesetBundle = nsds.getNotesetBundle(notesetId);
-        Noteset noteset = nsds.getNoteset(notesetId);    
+        Noteset noteset = nsds.getNoteset(notesetId);
         nsds.close();
-        
+
         NotesDataSource nds = new NotesDataSource(this);
         List<Note> relatedNotes = nds.getAllNotes(noteset.getId());
         nds.close();
-        
+
         EmotionsDataSource eds = new EmotionsDataSource(this);
         Emotion relatedEmotion = eds.getEmotion(noteset.getEmotion());
         eds.close();
-        
+
         LabelsDataSource lds = new LabelsDataSource(this);
         Label relatedLabel = lds.getLabel(relatedEmotion.getLabelId());
         List<Label> allLabels = lds.getAllLabels();
         lds.close();
-        
+
         NotevaluesDataSource nvds = new NotevaluesDataSource(this);
         List<Notevalue> relatedNotevalues = new ArrayList<Notevalue>();
         for (Note note : relatedNotes) {
             relatedNotevalues.add(nvds.getNotevalueByNoteValue(note.getNotevalue()));
-        }        
-        nvds.close(); 
-        
+        }
+        nvds.close();
+
         NotesetAndRelated notesetAndRelated = new NotesetAndRelated();
         notesetAndRelated.setEmotion(relatedEmotion);
         notesetAndRelated.setLabel(relatedLabel);
         notesetAndRelated.setNoteset(noteset);
         notesetAndRelated.setNotes(relatedNotes);
         notesetAndRelated.setNotevalues(relatedNotevalues);
-        
+
         // used for playback
         key = notesetId;
-        
+
         TextView emotionName = (TextView) findViewById(R.id.noteset_detail_emotion_value);
         emotionName.setText(notesetAndRelated.getEmotion().getName());
         String backgroundColor = "#ffffff";
@@ -122,9 +122,9 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
                 R.id.noteset_detail_note3,
                 R.id.noteset_detail_note4
         };
-        
+
         TextView note = null;
-        
+
         for (int i = 0; i < textViewIds.length; i++) {
             note = (TextView) findViewById(textViewIds[i]);
             note.setText(notesetAndRelated.getNotevalues().get(i).getNotelabel());
@@ -139,71 +139,70 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
             }
             note.setBackgroundColor(Color.parseColor(backgroundColor));
         }
-        
+
         try {
-            // add listeners to buttons    
+            // add listeners to buttons
             buttonPlayNoteset = (Button) findViewById(R.id.button_play_noteset);
             buttonPlayNoteset.setOnClickListener(this);
         } catch (Exception e) {
             Log.d("MYLOG", e.getStackTrace().toString());
         }
     }
-    
+
     /**
      * onClick override that acts as a router to start desired activities.
      * 
-     * @param view
-     *            Incoming view.
+     * @param view Incoming view.
      */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-        case R.id.button_play_noteset:
-            
-            // disable play button while playing
-            buttonPlayNoteset = (Button) findViewById(R.id.button_play_noteset);
-            buttonPlayNoteset.setClickable(false);
-            
-            List<Note> notes = new ArrayList<Note>();
-            
-            for (int i = 0; i < notesetBundle.get(key).size(); i++) {
-                Note note = new Note();
-                note = notesetBundle.get(key).get(i);
-                notes.add(note);
-                Log.d("MYLOG", "note value: " + note.getLength());
-            }
-        
-            // get default instrument for playback
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-            String defaultInstrument = sharedPref.getString("pref_default_instrument", "");
-            
-            GenerateMusicActivity generateMusic = new GenerateMusicActivity();
-            generateMusic.generateMusic(notes, musicSource, defaultInstrument);
+            case R.id.button_play_noteset:
 
-            // play generated notes for user
-            playMusic(musicSource);
-            
-            // return to previous activity when done playing
-            mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer aMediaPlayer) {
-                    // enable play button again
-                    buttonPlayNoteset.setClickable(true);
+                // disable play button while playing
+                buttonPlayNoteset = (Button) findViewById(R.id.button_play_noteset);
+                buttonPlayNoteset.setClickable(false);
+
+                List<Note> notes = new ArrayList<Note>();
+
+                for (int i = 0; i < notesetBundle.get(key).size(); i++) {
+                    Note note = new Note();
+                    note = notesetBundle.get(key).get(i);
+                    notes.add(note);
+                    Log.d("MYLOG", "note value: " + note.getLength());
                 }
-            });
-            
-            break;
+
+                // get default instrument for playback
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                String defaultInstrument = sharedPref.getString("pref_default_instrument", "");
+
+                GenerateMusicActivity generateMusic = new GenerateMusicActivity();
+                generateMusic.generateMusic(notes, musicSource, defaultInstrument);
+
+                // play generated notes for user
+                playMusic(musicSource);
+
+                // return to previous activity when done playing
+                mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer aMediaPlayer) {
+                        // enable play button again
+                        buttonPlayNoteset.setClickable(true);
+                    }
+                });
+
+                break;
         }
     }
-    
+
     public void playMusic(File musicSource) {
         // get media player ready
         mediaPlayer = MediaPlayer.create(this, Uri.fromFile(musicSource));
-        
+
         // play music
         mediaPlayer.start();
     }
-    
+
     /**
      * onBackPressed override used to stop playing music when done with activity
      */
@@ -216,41 +215,42 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
 
         super.onBackPressed();
     }
-    
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_noteset_details, menu);
         return true;
     }
-    
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent = null;
-        //AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-        
+        // AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+
         // handle menu item selection
         switch (item.getItemId()) {
-        case R.id.context_menu_edit:
-            intent = new Intent(this, EditNotesetActivity.class);
-            intent.putExtra("menu_noteset_id", notesetId);
-            startActivity(intent);
-            finish();
-            return true;
-        case R.id.context_menu_delete:
-            Log.d("MYLOG", "confirming delete");
-            confirmDelete();
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+            case R.id.context_menu_edit:
+                intent = new Intent(this, EditNotesetActivity.class);
+                intent.putExtra("menu_noteset_id", notesetId);
+                startActivity(intent);
+                finish();
+                return true;
+            case R.id.context_menu_delete:
+                Log.d("MYLOG", "confirming delete");
+                confirmDelete();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
-       
+
     public void confirmDelete() {
         final NotesetsDataSource nds = new NotesetsDataSource(this);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.dialog_confirm_delete_message).setTitle(R.string.dialog_confirm_delete_title);
-        builder.setPositiveButton(R.string.button_ok,  new DialogInterface.OnClickListener() {
+        builder.setMessage(R.string.dialog_confirm_delete_message).setTitle(
+                R.string.dialog_confirm_delete_title);
+        builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // user clicked ok
                 // go ahead and delete noteset
@@ -262,7 +262,7 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
                 finish();
             }
         });
-        builder.setNegativeButton(R.string.button_cancel,  new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // user clicked cancel
                 // just go back to list for now

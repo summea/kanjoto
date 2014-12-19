@@ -1,3 +1,4 @@
+
 package com.andrewsummers.otashu.adapter;
 
 import java.util.List;
@@ -17,12 +18,12 @@ public class LabelAdapter extends BaseAdapter {
 
     private Context mContext;
     private List<Label> labels;
-    
+
     public LabelAdapter(Context context, List<Label> allLabels) {
         mContext = context;
         labels = allLabels;
     }
-    
+
     @Override
     public int getCount() {
         return labels.size();
@@ -39,14 +40,16 @@ public class LabelAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {        
+    public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = ((LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.row_label, null);
+            convertView = ((LayoutInflater) mContext
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.row_label,
+                    null);
         }
-        
+
         TextView label = (TextView) convertView.findViewById(R.id.label);
         label.setText(labels.get(position).getName());
-        if (labels.get(position).getColor() != null ) {
+        if (labels.get(position).getColor() != null) {
             label.setBackgroundColor(Color.parseColor(labels.get(position).getColor()));
         } else {
             label.setBackgroundColor(Color.parseColor("#dddddd"));
@@ -54,7 +57,7 @@ public class LabelAdapter extends BaseAdapter {
 
         return convertView;
     }
-    
+
     public Object removeItem(int position) {
         return labels.remove(position);
     }

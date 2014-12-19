@@ -1,14 +1,22 @@
 # otashu
 
 ## TODO:
-- noteset folders (lists by label or emotion)
 - implement second stage of Apprentice logic ("no" response -> update Apprentice knowledge)
 - finish fixing HashMap to SparseArray conversion
 - save generated song to file
 - create emotion fingerprint
+- noteset folders (lists by label or emotion)
+- show what note is playing for playback visualization
+- add playback speed in settings
+- standardize strings view naming
+- add "noteset enabled" column to notesets database table
+- convert bookmark serialized values to json strings
 
 
 ## DONE:
+- 20141216: added "keep alarm set until turned off by user" feature
+- 20141214: added alarm clock settings
+- 20141214: added alarm clock feature
 - 20141207: cleaned up "create emotion" activity UI formatting
 - 20141207: cleaned up "create label" activity UI formatting
 - 20141207: cleaned up "edit label" activity UI formatting

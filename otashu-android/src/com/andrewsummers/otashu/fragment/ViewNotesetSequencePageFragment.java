@@ -1,3 +1,4 @@
+
 package com.andrewsummers.otashu.fragment;
 
 import com.andrewsummers.otashu.R;
@@ -14,8 +15,8 @@ import android.widget.TextView;
  */
 public class ViewNotesetSequencePageFragment extends Fragment {
     /**
-     * onCreateView override used to gather data (that was sent along in a
-     * bundle) and then display the given data on current page.
+     * onCreateView override used to gather data (that was sent along in a bundle) and then display
+     * the given data on current page.
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

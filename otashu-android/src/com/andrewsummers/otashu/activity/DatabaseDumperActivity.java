@@ -1,3 +1,4 @@
+
 package com.andrewsummers.otashu.activity;
 
 import java.util.List;
@@ -26,93 +27,113 @@ public class DatabaseDumperActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
         // get specific layout for content view
         setContentView(R.layout.activity_database_dumper);
-        
+
         BookmarksDataSource bds = new BookmarksDataSource(this);
         List<Bookmark> allBookmarks = bds.getAllBookmarks();
         bds.close();
-        
+
         NotesetsDataSource nsds = new NotesetsDataSource(this);
         List<Noteset> allNotesets = nsds.getAllNotesets();
         nsds.close();
-        
+
         NotesDataSource nds = new NotesDataSource(this);
         List<Note> allNotes = nds.getAllNotes();
         nds.close();
-        
+
         EmotionsDataSource eds = new EmotionsDataSource(this);
         List<Emotion> allEmotions = eds.getAllEmotions();
         eds.close();
-        
+
         LabelsDataSource lds = new LabelsDataSource(this);
         List<Label> allLabels = lds.getAllLabels();
         lds.close();
-        
+
         NotevaluesDataSource nvds = new NotevaluesDataSource(this);
         List<Notevalue> allNotevalues = nvds.getAllNotevalues();
         nvds.close();
-        
+
         EditText debugText = (EditText) findViewById(R.id.debug_text);
-        
-        debugText.setText(debugText.getText().toString() + "Table: Bookmarks\n" + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NAME + "|" + OtashuDatabaseHelper.COLUMN_SERIALIZED_VALUE + "\n");
-        
+
+        debugText.setText(debugText.getText().toString() + "Table: Bookmarks\n"
+                + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NAME + "|"
+                + OtashuDatabaseHelper.COLUMN_SERIALIZED_VALUE + "\n");
+
         for (Bookmark bookmark : allBookmarks) {
-            
+
             String newText = debugText.getText().toString();
-            newText += bookmark.getId() + "|" + bookmark.getName() + "|" + bookmark.getSerializedValue() + "\n";
-            
+            newText += bookmark.getId() + "|" + bookmark.getName() + "|"
+                    + bookmark.getSerializedValue() + "\n";
+
             debugText.setText(newText);
         }
-        
-        debugText.setText(debugText.getText().toString() + "Table: Emotions\n" + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NAME + "|" + OtashuDatabaseHelper.COLUMN_LABEL_ID + "\n");
-        
+
+        debugText.setText(debugText.getText().toString() + "Table: Emotions\n"
+                + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NAME + "|"
+                + OtashuDatabaseHelper.COLUMN_LABEL_ID + "\n");
+
         for (Emotion emotion : allEmotions) {
-            
+
             String newText = debugText.getText().toString();
-            newText += emotion.getId() + "|" + emotion.getName() + "|" + emotion.getLabelId() + "\n";
-            
+            newText += emotion.getId() + "|" + emotion.getName() + "|" + emotion.getLabelId()
+                    + "\n";
+
             debugText.setText(newText);
         }
-        
-        debugText.setText(debugText.getText().toString() + "\nTable: Notes\n" + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NOTESET_ID + "|" + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "|" + OtashuDatabaseHelper.COLUMN_VELOCITY + "|" + OtashuDatabaseHelper.COLUMN_LENGTH + "|" + OtashuDatabaseHelper.COLUMN_POSITION + "\n");
-        
+
+        debugText.setText(debugText.getText().toString() + "\nTable: Notes\n"
+                + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NOTESET_ID
+                + "|" + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "|"
+                + OtashuDatabaseHelper.COLUMN_VELOCITY + "|" + OtashuDatabaseHelper.COLUMN_LENGTH
+                + "|" + OtashuDatabaseHelper.COLUMN_POSITION + "\n");
+
         for (Note note : allNotes) {
-            
+
             String newText = debugText.getText().toString();
-            newText += note.getId() + "|" + note.getNotesetId() + "|" + note.getNotevalue() + "|" + note.getVelocity() + "|" + note.getLength() + "|" + note.getPosition() + "\n";
-            
+            newText += note.getId() + "|" + note.getNotesetId() + "|" + note.getNotevalue() + "|"
+                    + note.getVelocity() + "|" + note.getLength() + "|" + note.getPosition() + "\n";
+
             debugText.setText(newText);
         }
-        
-        debugText.setText(debugText.getText().toString() + "\nTable: Notesets\n" + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NAME + "|" + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "\n");
-        
+
+        debugText.setText(debugText.getText().toString() + "\nTable: Notesets\n"
+                + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NAME + "|"
+                + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "\n");
+
         for (Noteset noteset : allNotesets) {
-            
+
             String newText = debugText.getText().toString();
-            newText += noteset.getId() + "|" + noteset.getName() + "|" + noteset.getEmotion() + "\n";
-            
+            newText += noteset.getId() + "|" + noteset.getName() + "|" + noteset.getEmotion()
+                    + "\n";
+
             debugText.setText(newText);
         }
-        
-        debugText.setText(debugText.getText().toString() + "\nTable: Labels\n" + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NAME + "|" + OtashuDatabaseHelper.COLUMN_COLOR + "\n");
-        
+
+        debugText.setText(debugText.getText().toString() + "\nTable: Labels\n"
+                + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NAME + "|"
+                + OtashuDatabaseHelper.COLUMN_COLOR + "\n");
+
         for (Label label : allLabels) {
-            
+
             String newText = debugText.getText().toString();
             newText += label.getId() + "|" + label.getName() + "|" + label.getColor() + "\n";
-            
+
             debugText.setText(newText);
         }
-        
-        debugText.setText(debugText.getText().toString() + "\nTable: Notevalues\n" + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "|" + OtashuDatabaseHelper.COLUMN_NOTELABEL + "|" + OtashuDatabaseHelper.COLUMN_LABEL_ID + "\n");
-        
+
+        debugText.setText(debugText.getText().toString() + "\nTable: Notevalues\n"
+                + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NOTEVALUE
+                + "|" + OtashuDatabaseHelper.COLUMN_NOTELABEL + "|"
+                + OtashuDatabaseHelper.COLUMN_LABEL_ID + "\n");
+
         for (Notevalue notevalue : allNotevalues) {
-            
+
             String newText = debugText.getText().toString();
-            newText += notevalue.getId() + "|" + notevalue.getNotevalue() + "|" + notevalue.getNotelabel() + "|" + notevalue.getLabelId() + "\n";
-            
+            newText += notevalue.getId() + "|" + notevalue.getNotevalue() + "|"
+                    + notevalue.getNotelabel() + "|" + notevalue.getLabelId() + "\n";
+
             debugText.setText(newText);
         }
     }

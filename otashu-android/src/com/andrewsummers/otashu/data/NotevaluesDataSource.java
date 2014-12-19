@@ -1,3 +1,4 @@
+
 package com.andrewsummers.otashu.data;
 
 import java.util.ArrayList;
@@ -28,10 +29,9 @@ public class NotevaluesDataSource {
     /**
      * NotevaluesDataSource constructor.
      * 
-     * @param context
-     *            Current state.
+     * @param context Current state.
      */
-    public NotevaluesDataSource(Context context) {        
+    public NotevaluesDataSource(Context context) {
         dbHelper = new OtashuDatabaseHelper(context);
     }
 
@@ -54,11 +54,10 @@ public class NotevaluesDataSource {
     /**
      * Create notevalue row in database.
      * 
-     * @param notevaluevalues
-     *            String of notevalue values to insert.
+     * @param notevaluevalues String of notevalue values to insert.
      * @return Notevalue of newly-created notevalue data.
      */
-    public Notevalue createNotevalue(Notevalue notevalue) {        
+    public Notevalue createNotevalue(Notevalue notevalue) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_NOTEVALUE, notevalue.getNotevalue());
         contentValues.put(OtashuDatabaseHelper.COLUMN_NOTELABEL, notevalue.getNotelabel());
@@ -66,9 +65,9 @@ public class NotevaluesDataSource {
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        
+
         long insertId = db.insert(OtashuDatabaseHelper.TABLE_NOTEVALUES, null,
-                        contentValues);
+                contentValues);
 
         Cursor cursor = db.query(
                 OtashuDatabaseHelper.TABLE_NOTEVALUES, allColumns,
@@ -84,15 +83,14 @@ public class NotevaluesDataSource {
     /**
      * Delete notevalue row from database.
      * 
-     * @param notevalue
-     *            Notevalue to delete.
+     * @param notevalue Notevalue to delete.
      */
     public void deleteNotevalue(Notevalue notevalue) {
         long id = notevalue.getId();
-        
+
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        
+
         // delete notevalue
         db.delete(OtashuDatabaseHelper.TABLE_NOTEVALUES,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
@@ -135,8 +133,7 @@ public class NotevaluesDataSource {
     /**
      * Access column data at current position of result.
      * 
-     * @param cursor
-     *            Current cursor location.
+     * @param cursor Current cursor location.
      * @return Notevalue
      */
     private Notevalue cursorToNotevalue(Cursor cursor) {
@@ -147,7 +144,7 @@ public class NotevaluesDataSource {
         notevalue.setLabelId(cursor.getLong(3));
         return notevalue;
     }
-        
+
     /**
      * getAllNotevalues gets a preview list of all notevalues.
      * 
@@ -189,8 +186,9 @@ public class NotevaluesDataSource {
      */
     public List<Long> getAllNotevalueListDBTableIds() {
         List<Long> notevalues = new LinkedList<Long>();
-        
-        String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM " + OtashuDatabaseHelper.TABLE_NOTEVALUES;
+
+        String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
+                + OtashuDatabaseHelper.TABLE_NOTEVALUES;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -200,11 +198,11 @@ public class NotevaluesDataSource {
 
         Notevalue notevalue = null;
         if (cursor.moveToFirst()) {
-            do {                
+            do {
                 // create emotion objects based on emotion data from database
                 notevalue = new Notevalue();
                 notevalue.setId(Long.parseLong(cursor.getString(0)));
-                
+
                 // add emotion to emotions list
                 notevalues.add(notevalue.getId());
             } while (cursor.moveToNext());
@@ -212,11 +210,12 @@ public class NotevaluesDataSource {
 
         return notevalues;
     }
-    
+
     public Notevalue getNotevalue(long notevalueId) {
         Notevalue notevalue = new Notevalue();
-        
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTEVALUES + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + notevalueId;
+
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTEVALUES + " WHERE "
+                + OtashuDatabaseHelper.COLUMN_ID + "=" + notevalueId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -234,14 +233,15 @@ public class NotevaluesDataSource {
                 notevalue.setLabelId(cursor.getLong(3));
             } while (cursor.moveToNext());
         }
-        
+
         return notevalue;
     }
-    
+
     public Notevalue getNotevalueByNoteValue(int noteValueId) {
         Notevalue notevalue = new Notevalue();
-        
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTEVALUES + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "=" + noteValueId;
+
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTEVALUES + " WHERE "
+                + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "=" + noteValueId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -259,37 +259,38 @@ public class NotevaluesDataSource {
                 notevalue.setLabelId(cursor.getLong(3));
             } while (cursor.moveToNext());
         }
-        
+
         return notevalue;
     }
-    
+
     public Notevalue updateNotevalue(Notevalue notevalue) {
-        
+
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        
+
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, notevalue.getId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_NOTEVALUE, notevalue.getNotevalue());
         contentValues.put(OtashuDatabaseHelper.COLUMN_NOTELABEL, notevalue.getNotelabel());
         contentValues.put(OtashuDatabaseHelper.COLUMN_LABEL_ID, notevalue.getLabelId());
-        
-        db.update(OtashuDatabaseHelper.TABLE_NOTEVALUES, contentValues, OtashuDatabaseHelper.COLUMN_ID + "=" + notevalue.getId(), null);
+
+        db.update(OtashuDatabaseHelper.TABLE_NOTEVALUES, contentValues,
+                OtashuDatabaseHelper.COLUMN_ID + "=" + notevalue.getId(), null);
 
         return notevalue;
     }
 
     public Notevalue getRandomNotevalue() {
         Notevalue notevalue = new Notevalue();
-        
+
         // get all notevalues first
         List<Notevalue> allNotevalues = getAllNotevalues();
 
         // choose random notevalue
-        int chosenIndex = new Random().nextInt(allNotevalues.size());        
+        int chosenIndex = new Random().nextInt(allNotevalues.size());
 
         notevalue = allNotevalues.get(chosenIndex);
-        
+
         return notevalue;
     }
 

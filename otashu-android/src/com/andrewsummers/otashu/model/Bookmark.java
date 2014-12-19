@@ -1,10 +1,9 @@
+
 package com.andrewsummers.otashu.model;
 
 /**
- * Bookmark is a model for Bookmark objects.
- * 
- * serializedValue is a serialized value of notesets (with the following properties):
- * notevalue:velocity:length:position|
+ * Bookmark is a model for Bookmark objects. serializedValue is a serialized value of notesets (with
+ * the following properties): notevalue:velocity:length:position|
  */
 public class Bookmark {
     private long id;
@@ -23,8 +22,7 @@ public class Bookmark {
     /**
      * setId sets Bookmark id
      * 
-     * @param id
-     *            New id value.
+     * @param id New id value.
      */
     public void setId(long id) {
         this.id = id;
@@ -42,13 +40,12 @@ public class Bookmark {
     /**
      * setName sets Bookmark name.
      * 
-     * @param name
-     *            New Bookmark name.
+     * @param name New Bookmark name.
      */
     public void setName(String name) {
         this.name = name;
     }
-    
+
     /**
      * getName gets Bookmark serializedValue.
      * 
@@ -61,13 +58,12 @@ public class Bookmark {
     /**
      * setName sets Bookmark serializedValue.
      * 
-     * @param name
-     *            New Bookmark serializedValue.
+     * @param name New Bookmark serializedValue.
      */
     public void setSerializedValue(String serializedValue) {
         this.serializedValue = serializedValue;
     }
-    
+
     /**
      * toString override to return Bookmark name.
      * 

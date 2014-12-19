@@ -1,3 +1,4 @@
+
 package com.andrewsummers.otashu.activity;
 
 import java.io.File;
@@ -30,8 +31,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 /**
- * CreateNotesetActivity is an Activity which provides users the ability to
- * create new notesets.
+ * CreateNotesetActivity is an Activity which provides users the ability to create new notesets.
  */
 public class CreateNotesetActivity extends Activity implements OnClickListener {
     private Button buttonSave = null;
@@ -45,8 +45,7 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
     /**
      * onCreate override that provides noteset creation view to user .
      * 
-     * @param savedInstanceState
-     *            Current application state data.
+     * @param savedInstanceState Current application state data.
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,29 +65,31 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
 
         List<Emotion> allEmotions = new ArrayList<Emotion>();
         allEmotions = eds.getAllEmotions();
-        
+
         eds.close();
 
         Spinner spinner = null;
 
         // locate next spinner in layout
         spinner = (Spinner) findViewById(R.id.spinner_emotion);
-        
+
         // create array adapter for list of emotions
-        ArrayAdapter<Emotion> emotionsAdapter = new ArrayAdapter<Emotion>(this, android.R.layout.simple_spinner_item);
+        ArrayAdapter<Emotion> emotionsAdapter = new ArrayAdapter<Emotion>(this,
+                android.R.layout.simple_spinner_item);
         emotionsAdapter.addAll(allEmotions);
-        
+
         // specify the default layout when list of choices appears
         emotionsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        
+
         // apply this adapter to the spinner
         spinner.setAdapter(emotionsAdapter);
 
-        
         ArrayAdapter<CharSequence> adapter = null;
-        
-        int[] spinnerItems = {R.id.spinner_note1, R.id.spinner_note2, R.id.spinner_note3, R.id.spinner_note4};
-        
+
+        int[] spinnerItems = {
+                R.id.spinner_note1, R.id.spinner_note2, R.id.spinner_note3, R.id.spinner_note4
+        };
+
         for (int i = 0; i < spinnerItems.length; i++) {
             spinner = (Spinner) findViewById(spinnerItems[i]);
             adapter = ArrayAdapter
@@ -96,11 +97,14 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
                             android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
-            spinner.setSelection(adapter.getPosition(String.valueOf("C4")));  // start at note C4
+            spinner.setSelection(adapter.getPosition(String.valueOf("C4"))); // start at note C4
         }
-        
-        int[] velocitySpinnerItems = {R.id.spinner_note1_velocity, R.id.spinner_note2_velocity, R.id.spinner_note3_velocity, R.id.spinner_note4_velocity};
-        
+
+        int[] velocitySpinnerItems = {
+                R.id.spinner_note1_velocity, R.id.spinner_note2_velocity,
+                R.id.spinner_note3_velocity, R.id.spinner_note4_velocity
+        };
+
         for (int i = 0; i < velocitySpinnerItems.length; i++) {
             spinner = (Spinner) findViewById(velocitySpinnerItems[i]);
             adapter = ArrayAdapter
@@ -108,11 +112,15 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
                             android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
-            spinner.setSelection(adapter.getPosition(String.valueOf("100")));  // start at 80 velocity
+            spinner.setSelection(adapter.getPosition(String.valueOf("100"))); // start at 80
+                                                                              // velocity
         }
-        
-        int[] lengthSpinnerItems = {R.id.spinner_note1_length, R.id.spinner_note2_length, R.id.spinner_note3_length, R.id.spinner_note4_length};
-        
+
+        int[] lengthSpinnerItems = {
+                R.id.spinner_note1_length, R.id.spinner_note2_length, R.id.spinner_note3_length,
+                R.id.spinner_note4_length
+        };
+
         for (int i = 0; i < lengthSpinnerItems.length; i++) {
             spinner = (Spinner) findViewById(lengthSpinnerItems[i]);
             adapter = ArrayAdapter
@@ -120,12 +128,12 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
                             android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
-            spinner.setSelection(adapter.getPosition(String.valueOf("0.5")));  // start at 0.5 length
+            spinner.setSelection(adapter.getPosition(String.valueOf("0.5"))); // start at 0.5 length
         }
-        
+
         try {
             // add listeners to buttons
-            // have to cast to Button in this case    
+            // have to cast to Button in this case
             buttonPlayNoteset = (Button) findViewById(R.id.button_play_noteset);
             buttonPlayNoteset.setOnClickListener(this);
         } catch (Exception e) {
@@ -136,128 +144,134 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
     /**
      * onClick override used to save noteset data once user clicks save button.
      * 
-     * @param view
-     *            Incoming view.
+     * @param view Incoming view.
      */
     @Override
     public void onClick(View v) {
-        
+
         String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
         String[] velocityValuesArray = getResources().getStringArray(R.array.velocity_values_array);
         String[] lengthValuesArray = getResources().getStringArray(R.array.length_values_array);
-        
+
         int[] spinnerIds = {
                 R.id.spinner_note1,
                 R.id.spinner_note2,
                 R.id.spinner_note3,
                 R.id.spinner_note4
         };
-        
+
         int[] velocitySpinnerIds = {
                 R.id.spinner_note1_velocity,
                 R.id.spinner_note2_velocity,
                 R.id.spinner_note3_velocity,
                 R.id.spinner_note4_velocity
         };
-        
+
         int[] lengthSpinnerIds = {
                 R.id.spinner_note1_length,
                 R.id.spinner_note2_length,
                 R.id.spinner_note3_length,
                 R.id.spinner_note4_length
         };
-        
+
         switch (v.getId()) {
-        case R.id.button_save:
-            // gather noteset data from form
-            Spinner spinner;
-            
-            Noteset notesetToInsert = new Noteset();
-            Note noteToInsert = new Note();
-            
-            // get select emotion's id
-            
-            EmotionsDataSource eds = new EmotionsDataSource(this);
-            eds.open();
+            case R.id.button_save:
+                // gather noteset data from form
+                Spinner spinner;
 
-            List<Integer> allEmotionIds = new ArrayList<Integer>();
-            allEmotionIds = eds.getAllEmotionIds();
-            eds.close();
-            
-            Spinner emotionSpinner = (Spinner) findViewById(R.id.spinner_emotion);
-            int selectedEmotionValue = 0;
-            
-            // for times when emotion is not selected
-            try {
-                selectedEmotionValue = allEmotionIds.get(emotionSpinner.getSelectedItemPosition());
-            } catch (Exception e) {
-                Log.d("MYLOG", e.getStackTrace().toString());
-            }
-            
-            eds.close();
-            
-            notesetToInsert.setEmotion(selectedEmotionValue);
-            
-            // first insert new noteset (parent of all related notes)
-            saveNoteset(v, notesetToInsert);
-            
-            for (int i = 0; i < spinnerIds.length; i++) {
-                spinner = (Spinner) findViewById(spinnerIds[i]);
-                Spinner velocitySpinner = (Spinner) findViewById(velocitySpinnerIds[i]);
-                Spinner lengthSpinner = (Spinner) findViewById(lengthSpinnerIds[i]);
-                
-                noteToInsert.setNotesetId(newlyInsertedNoteset.getId());
-                noteToInsert.setNotevalue(Integer.parseInt(noteValuesArray[spinner.getSelectedItemPosition()]));
-                noteToInsert.setVelocity(Integer.parseInt(velocityValuesArray[velocitySpinner.getSelectedItemPosition()]));
-                noteToInsert.setLength(Float.parseFloat(lengthValuesArray[lengthSpinner.getSelectedItemPosition()]));
-                noteToInsert.setPosition(i+1);  // positions 1, 2, 3, 4, etc.
-                saveNote(v, noteToInsert);
-            }
-            
-            finish();
-            break;
-            
-        case R.id.button_play_noteset:
+                Noteset notesetToInsert = new Noteset();
+                Note noteToInsert = new Note();
 
-            // disable play button while playing
-            buttonPlayNoteset = (Button) findViewById(R.id.button_play_noteset);
-            buttonPlayNoteset.setClickable(false);
+                // get select emotion's id
 
-            List<Note> notes = new ArrayList<Note>();
-            
-            for (int i = 0; i < spinnerIds.length; i++) {
-                spinner = (Spinner) findViewById(spinnerIds[i]);
-                Spinner velocitySpinner = (Spinner) findViewById(velocitySpinnerIds[i]);
-                Spinner lengthSpinner = (Spinner) findViewById(lengthSpinnerIds[i]);
-                
-                Note note = new Note();
-                note.setNotevalue(Integer.parseInt(noteValuesArray[spinner.getSelectedItemPosition()]));
-                note.setVelocity(Integer.parseInt(velocityValuesArray[velocitySpinner.getSelectedItemPosition()]));
-                note.setLength(Float.parseFloat(lengthValuesArray[lengthSpinner.getSelectedItemPosition()]));
-                
-                notes.add(note);
-            }
-            
-            // get default instrument for playback
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-            String defaultInstrument = sharedPref.getString("pref_default_instrument", "");
-            
-            GenerateMusicActivity generateMusic = new GenerateMusicActivity();
-            generateMusic.generateMusic(notes, musicSource, defaultInstrument);
+                EmotionsDataSource eds = new EmotionsDataSource(this);
+                eds.open();
 
-            // play generated notes for user
-            playMusic(musicSource);
-            
-            // return to previous activity when done playing
-            mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer aMediaPlayer) {
-                    // enable play button again
-                    buttonPlayNoteset.setClickable(true);
+                List<Integer> allEmotionIds = new ArrayList<Integer>();
+                allEmotionIds = eds.getAllEmotionIds();
+                eds.close();
+
+                Spinner emotionSpinner = (Spinner) findViewById(R.id.spinner_emotion);
+                int selectedEmotionValue = 0;
+
+                // for times when emotion is not selected
+                try {
+                    selectedEmotionValue = allEmotionIds.get(emotionSpinner
+                            .getSelectedItemPosition());
+                } catch (Exception e) {
+                    Log.d("MYLOG", e.getStackTrace().toString());
                 }
-            });
-            
-            break;
+
+                eds.close();
+
+                notesetToInsert.setEmotion(selectedEmotionValue);
+
+                // first insert new noteset (parent of all related notes)
+                saveNoteset(v, notesetToInsert);
+
+                for (int i = 0; i < spinnerIds.length; i++) {
+                    spinner = (Spinner) findViewById(spinnerIds[i]);
+                    Spinner velocitySpinner = (Spinner) findViewById(velocitySpinnerIds[i]);
+                    Spinner lengthSpinner = (Spinner) findViewById(lengthSpinnerIds[i]);
+
+                    noteToInsert.setNotesetId(newlyInsertedNoteset.getId());
+                    noteToInsert.setNotevalue(Integer.parseInt(noteValuesArray[spinner
+                            .getSelectedItemPosition()]));
+                    noteToInsert.setVelocity(Integer.parseInt(velocityValuesArray[velocitySpinner
+                            .getSelectedItemPosition()]));
+                    noteToInsert.setLength(Float.parseFloat(lengthValuesArray[lengthSpinner
+                            .getSelectedItemPosition()]));
+                    noteToInsert.setPosition(i + 1); // positions 1, 2, 3, 4, etc.
+                    saveNote(v, noteToInsert);
+                }
+
+                finish();
+                break;
+
+            case R.id.button_play_noteset:
+
+                // disable play button while playing
+                buttonPlayNoteset = (Button) findViewById(R.id.button_play_noteset);
+                buttonPlayNoteset.setClickable(false);
+
+                List<Note> notes = new ArrayList<Note>();
+
+                for (int i = 0; i < spinnerIds.length; i++) {
+                    spinner = (Spinner) findViewById(spinnerIds[i]);
+                    Spinner velocitySpinner = (Spinner) findViewById(velocitySpinnerIds[i]);
+                    Spinner lengthSpinner = (Spinner) findViewById(lengthSpinnerIds[i]);
+
+                    Note note = new Note();
+                    note.setNotevalue(Integer.parseInt(noteValuesArray[spinner
+                            .getSelectedItemPosition()]));
+                    note.setVelocity(Integer.parseInt(velocityValuesArray[velocitySpinner
+                            .getSelectedItemPosition()]));
+                    note.setLength(Float.parseFloat(lengthValuesArray[lengthSpinner
+                            .getSelectedItemPosition()]));
+
+                    notes.add(note);
+                }
+
+                // get default instrument for playback
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                String defaultInstrument = sharedPref.getString("pref_default_instrument", "");
+
+                GenerateMusicActivity generateMusic = new GenerateMusicActivity();
+                generateMusic.generateMusic(notes, musicSource, defaultInstrument);
+
+                // play generated notes for user
+                playMusic(musicSource);
+
+                // return to previous activity when done playing
+                mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer aMediaPlayer) {
+                        // enable play button again
+                        buttonPlayNoteset.setClickable(true);
+                    }
+                });
+
+                break;
         }
     }
 
@@ -280,10 +294,8 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
     /**
      * Save noteset data.
      * 
-     * @param v
-     *            Incoming view.
-     * @param data
-     *            Incoming string of data to be saved.
+     * @param v Incoming view.
+     * @param data Incoming string of data to be saved.
      */
     private void saveNoteset(View v, Noteset noteset) {
 
@@ -300,14 +312,14 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
                 duration);
         toast.show();
     }
-    
+
     private void saveNote(View v, Note note) {
 
         // save noteset in database
         NotesDataSource nds = new NotesDataSource(this);
         nds.createNote(note);
         nds.close();
-        
+
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
 
@@ -316,24 +328,24 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
                 duration);
         toast.show();
     }
-    
+
     public void playMusic(File musicSource) {
         // get media player ready
         mediaPlayer = MediaPlayer.create(this, Uri.fromFile(musicSource));
-        
+
         // play music
         mediaPlayer.start();
     }
-    
+
     /**
      * onBackPressed override used to stop playing music when done with activity
      */
     @Override
     public void onBackPressed() {
-        
+
         // stop playing music
         mediaPlayer.stop();
-        
+
         super.onBackPressed();
     }
 }

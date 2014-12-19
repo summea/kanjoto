@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.andrewsummers.otashu.view;
 
 import java.util.List;
@@ -24,17 +25,16 @@ import android.opengl.GLSurfaceView;
 import android.util.SparseArray;
 
 /**
- * A view container where OpenGL ES graphics can be drawn on screen.
- * This view can also be used to capture touch events, such as a user
- * interacting with drawn objects.
+ * A view container where OpenGL ES graphics can be drawn on screen. This view can also be used to
+ * capture touch events, such as a user interacting with drawn objects.
  */
 public class PlaybackGLSurfaceView extends GLSurfaceView {
 
     private final PlaybackGLRenderer mRenderer;
-    
+
     public PlaybackGLSurfaceView(Context context) {
         super(context);
-        
+
         // Create an OpenGL ES 2.0 context.
         setEGLContextClientVersion(2);
 
@@ -42,8 +42,9 @@ public class PlaybackGLSurfaceView extends GLSurfaceView {
         mRenderer = new PlaybackGLRenderer();
         setRenderer(mRenderer);
     }
-    
-    public PlaybackGLSurfaceView(Context context, List<Note> notes, SparseArray<float[]> noteColorTable) {
+
+    public PlaybackGLSurfaceView(Context context, List<Note> notes,
+            SparseArray<float[]> noteColorTable) {
         super(context);
 
         // Create an OpenGL ES 2.0 context.
@@ -54,6 +55,6 @@ public class PlaybackGLSurfaceView extends GLSurfaceView {
         setRenderer(mRenderer);
 
         // Render the view only when there is a change in the drawing data
-        //setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+        // setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
 }

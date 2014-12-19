@@ -1,3 +1,4 @@
+
 package com.andrewsummers.otashu.data;
 
 import java.util.ArrayList;
@@ -27,8 +28,7 @@ public class BookmarksDataSource {
     /**
      * BookmarksDataSource constructor.
      * 
-     * @param context
-     *            Current state.
+     * @param context Current state.
      */
     public BookmarksDataSource(Context context) {
         dbHelper = new OtashuDatabaseHelper(context);
@@ -53,18 +53,18 @@ public class BookmarksDataSource {
     /**
      * Create bookmark row in database.
      * 
-     * @param bookmarkvalues
-     *            String of bookmark values to insert.
+     * @param bookmarkvalues String of bookmark values to insert.
      * @return Bookmark of newly-created bookmark data.
      */
-    public Bookmark createBookmark(Bookmark bookmark) {        
+    public Bookmark createBookmark(Bookmark bookmark) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, bookmark.getName());
-        contentValues.put(OtashuDatabaseHelper.COLUMN_SERIALIZED_VALUE, bookmark.getSerializedValue());
-        
+        contentValues.put(OtashuDatabaseHelper.COLUMN_SERIALIZED_VALUE,
+                bookmark.getSerializedValue());
+
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        
+
         long insertId = db
                 .insert(OtashuDatabaseHelper.TABLE_BOOKMARKS, null,
                         contentValues);
@@ -75,7 +75,7 @@ public class BookmarksDataSource {
                 null, null, null);
 
         cursor.moveToFirst();
-        
+
         Bookmark newBookmark = cursorToBookmark(cursor);
         cursor.close();
         return newBookmark;
@@ -84,15 +84,14 @@ public class BookmarksDataSource {
     /**
      * Delete bookmark row from database.
      * 
-     * @param bookmark
-     *            Bookmark to delete.
+     * @param bookmark Bookmark to delete.
      */
     public void deleteBookmark(Bookmark bookmark) {
         long id = bookmark.getId();
-        
+
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        
+
         // delete bookmark
         db.delete(OtashuDatabaseHelper.TABLE_BOOKMARKS,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
@@ -130,7 +129,7 @@ public class BookmarksDataSource {
 
         return bookmarks;
     }
-    
+
     /**
      * Get all bookmark ids from database table.
      * 
@@ -157,8 +156,7 @@ public class BookmarksDataSource {
     /**
      * Access column data at current position of result.
      * 
-     * @param cursor
-     *            Current cursor location.
+     * @param cursor Current cursor location.
      * @return Bookmark
      */
     private Bookmark cursorToBookmark(Cursor cursor) {
@@ -168,7 +166,7 @@ public class BookmarksDataSource {
         bookmark.setSerializedValue(cursor.getString(2));
         return bookmark;
     }
-        
+
     /**
      * getAllBookmarks gets a preview list of all bookmarks.
      * 
@@ -209,8 +207,9 @@ public class BookmarksDataSource {
      */
     public List<Long> getAllBookmarkListDBTableIds() {
         List<Long> bookmarks = new LinkedList<Long>();
-        
-        String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM " + OtashuDatabaseHelper.TABLE_BOOKMARKS;
+
+        String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
+                + OtashuDatabaseHelper.TABLE_BOOKMARKS;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -220,11 +219,11 @@ public class BookmarksDataSource {
 
         Bookmark bookmark = null;
         if (cursor.moveToFirst()) {
-            do {                
+            do {
                 // create bookmark objects based on bookmark data from database
                 bookmark = new Bookmark();
                 bookmark.setId(cursor.getLong(0));
-                
+
                 // add bookmark to bookmarks list
                 bookmarks.add(bookmark.getId());
             } while (cursor.moveToNext());
@@ -232,11 +231,12 @@ public class BookmarksDataSource {
 
         return bookmarks;
     }
-    
+
     public Bookmark getBookmark(long bookmarkId) {
         Bookmark bookmark = new Bookmark();
-        
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_BOOKMARKS + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + bookmarkId;
+
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_BOOKMARKS + " WHERE "
+                + OtashuDatabaseHelper.COLUMN_ID + "=" + bookmarkId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -253,36 +253,38 @@ public class BookmarksDataSource {
                 bookmark.setSerializedValue(cursor.getString(2));
             } while (cursor.moveToNext());
         }
-        
+
         return bookmark;
     }
-    
+
     public Bookmark updateBookmark(Bookmark bookmark) {
-        
+
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        
+
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, bookmark.getId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, bookmark.getName());
-        contentValues.put(OtashuDatabaseHelper.COLUMN_SERIALIZED_VALUE, bookmark.getSerializedValue());
-        
-        db.update(OtashuDatabaseHelper.TABLE_BOOKMARKS, contentValues, OtashuDatabaseHelper.COLUMN_ID + "=" + bookmark.getId(), null);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_SERIALIZED_VALUE,
+                bookmark.getSerializedValue());
+
+        db.update(OtashuDatabaseHelper.TABLE_BOOKMARKS, contentValues,
+                OtashuDatabaseHelper.COLUMN_ID + "=" + bookmark.getId(), null);
 
         return bookmark;
     }
 
     public Bookmark getRandomBookmark() {
         Bookmark bookmark = new Bookmark();
-        
+
         // get all bookmarks first
         List<Bookmark> allBookmarks = getAllBookmarks();
 
         // choose random bookmark
-        int chosenIndex = new Random().nextInt(allBookmarks.size());        
+        int chosenIndex = new Random().nextInt(allBookmarks.size());
 
         bookmark = allBookmarks.get(chosenIndex);
-        
+
         return bookmark;
     }
 }

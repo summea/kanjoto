@@ -1,3 +1,4 @@
+
 package com.andrewsummers.otashu;
 
 import com.andrewsummers.otashu.activity.ChooseEmotionActivity;
@@ -8,7 +9,7 @@ import android.content.Intent;
 import android.util.Log;
 
 public class OtashuReceiver extends BroadcastReceiver {
-    
+
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d("MYLOG", "on receive called... starting activity...");

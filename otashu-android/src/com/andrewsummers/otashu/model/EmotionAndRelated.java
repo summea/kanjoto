@@ -1,13 +1,14 @@
+
 package com.andrewsummers.otashu.model;
 
 /**
  * Emotion is a model for Emotion objects.
  */
 public class EmotionAndRelated {
-    
+
     private Emotion emotion = new Emotion();
     private Label label = new Label();
-    
+
     /**
      * getEmotion gets emotion
      * 
@@ -20,13 +21,12 @@ public class EmotionAndRelated {
     /**
      * setEmotion sets emotion
      * 
-     * @param emotion
-     *            New Emotion object.
+     * @param emotion New Emotion object.
      */
     public void setEmotion(Emotion emotion) {
         this.emotion = emotion;
     }
-    
+
     /**
      * getLabel gets related Label
      * 
@@ -39,13 +39,12 @@ public class EmotionAndRelated {
     /**
      * setLabel sets label
      * 
-     * @param label
-     *            New label object.
+     * @param label New label object.
      */
     public void setLabel(Label label) {
         this.label = label;
     }
-        
+
     /**
      * toString override to return emotion name.
      * 
