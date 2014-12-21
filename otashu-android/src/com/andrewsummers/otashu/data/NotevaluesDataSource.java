@@ -193,17 +193,17 @@ public class NotevaluesDataSource {
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        // select all emotions from database
+        // select all notevalues from database
         Cursor cursor = db.rawQuery(query, null);
 
         Notevalue notevalue = null;
         if (cursor.moveToFirst()) {
             do {
-                // create emotion objects based on emotion data from database
+                // create notevalue objects based on notevalue data from database
                 notevalue = new Notevalue();
                 notevalue.setId(Long.parseLong(cursor.getString(0)));
 
-                // add emotion to emotions list
+                // add notevalue to notevalues list
                 notevalues.add(notevalue.getId());
             } while (cursor.moveToNext());
         }

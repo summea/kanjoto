@@ -89,7 +89,7 @@ public class LabelsDataSource {
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        // delete emotion
+        // delete label
         db.delete(OtashuDatabaseHelper.TABLE_LABELS,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
     }
@@ -211,17 +211,17 @@ public class LabelsDataSource {
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        // select all emotions from database
+        // select all labels from database
         Cursor cursor = db.rawQuery(query, null);
 
         Label label = null;
         if (cursor.moveToFirst()) {
             do {
-                // create emotion objects based on emotion data from database
+                // create label objects based on label data from database
                 label = new Label();
                 label.setId(Long.parseLong(cursor.getString(0)));
 
-                // add emotion to emotions list
+                // add label to labels list
                 labels.add(label.getId());
             } while (cursor.moveToNext());
         }

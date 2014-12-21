@@ -193,6 +193,16 @@
 - notevalue
 - notelabel
 
+#### vertices
+- id
+- node
+
+#### edges
+- id
+- from_id
+- to_id
+- weight
+
 
 ## NOTES:
 - approaches to try first for generating music:
