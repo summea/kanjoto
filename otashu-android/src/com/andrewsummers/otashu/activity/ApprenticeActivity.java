@@ -7,12 +7,16 @@ import java.util.List;
 import java.util.Random;
 
 import com.andrewsummers.otashu.R;
+import com.andrewsummers.otashu.data.EdgesDataSource;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.NotesDataSource;
 import com.andrewsummers.otashu.data.NotesetsDataSource;
+import com.andrewsummers.otashu.data.VerticesDataSource;
+import com.andrewsummers.otashu.model.Edge;
 import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.Note;
 import com.andrewsummers.otashu.model.Noteset;
+import com.andrewsummers.otashu.model.Vertex;
 
 import android.app.Activity;
 import android.content.Context;
@@ -185,6 +189,58 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                     note.setNotesetId(newlyInsertedNoteset.getId());
 
                     saveNote(v, notesToInsert.get(i));
+                }
+                
+                // examine notes for graph purposes
+                
+                VerticesDataSource vds = new VerticesDataSource(this);
+                EdgesDataSource edds = new EdgesDataSource(this);
+                
+                Log.d("MYLOG", "> examining noteset...");
+                for (int i = 0; i < notesToInsert.size()-1; i++) {
+                    // Examine note1 + note2
+                    Note noteA = notesToInsert.get(i);
+                    Note noteB = notesToInsert.get(i+1);
+                    
+                    // Do nodes exist?
+                    Vertex nodeA = vds.getVertex(noteA.getNotevalue());
+                    Vertex nodeB = vds.getVertex(noteB.getNotevalue());
+                    
+                    // If nodes don't exist, create new nodes in graph
+                    if (nodeA.getNode() <= 0) {
+                        Log.d("MYLOG", "> nodeA doesn't exist... creating new vertex");
+                        Vertex newNodeA = new Vertex();
+                        newNodeA.setNode(noteA.getNotevalue());
+                        vds.createVertex(newNodeA);
+                        nodeA.setNode(noteA.getNotevalue());
+                    }
+                    if (nodeB.getNode() <= 0) {
+                        Log.d("MYLOG", "> nodeB doesn't exist... creating new vertex");
+                        Vertex newNodeB = new Vertex();
+                        newNodeB.setNode(noteB.getNotevalue());
+                        vds.createVertex(newNodeB);
+                        nodeB.setNode(noteB.getNotevalue());
+                    }
+
+                    // Does an edge exist between these two nodes?
+                    Edge edge = edds.getEdge(nodeA.getNode(), nodeB.getNode());
+
+                    if (edge.getWeight() < 0.0f || edge.getWeight() > 1.0f) {
+                        Log.d("MYLOG", "> edge doesn't exist... creating new edge between " + nodeA.getNode() + " and " + nodeB.getNode());
+                        // If edge doesn't exist, create new edge in graph (and set weight at 0.5) [note: 0.0 = stronger edge / more likely to be chosen than a 1.0 edge]
+                        Edge newEdge = new Edge();
+                        newEdge.setfromId(nodeA.getNode());
+                        newEdge.setToId(nodeB.getNode());
+                        newEdge.setWeight(0.5f);
+                        edds.createEdge(newEdge);
+                    } else {
+                        Log.d("MYLOG", "> edge exists between " + nodeA.getNode() + " and " + nodeB.getNode() + " ... just updating weight");
+                        // If edge does exist, update weight (weight - 1.0)
+                        if (edge.getWeight() - 1 >= 0.0f) {
+                            edge.setWeight(edge.getWeight() - 1.0f);
+                        }
+                    }
+
                 }
 
                 // try another noteset

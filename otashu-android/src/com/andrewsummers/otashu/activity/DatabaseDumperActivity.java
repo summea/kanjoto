@@ -5,22 +5,26 @@ import java.util.List;
 
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.BookmarksDataSource;
+import com.andrewsummers.otashu.data.EdgesDataSource;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.data.NotesDataSource;
 import com.andrewsummers.otashu.data.NotesetsDataSource;
 import com.andrewsummers.otashu.data.NotevaluesDataSource;
 import com.andrewsummers.otashu.data.OtashuDatabaseHelper;
+import com.andrewsummers.otashu.data.VerticesDataSource;
 import com.andrewsummers.otashu.model.Bookmark;
+import com.andrewsummers.otashu.model.Edge;
 import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.Label;
 import com.andrewsummers.otashu.model.Note;
 import com.andrewsummers.otashu.model.Noteset;
 import com.andrewsummers.otashu.model.Notevalue;
+import com.andrewsummers.otashu.model.Vertex;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.EditText;
+import android.widget.TextView;
 
 public class DatabaseDumperActivity extends Activity {
 
@@ -55,7 +59,15 @@ public class DatabaseDumperActivity extends Activity {
         List<Notevalue> allNotevalues = nvds.getAllNotevalues();
         nvds.close();
 
-        EditText debugText = (EditText) findViewById(R.id.debug_text);
+        VerticesDataSource vds = new VerticesDataSource(this);
+        List<Vertex> allVertices = vds.getAllVertices();
+        vds.close();
+
+        EdgesDataSource edds = new EdgesDataSource(this);
+        List<Edge> allEdges = edds.getAllEdges();
+        edds.close();
+
+        TextView debugText = (TextView) findViewById(R.id.debug_text);
 
         debugText.setText(debugText.getText().toString() + "Table: Bookmarks\n"
                 + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NAME + "|"
@@ -133,6 +145,33 @@ public class DatabaseDumperActivity extends Activity {
             String newText = debugText.getText().toString();
             newText += notevalue.getId() + "|" + notevalue.getNotevalue() + "|"
                     + notevalue.getNotelabel() + "|" + notevalue.getLabelId() + "\n";
+
+            debugText.setText(newText);
+        }
+
+        debugText.setText(debugText.getText().toString() + "\nTable: Vertices\n"
+                + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NODE + "\n");
+
+        for (Vertex vertex : allVertices) {
+
+            String newText = debugText.getText().toString();
+            newText += vertex.getId() + "|" + vertex.getNode() + "\n";
+
+            debugText.setText(newText);
+        }
+
+        debugText
+                .setText(debugText.getText().toString() + "\nTable: Edges\n"
+                        + OtashuDatabaseHelper.COLUMN_ID + "|"
+                        + OtashuDatabaseHelper.COLUMN_FROM_ID + "|" +
+                        OtashuDatabaseHelper.COLUMN_TO_ID + "|"
+                        + OtashuDatabaseHelper.COLUMN_WEIGHT + "\n");
+
+        for (Edge edge : allEdges) {
+
+            String newText = debugText.getText().toString();
+            newText += edge.getId() + "|" + edge.getFromId() + "|" + edge.getToId() + "|"
+                    + edge.getWeight() + "\n";
 
             debugText.setText(newText);
         }

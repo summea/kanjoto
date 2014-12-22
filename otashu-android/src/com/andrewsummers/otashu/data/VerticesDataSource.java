@@ -224,11 +224,11 @@ public class VerticesDataSource {
         return vertices;
     }
 
-    public Vertex getVertex(long vertexId) {
+    public Vertex getVertex(int vertexNodeId) {
         Vertex vertex = new Vertex();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_VERTICES + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_ID + "=" + vertexId;
+                + OtashuDatabaseHelper.COLUMN_NODE + "=" + vertexNodeId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();

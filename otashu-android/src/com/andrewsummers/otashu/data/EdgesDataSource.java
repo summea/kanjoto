@@ -27,7 +27,7 @@ public class EdgesDataSource {
     };
 
     /**
-     * VerticesDataSource constructor.
+     * EdgesDataSource constructor.
      * 
      * @param context Current state.
      */
@@ -99,9 +99,9 @@ public class EdgesDataSource {
     /**
      * Get all edges from database table.
      * 
-     * @return List of Vertices.
+     * @return List of Edges.
      */
-    public List<Edge> getAllVertices() {
+    public List<Edge> getAllEdges() {
         List<Edge> edges = new ArrayList<Edge>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES;
@@ -133,7 +133,7 @@ public class EdgesDataSource {
     /**
      * Get all edge ids from database table.
      * 
-     * @return List of Vertices ids.
+     * @return List of Edges ids.
      */
     public List<Integer> getAllEdgeIds() {
         List<Integer> edge_ids = new ArrayList<Integer>();
@@ -169,7 +169,7 @@ public class EdgesDataSource {
     }
 
     /**
-     * getAllVertices gets a preview list of all edges.
+     * getAllEdges gets a preview list of all edges.
      * 
      * @return List of Edge preview strings.
      */
@@ -260,6 +260,34 @@ public class EdgesDataSource {
         return edge;
     }
 
+    public Edge getEdge(int fromNodeId, int toNodeId) {
+        Edge edge = new Edge();
+        edge.setWeight(-1.0f);
+
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES + " WHERE "
+                + OtashuDatabaseHelper.COLUMN_FROM_ID + "=" + fromNodeId + " AND "
+                + OtashuDatabaseHelper.COLUMN_TO_ID + "=" + toNodeId;
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all edges from database
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                // create edge objects based on edge data from database
+                edge = new Edge();
+                edge.setId(Integer.parseInt(cursor.getString(0)));
+                edge.setfromId(cursor.getInt(1));
+                edge.setToId(cursor.getInt(2));
+                edge.setWeight(cursor.getFloat(3));
+            } while (cursor.moveToNext());
+        }
+
+        return edge;
+    }
+
     public Edge updateEdge(Edge edge) {
 
         // create database handle
@@ -281,12 +309,12 @@ public class EdgesDataSource {
         Edge edge = new Edge();
 
         // get all edges first
-        List<Edge> allVertices = getAllVertices();
+        List<Edge> allEdges = getAllEdges();
 
         // choose random edge
-        int chosenIndex = new Random().nextInt(allVertices.size());
+        int chosenIndex = new Random().nextInt(allEdges.size());
 
-        edge = allVertices.get(chosenIndex);
+        edge = allEdges.get(chosenIndex);
 
         return edge;
     }
