@@ -21,6 +21,7 @@ public class VerticesDataSource {
     // database table columns
     private String[] allColumns = {
             OtashuDatabaseHelper.COLUMN_ID,
+            OtashuDatabaseHelper.COLUMN_GRAPH_ID,
             OtashuDatabaseHelper.COLUMN_NODE,
     };
 
@@ -57,6 +58,7 @@ public class VerticesDataSource {
      */
     public Vertex createVertex(Vertex vertex) {
         ContentValues contentValues = new ContentValues();
+        contentValues.put(OtashuDatabaseHelper.COLUMN_GRAPH_ID, vertex.getGraphId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_NODE, vertex.getNode());
 
         // create database handle
@@ -113,8 +115,9 @@ public class VerticesDataSource {
             do {
                 // create note objects based on note data from database
                 vertex = new Vertex();
-                vertex.setId(Integer.parseInt(cursor.getString(0)));
-                vertex.setNode(cursor.getInt(1));
+                vertex.setId(cursor.getLong(0));
+                vertex.setGraphId(cursor.getLong(1));
+                vertex.setNode(cursor.getInt(2));
 
                 // add note string to list of strings
                 vertices.add(vertex);
@@ -156,7 +159,8 @@ public class VerticesDataSource {
     private Vertex cursorToVertex(Cursor cursor) {
         Vertex vertex = new Vertex();
         vertex.setId(cursor.getLong(0));
-        vertex.setNode(cursor.getInt(1));
+        vertex.setGraphId(cursor.getLong(1));
+        vertex.setNode(cursor.getInt(2));
         return vertex;
     }
 
@@ -181,8 +185,9 @@ public class VerticesDataSource {
             do {
                 // create vertex objects based on vertex data from database
                 vertex = new Vertex();
-                vertex.setId(Integer.parseInt(cursor.getString(0)));
-                vertex.setNode(cursor.getInt(1));
+                vertex.setId(cursor.getLong(0));
+                vertex.setGraphId(cursor.getLong(1));
+                vertex.setNode(cursor.getInt(2));
 
                 // add vertex string to list of strings
                 vertices.add(vertex.toString());
@@ -240,8 +245,9 @@ public class VerticesDataSource {
             do {
                 // create vertex objects based on vertex data from database
                 vertex = new Vertex();
-                vertex.setId(Integer.parseInt(cursor.getString(0)));
-                vertex.setNode(cursor.getInt(1));
+                vertex.setId(cursor.getLong(0));
+                vertex.setGraphId(cursor.getLong(1));
+                vertex.setNode(cursor.getInt(2));
             } while (cursor.moveToNext());
         }
 
@@ -255,10 +261,12 @@ public class VerticesDataSource {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, vertex.getId());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_GRAPH_ID, vertex.getGraphId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_NODE, vertex.getNode());
 
-        db.update(OtashuDatabaseHelper.TABLE_VERTICES, contentValues, OtashuDatabaseHelper.COLUMN_ID
-                + "=" + vertex.getId(), null);
+        db.update(OtashuDatabaseHelper.TABLE_VERTICES, contentValues,
+                OtashuDatabaseHelper.COLUMN_ID
+                        + "=" + vertex.getId(), null);
 
         return vertex;
     }

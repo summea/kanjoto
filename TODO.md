@@ -14,6 +14,10 @@
 
 
 ## DONE:
+- 20141222: added preference for apprentice automatically adding generated noteset into user's collection
+- 20141222: added preference for which graph id to use for apprentice note relationships
+- 20141222: broke out vertices and edges into individual graphs (create new "graphs" table)
+- 20141222: fixed "edit noteset" capability (when selecting "edit" from menubar option)
 - 20141216: added "keep alarm set until turned off by user" feature
 - 20141214: added alarm clock settings
 - 20141214: added alarm clock feature

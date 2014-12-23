@@ -52,6 +52,10 @@
         <activity android:name="com.andrewsummers.otashu.activity.ViewNotevalueDetailActivity" />
         <activity android:name="com.andrewsummers.otashu.OtashuReceiver" />
         <receiver android:name="OtashuReceiver"></receiver>
+        <activity android:name="com.andrewsummers.otashu.activity.ViewAllGraphsActivity" />
+        <activity android:name="com.andrewsummers.otashu.activity.ViewGraphDetailActivity" />
+        <activity android:name="com.andrewsummers.otashu.activity.CreateGraphActivity" />
+        <activity android:name="com.andrewsummers.otashu.activity.EditGraphActivity" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

@@ -6,6 +6,7 @@ package com.andrewsummers.otashu.model;
  */
 public class Edge {
     private long id;
+    private long graphId;
     private int fromId;
     private int toId;
     private float weight;
@@ -17,6 +18,24 @@ public class Edge {
      */
     public long getId() {
         return id;
+    }
+
+    /**
+     * getGraphId gets Edge graphId
+     * 
+     * @return <code>long</code> graphId value
+     */
+    public long getGraphId() {
+        return graphId;
+    }
+
+    /**
+     * setGraphId sets Edge graphId
+     * 
+     * @param graphId New graphId value.
+     */
+    public void setGraphId(long graphId) {
+        this.graphId = graphId;
     }
 
     /**
@@ -45,7 +64,7 @@ public class Edge {
     public void setfromId(int fromId) {
         this.fromId = fromId;
     }
-    
+
     /**
      * getToId gets Edge toId.
      * 
@@ -81,7 +100,7 @@ public class Edge {
     public void setWeight(float weight) {
         this.weight = weight;
     }
-    
+
     /**
      * toString override to return Edge id.
      * 

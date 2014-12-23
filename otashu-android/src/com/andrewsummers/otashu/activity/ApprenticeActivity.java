@@ -179,37 +179,50 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                 buttonPlayNoteset = (Button) findViewById(R.id.button_play_noteset);
                 buttonPlayNoteset.setClickable(false);
 
-                // save noteset
-                notesetToInsert.setEmotion((int) chosenEmotion.getId());
-                saveNoteset(v, notesetToInsert);
+                // check if Apprentice is allowed to auto-add generated noteset into User's
+                // collection
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                boolean apprenticeCanAutoAddNotset = sharedPref.getBoolean(
+                        "pref_apprentice_auto_add_noteset", false);
 
-                // save notes
-                for (int i = 0; i < notesToInsert.size(); i++) {
-                    Note note = notesToInsert.get(i);
-                    note.setNotesetId(newlyInsertedNoteset.getId());
+                if (apprenticeCanAutoAddNotset) {
+                    // save noteset
+                    notesetToInsert.setEmotion((int) chosenEmotion.getId());
+                    saveNoteset(v, notesetToInsert);
 
-                    saveNote(v, notesToInsert.get(i));
+                    // save notes
+                    for (int i = 0; i < notesToInsert.size(); i++) {
+                        Note note = notesToInsert.get(i);
+                        note.setNotesetId(newlyInsertedNoteset.getId());
+
+                        saveNote(v, notesToInsert.get(i));
+                    }
                 }
-                
+
                 // examine notes for graph purposes
-                
+
                 VerticesDataSource vds = new VerticesDataSource(this);
                 EdgesDataSource edds = new EdgesDataSource(this);
-                
+
+                // get default graph id for Apprentice's note relationships graph
+                long defaultGraphId = Long.parseLong(sharedPref.getString(
+                        "pref_default_graph_for_apprentice", "1"));
+
                 Log.d("MYLOG", "> examining noteset...");
-                for (int i = 0; i < notesToInsert.size()-1; i++) {
+                for (int i = 0; i < notesToInsert.size() - 1; i++) {
                     // Examine note1 + note2
                     Note noteA = notesToInsert.get(i);
-                    Note noteB = notesToInsert.get(i+1);
-                    
+                    Note noteB = notesToInsert.get(i + 1);
+
                     // Do nodes exist?
                     Vertex nodeA = vds.getVertex(noteA.getNotevalue());
                     Vertex nodeB = vds.getVertex(noteB.getNotevalue());
-                    
+
                     // If nodes don't exist, create new nodes in graph
                     if (nodeA.getNode() <= 0) {
                         Log.d("MYLOG", "> nodeA doesn't exist... creating new vertex");
                         Vertex newNodeA = new Vertex();
+                        newNodeA.setGraphId(defaultGraphId);
                         newNodeA.setNode(noteA.getNotevalue());
                         vds.createVertex(newNodeA);
                         nodeA.setNode(noteA.getNotevalue());
@@ -217,6 +230,7 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                     if (nodeB.getNode() <= 0) {
                         Log.d("MYLOG", "> nodeB doesn't exist... creating new vertex");
                         Vertex newNodeB = new Vertex();
+                        newNodeB.setGraphId(defaultGraphId);
                         newNodeB.setNode(noteB.getNotevalue());
                         vds.createVertex(newNodeB);
                         nodeB.setNode(noteB.getNotevalue());
@@ -226,18 +240,28 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                     Edge edge = edds.getEdge(nodeA.getNode(), nodeB.getNode());
 
                     if (edge.getWeight() < 0.0f || edge.getWeight() > 1.0f) {
-                        Log.d("MYLOG", "> edge doesn't exist... creating new edge between " + nodeA.getNode() + " and " + nodeB.getNode());
-                        // If edge doesn't exist, create new edge in graph (and set weight at 0.5) [note: 0.0 = stronger edge / more likely to be chosen than a 1.0 edge]
+                        Log.d("MYLOG",
+                                "> edge doesn't exist... creating new edge between "
+                                        + nodeA.getNode() + " and " + nodeB.getNode());
+                        // If edge doesn't exist, create new edge in graph (and set weight at 0.5)
+                        // [note: 0.0 = stronger edge / more likely to be chosen than a 1.0 edge]
                         Edge newEdge = new Edge();
+                        newEdge.setGraphId(defaultGraphId);
                         newEdge.setfromId(nodeA.getNode());
                         newEdge.setToId(nodeB.getNode());
                         newEdge.setWeight(0.5f);
                         edds.createEdge(newEdge);
                     } else {
-                        Log.d("MYLOG", "> edge exists between " + nodeA.getNode() + " and " + nodeB.getNode() + " ... just updating weight");
+                        Log.d("MYLOG",
+                                "> edge exists between " + nodeA.getNode() + " and "
+                                        + nodeB.getNode()
+                                        + " ... just updating weight which is currently: "
+                                        + edge.getWeight());
                         // If edge does exist, update weight (weight - 1.0)
-                        if (edge.getWeight() - 1 >= 0.0f) {
-                            edge.setWeight(edge.getWeight() - 1.0f);
+                        if ((edge.getWeight() - 0.1f) >= 0.0f) {
+                            Log.d("MYLOG", "> subtracting 1.0f from weight...");
+                            edge.setWeight(edge.getWeight() - 0.1f);
+                            edds.updateEdge(edge);
                         }
                     }
 

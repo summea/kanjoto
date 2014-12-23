@@ -11,7 +11,7 @@ import android.util.Log;
  * application database.
  */
 public class OtashuDatabaseHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 14;
     private static final String DATABASE_NAME = "otashu_collection.db";
 
     public static final String COLUMN_ID = "_id";
@@ -38,10 +38,13 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_NOTEVALUES = "notevalues";
     public static final String COLUMN_NOTELABEL = "notelabel";
-    
+
+    public static final String TABLE_GRAPHS = "graphs";
+
     public static final String TABLE_VERTICES = "vertices";
+    public static final String COLUMN_GRAPH_ID = "graph_id";
     public static final String COLUMN_NODE = "node";
-    
+
     public static final String TABLE_EDGES = "edges";
     public static final String COLUMN_FROM_ID = "from_id";
     public static final String COLUMN_TO_ID = "to_id";
@@ -80,13 +83,19 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_NOTEVALUE + " integer, "
             + COLUMN_NOTELABEL + " text, "
             + COLUMN_LABEL_ID + " integer);";
-    
+
+    private static final String CREATE_TABLE_GRAPHS = "CREATE TABLE " + TABLE_GRAPHS
+            + " (" + COLUMN_ID + " integer primary key autoincrement, "
+            + COLUMN_NAME + " text);";
+
     private static final String CREATE_TABLE_VERTICES = "CREATE TABLE " + TABLE_VERTICES
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
+            + COLUMN_GRAPH_ID + " integer,"
             + COLUMN_NODE + " integer);";
-    
+
     private static final String CREATE_TABLE_EDGES = "CREATE TABLE " + TABLE_EDGES
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
+            + COLUMN_GRAPH_ID + " integer,"
             + COLUMN_FROM_ID + " integer, "
             + COLUMN_TO_ID + " integer, "
             + COLUMN_WEIGHT + " real);";
@@ -113,6 +122,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_LABELS);
         db.execSQL(CREATE_TABLE_BOOKMARKS);
         db.execSQL(CREATE_TABLE_NOTEVALUES);
+        db.execSQL(CREATE_TABLE_GRAPHS);
         db.execSQL(CREATE_TABLE_VERTICES);
         db.execSQL(CREATE_TABLE_EDGES);
     }
@@ -129,12 +139,12 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         Log.d("MYLOG", ">>> new database version: " + newVersion);
         Log.d("MYLOG", "updating database...");
 
-        // v11
-        // db.execSQL("DROP TABLE " + TABLE_NOTEVALUES);
-        // db.execSQL(CREATE_TABLE_NOTEVALUES);
-        
-        // v12
-        db.execSQL(CREATE_TABLE_VERTICES);
-        db.execSQL(CREATE_TABLE_EDGES);
+        // v14
+        // db.execSQL("DROP TABLE " + TABLE_GRAPHS);
+        // db.execSQL("DROP TABLE " + TABLE_VERTICES);
+        // db.execSQL("DROP TABLE " + TABLE_EDGES);
+        // db.execSQL(CREATE_TABLE_GRAPHS);
+        // db.execSQL(CREATE_TABLE_VERTICES);
+        // db.execSQL(CREATE_TABLE_EDGES);
     }
 }

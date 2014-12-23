@@ -68,6 +68,11 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
         // get noteset and notes information
 
         int notesetId = (int) getIntent().getExtras().getLong("list_id");
+        
+        // from menubar option route
+        if (notesetIdInTable > 0) {
+            notesetId = notesetIdInTable;
+        }
 
         // List<Long> allNotesetsData = new LinkedList<Long>();
         NotesetsDataSource nds = new NotesetsDataSource(this);
@@ -179,16 +184,12 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
                             android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
-            if (note.getVelocity() != 0)
-                spinner.setSelection(adapter.getPosition(String.valueOf(note.getVelocity()))); // get
-                                                                                               // current
-                                                                                               // velocity
-                                                                                               // value
-                                                                                               // for
-                                                                                               // spinner
-                                                                                               // default
-            else
+            if (note.getVelocity() != 0) {
+                // get current length value for spinner default
+                spinner.setSelection(adapter.getPosition(String.valueOf(note.getVelocity())));
+            } else {
                 spinner.setSelection(75); // get current velocity value for spinner default
+            }
         }
 
         int[] lengthSpinnerItems = {
@@ -204,16 +205,12 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
                             android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
-            if (note.getLength() != 0)
-                spinner.setSelection(adapter.getPosition(String.valueOf(note.getLength()))); // get
-                                                                                             // current
-                                                                                             // length
-                                                                                             // value
-                                                                                             // for
-                                                                                             // spinner
-                                                                                             // default
-            else
+            if (note.getLength() != 0) {
+                // get current length value for spinner default
+                spinner.setSelection(adapter.getPosition(String.valueOf(note.getLength())));
+            } else {
                 spinner.setSelection(2);
+            }
         }
 
         try {
@@ -276,13 +273,11 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
                 allEmotionIds = eds.getAllEmotionIds();
 
                 Spinner emotionSpinner = (Spinner) findViewById(R.id.spinner_emotion);
-                int selectedEmotionValue = allEmotionIds.get(emotionSpinner
-                        .getSelectedItemPosition());
 
                 eds.close();
 
                 notesetToInsert.setId(editNoteset.getId());
-                notesetToInsert.setEmotion(selectedEmotionValue);
+                notesetToInsert.setEmotion(allEmotionIds.get((int) emotionSpinner.getSelectedItemId()));
 
                 // first insert new noteset (parent of all related notes)
                 saveNotesetUpdates(v, notesetToInsert);

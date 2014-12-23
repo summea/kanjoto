@@ -3,10 +3,6 @@ package com.andrewsummers.otashu.activity;
 
 import com.andrewsummers.otashu.ImageAdapter;
 import com.andrewsummers.otashu.R;
-import com.andrewsummers.otashu.data.EdgesDataSource;
-import com.andrewsummers.otashu.data.VerticesDataSource;
-import com.andrewsummers.otashu.model.Edge;
-import com.andrewsummers.otashu.model.Vertex;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -37,22 +33,12 @@ public class MainActivity extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
 
         /*
-        // TODO: take this out later
-        VerticesDataSource vds = new VerticesDataSource(this);
-        Vertex vertex = new Vertex();
-        for (int i = 0; i < 100; i++) {
-            vertex.setId(i);
-            vds.deleteVertex(vertex);
-        }
-        
-        EdgesDataSource edds = new EdgesDataSource(this);
-        Edge edge = new Edge();
-        for (int i = 0; i < 19; i++) {
-            edge.setId(i);
-            edds.deleteEdge(edge);
-        }
-        */
-        
+         * // TODO: take this out later VerticesDataSource vds = new VerticesDataSource(this);
+         * Vertex vertex = new Vertex(); for (int i = 0; i < 100; i++) { vertex.setId(i);
+         * vds.deleteVertex(vertex); } EdgesDataSource edds = new EdgesDataSource(this); Edge edge =
+         * new Edge(); for (int i = 0; i < 19; i++) { edge.setId(i); edds.deleteEdge(edge); }
+         */
+
         // set default preferences
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
@@ -128,6 +114,9 @@ public class MainActivity extends Activity implements OnClickListener {
                 break;
             case R.id.view_notevalues:
                 intent = new Intent(this, ViewAllNotevaluesActivity.class);
+                break;
+            case R.id.view_graphs:
+                intent = new Intent(this, ViewAllGraphsActivity.class);
                 break;
         }
 

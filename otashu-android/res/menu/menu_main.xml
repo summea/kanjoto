@@ -21,4 +21,7 @@
     <item
         android:id="@+id/view_notevalues"
         android:title="@string/menu_button_notevalues" />
+    <item
+        android:id="@+id/view_graphs"
+        android:title="@string/menu_button_graphs" />
 </menu>

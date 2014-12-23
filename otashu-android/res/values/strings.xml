@@ -30,6 +30,7 @@
     <string name="button_yes">Yes</string>
     
     <string name="choose_emotion_title">Choose Emotion</string>
+    <string name="create_graph_title">Create Graph</string>
         
     <string name="dialog_confirm_delete_message">Are you sure you want to delete this?</string>
     <string name="dialog_confirm_delete_title">Delete</string>
@@ -45,6 +46,7 @@
 
     <string name="edit_bookmark_title">Edit Bookmark</string>
     <string name="edit_emotion_title">Edit Emotion</string>
+    <string name="edit_graph_title">Edit Graph</string>
     <string name="edit_label_title">Edit Label</string>
     <string name="edit_noteset_title">Edit Noteset</string>
     <string name="edit_notevalue_title">Edit Notevalue</string>
@@ -55,6 +57,10 @@
     <string name="emotion_name_label">Name</string>
     <string name="emotion_saved">emotion saved</string>
     <string name="generate_music_placeholder">Playing music...</string>
+    <string name="graph_detail_name_label">Name</string>
+    <string name="graph_name">Name</string>
+    <string name="graph_deleted">graph deleted</string>
+    <string name="graph_saved">graph saved</string>
     
     <string name="http_request_failed">HTTP request failed</string>
     
@@ -66,11 +72,13 @@
     
     <string name="menu_button_bookmarks">Bookmarks</string>
     <string name="menu_button_create_emotion">New</string>
+    <string name="menu_button_create_graph">New</string>
     <string name="menu_button_create_label">New</string>
     <string name="menu_button_create_notevalue">New</string>
     <string name="menu_button_create_noteset">New</string>
     <string name="menu_button_database_dumper">Database Dumper</string>
     <string name="menu_button_export_database">Export Database</string>
+    <string name="menu_button_graphs">Graphs</string>
     <string name="menu_button_import_database">Import Database</string>
     <string name="menu_button_notevalues">Notevalues</string>
     <string name="menu_button_settings">Settings</string>
@@ -85,7 +93,9 @@
 
     <string name="pref_alarm_enabled">Alarm Enabled</string>
     <string name="pref_alarm_time_picker">Choose Time</string>
+    <string name="pref_apprentice_auto_add_noteset">Can Apprentice auto-populate noteset collection with generated noteset?</string>
     <string name="pref_general_category">General</string>
+    <string name="pref_default_graph_for_apprentice">Default Graph for Apprentice</string>
     <string name="pref_default_instrument">Default Instrument</string>
     <string name="pref_screen_alarm">Alarm</string>
     
@@ -113,6 +123,7 @@
     
     <string name="view_bookmark_detail_title">Bookmark Details</string>
     <string name="view_emotion_detail_title">Emotion Details</string>
+    <string name="view_graph_detail_title">Graph Details</string>
     <string name="view_label_detail_title">Label Details</string>
     <string name="view_noteset_detail_title">Noteset Details</string>
     <string name="view_notevalues">Notevalues</string>
