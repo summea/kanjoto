@@ -118,12 +118,14 @@ public class DatabaseDumperActivity extends Activity {
 
         debugText.setText(debugText.getText().toString() + "\nTable: Notesets\n"
                 + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NAME + "|"
-                + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "\n");
+                + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "|"
+                + OtashuDatabaseHelper.COLUMN_ENABLED + "\n");
 
         for (Noteset noteset : allNotesets) {
 
             String newText = debugText.getText().toString();
-            newText += noteset.getId() + "|" + noteset.getName() + "|" + noteset.getEmotion()
+            newText += noteset.getId() + "|" + noteset.getName() + "|" + noteset.getEmotion() + "|"
+                    + noteset.getEnabled()
                     + "\n";
 
             debugText.setText(newText);

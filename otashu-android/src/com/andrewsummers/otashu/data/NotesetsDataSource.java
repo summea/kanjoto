@@ -23,7 +23,8 @@ public class NotesetsDataSource {
     // database table columns
     private String[] allColumns = {
             OtashuDatabaseHelper.COLUMN_ID,
-            OtashuDatabaseHelper.COLUMN_NAME
+            OtashuDatabaseHelper.COLUMN_NAME,
+            OtashuDatabaseHelper.COLUMN_ENABLED,
     };
 
     /**
@@ -63,6 +64,7 @@ public class NotesetsDataSource {
                 noteset.getName());
         contentValues.put(OtashuDatabaseHelper.COLUMN_EMOTION_ID,
                 noteset.getEmotion());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_ENABLED, noteset.getEnabled());
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -124,7 +126,8 @@ public class NotesetsDataSource {
                 noteset = new Noteset();
                 noteset.setId(Long.parseLong(cursor.getString(0)));
                 noteset.setName(cursor.getString(1));
-                noteset.setEmotion(Integer.parseInt(cursor.getString(2)));
+                noteset.setEmotion(cursor.getInt(2));
+                noteset.setEnabled(cursor.getInt(3));
 
                 // add note string to list of strings
                 notesets.add(noteset);
@@ -161,7 +164,8 @@ public class NotesetsDataSource {
                 noteset = new Noteset();
                 noteset.setId(Long.parseLong(cursor.getString(0)));
                 noteset.setName(cursor.getString(1));
-                noteset.setEmotion(Integer.parseInt(cursor.getString(2)));
+                noteset.setEmotion(cursor.getInt(2));
+                noteset.setEnabled(cursor.getInt(3));
 
                 // add note string to list of strings
                 notesets.add(noteset);
@@ -330,9 +334,10 @@ public class NotesetsDataSource {
         if (cursor.moveToFirst()) {
             do {
                 Noteset noteset = new Noteset();
-                noteset.setId(Integer.parseInt(cursor.getString(0)));
+                noteset.setId(cursor.getInt(0));
                 noteset.setName(cursor.getString(1));
-                noteset.setEmotion(Integer.parseInt(cursor.getString(2)));
+                noteset.setEmotion(cursor.getInt(2));
+                noteset.setEnabled(cursor.getInt(3));
 
                 List<Object> notesets = new LinkedList<Object>();
                 notesets.add(noteset);
@@ -394,6 +399,8 @@ public class NotesetsDataSource {
         Noteset noteset = new Noteset();
         noteset.setId(cursor.getLong(0));
         noteset.setName(cursor.getString(1));
+        noteset.setEmotion(cursor.getInt(2));
+        noteset.setEnabled(cursor.getInt(3));
         return noteset;
     }
 
@@ -425,6 +432,7 @@ public class NotesetsDataSource {
                 noteset.setId(Integer.parseInt(cursor.getString(0)));
                 noteset.setName(cursor.getString(1));
                 noteset.setEmotion((cursor.getInt(2)));
+                noteset.setEnabled(cursor.getInt(3));
 
                 // get all related notes inside this noteset
                 // TODO: make this query approach more efficient at some point, if necessary
@@ -482,6 +490,7 @@ public class NotesetsDataSource {
                 noteset.setId(Integer.parseInt(cursor.getString(0)));
                 noteset.setName(cursor.getString(1));
                 noteset.setEmotion((cursor.getInt(2)));
+                noteset.setEnabled(cursor.getInt(3));
 
                 // get all related notes inside this noteset
                 // TODO: make this query approach more efficient at some point, if necessary
@@ -539,7 +548,10 @@ public class NotesetsDataSource {
             do {
                 // create noteset objects based on noteset data from database
                 noteset = new Noteset();
-                noteset.setId(Long.parseLong(cursor.getString(0)));
+                noteset.setId(cursor.getLong(0));
+                noteset.setName(cursor.getString(1));
+                noteset.setEmotion((cursor.getInt(2)));
+                noteset.setEnabled(cursor.getInt(3));
 
                 // add noteset to notesets list
                 notesets.add(noteset.getId());
@@ -565,9 +577,10 @@ public class NotesetsDataSource {
             do {
                 // create noteset objects based on noteset data from database
                 noteset = new Noteset();
-                noteset.setId(Integer.parseInt(cursor.getString(0)));
+                noteset.setId(cursor.getInt(0));
                 noteset.setName(cursor.getString(1));
                 noteset.setEmotion((cursor.getInt(2)));
+                noteset.setEnabled(cursor.getInt(3));
             } while (cursor.moveToNext());
         }
 
@@ -583,6 +596,8 @@ public class NotesetsDataSource {
                 noteset.getName());
         contentValues.put(OtashuDatabaseHelper.COLUMN_EMOTION_ID,
                 noteset.getEmotion());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_ENABLED,
+                noteset.getEnabled());
 
         db.update(OtashuDatabaseHelper.TABLE_NOTESETS, contentValues,
                 OtashuDatabaseHelper.COLUMN_ID + "=" + noteset.getId(), null);

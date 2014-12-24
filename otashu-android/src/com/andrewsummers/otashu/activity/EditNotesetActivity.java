@@ -31,6 +31,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 /**
  * CreateNotesetActivity is an Activity which provides users the ability to create new notesets.
@@ -44,6 +45,7 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
     private String externalDirectory = path.toString() + "/otashu/";
     private File musicSource = new File(externalDirectory + "otashu_preview.mid");
     private MediaPlayer mediaPlayer = new MediaPlayer();
+    private boolean enabled = false;
 
     /**
      * onCreate override that provides noteset creation view to user .
@@ -68,7 +70,7 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
         // get noteset and notes information
 
         int notesetId = (int) getIntent().getExtras().getLong("list_id");
-        
+
         // from menubar option route
         if (notesetIdInTable > 0) {
             notesetId = notesetIdInTable;
@@ -142,6 +144,12 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
                 spinner.setSelection(i);
                 break;
             }
+        }
+
+        // is noteset enabled?
+        ToggleButton enabledButton = (ToggleButton) findViewById(R.id.toggle_enabled);
+        if (editNoteset.getEnabled() == 1) {
+            enabledButton.setChecked(true);
         }
 
         String[] noteLabelsArray = getResources().getStringArray(R.array.note_labels_array);
@@ -274,10 +282,19 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
 
                 Spinner emotionSpinner = (Spinner) findViewById(R.id.spinner_emotion);
 
+                // is noteset enabled?
+                ToggleButton enabledButton = (ToggleButton) findViewById(R.id.toggle_enabled);
+                if (enabledButton.isChecked()) {
+                    notesetToInsert.setEnabled(1);
+                } else {
+                    notesetToInsert.setEnabled(0);
+                }
+
                 eds.close();
 
                 notesetToInsert.setId(editNoteset.getId());
-                notesetToInsert.setEmotion(allEmotionIds.get((int) emotionSpinner.getSelectedItemId()));
+                notesetToInsert.setEmotion(allEmotionIds.get((int) emotionSpinner
+                        .getSelectedItemId()));
 
                 // first insert new noteset (parent of all related notes)
                 saveNotesetUpdates(v, notesetToInsert);

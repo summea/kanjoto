@@ -86,6 +86,7 @@
     
     <string name="noteset_deleted">noteset deleted</string>
     <string name="noteset_detail_emotion_label">Emotion</string>
+    <string name="noteset_detail_enabled_label">Enabled</string>
     <string name="noteset_detail_name_label">Name</string>
     <string name="noteset_detail_notes">Notes</string>
     <string name="noteset_name_label">Name</string>
@@ -112,6 +113,10 @@
     <string name="spinner_note4_label">Note 4</string>
     <string name="spinner_length_label">Length</string>
     <string name="spinner_velocity_label">Velocity</string>
+
+    <string name="toggle_enabled_label">Enabled</string>
+    <string name="toggle_enabled_on">On</string>
+    <string name="toggle_enabled_off">Off</string>
     
     <string name="noteset_saved">noteset saved</string>
     

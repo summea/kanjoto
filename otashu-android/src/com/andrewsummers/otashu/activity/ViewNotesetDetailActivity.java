@@ -116,6 +116,15 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
         }
         emotionName.setBackgroundColor(Color.parseColor(backgroundColor));
 
+        TextView enabled = (TextView) findViewById(R.id.noteset_detail_enabled_value);
+        if (notesetAndRelated.getNoteset().getEnabled() == 1) {
+            enabled.setText("yes");
+            enabled.setBackgroundColor(this.getResources().getColor(R.color.button_yes));
+        } else {
+            enabled.setText("no");
+            enabled.setBackgroundColor(this.getResources().getColor(R.color.button_no));
+        }
+
         int[] textViewIds = {
                 R.id.noteset_detail_note1,
                 R.id.noteset_detail_note2,

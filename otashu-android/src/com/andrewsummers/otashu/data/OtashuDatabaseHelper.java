@@ -11,7 +11,7 @@ import android.util.Log;
  * application database.
  */
 public class OtashuDatabaseHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 14;
+    private static final int DATABASE_VERSION = 15;
     private static final String DATABASE_NAME = "otashu_collection.db";
 
     public static final String COLUMN_ID = "_id";
@@ -19,6 +19,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_NOTESETS = "notesets";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_EMOTION_ID = "emotion_id";
+    public static final String COLUMN_ENABLED = "enabled";
 
     public static final String TABLE_NOTES = "notes";
     public static final String COLUMN_NOTESET_ID = "noteset_id";
@@ -52,8 +53,8 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_NOTESETS = "CREATE TABLE " + TABLE_NOTESETS
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
-            + COLUMN_NAME + " text, "
-            + COLUMN_EMOTION_ID + " text);";
+            + COLUMN_NAME + " text,"
+            + COLUMN_ENABLED + " integer);";
 
     private static final String CREATE_TABLE_NOTES = "CREATE TABLE " + TABLE_NOTES
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
@@ -146,5 +147,9 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         // db.execSQL(CREATE_TABLE_GRAPHS);
         // db.execSQL(CREATE_TABLE_VERTICES);
         // db.execSQL(CREATE_TABLE_EDGES);
+
+        // v15
+        // db.execSQL("ALTER TABLE " + TABLE_NOTESETS + " ADD COLUMN enabled integer");
+        // db.execSQL("UPDATE " + TABLE_NOTESETS + " SET enabled=1");
     }
 }

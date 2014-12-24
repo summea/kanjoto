@@ -9,11 +9,13 @@
 - show what note is playing for playback visualization
 - add playback speed in settings
 - standardize strings view naming
-- add "noteset enabled" column to notesets database table
 - convert bookmark serialized values to json strings
 
 
 ## DONE:
+- 20141223: added "noteset enabled" feature
+- 20141223: added "noteset enabled" column to notesets database table
+- 20141223: added "only gather notesets that are enabled in GenerateMusicActivity" feature
 - 20141222: added preference for apprentice automatically adding generated noteset into user's collection
 - 20141222: added preference for which graph id to use for apprentice note relationships
 - 20141222: broke out vertices and edges into individual graphs (create new "graphs" table)

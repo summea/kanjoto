@@ -77,17 +77,22 @@ public class NotesetAdapter extends BaseAdapter {
         emotion.setText(notesetsAndRelated.get(position).getEmotion().getName());
 
         String backgroundColor = "#dddddd";
-        if (notesetsAndRelated.get(position).getLabel().getColor() != null)
+        if (notesetsAndRelated.get(position).getLabel().getColor() != null) {
             backgroundColor = notesetsAndRelated.get(position).getLabel().getColor();
+        }
+
+        if (notesetsAndRelated.get(position).getNoteset().getEnabled() == 0) {
+            backgroundColor = "#e8e8e8";
+        }
 
         // add correct color to background (but maintain default state "pressed" and "selected"
         // effects)
         StateListDrawable drawable = new StateListDrawable();
         drawable.addState(new int[] {
-            android.R.attr.state_pressed
+                android.R.attr.state_pressed
         }, mContext.getResources().getDrawable(R.drawable.row_selector));
         drawable.addState(new int[] {
-            android.R.attr.state_selected
+                android.R.attr.state_selected
         }, mContext.getResources().getDrawable(R.drawable.row_selector));
         drawable.addState(new int[] {}, new ColorDrawable(Color.parseColor(backgroundColor)));
         emotion.setBackground(drawable);
@@ -115,12 +120,16 @@ public class NotesetAdapter extends BaseAdapter {
                                 notesetsAndRelated.get(position).getNotes().get(i).getNotevalue())
                                 .getLabelId()).getColor();
 
+            if (notesetsAndRelated.get(position).getNoteset().getEnabled() == 0) {
+                backgroundColor = "#e8e8e8";
+            }
+
             drawable = new StateListDrawable();
             drawable.addState(new int[] {
-                android.R.attr.state_pressed
+                    android.R.attr.state_pressed
             }, mContext.getResources().getDrawable(R.drawable.row_selector));
             drawable.addState(new int[] {
-                android.R.attr.state_selected
+                    android.R.attr.state_selected
             }, mContext.getResources().getDrawable(R.drawable.row_selector));
             drawable.addState(new int[] {}, new ColorDrawable(Color.parseColor(backgroundColor)));
             note.setBackground(drawable);

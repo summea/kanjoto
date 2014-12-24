@@ -8,6 +8,7 @@ public class Noteset {
     private long id;
     private String name;
     private int emotion_id;
+    private int enabled;
 
     /**
      * getId gets Noteset id
@@ -61,6 +62,24 @@ public class Noteset {
      */
     public void setEmotion(int emotion_id) {
         this.emotion_id = emotion_id;
+    }
+
+    /**
+     * getEnabled gets Noteset enabled status.
+     * 
+     * @return <code>int</code> of noteset enabled.
+     */
+    public int getEnabled() {
+        return enabled;
+    }
+
+    /**
+     * setEnabled sets Noteset enabled.
+     * 
+     * @param enabled New noteset enabled status.
+     */
+    public void setEnabled(int enabled) {
+        this.enabled = enabled;
     }
 
     /**
