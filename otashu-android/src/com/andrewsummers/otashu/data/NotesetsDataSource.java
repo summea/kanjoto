@@ -233,7 +233,8 @@ public class NotesetsDataSource {
         HashMap<Integer, List<Note>> notesetBundles = new HashMap<Integer, List<Note>>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotion_id;
+                + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotion_id + " AND "
+                + OtashuDatabaseHelper.COLUMN_ENABLED + "=1";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();

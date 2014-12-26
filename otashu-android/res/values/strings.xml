@@ -95,8 +95,9 @@
     <string name="pref_alarm_enabled">Alarm Enabled</string>
     <string name="pref_alarm_time_picker">Choose Time</string>
     <string name="pref_apprentice_auto_add_noteset">Can Apprentice auto-populate noteset collection with generated noteset?</string>
+    <string name="pref_emotion_graph_for_apprentice">Emotion Graph Id for Apprentice</string>
     <string name="pref_general_category">General</string>
-    <string name="pref_default_graph_for_apprentice">Default Graph for Apprentice</string>
+    <string name="pref_default_graph_for_apprentice">Default Graph Id for Apprentice</string>
     <string name="pref_default_instrument">Default Instrument</string>
     <string name="pref_screen_alarm">Alarm</string>
     

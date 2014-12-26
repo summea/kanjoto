@@ -45,7 +45,6 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
     private String externalDirectory = path.toString() + "/otashu/";
     private File musicSource = new File(externalDirectory + "otashu_preview.mid");
     private MediaPlayer mediaPlayer = new MediaPlayer();
-    private boolean enabled = false;
 
     /**
      * onCreate override that provides noteset creation view to user .

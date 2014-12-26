@@ -184,16 +184,22 @@ public class DatabaseDumperActivity extends Activity {
                 .setText(debugText.getText().toString() + "\nTable: Edges\n"
                         + OtashuDatabaseHelper.COLUMN_ID + "|"
                         + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "|"
-                        + OtashuDatabaseHelper.COLUMN_FROM_ID + "|"
-                        + OtashuDatabaseHelper.COLUMN_TO_ID + "|"
-                        + OtashuDatabaseHelper.COLUMN_WEIGHT + "\n");
+                        + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "|"
+                        + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "|"
+                        + OtashuDatabaseHelper.COLUMN_TO_NODE_ID + "|"
+                        + OtashuDatabaseHelper.COLUMN_WEIGHT + "|"
+                        + OtashuDatabaseHelper.COLUMN_POSITION + "\n");
 
         for (Edge edge : allEdges) {
 
             String newText = debugText.getText().toString();
-            newText += edge.getId() + "|" + edge.getGraphId() + "|" + edge.getFromId() + "|"
-                    + edge.getToId() + "|"
-                    + edge.getWeight() + "\n";
+            newText += edge.getId() + "|"
+                    + edge.getGraphId() + "|"
+                    + edge.getEmotionId() + "|"
+                    + edge.getFromNodeId() + "|"
+                    + edge.getToNodeId() + "|"
+                    + edge.getWeight() + "|"
+                    + edge.getPosition() + "\n";
 
             debugText.setText(newText);
         }

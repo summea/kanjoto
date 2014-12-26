@@ -1,7 +1,6 @@
 # otashu
 
 ## TODO:
-- implement second stage of Apprentice logic ("no" response -> update Apprentice knowledge)
 - finish fixing HashMap to SparseArray conversion
 - save generated song to file
 - create emotion fingerprint
@@ -13,6 +12,7 @@
 
 
 ## DONE:
+- 20141225: implemented second stage of Apprentice logic ("no" response -> update Apprentice knowledge)
 - 20141223: added "noteset enabled" feature
 - 20141223: added "noteset enabled" column to notesets database table
 - 20141223: added "only gather notesets that are enabled in GenerateMusicActivity" feature

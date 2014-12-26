@@ -31,15 +31,20 @@
             android:title="@string/pref_import_database_location"
             android:defaultValue="" />
             
+        <CheckBoxPreference
+            android:key="pref_apprentice_auto_add_noteset"
+            android:title="@string/pref_apprentice_auto_add_noteset"
+            android:defaultValue="false" />
+                
         <EditTextPreference
             android:key="pref_default_graph_for_apprentice"
             android:title="@string/pref_default_graph_for_apprentice"
             android:defaultValue="1" />
             
-        <CheckBoxPreference
-                android:key="pref_apprentice_auto_add_noteset"
-                android:title="@string/pref_apprentice_auto_add_noteset"
-                android:defaultValue="false" />
+        <EditTextPreference
+            android:key="pref_emotion_graph_for_apprentice"
+            android:title="@string/pref_emotion_graph_for_apprentice"
+            android:defaultValue="2" />
 
     </PreferenceCategory>
 

@@ -11,7 +11,7 @@ import android.util.Log;
  * application database.
  */
 public class OtashuDatabaseHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 15;
+    private static final int DATABASE_VERSION = 16;
     private static final String DATABASE_NAME = "otashu_collection.db";
 
     public static final String COLUMN_ID = "_id";
@@ -47,8 +47,8 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_NODE = "node";
 
     public static final String TABLE_EDGES = "edges";
-    public static final String COLUMN_FROM_ID = "from_id";
-    public static final String COLUMN_TO_ID = "to_id";
+    public static final String COLUMN_FROM_NODE_ID = "from_node_id";
+    public static final String COLUMN_TO_NODE_ID = "to_node_id";
     public static final String COLUMN_WEIGHT = "weight";
 
     private static final String CREATE_TABLE_NOTESETS = "CREATE TABLE " + TABLE_NOTESETS
@@ -97,9 +97,11 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_EDGES = "CREATE TABLE " + TABLE_EDGES
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
             + COLUMN_GRAPH_ID + " integer,"
-            + COLUMN_FROM_ID + " integer, "
-            + COLUMN_TO_ID + " integer, "
-            + COLUMN_WEIGHT + " real);";
+            + COLUMN_EMOTION_ID + " integer,"
+            + COLUMN_FROM_NODE_ID + " integer, "
+            + COLUMN_TO_NODE_ID + " integer, "
+            + COLUMN_WEIGHT + " real,"
+            + COLUMN_POSITION + " integer);";
 
     /**
      * NotesetCollectionOpenHelper constructor.
@@ -151,5 +153,11 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         // v15
         // db.execSQL("ALTER TABLE " + TABLE_NOTESETS + " ADD COLUMN enabled integer");
         // db.execSQL("UPDATE " + TABLE_NOTESETS + " SET enabled=1");
+
+        // v16
+        db.execSQL("DROP TABLE " + TABLE_VERTICES);
+        db.execSQL("DROP TABLE " + TABLE_EDGES);
+        db.execSQL(CREATE_TABLE_VERTICES);
+        db.execSQL(CREATE_TABLE_EDGES);
     }
 }

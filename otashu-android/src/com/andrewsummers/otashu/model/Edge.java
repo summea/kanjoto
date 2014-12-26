@@ -7,9 +7,11 @@ package com.andrewsummers.otashu.model;
 public class Edge {
     private long id;
     private long graphId;
-    private int fromId;
-    private int toId;
+    private long emotionId;
+    private int fromNodeId;
+    private int toNodeId;
     private float weight;
+    private int position;
 
     /**
      * getId gets Edge id
@@ -18,6 +20,15 @@ public class Edge {
      */
     public long getId() {
         return id;
+    }
+
+    /**
+     * setId sets Edge id
+     * 
+     * @param id New id value.
+     */
+    public void setId(long id) {
+        this.id = id;
     }
 
     /**
@@ -39,48 +50,57 @@ public class Edge {
     }
 
     /**
-     * setId sets Edge id
+     * getEmotionId gets Edge emotionId
      * 
-     * @param id New id value.
+     * @return <code>long</code> emotionId value
      */
-    public void setId(long id) {
-        this.id = id;
+    public long getEmotionId() {
+        return emotionId;
     }
 
     /**
-     * getFromId gets Edge fromId.
+     * setEmotionId sets Edge emotionId
      * 
-     * @return <code>int</code> of Edge fromId.
+     * @param emotionId New emotionId value.
      */
-    public int getFromId() {
-        return fromId;
+    public void setEmotionId(long emotionId) {
+        this.emotionId = emotionId;
     }
 
     /**
-     * setFromId sets Edge fromId.
+     * getFromNodeId gets Edge fromNodeId.
      * 
-     * @param fromId New Edge fromId.
+     * @return <code>int</code> of Edge fromNodeId.
      */
-    public void setfromId(int fromId) {
-        this.fromId = fromId;
+    public int getFromNodeId() {
+        return fromNodeId;
     }
 
     /**
-     * getToId gets Edge toId.
+     * setFromNodeId sets Edge fromNodeId.
      * 
-     * @return <code>int</code> of Edge toId.
+     * @param fromNodeId New Edge fromNodeId.
      */
-    public int getToId() {
-        return toId;
+    public void setFromNodeId(int fromNodeId) {
+        this.fromNodeId = fromNodeId;
     }
 
     /**
-     * setToId sets Edge toId.
+     * getToNodeId gets Edge toNodeId.
      * 
-     * @param toId New Edge toId.
+     * @return <code>int</code> of Edge toNodeId.
      */
-    public void setToId(int toId) {
-        this.toId = toId;
+    public int getToNodeId() {
+        return toNodeId;
+    }
+
+    /**
+     * setToNodeId sets Edge toNodeId.
+     * 
+     * @param toNodeId New Edge toNodeId.
+     */
+    public void setToNodeId(int toNodeId) {
+        this.toNodeId = toNodeId;
     }
 
     /**
@@ -99,6 +119,24 @@ public class Edge {
      */
     public void setWeight(float weight) {
         this.weight = weight;
+    }
+
+    /**
+     * getPosition gets Edge position.
+     * 
+     * @return <code>int</code> of Edge position.
+     */
+    public int getPosition() {
+        return position;
+    }
+
+    /**
+     * setPosition sets Edge position.
+     * 
+     * @param position New Edge position.
+     */
+    public void setPosition(int position) {
+        this.position = position;
     }
 
     /**

@@ -229,10 +229,11 @@ public class VerticesDataSource {
         return vertices;
     }
 
-    public Vertex getVertex(int vertexNodeId) {
+    public Vertex getVertex(long graphId, int vertexNodeId) {
         Vertex vertex = new Vertex();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_VERTICES + " WHERE "
+                + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId + " AND "
                 + OtashuDatabaseHelper.COLUMN_NODE + "=" + vertexNodeId;
 
         // create database handle

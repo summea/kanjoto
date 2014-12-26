@@ -143,9 +143,88 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
 
     @Override
     public void onClick(View v) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        VerticesDataSource vds = new VerticesDataSource(this);
+        EdgesDataSource edds = new EdgesDataSource(this);
+
+        // get emotion graph id for Apprentice's note relationships graph
+        long emotionGraphId = Long.parseLong(sharedPref.getString(
+                "pref_emotion_graph_for_apprentice", "2"));
+
+        long emotionId = chosenEmotion.getId();
+
         switch (v.getId()) {
             case R.id.button_no:
                 // TODO: do something with "no" response (learning)
+
+                // don't add generated noteset to user collection (even if Apprentice is allowed to
+                // auto-add generated noteset)
+
+                // examine notes for graph purposes
+
+                Log.d("MYLOG", "> how many notes to insert? " + notesToInsert.size());
+
+                Log.d("MYLOG", "> examining noteset...");
+                for (int i = 0; i < notesToInsert.size() - 1; i++) {
+                    // Examine note1 + note2
+                    Note noteA = notesToInsert.get(i);
+                    Note noteB = notesToInsert.get(i + 1);
+
+                    // Do nodes exist?
+                    Vertex nodeA = vds.getVertex(emotionGraphId, noteA.getNotevalue());
+                    Vertex nodeB = vds.getVertex(emotionGraphId, noteB.getNotevalue());
+
+                    // If nodes don't exist, create new nodes in graph
+                    if (nodeA.getNode() <= 0) {
+                        Log.d("MYLOG", "> nodeA doesn't exist... creating new vertex");
+                        Vertex newNodeA = new Vertex();
+                        newNodeA.setGraphId(emotionGraphId);
+                        newNodeA.setNode(noteA.getNotevalue());
+                        vds.createVertex(newNodeA);
+                        nodeA.setNode(noteA.getNotevalue());
+                    }
+                    if (nodeB.getNode() <= 0) {
+                        Log.d("MYLOG", "> nodeB doesn't exist... creating new vertex");
+                        Vertex newNodeB = new Vertex();
+                        newNodeB.setGraphId(emotionGraphId);
+                        newNodeB.setNode(noteB.getNotevalue());
+                        vds.createVertex(newNodeB);
+                        nodeB.setNode(noteB.getNotevalue());
+                    }
+
+                    // Does an edge exist between these two nodes?
+                    Edge edge = edds.getEdge(emotionGraphId, emotionId, nodeA.getNode(),
+                            nodeB.getNode());
+
+                    if (edge.getWeight() < 0.0f || edge.getWeight() > 1.0f) {
+                        Log.d("MYLOG",
+                                "> edge doesn't exist... creating new edge between "
+                                        + nodeA.getNode() + " and " + nodeB.getNode());
+                        // If edge doesn't exist, create new edge in graph (and set weight at 0.5)
+                        // [note: 0.0 = stronger edge / more likely to be chosen than a 1.0 edge]
+                        Edge newEdge = new Edge();
+                        newEdge.setGraphId(emotionGraphId);
+                        newEdge.setEmotionId(emotionId);
+                        newEdge.setFromNodeId(nodeA.getNode());
+                        newEdge.setToNodeId(nodeB.getNode());
+                        newEdge.setWeight(0.5f);
+                        newEdge.setPosition(i + 1);
+                        edds.createEdge(newEdge);
+                    } else {
+                        Log.d("MYLOG",
+                                "> edge exists between " + nodeA.getNode() + " and "
+                                        + nodeB.getNode()
+                                        + " ... just updating weight which is currently: "
+                                        + edge.getWeight());
+                        // If edge does exist, update weight (weight + 0.1)
+                        if ((edge.getWeight() + 0.1f) <= 1.0f) {
+                            Log.d("MYLOG", "> adding 0.1f to weight...");
+                            edge.setWeight(edge.getWeight() + 0.1f);
+                            edds.updateEdge(edge);
+                        }
+                    }
+
+                }
 
                 // disable buttons while playing
                 buttonYes = (Button) findViewById(R.id.button_yes);
@@ -181,7 +260,6 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
 
                 // check if Apprentice is allowed to auto-add generated noteset into User's
                 // collection
-                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
                 boolean apprenticeCanAutoAddNotset = sharedPref.getBoolean(
                         "pref_apprentice_auto_add_noteset", false);
 
@@ -200,13 +278,9 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                 }
 
                 // examine notes for graph purposes
-
-                VerticesDataSource vds = new VerticesDataSource(this);
-                EdgesDataSource edds = new EdgesDataSource(this);
-
                 // get default graph id for Apprentice's note relationships graph
-                long defaultGraphId = Long.parseLong(sharedPref.getString(
-                        "pref_default_graph_for_apprentice", "1"));
+                // long defaultGraphId = Long.parseLong(sharedPref.getString(
+                // "pref_default_graph_for_apprentice", "1"));
 
                 Log.d("MYLOG", "> examining noteset...");
                 for (int i = 0; i < notesToInsert.size() - 1; i++) {
@@ -215,14 +289,14 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                     Note noteB = notesToInsert.get(i + 1);
 
                     // Do nodes exist?
-                    Vertex nodeA = vds.getVertex(noteA.getNotevalue());
-                    Vertex nodeB = vds.getVertex(noteB.getNotevalue());
+                    Vertex nodeA = vds.getVertex(emotionGraphId, noteA.getNotevalue());
+                    Vertex nodeB = vds.getVertex(emotionGraphId, noteB.getNotevalue());
 
                     // If nodes don't exist, create new nodes in graph
                     if (nodeA.getNode() <= 0) {
                         Log.d("MYLOG", "> nodeA doesn't exist... creating new vertex");
                         Vertex newNodeA = new Vertex();
-                        newNodeA.setGraphId(defaultGraphId);
+                        newNodeA.setGraphId(emotionGraphId);
                         newNodeA.setNode(noteA.getNotevalue());
                         vds.createVertex(newNodeA);
                         nodeA.setNode(noteA.getNotevalue());
@@ -230,14 +304,15 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                     if (nodeB.getNode() <= 0) {
                         Log.d("MYLOG", "> nodeB doesn't exist... creating new vertex");
                         Vertex newNodeB = new Vertex();
-                        newNodeB.setGraphId(defaultGraphId);
+                        newNodeB.setGraphId(emotionGraphId);
                         newNodeB.setNode(noteB.getNotevalue());
                         vds.createVertex(newNodeB);
                         nodeB.setNode(noteB.getNotevalue());
                     }
 
                     // Does an edge exist between these two nodes?
-                    Edge edge = edds.getEdge(nodeA.getNode(), nodeB.getNode());
+                    Edge edge = edds.getEdge(emotionGraphId, emotionId, nodeA.getNode(),
+                            nodeB.getNode());
 
                     if (edge.getWeight() < 0.0f || edge.getWeight() > 1.0f) {
                         Log.d("MYLOG",
@@ -246,10 +321,12 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                         // If edge doesn't exist, create new edge in graph (and set weight at 0.5)
                         // [note: 0.0 = stronger edge / more likely to be chosen than a 1.0 edge]
                         Edge newEdge = new Edge();
-                        newEdge.setGraphId(defaultGraphId);
-                        newEdge.setfromId(nodeA.getNode());
-                        newEdge.setToId(nodeB.getNode());
+                        newEdge.setGraphId(emotionGraphId);
+                        newEdge.setEmotionId(emotionId);
+                        newEdge.setFromNodeId(nodeA.getNode());
+                        newEdge.setToNodeId(nodeB.getNode());
                         newEdge.setWeight(0.5f);
+                        newEdge.setPosition(i + 1);
                         edds.createEdge(newEdge);
                     } else {
                         Log.d("MYLOG",
@@ -257,9 +334,9 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                                         + nodeB.getNode()
                                         + " ... just updating weight which is currently: "
                                         + edge.getWeight());
-                        // If edge does exist, update weight (weight - 1.0)
+                        // If edge does exist, update weight (weight - 0.1)
                         if ((edge.getWeight() - 0.1f) >= 0.0f) {
-                            Log.d("MYLOG", "> subtracting 1.0f from weight...");
+                            Log.d("MYLOG", "> subtracting 0.1f from weight...");
                             edge.setWeight(edge.getWeight() - 0.1f);
                             edds.updateEdge(edge);
                         }
