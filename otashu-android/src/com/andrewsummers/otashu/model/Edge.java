@@ -146,6 +146,7 @@ public class Edge {
      */
     @Override
     public String toString() {
-        return String.valueOf(id);
+        return String.valueOf(id) + "|" + graphId + "|" + emotionId + "|" + fromNodeId
+                + "|" + toNodeId + "|" + weight + "|" + position;
     }
 }

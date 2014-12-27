@@ -2,6 +2,7 @@
 package com.andrewsummers.otashu.activity;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -9,6 +10,7 @@ import java.util.Random;
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.EdgesDataSource;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
+import com.andrewsummers.otashu.data.GraphsDataSource;
 import com.andrewsummers.otashu.data.NotesDataSource;
 import com.andrewsummers.otashu.data.NotesetsDataSource;
 import com.andrewsummers.otashu.data.VerticesDataSource;
@@ -47,6 +49,9 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
     private Button buttonYes = null;
     private Button buttonNo = null;
     private Button buttonPlayNoteset = null;
+    private SharedPreferences sharedPref;
+    private long emotionGraphId;
+    private long emotionId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,6 +62,11 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
 
         buttonNo = (Button) findViewById(R.id.button_yes);
         buttonYes = (Button) findViewById(R.id.button_no);
+
+        // get emotion graph id for Apprentice's note relationships graph
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        emotionGraphId = Long.parseLong(sharedPref.getString(
+                "pref_emotion_graph_for_apprentice", "2"));
 
         try {
             // add listeners to buttons
@@ -125,11 +135,6 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
     public void askQuestion() {
         TextView apprenticeText = (TextView) findViewById(R.id.apprentice_text);
 
-        // get random emotion
-        EmotionsDataSource eds = new EmotionsDataSource(this);
-        chosenEmotion = eds.getRandomEmotion();
-        eds.close();
-
         apprenticeText.setText("Does this sound " + chosenEmotion.getName() + "?");
     }
 
@@ -143,15 +148,8 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
 
     @Override
     public void onClick(View v) {
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         VerticesDataSource vds = new VerticesDataSource(this);
         EdgesDataSource edds = new EdgesDataSource(this);
-
-        // get emotion graph id for Apprentice's note relationships graph
-        long emotionGraphId = Long.parseLong(sharedPref.getString(
-                "pref_emotion_graph_for_apprentice", "2"));
-
-        long emotionId = chosenEmotion.getId();
 
         switch (v.getId()) {
             case R.id.button_no:
@@ -219,7 +217,10 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                         // If edge does exist, update weight (weight + 0.1)
                         if ((edge.getWeight() + 0.1f) <= 1.0f) {
                             Log.d("MYLOG", "> adding 0.1f to weight...");
-                            edge.setWeight(edge.getWeight() + 0.1f);
+                            // round float addition in order to avoid awkward zeros
+                            BigDecimal bd = new BigDecimal(Float.toString(edge.getWeight() + 0.1f));
+                            bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+                            edge.setWeight(bd.floatValue());
                             edds.updateEdge(edge);
                         }
                     }
@@ -337,7 +338,10 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                         // If edge does exist, update weight (weight - 0.1)
                         if ((edge.getWeight() - 0.1f) >= 0.0f) {
                             Log.d("MYLOG", "> subtracting 0.1f from weight...");
-                            edge.setWeight(edge.getWeight() - 0.1f);
+                            // round float addition in order to avoid awkward zeros
+                            BigDecimal bd = new BigDecimal(Float.toString(edge.getWeight() - 0.1f));
+                            bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+                            edge.setWeight(bd.floatValue());
                             edds.updateEdge(edge);
                         }
                     }
@@ -387,13 +391,65 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
 
     public void apprenticeAskProcess() {
 
+        // get random emotion
+        EmotionsDataSource eds = new EmotionsDataSource(this);
+        chosenEmotion = eds.getRandomEmotion();
+        eds.close();
+
+        emotionId = chosenEmotion.getId();
+
         // clear old generated notes
         notesToInsert.clear();
 
         List<Note> notes = new ArrayList<Note>();
 
-        // stay within 39..50 for now (C4..B4)
-        notes = generateNotes(39, 50);
+        // draw from past learned emotion graph data for generating noteset for question
+        // for example:
+        // node_from_id: 1, node_to_id: 2, position: 1
+        // node_from_id: 2, node_to_id: 3, position: 2
+        // node_from_id: 3, node_to_id: 4, position: 3
+        //
+        // process:
+        // 1. select random position1 set within selected emotion
+        // 2. select random position2 set within selected emotion and including node_to_id from
+        // position1
+        // 3. select random position3 set within selected emotion and including node_to_id from
+        // position2
+
+        EdgesDataSource edds = new EdgesDataSource(this);
+
+        try {
+            Log.d("MYLOG", ">> Using Learned Data Approach");
+            Edge edgeOne = edds.getRandomEdge(emotionGraphId, emotionId, 0, 0, 1, 0);
+            Edge edgeTwo = edds.getRandomEdge(emotionGraphId, emotionId, edgeOne.getFromNodeId(),
+                    edgeOne.getToNodeId(), 2, 3);
+            Edge edgeThree = edds.getRandomEdge(emotionGraphId, emotionId, edgeOne.getFromNodeId(),
+                    edgeOne.getToNodeId(), 3, 3);
+
+            Log.d("MYLOG", "^^ edgeOne: " + edgeOne);
+            Log.d("MYLOG", "^^ edgeTwo: " + edgeTwo);
+            Log.d("MYLOG", "^^ edgeThree: " + edgeThree);
+
+            Note note1 = new Note();
+            note1.setNotevalue(edgeOne.getFromNodeId());
+            notes.add(note1);
+            Note note2 = new Note();
+            note2.setNotevalue(edgeTwo.getFromNodeId());
+            notes.add(note2);
+            Note note3 = new Note();
+            note3.setNotevalue(edgeThree.getFromNodeId());
+            notes.add(note3);
+            Note note4 = new Note();
+            note4.setNotevalue(edgeThree.getToNodeId());
+            notes.add(note4);
+
+            Log.d("MYLOG", ">> thoughtfully-generated noteset: " + notes.toString());
+
+        } catch (Exception e) {
+            Log.d("MYLOG", ">> Using Random Approach");
+            // stay within 39..50 for now (C4..B4)
+            notes = generateNotes(39, 50);
+        }
 
         // get default instrument for playback
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);

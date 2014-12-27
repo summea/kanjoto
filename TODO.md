@@ -12,6 +12,7 @@
 
 
 ## DONE:
+- 20141226: added "generate noteset based on data from note-relationships graph" feature
 - 20141225: implemented second stage of Apprentice logic ("no" response -> update Apprentice knowledge)
 - 20141223: added "noteset enabled" feature
 - 20141223: added "noteset enabled" column to notesets database table
