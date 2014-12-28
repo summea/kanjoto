@@ -89,6 +89,7 @@
     <string name="noteset_detail_enabled_label">Enabled</string>
     <string name="noteset_detail_name_label">Name</string>
     <string name="noteset_detail_notes">Notes</string>
+    <string name="noteset_exists">Sorry, noteset already exists!</string>
     <string name="noteset_name_label">Name</string>
     <string name="notevalue_deleted">notevalue deleted</string>
 

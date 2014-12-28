@@ -12,6 +12,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class NotesDataSource {
     private SQLiteDatabase database;
@@ -165,6 +166,63 @@ public class NotesDataSource {
         }
 
         return notes;
+    }
+    
+    /**
+     * Does a noteset with the given list of notes already exist?
+     * 
+     * @return boolean of noteset existence status
+     */
+    public boolean doesNotesetExist(List<Note> notes) {
+        boolean notesetExists = true;
+        
+        Log.d("MYLOG", "notes: " + notes);
+        
+        long parentId = 0;
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        
+        for (int i = 0; i < notes.size(); i++) {
+            // TODO: check position with i
+            
+            // TODO: check all possible note sequences
+            // and narrow down as we move through the note positions
+            Log.d("MYLOG", "checking note " + i + " in list...");
+            String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES + " WHERE "
+                    + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "=" + notes.get(i)
+                    + OtashuDatabaseHelper.COLUMN_POSITION + "=" + (i+1);
+
+            // select all notes from database
+            Cursor cursor = db.rawQuery(query, null);
+    
+            Note note = null;
+            if (cursor.moveToFirst()) {
+                do {
+                    // create note objects based on note data from database
+                    note = new Note();
+                    note.setId(cursor.getInt(0));
+                    note.setNotesetId(cursor.getLong(1));
+                    note.setNotevalue(cursor.getInt(2));
+                    note.setVelocity(cursor.getInt(3));
+                    note.setLength(cursor.getFloat(4));
+                    note.setPosition(cursor.getInt(5));
+                } while (cursor.moveToNext());
+            }
+            
+            parentId = note.getNotesetId();
+            if (parentId <= 0) {
+                notesetExists = false;
+                break;
+            } else {
+                Log.d("MYLOG", "parent id: " + parentId + " and notesetId: " + notes.get(i).getNotesetId());
+                if (parentId != notes.get(i).getNotesetId()) {
+                    notesetExists = true;
+                }
+            }
+        }
+
+        return notesetExists;
     }
 
     /**
