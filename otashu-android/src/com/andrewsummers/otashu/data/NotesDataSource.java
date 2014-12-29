@@ -2,10 +2,14 @@
 package com.andrewsummers.otashu.data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import com.andrewsummers.otashu.model.Note;
+import com.andrewsummers.otashu.model.NotesetAndRelated;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -167,60 +171,111 @@ public class NotesDataSource {
 
         return notes;
     }
-    
+
     /**
      * Does a noteset with the given list of notes already exist?
      * 
      * @return boolean of noteset existence status
      */
-    public boolean doesNotesetExist(List<Note> notes) {
-        boolean notesetExists = true;
-        
-        Log.d("MYLOG", "notes: " + notes);
-        
+    // public boolean doesNotesetExist(List<Note> notesToCheck) {
+    public boolean doesNotesetExist(NotesetAndRelated notesetAndRelatedToCheck) {
+        boolean notesetExists = false;
+        // List<Note> foundNotes = new ArrayList<Note>();
+        HashMap<Integer, Set<Long>> foundNotes = new HashMap<Integer, Set<Long>>();
+
         long parentId = 0;
+
+        if (notesetAndRelatedToCheck.getNotes().get(0) != null) {
+            parentId = notesetAndRelatedToCheck.getNotes().get(0).getNotesetId();
+        }
+
+        String lookingForNotelist = "";
+        for (Note note : notesetAndRelatedToCheck.getNotes()) {
+            lookingForNotelist += note.getNotevalue() + ",";
+        }
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        
-        for (int i = 0; i < notes.size(); i++) {
+
+        for (int i = 0; i < notesetAndRelatedToCheck.getNotes().size(); i++) {
             // TODO: check position with i
-            
+
             // TODO: check all possible note sequences
             // and narrow down as we move through the note positions
             Log.d("MYLOG", "checking note " + i + " in list...");
-            String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES + " WHERE "
-                    + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "=" + notes.get(i)
-                    + OtashuDatabaseHelper.COLUMN_POSITION + "=" + (i+1);
+            String query = "SELECT " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + ", "
+                    + OtashuDatabaseHelper.COLUMN_NOTEVALUE + " FROM "
+                    + OtashuDatabaseHelper.TABLE_NOTES + " WHERE "
+                    + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "="
+                    + notesetAndRelatedToCheck.getNotes().get(i) + " AND "
+                    + OtashuDatabaseHelper.COLUMN_POSITION + "=" + (i + 1);
+
+            Log.d("MYLOG", "query: " + query);
+
+            long keyId = 0;
+            String noteList = "";
 
             // select all notes from database
             Cursor cursor = db.rawQuery(query, null);
-    
-            Note note = null;
+
             if (cursor.moveToFirst()) {
                 do {
-                    // create note objects based on note data from database
-                    note = new Note();
-                    note.setId(cursor.getInt(0));
-                    note.setNotesetId(cursor.getLong(1));
-                    note.setNotevalue(cursor.getInt(2));
-                    note.setVelocity(cursor.getInt(3));
-                    note.setLength(cursor.getFloat(4));
-                    note.setPosition(cursor.getInt(5));
+                    if (cursor.getLong(0) > 0) {
+                        Set<Long> notesetIds = new HashSet<Long>();
+                        if (foundNotes.get(i + 1) != null) {
+                            notesetIds = foundNotes.get(i + 1);
+                        }
+
+                        notesetIds.add(cursor.getLong(0));
+
+                        foundNotes.put(i + 1, notesetIds);
+                    }
                 } while (cursor.moveToNext());
             }
-            
-            parentId = note.getNotesetId();
-            if (parentId <= 0) {
-                notesetExists = false;
-                break;
-            } else {
-                Log.d("MYLOG", "parent id: " + parentId + " and notesetId: " + notes.get(i).getNotesetId());
-                if (parentId != notes.get(i).getNotesetId()) {
-                    notesetExists = true;
+        }
+
+        Set<Long> foundSet = new HashSet<Long>();
+        foundSet.addAll(foundNotes.get(1));
+        for (int position : foundNotes.keySet()) {
+            foundSet.retainAll(foundNotes.get(position));
+            Log.d("MYLOG", "checking " + position + ": " + foundNotes.get(position));
+        }
+
+        Log.d("MYLOG", "noteset_ids across the table: " + foundSet.toString());
+
+        foundSet.remove(parentId);
+
+        Log.d("MYLOG", "actual noteset_ids across the table: " + foundSet.toString());
+
+        if (foundSet.size() > 0) {
+
+            for (Long id : foundSet) {
+                String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + ", "
+                        + OtashuDatabaseHelper.COLUMN_EMOTION_ID + " FROM "
+                        + OtashuDatabaseHelper.TABLE_NOTESETS + " WHERE "
+                        + OtashuDatabaseHelper.COLUMN_ID + "=" + id;
+
+                Log.d("MYLOG", "query: " + query);
+
+                // select all notes from database
+                Cursor cursor = db.rawQuery(query, null);
+
+                if (cursor.moveToFirst()) {
+                    do {
+                        if (cursor.getLong(0) > 0) {
+                            if (cursor.getLong(1) == notesetAndRelatedToCheck.getNoteset()
+                                    .getEmotion()) {
+                                notesetExists = true;
+                                break;
+                            }
+                        }
+                    } while (cursor.moveToNext());
                 }
             }
+
         }
+
+        Log.d("MYLOG", "found noteset? " + notesetExists);
 
         return notesetExists;
     }

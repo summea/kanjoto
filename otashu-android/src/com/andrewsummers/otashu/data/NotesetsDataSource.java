@@ -24,6 +24,7 @@ public class NotesetsDataSource {
     private String[] allColumns = {
             OtashuDatabaseHelper.COLUMN_ID,
             OtashuDatabaseHelper.COLUMN_NAME,
+            OtashuDatabaseHelper.COLUMN_EMOTION_ID,
             OtashuDatabaseHelper.COLUMN_ENABLED,
     };
 
@@ -64,7 +65,8 @@ public class NotesetsDataSource {
                 noteset.getName());
         contentValues.put(OtashuDatabaseHelper.COLUMN_EMOTION_ID,
                 noteset.getEmotion());
-        contentValues.put(OtashuDatabaseHelper.COLUMN_ENABLED, noteset.getEnabled());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_ENABLED,
+                noteset.getEnabled());
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();

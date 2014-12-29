@@ -12,6 +12,7 @@ import com.andrewsummers.otashu.data.NotesetsDataSource;
 import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.Note;
 import com.andrewsummers.otashu.model.Noteset;
+import com.andrewsummers.otashu.model.NotesetAndRelated;
 
 import android.app.Activity;
 import android.content.Context;
@@ -180,7 +181,7 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
                 Spinner spinner;
 
                 Noteset notesetToInsert = new Noteset();
-                Note noteToInsert = new Note();
+                List<Note> notesToInsert = new ArrayList<Note>();
 
                 // get select emotion's id
 
@@ -205,16 +206,14 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
                 eds.close();
 
                 notesetToInsert.setEmotion(selectedEmotionValue);
-
-                // first insert new noteset (parent of all related notes)
-                saveNoteset(v, notesetToInsert);
+                notesetToInsert.setEnabled(1);
 
                 for (int i = 0; i < spinnerIds.length; i++) {
                     spinner = (Spinner) findViewById(spinnerIds[i]);
                     Spinner velocitySpinner = (Spinner) findViewById(velocitySpinnerIds[i]);
                     Spinner lengthSpinner = (Spinner) findViewById(lengthSpinnerIds[i]);
 
-                    noteToInsert.setNotesetId(newlyInsertedNoteset.getId());
+                    Note noteToInsert = new Note();
                     noteToInsert.setNotevalue(Integer.parseInt(noteValuesArray[spinner
                             .getSelectedItemPosition()]));
                     noteToInsert.setVelocity(Integer.parseInt(velocityValuesArray[velocitySpinner
@@ -222,10 +221,39 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
                     noteToInsert.setLength(Float.parseFloat(lengthValuesArray[lengthSpinner
                             .getSelectedItemPosition()]));
                     noteToInsert.setPosition(i + 1); // positions 1, 2, 3, 4, etc.
-                    saveNote(v, noteToInsert);
+
+                    notesToInsert.add(noteToInsert);
                 }
 
-                finish();
+                // check if noteset already exists, first
+                NotesetAndRelated notesetAndRelated = new NotesetAndRelated();
+                notesetAndRelated.setNoteset(notesetToInsert);
+                notesetAndRelated.setNotes(notesToInsert);
+                boolean notesetExists = doesNotesetExist(notesetAndRelated);
+
+                if (!notesetExists) {
+                    // first insert new noteset (parent of all related notes)
+                    saveNoteset(v, notesetToInsert);
+
+                    // then save individual notes
+                    for (Note note : notesetAndRelated.getNotes()) {
+                        note.setNotesetId(newlyInsertedNoteset.getId());
+                        saveNote(v, note);
+                    }
+
+                    finish();
+                } else {
+                    Log.d("MYLOG", "noteset already exists!");
+
+                    Context context = getApplicationContext();
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(context,
+                            context.getResources().getString(R.string.noteset_exists),
+                            duration);
+                    toast.show();
+                }
+
                 break;
 
             case R.id.button_play_noteset:
@@ -275,6 +303,19 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
         }
     }
 
+    private boolean doesNotesetExist(NotesetAndRelated notesetAndRelated) {
+        boolean notesetExists = true;
+        NotesDataSource nds = new NotesDataSource(this);
+
+        notesetExists = nds.doesNotesetExist(notesetAndRelated);
+
+        if (notesetExists) {
+            Log.d("MYLOG", "notes match... noteset already exists!");
+        }
+
+        return notesetExists;
+    }
+
     /**
      * onResume override used to open up data source when resuming activity.
      */
@@ -299,6 +340,7 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
      */
     private void saveNoteset(View v, Noteset noteset) {
 
+        Log.d("MYLOG", "noteset to be saved: " + noteset.getEnabled());
         // save noteset in database
         NotesetsDataSource nds = new NotesetsDataSource(this);
         newlyInsertedNoteset = nds.createNoteset(noteset);

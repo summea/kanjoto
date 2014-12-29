@@ -268,7 +268,7 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
             case R.id.button_save:
 
                 Spinner spinner;
-                
+
                 // check if noteset already exists, first
                 NotesetAndRelated notesetAndRelated = new NotesetAndRelated();
                 notesetAndRelated.setNoteset(editNoteset);
@@ -320,22 +320,23 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
                                         .getSelectedItemPosition()]));
                         noteToInsert.setLength(Float.parseFloat(lengthValuesArray[lengthSpinner
                                 .getSelectedItemPosition()]));
+                        noteToInsert.setPosition(i + 1);
 
                         saveNoteUpdates(v, noteToInsert);
                     }
-                    
+
                     finish();
-                    
+
                 } else {
                     Log.d("MYLOG", "noteset already exists!");
-                    
+
                     Context context = getApplicationContext();
                     int duration = Toast.LENGTH_SHORT;
 
                     Toast toast = Toast.makeText(context,
                             context.getResources().getString(R.string.noteset_exists),
                             duration);
-                    toast.show();    
+                    toast.show();
                 }
 
                 break;
@@ -391,23 +392,11 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
         boolean notesetExists = true;
         NotesDataSource nds = new NotesDataSource(this);
 
-        //List<Note> notes = nds.getAllNotes(notesetAndRelated.getNoteset().getId());
-        notesetExists = nds.doesNotesetExist(notesetAndRelated.getNotes());
-        
+        notesetExists = nds.doesNotesetExist(notesetAndRelated);
+
         if (notesetExists) {
             Log.d("MYLOG", "notes match... noteset already exists!");
         }
-
-        /*
-        for (int i = 0; i < notesetAndRelated.getNotes().size(); i++) {
-            Log.d("MYLOG", "note: " + notes.get(i) + " " + "notesAndRelated: " + notesetAndRelated.getNotes().get(i));
-            if (notes.get(i).getNotevalue() != notesetAndRelated.getNotes().get(i).getNotevalue()) {
-                notesetExists = false;
-                Log.d("MYLOG", "notes don't match...");
-                break;
-            }
-        }
-        */
 
         return notesetExists;
     }
