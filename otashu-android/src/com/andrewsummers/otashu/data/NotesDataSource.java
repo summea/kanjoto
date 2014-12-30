@@ -175,12 +175,11 @@ public class NotesDataSource {
     /**
      * Does a noteset with the given list of notes already exist?
      * 
+     * @param notesetAndRelatedToCheck Noteset information to check
      * @return boolean of noteset existence status
      */
-    // public boolean doesNotesetExist(List<Note> notesToCheck) {
     public boolean doesNotesetExist(NotesetAndRelated notesetAndRelatedToCheck) {
         boolean notesetExists = false;
-        // List<Note> foundNotes = new ArrayList<Note>();
         HashMap<Integer, Set<Long>> foundNotes = new HashMap<Integer, Set<Long>>();
 
         long parentId = 0;
@@ -212,9 +211,6 @@ public class NotesDataSource {
 
             Log.d("MYLOG", "query: " + query);
 
-            long keyId = 0;
-            String noteList = "";
-
             // select all notes from database
             Cursor cursor = db.rawQuery(query, null);
 
@@ -231,6 +227,8 @@ public class NotesDataSource {
                         foundNotes.put(i + 1, notesetIds);
                     }
                 } while (cursor.moveToNext());
+            } else {
+                foundNotes.put(i + 1, new HashSet<Long>());
             }
         }
 
@@ -246,12 +244,12 @@ public class NotesDataSource {
         foundSet.remove(parentId);
 
         Log.d("MYLOG", "actual noteset_ids across the table: " + foundSet.toString());
+        Log.d("MYLOG", "notes we are checking: " + notesetAndRelatedToCheck.getNotes().toString());
 
         if (foundSet.size() > 0) {
 
             for (Long id : foundSet) {
-                String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + ", "
-                        + OtashuDatabaseHelper.COLUMN_EMOTION_ID + " FROM "
+                String query = "SELECT * FROM "
                         + OtashuDatabaseHelper.TABLE_NOTESETS + " WHERE "
                         + OtashuDatabaseHelper.COLUMN_ID + "=" + id;
 
@@ -263,7 +261,7 @@ public class NotesDataSource {
                 if (cursor.moveToFirst()) {
                     do {
                         if (cursor.getLong(0) > 0) {
-                            if (cursor.getLong(1) == notesetAndRelatedToCheck.getNoteset()
+                            if (cursor.getLong(2) == notesetAndRelatedToCheck.getNoteset()
                                     .getEmotion()) {
                                 notesetExists = true;
                                 break;

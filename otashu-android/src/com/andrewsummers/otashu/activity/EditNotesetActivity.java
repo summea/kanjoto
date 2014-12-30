@@ -267,66 +267,74 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
         switch (v.getId()) {
             case R.id.button_save:
 
+                Log.d("MYLOG", "button save pushed");
                 Spinner spinner;
 
                 // check if noteset already exists, first
                 NotesetAndRelated notesetAndRelated = new NotesetAndRelated();
-                notesetAndRelated.setNoteset(editNoteset);
-                notesetAndRelated.setNotes(editNotes);
+
+                // gather noteset data from form
+                Noteset notesetToUpdate = new Noteset();
+                List<Note> notesToUpdate = new ArrayList<Note>();
+
+                // get select emotion's id
+
+                EmotionsDataSource eds = new EmotionsDataSource(this);
+                eds.open();
+
+                List<Integer> allEmotionIds = new ArrayList<Integer>();
+                allEmotionIds = eds.getAllEmotionIds();
+
+                Spinner emotionSpinner = (Spinner) findViewById(R.id.spinner_emotion);
+
+                // is noteset enabled?
+                ToggleButton enabledButton = (ToggleButton) findViewById(R.id.toggle_enabled);
+                if (enabledButton.isChecked()) {
+                    notesetToUpdate.setEnabled(1);
+                } else {
+                    notesetToUpdate.setEnabled(0);
+                }
+
+                eds.close();
+
+                notesetToUpdate.setId(editNoteset.getId());
+                notesetToUpdate.setEmotion(allEmotionIds.get((int) emotionSpinner
+                        .getSelectedItemId()));
+
+                for (int i = 0; i < spinnerIds.length; i++) {
+                    spinner = (Spinner) findViewById(spinnerIds[i]);
+                    Spinner velocitySpinner = (Spinner) findViewById(velocitySpinnerIds[i]);
+                    Spinner lengthSpinner = (Spinner) findViewById(lengthSpinnerIds[i]);
+
+                    Note noteToUpdate = new Note();
+                    noteToUpdate = editNotes.get(i);
+                    noteToUpdate.setNotevalue(Integer.parseInt(noteValuesArray[spinner
+                            .getSelectedItemPosition()]));
+                    noteToUpdate.setVelocity(Integer
+                            .parseInt(velocityValuesArray[velocitySpinner
+                                    .getSelectedItemPosition()]));
+                    noteToUpdate.setLength(Float.parseFloat(lengthValuesArray[lengthSpinner
+                            .getSelectedItemPosition()]));
+                    noteToUpdate.setPosition(i + 1);
+
+                    notesToUpdate.add(noteToUpdate);
+                }
+
+                notesetAndRelated.setNoteset(notesetToUpdate);
+                notesetAndRelated.setNotes(notesToUpdate);
+
                 boolean notesetExists = doesNotesetExist(notesetAndRelated);
 
                 if (!notesetExists) {
-                    // gather noteset data from form
-                    Noteset notesetToInsert = new Noteset();
-                    Note noteToInsert = new Note();
-
-                    // get select emotion's id
-
-                    EmotionsDataSource eds = new EmotionsDataSource(this);
-                    eds.open();
-
-                    List<Integer> allEmotionIds = new ArrayList<Integer>();
-                    allEmotionIds = eds.getAllEmotionIds();
-
-                    Spinner emotionSpinner = (Spinner) findViewById(R.id.spinner_emotion);
-
-                    // is noteset enabled?
-                    ToggleButton enabledButton = (ToggleButton) findViewById(R.id.toggle_enabled);
-                    if (enabledButton.isChecked()) {
-                        notesetToInsert.setEnabled(1);
-                    } else {
-                        notesetToInsert.setEnabled(0);
-                    }
-
-                    eds.close();
-
-                    notesetToInsert.setId(editNoteset.getId());
-                    notesetToInsert.setEmotion(allEmotionIds.get((int) emotionSpinner
-                            .getSelectedItemId()));
-
                     // first insert new noteset (parent of all related notes)
-                    saveNotesetUpdates(v, notesetToInsert);
+                    saveNotesetUpdates(v, notesetToUpdate);
 
-                    for (int i = 0; i < spinnerIds.length; i++) {
-                        spinner = (Spinner) findViewById(spinnerIds[i]);
-                        Spinner velocitySpinner = (Spinner) findViewById(velocitySpinnerIds[i]);
-                        Spinner lengthSpinner = (Spinner) findViewById(lengthSpinnerIds[i]);
-
-                        noteToInsert = editNotes.get(i);
-                        noteToInsert.setNotevalue(Integer.parseInt(noteValuesArray[spinner
-                                .getSelectedItemPosition()]));
-                        noteToInsert.setVelocity(Integer
-                                .parseInt(velocityValuesArray[velocitySpinner
-                                        .getSelectedItemPosition()]));
-                        noteToInsert.setLength(Float.parseFloat(lengthValuesArray[lengthSpinner
-                                .getSelectedItemPosition()]));
-                        noteToInsert.setPosition(i + 1);
-
-                        saveNoteUpdates(v, noteToInsert);
+                    // then save individual notes
+                    for (Note note : notesetAndRelated.getNotes()) {
+                        saveNoteUpdates(v, note);
                     }
 
                     finish();
-
                 } else {
                     Log.d("MYLOG", "noteset already exists!");
 
@@ -393,6 +401,7 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
         NotesDataSource nds = new NotesDataSource(this);
 
         notesetExists = nds.doesNotesetExist(notesetAndRelated);
+        Log.d("MYLOG", "editing notes: " + notesetAndRelated.getNotes().toString());
 
         if (notesetExists) {
             Log.d("MYLOG", "notes match... noteset already exists!");

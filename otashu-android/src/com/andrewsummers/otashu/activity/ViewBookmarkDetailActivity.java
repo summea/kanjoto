@@ -5,6 +5,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.BookmarksDataSource;
 import com.andrewsummers.otashu.model.Bookmark;
@@ -88,25 +92,37 @@ public class ViewBookmarkDetailActivity extends Activity implements OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_play_bookmark:
-
-                Log.d("MYLOG", "note value: " + currentBookmarkSerializedValue);
-
-                // List<String> notesFromString =
-                // Arrays.asList(currentBookmarkSerializedValue.split("\\|"));
-                String[] notesFromString = currentBookmarkSerializedValue.split("\\|");
                 List<Note> notes = new ArrayList<Note>();
+                
+                JSONArray jsonArr = new JSONArray();
+                try {
+                    JSONObject mainJsonObj = new JSONObject(currentBookmarkSerializedValue);
+                    jsonArr = mainJsonObj.getJSONArray("notes");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-                for (String nextNote : notesFromString) {
-
-                    Log.d("MYLOG", "note value: " + nextNote);
-
-                    String[] itemsFromNotes = nextNote.split(":");
+                for (int i = 0; i < jsonArr.length(); i++) {
+                    JSONObject jsonNote;
+                    int notevalue = 0;
+                    int velocity = 0;
+                    float length = 1.0f;
+                    int position = 1;
+                    try {
+                        jsonNote = jsonArr.getJSONObject(i);
+                        notevalue = jsonNote.getInt("notevalue");
+                        velocity = jsonNote.getInt("velocity");
+                        length = Float.parseFloat(jsonNote.getString("length"));
+                        position = jsonNote.getInt("position");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
                     Note note = new Note();
-                    note.setNotevalue(Integer.parseInt(itemsFromNotes[0]));
-                    note.setVelocity(Integer.parseInt(itemsFromNotes[1]));
-                    note.setLength(Float.parseFloat(itemsFromNotes[2]));
-                    note.setPosition(Integer.parseInt(itemsFromNotes[3]));
+                    note.setNotevalue(notevalue);
+                    note.setVelocity(velocity);
+                    note.setLength(length);
+                    note.setPosition(position);
                     notes.add(note);
                 }
 

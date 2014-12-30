@@ -2,6 +2,7 @@
 package com.andrewsummers.otashu.activity;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,11 +10,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.data.NotesetsDataSource;
 import com.andrewsummers.otashu.data.NotevaluesDataSource;
 import com.andrewsummers.otashu.model.Label;
 import com.andrewsummers.otashu.model.Note;
+import com.andrewsummers.otashu.model.Noteset;
 import com.andrewsummers.otashu.model.Notevalue;
 import com.andrewsummers.otashu.view.PlaybackGLSurfaceView;
 import com.leff.midi.MidiFile;
@@ -511,27 +517,28 @@ public class GenerateMusicActivity extends Activity {
     }
 
     public String serializeNotes(List<Note> notes) {
-        String outerDelimiter = "|";
-        String innerDelimiter = ":";
-        StringBuilder serializedNotes = new StringBuilder();
+        JSONObject mainJsonObj = new JSONObject();
+        JSONArray jsonArr = new JSONArray();
 
-        /*
-         * serialized file format: notevalue:velocity:length:position|
-         */
+        try {
+            // add each note into JSON object
+            for (Note note : notes) {
+                JSONObject jsonObj = new JSONObject();
+                jsonObj.put("id", note.getId());
+                jsonObj.put("notevalue", note.getNotevalue());
+                jsonObj.put("velocity", note.getVelocity());
+                jsonObj.put("length", note.getLength());
+                jsonObj.put("position", note.getPosition());
+                jsonArr.put(jsonObj);
+            }
 
-        for (Note note : notes) {
-            serializedNotes.append(note.getNotevalue());
-            serializedNotes.append(innerDelimiter);
-            serializedNotes.append(note.getVelocity());
-            serializedNotes.append(innerDelimiter);
-            serializedNotes.append(note.getLength());
-            serializedNotes.append(innerDelimiter);
-            serializedNotes.append(note.getPosition());
-            serializedNotes.append(outerDelimiter);
+            mainJsonObj.put("notes", jsonArr);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
-        Log.d("MYLOG", serializedNotes.toString());
-        return serializedNotes.toString();
+        Log.d("MYLOG", mainJsonObj.toString());
+        return mainJsonObj.toString();
     }
 
     public int saveLastGeneratedNotes() {

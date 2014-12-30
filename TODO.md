@@ -8,10 +8,12 @@
 - show what note is playing for playback visualization
 - add playback speed in settings
 - standardize strings view naming
-- convert bookmark serialized values to json strings
 
 
 ## DONE:
+- 20141229: added prevent "duplicate notesets with same emotion and note order in CreateNotesetActivity" feature
+- 20141229: added prevent "duplicate notesets with same emotion and note order in EditNotesetActivity" feature
+- 20141229: converted bookmark serialized values to json strings
 - 20141226: added "generate noteset based on data from note-relationships graph" feature
 - 20141225: implemented second stage of Apprentice logic ("no" response -> update Apprentice knowledge)
 - 20141223: added "noteset enabled" feature
