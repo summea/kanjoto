@@ -11,6 +11,8 @@
 
 
 ## DONE:
+- 20141230: added "keep track of Apprentice success / failure when user provides input" feature
+- 20141230: fixed MediaPlayer bug (too many instances of MediaPlayer prevented notes from playing after a while)
 - 20141229: added prevent "duplicate notesets with same emotion and note order in CreateNotesetActivity" feature
 - 20141229: added prevent "duplicate notesets with same emotion and note order in EditNotesetActivity" feature
 - 20141229: converted bookmark serialized values to json strings

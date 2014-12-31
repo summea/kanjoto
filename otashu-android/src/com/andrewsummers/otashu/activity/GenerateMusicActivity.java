@@ -52,7 +52,7 @@ public class GenerateMusicActivity extends Activity {
     File path = Environment.getExternalStorageDirectory();
     String externalDirectory = path.toString() + "/otashu/";
     File musicSource = new File(externalDirectory + "otashu.mid");
-    MediaPlayer mediaPlayer = new MediaPlayer();
+    private static MediaPlayer mediaPlayer;
 
     private SparseArray<List<Integer>> musicalKeys = new SparseArray<List<Integer>>();
 

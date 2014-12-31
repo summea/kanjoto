@@ -47,7 +47,7 @@ public class ViewAllBookmarksActivity extends ListActivity {
     private File path = Environment.getExternalStorageDirectory();
     private String externalDirectory = path.toString() + "/otashu/";
     private File musicSource = new File(externalDirectory + "otashu_bookmark.mid");
-    private MediaPlayer mediaPlayer = new MediaPlayer();
+    private static MediaPlayer mediaPlayer;
     private BookmarkAdapter adapter = null;
 
     /**
@@ -256,7 +256,7 @@ public class ViewAllBookmarksActivity extends ListActivity {
         currentBookmarkSerializedValue = bookmark.getSerializedValue();
 
         List<Note> notes = new ArrayList<Note>();
-        
+
         JSONArray jsonArr = new JSONArray();
         try {
             JSONObject mainJsonObj = new JSONObject(currentBookmarkSerializedValue);

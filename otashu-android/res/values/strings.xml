@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">otashu</string>
+    <string name="apprentice_guess_method_label">Guess Method:</string>
+    <string name="apprentice_total_guesses_label">Guesses Correct:</string>
     <string name="apprentice_text">Apprentice Text</string>
     <string name="apprentice_title">Apprentice</string>
     <string name="menu_title">otashu</string>

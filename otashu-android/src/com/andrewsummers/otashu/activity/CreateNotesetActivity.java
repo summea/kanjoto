@@ -41,7 +41,7 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
     private File path = Environment.getExternalStorageDirectory();
     private String externalDirectory = path.toString() + "/otashu/";
     private File musicSource = new File(externalDirectory + "otashu_preview.mid");
-    private MediaPlayer mediaPlayer = new MediaPlayer();
+    private static MediaPlayer mediaPlayer;
 
     /**
      * onCreate override that provides noteset creation view to user .

@@ -40,7 +40,7 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
     private File path = Environment.getExternalStorageDirectory();
     private String externalDirectory = path.toString() + "/otashu/";
     private File musicSource = new File(externalDirectory + "otashu_preview.mid");
-    private MediaPlayer mediaPlayer = new MediaPlayer();
+    private static MediaPlayer mediaPlayer;
     private List<Note> notesToInsert = new ArrayList<Note>();
     private Noteset newlyInsertedNoteset = new Noteset();
     private Noteset notesetToInsert = new Noteset();
@@ -51,6 +51,10 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
     private SharedPreferences sharedPref;
     private long emotionGraphId;
     private long emotionId;
+    private static int guessesCorrect = 0;
+    private static int guessesIncorrect = 0;
+    private static double guessesCorrectPercentage = 0.0;
+    private static int totalGuesses = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -152,7 +156,7 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
 
         switch (v.getId()) {
             case R.id.button_no:
-                // TODO: do something with "no" response (learning)
+                guessesIncorrect++;
 
                 // don't add generated noteset to user collection (even if Apprentice is allowed to
                 // auto-add generated noteset)
@@ -249,6 +253,7 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
 
                 break;
             case R.id.button_yes:
+                guessesCorrect++;
 
                 // disable buttons while playing
                 buttonYes = (Button) findViewById(R.id.button_yes);
@@ -416,9 +421,11 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
         // position2
 
         EdgesDataSource edds = new EdgesDataSource(this);
+        String approach = "";
 
         try {
             Log.d("MYLOG", ">> Using Learned Data Approach");
+            approach = "Learned Data";
             Edge edgeOne = edds.getRandomEdge(emotionGraphId, emotionId, 0, 0, 1, 0);
             Edge edgeTwo = edds.getRandomEdge(emotionGraphId, emotionId, edgeOne.getFromNodeId(),
                     edgeOne.getToNodeId(), 2, 3);
@@ -446,6 +453,7 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
 
         } catch (Exception e) {
             Log.d("MYLOG", ">> Using Random Approach");
+            approach = "Random";
             // stay within 39..50 for now (C4..B4)
             notes = generateNotes(39, 50);
         }
@@ -459,6 +467,21 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
 
         // does generated noteset sounds like chosen emotion?
         askQuestion();
+
+        TextView apprenticeGuessMethod = (TextView) findViewById(R.id.apprentice_guess_method);
+        apprenticeGuessMethod.setText(approach);
+
+        totalGuesses = guessesCorrect + guessesIncorrect;
+
+        if (totalGuesses > 0) {
+            guessesCorrectPercentage = ((double) guessesCorrect / (double) totalGuesses) * 100.0;
+        }
+
+        String guessesCorrectPercentageString = String.format("%.02f", guessesCorrectPercentage);
+
+        TextView apprenticeTotalGuesses = (TextView) findViewById(R.id.apprentice_total_guesses);
+        apprenticeTotalGuesses.setText(guessesCorrect + "/" + totalGuesses + " ("
+                + guessesCorrectPercentageString + "%)");
 
         // disable play button while playing
         buttonPlayNoteset = (Button) findViewById(R.id.button_play_noteset);

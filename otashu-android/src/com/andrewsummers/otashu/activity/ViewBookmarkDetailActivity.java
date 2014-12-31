@@ -38,7 +38,7 @@ public class ViewBookmarkDetailActivity extends Activity implements OnClickListe
     private File path = Environment.getExternalStorageDirectory();
     private String externalDirectory = path.toString() + "/otashu/";
     private File musicSource = new File(externalDirectory + "otashu_bookmark.mid");
-    private MediaPlayer mediaPlayer = new MediaPlayer();
+    private static MediaPlayer mediaPlayer;
 
     /**
      * onCreate override used to get details view.
@@ -93,7 +93,7 @@ public class ViewBookmarkDetailActivity extends Activity implements OnClickListe
         switch (v.getId()) {
             case R.id.button_play_bookmark:
                 List<Note> notes = new ArrayList<Note>();
-                
+
                 JSONArray jsonArr = new JSONArray();
                 try {
                     JSONObject mainJsonObj = new JSONObject(currentBookmarkSerializedValue);
