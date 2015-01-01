@@ -9,6 +9,12 @@
             android:title="@string/pref_default_instrument"
             android:entries="@array/instrument_labels_array"
             android:entryValues="@array/instrument_values_array" />
+            
+        <ListPreference
+            android:key="pref_default_playback_speed"
+            android:title="@string/pref_default_playback_speed"
+            android:entries="@array/playback_speed_values_array"
+            android:entryValues="@array/playback_speed_values_array" />
 
         <PreferenceScreen
             android:key="pref_screen_alarm"

@@ -36,6 +36,7 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
     private Square mSquare;
     private List<Square> mSquares = new ArrayList<Square>();
     private List<Note> noteSequence = new ArrayList<Note>();
+    private float verticalSpeed = 0.035f;
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
     private final float[] mMVPMatrix = new float[16];
@@ -48,10 +49,13 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
     public PlaybackGLRenderer() {
     }
 
-    public PlaybackGLRenderer(List<Note> notes, SparseArray<float[]> incomingNoteColorTable) {
+    public PlaybackGLRenderer(List<Note> notes, SparseArray<float[]> incomingNoteColorTable,
+            float playbackSpeed) {
         noteSequence = notes;
 
         noteColorTable = incomingNoteColorTable;
+
+        verticalSpeed = ((0.035f * playbackSpeed) / 120);
     }
 
     @Override
@@ -88,7 +92,8 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
             // Calculate the projection and view transformation
             Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 
-            square.setY(square.getY() + 0.035f);
+            // speed of squares
+            square.setY(square.getY() + verticalSpeed);
             if (square.getY() > 3.0f) {
                 // reset y position
                 // square.setY(-1.0f);

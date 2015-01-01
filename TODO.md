@@ -1,18 +1,18 @@
 # otashu
 
 ## TODO:
-- finish fixing HashMap to SparseArray conversion
 - save generated song to file
 - create emotion fingerprint
 - noteset folders (lists by label or emotion)
 - show what note is playing for playback visualization
-- add playback speed in settings
 - standardize strings view naming
 
 
 ## DONE:
+- 20141231: added playback speed in settings
+- 20141231: fixed MediaPlayer bug (too many instances of MediaPlayer prevented notes from playing after a while)
+- 20141231: finished fixing HashMap to SparseArray conversion
 - 20141230: added "keep track of Apprentice success / failure when user provides input" feature
-- 20141230: fixed MediaPlayer bug (too many instances of MediaPlayer prevented notes from playing after a while)
 - 20141229: added prevent "duplicate notesets with same emotion and note order in CreateNotesetActivity" feature
 - 20141229: added prevent "duplicate notesets with same emotion and note order in EditNotesetActivity" feature
 - 20141229: converted bookmark serialized values to json strings
@@ -225,3 +225,6 @@
     - randomly query database for notesets and notes based on given emotion
 - serializedValue is a serialized value of notesets (with the following properties):
   notevalue:velocity:length:position|
+- Playback Speed for Visualization:
+  - 120x = 0.035f * 60
+  - x = (0.035*60) / 120

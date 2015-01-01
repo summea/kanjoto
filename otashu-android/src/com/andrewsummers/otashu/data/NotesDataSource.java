@@ -2,7 +2,6 @@
 package com.andrewsummers.otashu.data;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,6 +16,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.util.SparseArray;
 
 public class NotesDataSource {
     private SQLiteDatabase database;
@@ -180,17 +180,12 @@ public class NotesDataSource {
      */
     public boolean doesNotesetExist(NotesetAndRelated notesetAndRelatedToCheck) {
         boolean notesetExists = false;
-        HashMap<Integer, Set<Long>> foundNotes = new HashMap<Integer, Set<Long>>();
+        SparseArray<Set<Long>> foundNotes = new SparseArray<Set<Long>>();
 
         long parentId = 0;
 
         if (notesetAndRelatedToCheck.getNotes().get(0) != null) {
             parentId = notesetAndRelatedToCheck.getNotes().get(0).getNotesetId();
-        }
-
-        String lookingForNotelist = "";
-        for (Note note : notesetAndRelatedToCheck.getNotes()) {
-            lookingForNotelist += note.getNotevalue() + ",";
         }
 
         // create database handle
@@ -234,9 +229,11 @@ public class NotesDataSource {
 
         Set<Long> foundSet = new HashSet<Long>();
         foundSet.addAll(foundNotes.get(1));
-        for (int position : foundNotes.keySet()) {
-            foundSet.retainAll(foundNotes.get(position));
-            Log.d("MYLOG", "checking " + position + ": " + foundNotes.get(position));
+        
+        for (int i = 0; i < foundNotes.size(); i++) {
+            int key = foundNotes.keyAt(i);
+            foundSet.retainAll(foundNotes.get(key));
+            Log.d("MYLOG", "checking " + key + ": " + foundNotes.get(key));
         }
 
         Log.d("MYLOG", "noteset_ids across the table: " + foundSet.toString());

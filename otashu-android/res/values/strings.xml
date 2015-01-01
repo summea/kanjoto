@@ -102,6 +102,7 @@
     <string name="pref_general_category">General</string>
     <string name="pref_default_graph_for_apprentice">Default Graph Id for Apprentice</string>
     <string name="pref_default_instrument">Default Instrument</string>
+    <string name="pref_default_playback_speed">Default Playback Speed</string>
     <string name="pref_screen_alarm">Alarm</string>
     
     <string name="spinner_emotion_label">Emotion</string>

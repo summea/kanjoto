@@ -68,9 +68,6 @@ public class ViewBookmarkDetailActivity extends Activity implements OnClickListe
         TextView bookmarkName = (TextView) findViewById(R.id.bookmark_detail_name_value);
         bookmarkName.setText(bookmark.getName());
 
-        TextView bookmarkSerializedValue = (TextView) findViewById(R.id.bookmark_detail_serialized_value_value);
-        bookmarkSerializedValue.setText(bookmark.getSerializedValue());
-
         currentBookmarkSerializedValue = bookmark.getSerializedValue();
 
         try {
@@ -129,9 +126,11 @@ public class ViewBookmarkDetailActivity extends Activity implements OnClickListe
                 // get default instrument for playback
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
                 String defaultInstrument = sharedPref.getString("pref_default_instrument", "");
+                int playbackSpeed = Integer.valueOf(sharedPref.getString(
+                        "pref_default_playback_speed", "120"));
 
                 GenerateMusicActivity generateMusic = new GenerateMusicActivity();
-                generateMusic.generateMusic(notes, musicSource, defaultInstrument);
+                generateMusic.generateMusic(notes, musicSource, defaultInstrument, playbackSpeed);
 
                 // play generated notes for user
                 playMusic(musicSource);
@@ -141,8 +140,10 @@ public class ViewBookmarkDetailActivity extends Activity implements OnClickListe
     }
 
     public void playMusic(File musicSource) {
-        // get media player ready
-        mediaPlayer = MediaPlayer.create(this, Uri.fromFile(musicSource));
+        if (mediaPlayer == null) {
+            // get media player ready
+            mediaPlayer = MediaPlayer.create(this, Uri.fromFile(musicSource));
+        }
 
         // play music
         mediaPlayer.start();
@@ -153,11 +154,13 @@ public class ViewBookmarkDetailActivity extends Activity implements OnClickListe
      */
     @Override
     public void onBackPressed() {
-        Log.d("MYLOG", "stop playing music!");
-
-        // stop playing music
-        mediaPlayer.stop();
-
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) {
+                // stop playing music
+                mediaPlayer.stop();
+            }
+            mediaPlayer.release();
+        }
         super.onBackPressed();
     }
 

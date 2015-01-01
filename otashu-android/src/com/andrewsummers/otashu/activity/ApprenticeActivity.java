@@ -5,6 +5,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import com.andrewsummers.otashu.R;
@@ -142,8 +143,10 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
     }
 
     public void playMusic(File musicSource) {
-        // get media player ready
-        mediaPlayer = MediaPlayer.create(this, Uri.fromFile(musicSource));
+        if (mediaPlayer == null) {
+            // get media player ready
+            mediaPlayer = MediaPlayer.create(this, Uri.fromFile(musicSource));
+        }
 
         // play music
         mediaPlayer.start();
@@ -461,9 +464,11 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
         // get default instrument for playback
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String defaultInstrument = sharedPref.getString("pref_default_instrument", "");
+        int playbackSpeed = Integer.valueOf(sharedPref.getString("pref_default_playback_speed",
+                "120"));
 
         GenerateMusicActivity generateMusic = new GenerateMusicActivity();
-        generateMusic.generateMusic(notes, musicSource, defaultInstrument);
+        generateMusic.generateMusic(notes, musicSource, defaultInstrument, playbackSpeed);
 
         // does generated noteset sounds like chosen emotion?
         askQuestion();
@@ -477,7 +482,8 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
             guessesCorrectPercentage = ((double) guessesCorrect / (double) totalGuesses) * 100.0;
         }
 
-        String guessesCorrectPercentageString = String.format("%.02f", guessesCorrectPercentage);
+        String guessesCorrectPercentageString = String.format(Locale.getDefault(), "%.02f",
+                guessesCorrectPercentage);
 
         TextView apprenticeTotalGuesses = (TextView) findViewById(R.id.apprentice_total_guesses);
         apprenticeTotalGuesses.setText(guessesCorrect + "/" + totalGuesses + " ("
@@ -546,11 +552,13 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
      */
     @Override
     public void onBackPressed() {
-        if (mediaPlayer.isPlaying()) {
-            // stop playing music
-            mediaPlayer.stop();
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) {
+                // stop playing music
+                mediaPlayer.stop();
+            }
+            mediaPlayer.release();
         }
-
         super.onBackPressed();
     }
 }

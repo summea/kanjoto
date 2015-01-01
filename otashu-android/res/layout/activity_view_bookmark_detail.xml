@@ -33,20 +33,6 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_marginBottom="20dp" />
-        
-        <TextView
-            android:id="@+id/bookmark_detail_serialized_value_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/bookmark_detail_serialized_value_label"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textStyle="bold" />
-        
-        <TextView
-            android:id="@+id/bookmark_detail_serialized_value_value"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp" />
             
         <Button
             android:id="@+id/button_play_bookmark"

@@ -376,9 +376,11 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
                 // get default instrument for playback
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
                 String defaultInstrument = sharedPref.getString("pref_default_instrument", "");
+                int playbackSpeed = Integer.valueOf(sharedPref.getString(
+                        "pref_default_playback_speed", "120"));
 
                 GenerateMusicActivity generateMusic = new GenerateMusicActivity();
-                generateMusic.generateMusic(notes, musicSource, defaultInstrument);
+                generateMusic.generateMusic(notes, musicSource, defaultInstrument, playbackSpeed);
 
                 // play generated notes for user
                 playMusic(musicSource);
@@ -465,8 +467,10 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
     }
 
     public void playMusic(File musicSource) {
-        // get media player ready
-        mediaPlayer = MediaPlayer.create(this, Uri.fromFile(musicSource));
+        if (mediaPlayer == null) {
+            // get media player ready
+            mediaPlayer = MediaPlayer.create(this, Uri.fromFile(musicSource));
+        }
 
         // play music
         mediaPlayer.start();
@@ -477,9 +481,13 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
      */
     @Override
     public void onBackPressed() {
-        // stop playing music
-        mediaPlayer.stop();
-
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) {
+                // stop playing music
+                mediaPlayer.stop();
+            }
+            mediaPlayer.release();
+        }
         super.onBackPressed();
     }
 }

@@ -182,8 +182,8 @@ public class NotesetsDataSource {
      * 
      * @return List of noteset bundles.
      */
-    public HashMap<Integer, List<Note>> getAllNotesetBundles() {
-        HashMap<Integer, List<Note>> notesetBundles = new HashMap<Integer, List<Note>>();
+    public SparseArray<List<Note>> getAllNotesetBundles() {
+        SparseArray<List<Note>> notesetBundles = new SparseArray<List<Note>>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS;
 
@@ -231,8 +231,10 @@ public class NotesetsDataSource {
      * 
      * @return List of noteset bundles.
      */
-    public HashMap<Integer, List<Note>> getAllNotesetBundles(int emotion_id) {
-        HashMap<Integer, List<Note>> notesetBundles = new HashMap<Integer, List<Note>>();
+    public SparseArray<List<Note>> getAllNotesetBundles(int emotion_id) {
+    // public HashMap<Integer, List<Note>> getAllNotesetBundles(int emotion_id) {
+        //HashMap<Integer, List<Note>> notesetBundles = new HashMap<Integer, List<Note>>();
+        SparseArray<List<Note>> notesetBundles = new SparseArray<List<Note>>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS + " WHERE "
                 + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotion_id + " AND "

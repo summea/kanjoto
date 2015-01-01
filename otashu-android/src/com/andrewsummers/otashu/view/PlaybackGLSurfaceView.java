@@ -44,14 +44,14 @@ public class PlaybackGLSurfaceView extends GLSurfaceView {
     }
 
     public PlaybackGLSurfaceView(Context context, List<Note> notes,
-            SparseArray<float[]> noteColorTable) {
+            SparseArray<float[]> noteColorTable, float playbackSpeed) {
         super(context);
 
         // Create an OpenGL ES 2.0 context.
         setEGLContextClientVersion(2);
 
         // Set the Renderer for drawing on the GLSurfaceView
-        mRenderer = new PlaybackGLRenderer(notes, noteColorTable);
+        mRenderer = new PlaybackGLRenderer(notes, noteColorTable, playbackSpeed);
         setRenderer(mRenderer);
 
         // Render the view only when there is a change in the drawing data

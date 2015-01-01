@@ -2,7 +2,6 @@
 package com.andrewsummers.otashu.activity;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +18,6 @@ import com.andrewsummers.otashu.data.NotesetsDataSource;
 import com.andrewsummers.otashu.data.NotevaluesDataSource;
 import com.andrewsummers.otashu.model.Label;
 import com.andrewsummers.otashu.model.Note;
-import com.andrewsummers.otashu.model.Noteset;
 import com.andrewsummers.otashu.model.Notevalue;
 import com.andrewsummers.otashu.view.PlaybackGLSurfaceView;
 import com.leff.midi.MidiFile;
@@ -49,6 +47,7 @@ public class GenerateMusicActivity extends Activity {
     private GLSurfaceView mGLView;
 
     int selectedInstrumentId = -1;
+    int playbackSpeed = 120;
     File path = Environment.getExternalStorageDirectory();
     String externalDirectory = path.toString() + "/otashu/";
     File musicSource = new File(externalDirectory + "otashu.mid");
@@ -211,7 +210,7 @@ public class GenerateMusicActivity extends Activity {
             }
         });
 
-        HashMap<Integer, List<Note>> allNotesets = gatherRelatedEmotions();
+        SparseArray<List<Note>> allNotesets = gatherRelatedEmotions();
 
         List<Note> notes = new ArrayList<Note>();
 
@@ -235,8 +234,9 @@ public class GenerateMusicActivity extends Activity {
         // get default instrument for playback
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String defaultInstrument = sharedPref.getString("pref_default_instrument", "");
+        playbackSpeed = Integer.valueOf(sharedPref.getString("pref_default_playback_speed", "120"));
 
-        generateMusic(notes, musicSource, defaultInstrument);
+        generateMusic(notes, musicSource, defaultInstrument, playbackSpeed);
 
         playMusic(musicSource);
 
@@ -279,7 +279,7 @@ public class GenerateMusicActivity extends Activity {
         }
 
         // Use GLSurfaceView as ContentView for this Activity
-        mGLView = new PlaybackGLSurfaceView(this, notes, noteColorTable);
+        mGLView = new PlaybackGLSurfaceView(this, notes, noteColorTable, playbackSpeed);
         setContentView(mGLView);
 
         // return to previous activity when done playing
@@ -300,8 +300,9 @@ public class GenerateMusicActivity extends Activity {
      * 
      * @return HashMap of notes related to given emotion
      */
-    public HashMap<Integer, List<Note>> gatherRelatedEmotions() {
-        HashMap<Integer, List<Note>> allNotesetBundles = new HashMap<Integer, List<Note>>();
+    public SparseArray<List<Note>> gatherRelatedEmotions() {
+        // HashMap<Integer, List<Note>> allNotesetBundles = new HashMap<Integer, List<Note>>();
+        SparseArray<List<Note>> allNotesetBundles = new SparseArray<List<Note>>();
         Note emptyNote = new Note();
         List<Note> emptyNoteList = new LinkedList<Note>();
         emptyNoteList.add(emptyNote);
@@ -315,8 +316,9 @@ public class GenerateMusicActivity extends Activity {
         nds.close();
 
         // prevent crashes due to lack of database data
-        if (allNotesetBundles.isEmpty())
+        if (allNotesetBundles.size() <= 0) {
             allNotesetBundles.put(1, emptyNoteList);
+        }
 
         return allNotesetBundles;
     }
@@ -346,7 +348,8 @@ public class GenerateMusicActivity extends Activity {
      * @param musicSource File location of musicSource file for writing.
      * @param defaultInstrument
      */
-    public void generateMusic(List<Note> notes, File musicSource, String defaultInstrument) {
+    public void generateMusic(List<Note> notes, File musicSource, String defaultInstrument,
+            int playbackSpeed) {
         MidiTrack tempoTrack = new MidiTrack();
         MidiTrack noteTrack = new MidiTrack();
 
@@ -354,7 +357,7 @@ public class GenerateMusicActivity extends Activity {
         ts.setTimeSignature(4, 4, TimeSignature.DEFAULT_METER, TimeSignature.DEFAULT_DIVISION);
 
         Tempo t = new Tempo();
-        t.setBpm(120);
+        t.setBpm(playbackSpeed);
 
         if ((selectedInstrumentId < 0) && (defaultInstrument != null))
             selectedInstrumentId = Integer.valueOf(defaultInstrument);
@@ -416,8 +419,10 @@ public class GenerateMusicActivity extends Activity {
     }
 
     public void playMusic(File musicSource) {
-        // get media player ready
-        mediaPlayer = MediaPlayer.create(this, Uri.fromFile(musicSource));
+        if (mediaPlayer == null) {
+            // get media player ready
+            mediaPlayer = MediaPlayer.create(this, Uri.fromFile(musicSource));
+        }
 
         // play music
         mediaPlayer.start();
@@ -428,15 +433,18 @@ public class GenerateMusicActivity extends Activity {
      */
     @Override
     public void onBackPressed() {
-        if (mediaPlayer.isPlaying()) {
-            // stop playing music
-            mediaPlayer.stop();
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) {
+                // stop playing music
+                mediaPlayer.stop();
+            }
+            mediaPlayer.release();
         }
-
         super.onBackPressed();
     }
 
-    private List<Note> logicA(HashMap<Integer, List<Note>> allNotesets) {
+    private List<Note> logicA(SparseArray<List<Note>> allNotesets) {
+        // private List<Note> logicA(HashMap<Integer, List<Note>> allNotesets) {
         List<Note> notes = new ArrayList<Note>();
 
         List<Integer> lookingForNotesInKey = new ArrayList<Integer>();
@@ -444,7 +452,13 @@ public class GenerateMusicActivity extends Activity {
         lastNote.setNotevalue(0);
 
         Random random = new Random();
-        List<Integer> keys = new ArrayList<Integer>(allNotesets.keySet());
+
+        List<Integer> keys = new ArrayList<Integer>();
+        for (int i = 0; i < allNotesets.size(); i++) {
+            keys.add(allNotesets.keyAt(i));
+        }
+
+        // List<Integer> keys = new ArrayList<Integer>(allNotesets.keySet());
         Integer randomKey = keys.get(random.nextInt(keys.size()));
 
         // loop through all found emotion-related notesets
@@ -454,22 +468,22 @@ public class GenerateMusicActivity extends Activity {
 
             // Log.d("MYLOG", "> last note: " + lastNote.getNotevalue());
 
-            if (lastNote.getNotevalue() == 0) {
-                // get random noteset (and try to find one that matches the new musical key search
-                // focus)
-                random = new Random();
-                keys = new ArrayList<Integer>(allNotesets.keySet());
-                randomKey = keys.get(random.nextInt(keys.size()));
+            // if (lastNote.getNotevalue() == 0) {
+            // get random noteset (and try to find one that matches the new musical key search
+            // focus)
+            random = new Random();
+            // keys = new ArrayList<Integer>(allNotesets.keySet());
+            randomKey = keys.get(random.nextInt(keys.size()));
 
-                // get individual noteset
-                nsets = allNotesets.get(randomKey);
-            } else {
-                if (allNotesets.get(lastNote) != null) {
-                    nsets = allNotesets.get(lastNote);
-                } else {
-                    nsets = allNotesets.get(60);
-                }
-            }
+            // get individual noteset
+            nsets = allNotesets.get(randomKey);
+            // } else {
+            // if (allNotesets.get(lastNote) != null) {
+            // nsets = allNotesets.get(lastNote);
+            // } else {
+            // nsets = allNotesets.get(60);
+            // }
+            // }
 
             try {
                 // check if last note in current noteset sequence matches first note in a musical
@@ -490,7 +504,7 @@ public class GenerateMusicActivity extends Activity {
 
             for (int j = 0; j < 50; j++) {
                 random = new Random();
-                keys = new ArrayList<Integer>(allNotesets.keySet());
+                // keys = new ArrayList<Integer>(allNotesets.keySet());
                 randomKey = keys.get(random.nextInt(keys.size()));
 
                 List<Note> noteset = allNotesets.get(randomKey);
