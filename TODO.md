@@ -4,11 +4,12 @@
 - save generated song to file
 - create emotion fingerprint
 - noteset folders (lists by label or emotion)
-- show what note is playing for playback visualization
 - standardize strings view naming
+- prevent duplicate notesets with same emotion and note order in "apprentice" activity
 
 
 ## DONE:
+- 20150101: added "show what note is playing for playback visualization" feature
 - 20141231: added playback speed in settings
 - 20141231: fixed MediaPlayer bug (too many instances of MediaPlayer prevented notes from playing after a while)
 - 20141231: finished fixing HashMap to SparseArray conversion

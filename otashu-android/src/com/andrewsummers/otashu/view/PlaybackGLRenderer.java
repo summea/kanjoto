@@ -37,6 +37,11 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
     private List<Square> mSquares = new ArrayList<Square>();
     private List<Note> noteSequence = new ArrayList<Note>();
     private float verticalSpeed = 0.035f;
+    private float horizontalSpeed = 0.035f;
+    private int itemCurrentlyPlaying = 0;
+    private int tPlay = 0;
+    private int innerMoveUntil = 4;
+    private int innerUnMoveUntil = 8;
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
     private final float[] mMVPMatrix = new float[16];
@@ -88,27 +93,54 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
         // Set the camera position (View matrix)
         Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -3, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
 
-        for (Square square : mSquares) {
+        // keep track of which note currently is being played
+        // increment / decrement x value of currently played note
+        // through a few times through the overall onDrawFrame loop
+        //
+        // tPlay: overall play time counter
+        // innerMoveUntil: animate until tPlay == this value
+        // innerUnMoveUntil: un-animate until tPlay == this value
+
+        for (int i = 0; i < mSquares.size(); i++) {
             // Calculate the projection and view transformation
             Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 
             // speed of squares
-            square.setY(square.getY() + verticalSpeed);
-            if (square.getY() > 3.0f) {
-                // reset y position
-                // square.setY(-1.0f);
+            mSquares.get(i).setY(mSquares.get(i).getY() + verticalSpeed);
 
-                // change color to match next notevalue
-                // noteColorTable.get(key)
+            if (i == itemCurrentlyPlaying && (tPlay < (tPlay + innerMoveUntil))) {
+                mSquares.get(i).setX(mSquares.get(i).getX() + horizontalSpeed);
+            } else if (i == itemCurrentlyPlaying
+                    && (tPlay > (tPlay + innerMoveUntil) && tPlay < (tPlay + innerUnMoveUntil))) {
+                mSquares.get(i).setX(mSquares.get(i).getX() - horizontalSpeed);
             }
 
             Matrix.setIdentityM(mModelMatrix, 0);
-            Matrix.translateM(mModelMatrix, 0, square.getX(), square.getY(), 0);
+            Matrix.translateM(mModelMatrix, 0, mSquares.get(i).getX(), mSquares.get(i).getY(), 0);
             Matrix.multiplyMM(mMVPMatrix, 0, mMVPMatrix, 0, mModelMatrix, 0);
 
             // Draw square
-            square.draw(mMVPMatrix);
+            mSquares.get(i).draw(mMVPMatrix);
         }
+
+        innerMoveUntil--;
+        innerUnMoveUntil--;
+
+        if (tPlay % 10 == 0) {
+            innerMoveUntil = 4;
+            innerUnMoveUntil = 8;
+        }
+
+        // note: MediaPlayer begins playing music slightly before visualizer starts, so the
+        // animation begins with second note
+        if (tPlay % 30 == 0) {
+            itemCurrentlyPlaying++;
+        }
+
+        // Log.d("MYLOG", "pTime: " + tPlay + " innerMU: " + innerMoveUntil + " innerUMU: "
+                // + innerUnMoveUntil);
+
+        tPlay++;
     }
 
     @Override

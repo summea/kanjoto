@@ -289,6 +289,15 @@ public class GenerateMusicActivity extends Activity {
                 Intent output = new Intent();
                 output.putExtra("serialized_notes", serializeNotes(finalNotes));
                 setResult(RESULT_OK, output);
+
+                if (mediaPlayer != null) {
+                    if (mediaPlayer.isPlaying()) {
+                        // stop playing music
+                        mediaPlayer.stop();
+                    }
+                    mediaPlayer.release();
+                }
+
                 finish();
             }
         });
@@ -419,8 +428,11 @@ public class GenerateMusicActivity extends Activity {
     }
 
     public void playMusic(File musicSource) {
+        // get media player ready
         if (mediaPlayer == null) {
-            // get media player ready
+            mediaPlayer = MediaPlayer.create(this, Uri.fromFile(musicSource));
+        } else {
+            mediaPlayer.release();
             mediaPlayer = MediaPlayer.create(this, Uri.fromFile(musicSource));
         }
 
@@ -553,10 +565,5 @@ public class GenerateMusicActivity extends Activity {
 
         Log.d("MYLOG", mainJsonObj.toString());
         return mainJsonObj.toString();
-    }
-
-    public int saveLastGeneratedNotes() {
-        // TODO
-        return 0;
     }
 }
