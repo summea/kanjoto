@@ -374,8 +374,11 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
     }
 
     public void playMusic(File musicSource) {
+        // get media player ready
         if (mediaPlayer == null) {
-            // get media player ready
+            mediaPlayer = MediaPlayer.create(this, Uri.fromFile(musicSource));
+        } else {
+            mediaPlayer.release();
             mediaPlayer = MediaPlayer.create(this, Uri.fromFile(musicSource));
         }
 
