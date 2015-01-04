@@ -2,8 +2,7 @@
 package com.andrewsummers.otashu.model;
 
 /**
- * Bookmark is a model for Bookmark objects. serializedValue is a serialized value of notesets (with
- * the following properties): notevalue:velocity:length:position|
+ * Bookmark is a model for Bookmark objects.
  */
 public class Bookmark {
     private long id;

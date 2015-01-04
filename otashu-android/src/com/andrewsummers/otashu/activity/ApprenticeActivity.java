@@ -3,17 +3,23 @@ package com.andrewsummers.otashu.activity;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.TimeZone;
 
 import com.andrewsummers.otashu.R;
+import com.andrewsummers.otashu.data.ApprenticeScoresDataSource;
 import com.andrewsummers.otashu.data.EdgesDataSource;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.NotesDataSource;
 import com.andrewsummers.otashu.data.NotesetsDataSource;
 import com.andrewsummers.otashu.data.VerticesDataSource;
+import com.andrewsummers.otashu.model.ApprenticeScore;
 import com.andrewsummers.otashu.model.Edge;
 import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.Note;
@@ -53,10 +59,10 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
     private SharedPreferences sharedPref;
     private long emotionGraphId;
     private long emotionId;
-    private static int guessesCorrect = 0;
-    private static int guessesIncorrect = 0;
-    private static double guessesCorrectPercentage = 0.0;
-    private static int totalGuesses = 0;
+    private int guessesCorrect = 0;
+    private int guessesIncorrect = 0;
+    private double guessesCorrectPercentage = 0.0;
+    private int totalGuesses = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -597,6 +603,22 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
             }
             mediaPlayer.release();
         }
+        
+        TimeZone timezone = TimeZone.getTimeZone("UTC");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+        dateFormat.setTimeZone(timezone);
+        String takenAtISO = dateFormat.format(new Date());
+        
+        // save Apprentice's score results to database
+        ApprenticeScore aScore = new ApprenticeScore();
+        aScore.setCorrect(guessesCorrect);
+        aScore.setTotal(totalGuesses);
+        aScore.setTakenAt(takenAtISO);
+        
+        ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
+        asds.createApprenticeScore(aScore);
+        asds.close();
+        
         super.onBackPressed();
     }
 }

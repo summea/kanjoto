@@ -215,6 +215,12 @@
 - to_id
 - weight
 
+#### apprentice_scores
+- id
+- correct
+- total
+- taken_at
+
 
 ## NOTES:
 - approaches to try first for generating music:
