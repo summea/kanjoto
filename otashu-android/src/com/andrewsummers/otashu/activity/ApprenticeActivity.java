@@ -612,8 +612,13 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
         // save Apprentice's score results to database
         ApprenticeScore aScore = new ApprenticeScore();
         aScore.setCorrect(guessesCorrect);
-        aScore.setTotal(totalGuesses);
-        aScore.setTakenAt(takenAtISO);
+        
+        // TODO: save scorecard, first
+        // TODO: set emotion id
+        // TODO: set noteset       
+        
+        //aScore.setTotal(totalGuesses);
+        //aScore.setTakenAt(takenAtISO);
         
         ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
         asds.createApprenticeScore(aScore);

@@ -11,7 +11,7 @@ import android.util.Log;
  * application database.
  */
 public class OtashuDatabaseHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 17;
+    private static final int DATABASE_VERSION = 18;
     private static final String DATABASE_NAME = "otashu_collection.db";
 
     public static final String COLUMN_ID = "_id";
@@ -50,11 +50,14 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_FROM_NODE_ID = "from_node_id";
     public static final String COLUMN_TO_NODE_ID = "to_node_id";
     public static final String COLUMN_WEIGHT = "weight";
-    
-    public static final String TABLE_APPRENTICE_SCORES = "apprentice_scores";
-    public static final String COLUMN_CORRECT = "correct";
-    public static final String COLUMN_TOTAL = "total";
+
+    public static final String TABLE_APPRENTICE_SCORECARDS = "apprentice_scorecards";
     public static final String COLUMN_TAKEN_AT = "taken_at";
+
+    public static final String TABLE_APPRENTICE_SCORES = "apprentice_scores";
+    public static final String COLUMN_SCORECARD_ID = "scorecard_id";
+    public static final String COLUMN_CORRECT = "correct";
+    public static final String COLUMN_NOTESET = "noteset";
 
     private static final String CREATE_TABLE_NOTESETS = "CREATE TABLE " + TABLE_NOTESETS
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
@@ -107,12 +110,19 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_TO_NODE_ID + " integer, "
             + COLUMN_WEIGHT + " real,"
             + COLUMN_POSITION + " integer);";
-    
-    private static final String CREATE_TABLE_APPRENTICE_SCORES = "CREATE TABLE " + TABLE_APPRENTICE_SCORES
+
+    private static final String CREATE_TABLE_APPRENTICE_SCORECARDS = "CREATE TABLE "
+            + TABLE_APPRENTICE_SCORECARDS
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
-            + COLUMN_CORRECT + " integer,"
-            + COLUMN_TOTAL + " integer,"
             + COLUMN_TAKEN_AT + " text);";
+
+    private static final String CREATE_TABLE_APPRENTICE_SCORES = "CREATE TABLE "
+            + TABLE_APPRENTICE_SCORES
+            + " (" + COLUMN_ID + " integer primary key autoincrement, "
+            + COLUMN_SCORECARD_ID + " integer,"
+            + COLUMN_CORRECT + " integer,"
+            + COLUMN_EMOTION_ID + " integer,"
+            + COLUMN_NOTESET + " text);";
 
     /**
      * NotesetCollectionOpenHelper constructor.
@@ -139,6 +149,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_GRAPHS);
         db.execSQL(CREATE_TABLE_VERTICES);
         db.execSQL(CREATE_TABLE_EDGES);
+        db.execSQL(CREATE_TABLE_APPRENTICE_SCORECARDS);
         db.execSQL(CREATE_TABLE_APPRENTICE_SCORES);
     }
 
@@ -171,8 +182,13 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         // db.execSQL("DROP TABLE " + TABLE_EDGES);
         // db.execSQL(CREATE_TABLE_VERTICES);
         // db.execSQL(CREATE_TABLE_EDGES);
-        
+
         // v17
+        // db.execSQL(CREATE_TABLE_APPRENTICE_SCORES);
+
+        // v18
+        db.execSQL("DROP TABLE " + TABLE_APPRENTICE_SCORECARDS);
+        db.execSQL(CREATE_TABLE_APPRENTICE_SCORECARDS);
         db.execSQL(CREATE_TABLE_APPRENTICE_SCORES);
     }
 }

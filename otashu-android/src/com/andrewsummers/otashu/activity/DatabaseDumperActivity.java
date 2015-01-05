@@ -4,6 +4,8 @@ package com.andrewsummers.otashu.activity;
 import java.util.List;
 
 import com.andrewsummers.otashu.R;
+import com.andrewsummers.otashu.data.ApprenticeScorecardsDataSource;
+import com.andrewsummers.otashu.data.ApprenticeScoresDataSource;
 import com.andrewsummers.otashu.data.BookmarksDataSource;
 import com.andrewsummers.otashu.data.EdgesDataSource;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
@@ -14,6 +16,8 @@ import com.andrewsummers.otashu.data.NotesetsDataSource;
 import com.andrewsummers.otashu.data.NotevaluesDataSource;
 import com.andrewsummers.otashu.data.OtashuDatabaseHelper;
 import com.andrewsummers.otashu.data.VerticesDataSource;
+import com.andrewsummers.otashu.model.ApprenticeScore;
+import com.andrewsummers.otashu.model.ApprenticeScorecard;
 import com.andrewsummers.otashu.model.Bookmark;
 import com.andrewsummers.otashu.model.Edge;
 import com.andrewsummers.otashu.model.Emotion;
@@ -72,6 +76,14 @@ public class DatabaseDumperActivity extends Activity {
         GraphsDataSource gds = new GraphsDataSource(this);
         List<Graph> allGraphs = gds.getAllGraphs();
         gds.close();
+
+        ApprenticeScorecardsDataSource ascds = new ApprenticeScorecardsDataSource(this);
+        List<ApprenticeScorecard> allApprenticeScorecards = ascds.getAllApprenticeScorecards();
+        ascds.close();
+
+        ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
+        List<ApprenticeScore> allApprenticeScores = asds.getAllApprenticeScores();
+        asds.close();
 
         TextView debugText = (TextView) findViewById(R.id.debug_text);
 
@@ -200,6 +212,34 @@ public class DatabaseDumperActivity extends Activity {
                     + edge.getToNodeId() + "|"
                     + edge.getWeight() + "|"
                     + edge.getPosition() + "\n";
+
+            debugText.setText(newText);
+        }
+
+        debugText.setText(debugText.getText().toString() + "\nTable: Apprentice Scorecards\n"
+                + OtashuDatabaseHelper.COLUMN_ID + "\n");
+
+        for (ApprenticeScorecard aScorecard : allApprenticeScorecards) {
+
+            String newText = debugText.getText().toString();
+            newText += aScorecard.getId() + "\n";
+
+            debugText.setText(newText);
+        }
+
+        debugText.setText(debugText.getText().toString() + "\nTable: Apprentice Scores\n"
+                + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_SCORECARD_ID
+                + "|" + OtashuDatabaseHelper.COLUMN_CORRECT + "|"
+                + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "|"
+                + OtashuDatabaseHelper.COLUMN_NOTESET
+                + "\n");
+
+        for (ApprenticeScore aScore : allApprenticeScores) {
+
+            String newText = debugText.getText().toString();
+            newText += aScore.getId() + "|" + aScore.getScorecardId() + "|" + aScore.getCorrect()
+                    + "|" + aScore.getEmotionId()
+                    + "|" + aScore.getNoteset() + "\n";
 
             debugText.setText(newText);
         }

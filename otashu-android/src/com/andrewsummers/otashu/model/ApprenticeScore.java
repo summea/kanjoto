@@ -1,16 +1,15 @@
 
 package com.andrewsummers.otashu.model;
 
-import java.util.Locale;
-
 /**
  * ApprenticeScore is a model for ApprenticeScore objects.
  */
 public class ApprenticeScore {
     private long id;
+    private long scorecardId;
     private int correct;
-    private int total;
-    private String takenAt;
+    private int emotionId;
+    private String noteset;
 
     /**
      * getId gets ApprenticeScore id
@@ -28,6 +27,24 @@ public class ApprenticeScore {
      */
     public void setId(long id) {
         this.id = id;
+    }
+    
+    /**
+     * getScorecardId gets ApprenticeScore scorecardId
+     * 
+     * @return <code>long</code> scorecardId value
+     */
+    public long getScorecardId() {
+        return scorecardId;
+    }
+
+    /**
+     * setScorecardId sets ApprenticeScore scorecardId
+     * 
+     * @param scorecardId New scorecardId value.
+     */
+    public void setScorecardId(long scorecardId) {
+        this.scorecardId = scorecardId;
     }
 
     /**
@@ -49,57 +66,39 @@ public class ApprenticeScore {
     }
     
     /**
-     * getTotal gets ApprenticeScore total number of questions.
+     * getEmotionId gets related ApprenticeScore emotion id
      * 
-     * @return <code>int</code> of ApprenticeScore total number of questions.
+     * @return <code>int</code> of ApprenticeScore emotion id
      */
-    public int getTotal() {
-        return total;
+    public int getEmotionId() {
+        return emotionId;
     }
 
     /**
-     * setTotal sets ApprenticeScore total number of questions.
+     * setEmotionId sets related ApprenticeScore emotion id
      * 
-     * @param total New ApprenticeScore total number of questions.
+     * @param emotionId New ApprenticeScore emotion id
      */
-    public void setTotal(int total) {
-        this.total = total;
+    public void setEmotionId(int emotionId) {
+        this.emotionId = emotionId;
     }
     
     /**
-     * getTakenAt gets ApprenticeScore taken-at date-timestamp.
+     * getNoteset gets ApprenticeScore noteset that was used for this question
      * 
-     * @return <code>String</code> of ApprenticeScore taken-at date-timestamp.
+     * @return <code>String</code> of ApprenticeScore noteset
      */
-    public String getTakenAt() {
-        return takenAt;
+    public String getNoteset() {
+        return this.noteset;
     }
 
     /**
-     * setTakenAt sets ApprenticeScore taken-at date-timestamp.
+     * setNoteset sets ApprenticeScore noteset that was used for this question
      * 
-     * @param takenAt New ApprenticeScore taken-at date-timestamp.
+     * @param noteset New ApprenticeScore noteset
      */
-    public void setTakenAt(String takenAt) {
-        this.takenAt = takenAt;
-    }
-    
-    /**
-     * getPercentage gets a string-based percentage value of correct/total results.
-     * 
-     * @return <code>String</code> of ApprenticeScore percentage correct.
-     */
-    public String getPercentage() {
-        double correctPercentage = 0.0;
-        
-        if (this.total > 0) {
-            correctPercentage = ((double) this.correct / (double) this.total) * 100.0;
-        }
-
-        String correctPercentageString = String.format(Locale.getDefault(), "%.02f",
-                correctPercentage);
-        
-        return correctPercentageString;
+    public void setNoteset(String noteset) {
+        this.noteset = noteset;
     }
 
     /**
@@ -109,6 +108,6 @@ public class ApprenticeScore {
      */
     @Override
     public String toString() {
-        return correct + "/" + total;
+        return noteset;
     }
 }
