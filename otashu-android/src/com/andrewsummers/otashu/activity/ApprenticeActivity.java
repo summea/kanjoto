@@ -13,6 +13,7 @@ import java.util.Random;
 import java.util.TimeZone;
 
 import com.andrewsummers.otashu.R;
+import com.andrewsummers.otashu.data.ApprenticeScorecardsDataSource;
 import com.andrewsummers.otashu.data.ApprenticeScoresDataSource;
 import com.andrewsummers.otashu.data.EdgesDataSource;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
@@ -20,6 +21,7 @@ import com.andrewsummers.otashu.data.NotesDataSource;
 import com.andrewsummers.otashu.data.NotesetsDataSource;
 import com.andrewsummers.otashu.data.VerticesDataSource;
 import com.andrewsummers.otashu.model.ApprenticeScore;
+import com.andrewsummers.otashu.model.ApprenticeScorecard;
 import com.andrewsummers.otashu.model.Edge;
 import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.Note;
@@ -63,6 +65,7 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
     private int guessesIncorrect = 0;
     private double guessesCorrectPercentage = 0.0;
     private int totalGuesses = 0;
+    private long scorecardId = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -181,6 +184,8 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
 
                 Log.d("MYLOG", "> examining noteset...");
                 for (int i = 0; i < notesToInsert.size() - 1; i++) {
+                    long edgeId = 0;
+
                     // Examine note1 + note2
                     Note noteA = notesToInsert.get(i);
                     Note noteB = notesToInsert.get(i + 1);
@@ -224,7 +229,8 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                         newEdge.setToNodeId(nodeB.getNode());
                         newEdge.setWeight(0.5f);
                         newEdge.setPosition(i + 1);
-                        edds.createEdge(newEdge);
+                        newEdge = edds.createEdge(newEdge);
+                        edgeId = newEdge.getId();
                     } else {
                         Log.d("MYLOG",
                                 "> edge exists between " + nodeA.getNode() + " and "
@@ -239,9 +245,12 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                             bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
                             edge.setWeight(bd.floatValue());
                             edds.updateEdge(edge);
+                            edgeId = edge.getId();
                         }
                     }
 
+                    // save score
+                    saveScore(0, edgeId);
                 }
 
                 // disable buttons while playing
@@ -321,6 +330,8 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
 
                 Log.d("MYLOG", "> examining noteset...");
                 for (int i = 0; i < notesToInsert.size() - 1; i++) {
+                    long edgeId = 0;
+
                     // Examine note1 + note2
                     Note noteA = notesToInsert.get(i);
                     Note noteB = notesToInsert.get(i + 1);
@@ -364,7 +375,8 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                         newEdge.setToNodeId(nodeB.getNode());
                         newEdge.setWeight(0.5f);
                         newEdge.setPosition(i + 1);
-                        edds.createEdge(newEdge);
+                        newEdge = edds.createEdge(newEdge);
+                        edgeId = newEdge.getId();
                     } else {
                         Log.d("MYLOG",
                                 "> edge exists between " + nodeA.getNode() + " and "
@@ -379,9 +391,12 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                             bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
                             edge.setWeight(bd.floatValue());
                             edds.updateEdge(edge);
+                            edgeId = edge.getId();
                         }
                     }
 
+                    // save score
+                    saveScore(1, edgeId);
                 }
 
                 // try another noteset
@@ -603,27 +618,38 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
             }
             mediaPlayer.release();
         }
-        
-        TimeZone timezone = TimeZone.getTimeZone("UTC");
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
-        dateFormat.setTimeZone(timezone);
-        String takenAtISO = dateFormat.format(new Date());
-        
+
+        super.onBackPressed();
+    }
+
+    public void saveScore(int isCorrect, long edgeId) {
+
+        // check if scorecard already exists
+        if (scorecardId <= 0) {
+            TimeZone timezone = TimeZone.getTimeZone("UTC");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+            dateFormat.setTimeZone(timezone);
+            String takenAtISO = dateFormat.format(new Date());
+
+            // if scorecard doesn't yet exist, create it
+            ApprenticeScorecardsDataSource asds = new ApprenticeScorecardsDataSource(this);
+            ApprenticeScorecard aScorecard = new ApprenticeScorecard();
+            aScorecard.setTakenAt(takenAtISO);
+            aScorecard = asds.createApprenticeScorecard(aScorecard);
+            asds.close();
+
+            // then get scorecard_id for the score to save
+            scorecardId = aScorecard.getId();
+        }
+
         // save Apprentice's score results to database
         ApprenticeScore aScore = new ApprenticeScore();
-        aScore.setCorrect(guessesCorrect);
-        
-        // TODO: save scorecard, first
-        // TODO: set emotion id
-        // TODO: set noteset       
-        
-        //aScore.setTotal(totalGuesses);
-        //aScore.setTakenAt(takenAtISO);
-        
+        aScore.setScorecardId(scorecardId);
+        aScore.setCorrect(isCorrect);
+        aScore.setEdgeId(edgeId);
+
         ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
         asds.createApprenticeScore(aScore);
         asds.close();
-        
-        super.onBackPressed();
     }
 }

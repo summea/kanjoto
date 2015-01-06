@@ -8,8 +8,7 @@ public class ApprenticeScore {
     private long id;
     private long scorecardId;
     private int correct;
-    private int emotionId;
-    private String noteset;
+    private long edgeId;
 
     /**
      * getId gets ApprenticeScore id
@@ -28,7 +27,7 @@ public class ApprenticeScore {
     public void setId(long id) {
         this.id = id;
     }
-    
+
     /**
      * getScorecardId gets ApprenticeScore scorecardId
      * 
@@ -64,41 +63,23 @@ public class ApprenticeScore {
     public void setCorrect(int correct) {
         this.correct = correct;
     }
-    
+
     /**
-     * getEmotionId gets related ApprenticeScore emotion id
+     * getEdgeId gets ApprenticeScore edge that connects the two related nodes (notes)
      * 
-     * @return <code>int</code> of ApprenticeScore emotion id
+     * @return <code>long</code> of ApprenticeScore edgeId
      */
-    public int getEmotionId() {
-        return emotionId;
+    public long getEdgeId() {
+        return this.edgeId;
     }
 
     /**
-     * setEmotionId sets related ApprenticeScore emotion id
+     * setEdgeId sets ApprenticeScore edge that connects the two related nodes (notes)
      * 
-     * @param emotionId New ApprenticeScore emotion id
+     * @param edgeId New ApprenticeScore edgeId
      */
-    public void setEmotionId(int emotionId) {
-        this.emotionId = emotionId;
-    }
-    
-    /**
-     * getNoteset gets ApprenticeScore noteset that was used for this question
-     * 
-     * @return <code>String</code> of ApprenticeScore noteset
-     */
-    public String getNoteset() {
-        return this.noteset;
-    }
-
-    /**
-     * setNoteset sets ApprenticeScore noteset that was used for this question
-     * 
-     * @param noteset New ApprenticeScore noteset
-     */
-    public void setNoteset(String noteset) {
-        this.noteset = noteset;
+    public void setEdgeId(long edgeId) {
+        this.edgeId = edgeId;
     }
 
     /**
@@ -108,6 +89,6 @@ public class ApprenticeScore {
      */
     @Override
     public String toString() {
-        return noteset;
+        return "" + edgeId;
     }
 }

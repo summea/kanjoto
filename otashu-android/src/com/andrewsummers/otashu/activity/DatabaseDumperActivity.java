@@ -230,16 +230,14 @@ public class DatabaseDumperActivity extends Activity {
         debugText.setText(debugText.getText().toString() + "\nTable: Apprentice Scores\n"
                 + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_SCORECARD_ID
                 + "|" + OtashuDatabaseHelper.COLUMN_CORRECT + "|"
-                + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "|"
-                + OtashuDatabaseHelper.COLUMN_NOTESET
+                + OtashuDatabaseHelper.COLUMN_EDGE_ID
                 + "\n");
 
         for (ApprenticeScore aScore : allApprenticeScores) {
 
             String newText = debugText.getText().toString();
             newText += aScore.getId() + "|" + aScore.getScorecardId() + "|" + aScore.getCorrect()
-                    + "|" + aScore.getEmotionId()
-                    + "|" + aScore.getNoteset() + "\n";
+                    + "|" + aScore.getEdgeId() + "\n";
 
             debugText.setText(newText);
         }

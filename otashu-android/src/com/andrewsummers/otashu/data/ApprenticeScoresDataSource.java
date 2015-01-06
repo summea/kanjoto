@@ -23,8 +23,7 @@ public class ApprenticeScoresDataSource {
             OtashuDatabaseHelper.COLUMN_ID,
             OtashuDatabaseHelper.COLUMN_SCORECARD_ID,
             OtashuDatabaseHelper.COLUMN_CORRECT,
-            OtashuDatabaseHelper.COLUMN_EMOTION_ID,
-            OtashuDatabaseHelper.COLUMN_NOTESET,
+            OtashuDatabaseHelper.COLUMN_EDGE_ID,
     };
 
     /**
@@ -63,8 +62,7 @@ public class ApprenticeScoresDataSource {
         contentValues.put(OtashuDatabaseHelper.COLUMN_SCORECARD_ID,
                 apprenticeScore.getScorecardId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_CORRECT, apprenticeScore.getCorrect());
-        contentValues.put(OtashuDatabaseHelper.COLUMN_EMOTION_ID, apprenticeScore.getEmotionId());
-        contentValues.put(OtashuDatabaseHelper.COLUMN_NOTESET, apprenticeScore.getNoteset());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_EDGE_ID, apprenticeScore.getEdgeId());
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -125,8 +123,7 @@ public class ApprenticeScoresDataSource {
                 apprenticeScore.setId(cursor.getLong(0));
                 apprenticeScore.setScorecardId(cursor.getLong(1));
                 apprenticeScore.setCorrect(cursor.getInt(2));
-                apprenticeScore.setEmotionId(cursor.getInt(3));
-                apprenticeScore.setNoteset(cursor.getString(4));
+                apprenticeScore.setEdgeId(cursor.getLong(3));
 
                 // add note string to list of strings
                 apprenticeScores.add(apprenticeScore);
@@ -170,8 +167,7 @@ public class ApprenticeScoresDataSource {
         apprenticeScore.setId(cursor.getLong(0));
         apprenticeScore.setScorecardId(cursor.getLong(1));
         apprenticeScore.setCorrect(cursor.getInt(2));
-        apprenticeScore.setEmotionId(cursor.getInt(3));
-        apprenticeScore.setNoteset(cursor.getString(4));
+        apprenticeScore.setEdgeId(cursor.getLong(3));
         return apprenticeScore;
     }
 
@@ -199,8 +195,7 @@ public class ApprenticeScoresDataSource {
                 apprenticeScore.setId(cursor.getLong(0));
                 apprenticeScore.setScorecardId(cursor.getLong(1));
                 apprenticeScore.setCorrect(cursor.getInt(2));
-                apprenticeScore.setEmotionId(cursor.getInt(3));
-                apprenticeScore.setNoteset(cursor.getString(4));
+                apprenticeScore.setEdgeId(cursor.getLong(3));
 
                 // add apprenticeScore string to list of strings
                 apprenticeScores.add(apprenticeScore.toString());
@@ -261,8 +256,7 @@ public class ApprenticeScoresDataSource {
                 apprenticeScore.setId(cursor.getLong(0));
                 apprenticeScore.setScorecardId(cursor.getLong(1));
                 apprenticeScore.setCorrect(cursor.getInt(2));
-                apprenticeScore.setEmotionId(cursor.getInt(3));
-                apprenticeScore.setNoteset(cursor.getString(4));
+                apprenticeScore.setEdgeId(cursor.getLong(3));
             } while (cursor.moveToNext());
         }
 
@@ -279,8 +273,7 @@ public class ApprenticeScoresDataSource {
         contentValues.put(OtashuDatabaseHelper.COLUMN_SCORECARD_ID,
                 apprenticeScore.getScorecardId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_CORRECT, apprenticeScore.getCorrect());
-        contentValues.put(OtashuDatabaseHelper.COLUMN_EMOTION_ID, apprenticeScore.getEmotionId());
-        contentValues.put(OtashuDatabaseHelper.COLUMN_NOTESET, apprenticeScore.getNoteset());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_EDGE_ID, apprenticeScore.getEdgeId());
 
         db.update(OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES, contentValues,
                 OtashuDatabaseHelper.COLUMN_ID + "=" + apprenticeScore.getId(), null);
