@@ -1,10 +1,13 @@
 # otashu
 
 ## TODO:
-- save generated song to file
-- create emotion fingerprint
-- noteset folders (lists by label or emotion)
+- fix horizontal animation timing for music generation activity
+- show Apprentice's top scores for correct noteset questions
+- show Apprentice's top 3 strongest noteset-emotion relationship learned knowledge
 - standardize strings view naming
+- noteset folders (lists by label or emotion)
+- create emotion fingerprint
+- save generated song to file
 
 
 ## DONE:
