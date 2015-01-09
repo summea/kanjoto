@@ -99,8 +99,13 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
 
         spinner.setSelection(adapter.getPosition(instrumentLabels[position]));
 
+        /*
+         * There may be times where we want the GenerateMusicActivity to be run without the User
+         * having to manually choose an emotion. For example, when the alarm clock feature is
+         * called, we really just want the GenerateMusicActivity to run automatically.
+         */
         try {
-            // auto play order sent?
+            // was an "auto play" order sent?
             Bundle bundle = getIntent().getExtras();
             boolean autoPlay = bundle.getBoolean("auto_play", false);
 
@@ -169,7 +174,6 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
     }
 
     private void saveBookmark(Bookmark bookmark) {
-
         // save bookmark in database
         BookmarksDataSource bds = new BookmarksDataSource(this);
         bds.createBookmark(bookmark);
