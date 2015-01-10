@@ -49,6 +49,8 @@ public class NotevalueAdapter extends BaseAdapter {
 
         TextView notevalue = (TextView) convertView.findViewById(R.id.notevalue);
         notevalue.setText(notevaluesAndRelated.get(position).getNotevalue().getNotelabel());
+
+        // set relevant background color, if available
         if (notevaluesAndRelated.get(position).getLabel().getColor() != null) {
             notevalue.setBackgroundColor(Color.parseColor(notevaluesAndRelated.get(position)
                     .getLabel().getColor()));

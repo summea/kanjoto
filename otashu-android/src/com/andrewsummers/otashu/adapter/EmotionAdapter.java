@@ -49,6 +49,8 @@ public class EmotionAdapter extends BaseAdapter {
 
         TextView emotion = (TextView) convertView.findViewById(R.id.emotion);
         emotion.setText(emotionsAndRelated.get(position).getEmotion().getName());
+
+        // set relevant background color, if available
         if (emotionsAndRelated.get(position).getLabel().getColor() != null) {
             emotion.setBackgroundColor(Color.parseColor(emotionsAndRelated.get(position).getLabel()
                     .getColor()));

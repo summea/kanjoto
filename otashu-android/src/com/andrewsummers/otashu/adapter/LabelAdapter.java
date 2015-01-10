@@ -49,6 +49,8 @@ public class LabelAdapter extends BaseAdapter {
 
         TextView label = (TextView) convertView.findViewById(R.id.label);
         label.setText(labels.get(position).getName());
+
+        // set relevant background color, if available
         if (labels.get(position).getColor() != null) {
             label.setBackgroundColor(Color.parseColor(labels.get(position).getColor()));
         } else {

@@ -110,7 +110,6 @@ public class ViewAllNotesetsActivity extends ListActivity {
                 @Override
                 public void onScrollStateChanged(AbsListView view, int scrollState) {
                     // TODO Auto-generated method stub
-
                 }
 
                 @Override
