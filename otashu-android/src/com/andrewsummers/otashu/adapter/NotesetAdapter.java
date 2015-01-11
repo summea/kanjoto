@@ -2,7 +2,6 @@
 package com.andrewsummers.otashu.adapter;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import com.andrewsummers.otashu.R;
@@ -16,6 +15,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.StateListDrawable;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +26,11 @@ public class NotesetAdapter extends BaseAdapter {
 
     private Context mContext;
     private List<NotesetAndRelated> notesetsAndRelated;
-    HashMap<Integer, Notevalue> notevalues = new HashMap<Integer, Notevalue>();
-    HashMap<Integer, Label> labels = new HashMap<Integer, Label>();
+    SparseArray<Notevalue> notevalues = new SparseArray<Notevalue>();
+    SparseArray<Label> labels = new SparseArray<Label>();
+
+    // HashMap<Integer, Notevalue> notevalues = new HashMap<Integer, Notevalue>();
+    // HashMap<Integer, Label> labels = new HashMap<Integer, Label>();
 
     public NotesetAdapter(Context context, List<NotesetAndRelated> allNotesetsAndNotes) {
         mContext = context;

@@ -1,3 +1,4 @@
+
 package com.andrewsummers.otashu.data;
 
 import java.util.ArrayList;
@@ -176,7 +177,8 @@ public class ApprenticeScorecardsDataSource {
         ApprenticeScorecard apprenticeScorecard = null;
         if (cursor.moveToFirst()) {
             do {
-                // create apprenticeScorecard objects based on apprenticeScorecard data from database
+                // create apprenticeScorecard objects based on apprenticeScorecard data from
+                // database
                 apprenticeScorecard = new ApprenticeScorecard();
                 apprenticeScorecard.setId(cursor.getLong(0));
 
@@ -208,7 +210,8 @@ public class ApprenticeScorecardsDataSource {
         ApprenticeScorecard apprenticeScorecard = null;
         if (cursor.moveToFirst()) {
             do {
-                // create apprenticeScorecard objects based on apprenticeScorecard data from database
+                // create apprenticeScorecard objects based on apprenticeScorecard data from
+                // database
                 apprenticeScorecard = new ApprenticeScorecard();
                 apprenticeScorecard.setId(cursor.getLong(0));
 
@@ -223,8 +226,8 @@ public class ApprenticeScorecardsDataSource {
     public ApprenticeScorecard getApprenticeScorecard(long apprenticeScorecardId) {
         ApprenticeScorecard apprenticeScorecard = new ApprenticeScorecard();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORECARDS + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_ID + "=" + apprenticeScorecardId;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORECARDS
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + apprenticeScorecardId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -234,7 +237,8 @@ public class ApprenticeScorecardsDataSource {
 
         if (cursor.moveToFirst()) {
             do {
-                // create apprenticeScorecard objects based on apprenticeScorecard data from database
+                // create apprenticeScorecard objects based on apprenticeScorecard data from
+                // database
                 apprenticeScorecard = new ApprenticeScorecard();
                 apprenticeScorecard.setId(cursor.getLong(0));
             } while (cursor.moveToNext());
