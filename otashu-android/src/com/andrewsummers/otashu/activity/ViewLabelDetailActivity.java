@@ -8,7 +8,6 @@ import com.andrewsummers.otashu.model.Label;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 /**
@@ -30,7 +29,6 @@ public class ViewLabelDetailActivity extends Activity {
         // get specific layout for content view
         setContentView(R.layout.activity_view_label_detail);
 
-        Log.d("MYLOG", "got list item id: " + getIntent().getExtras().getLong("list_id"));
         labelId = (int) getIntent().getExtras().getLong("list_id");
 
         /*

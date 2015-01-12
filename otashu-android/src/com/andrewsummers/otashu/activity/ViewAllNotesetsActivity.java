@@ -149,8 +149,8 @@ public class ViewAllNotesetsActivity extends ListActivity {
             // register context menu
             registerForContextMenu(listView);
         } else {
+            // no more rows to load
             doneLoading = true;
-            Log.d("MYLOG", "sorry, that's all of the available notesets...");
         }
 
         eds.close();
@@ -172,8 +172,6 @@ public class ViewAllNotesetsActivity extends ListActivity {
 
         totalNotesetsAvailable = nsds.getCount();
 
-        Log.d("MYLOG", "limit: " + limit + " currentOffset: " + currentOffset);
-
         if (currentOffset <= totalNotesetsAvailable) {
             allNotesets = nsds.getAllNotesets(limit, currentOffset);
 
@@ -192,7 +190,7 @@ public class ViewAllNotesetsActivity extends ListActivity {
 
             adapter.notifyDataSetChanged();
         } else {
-            Log.d("MYLOG", "sorry, that's all of the available notesets...");
+            // no more rows to load
         }
 
         eds.close();
@@ -254,7 +252,6 @@ public class ViewAllNotesetsActivity extends ListActivity {
                 startActivity(intent);
                 return true;
             case R.id.context_menu_delete:
-                Log.d("MYLOG", "confirming delete");
                 confirmDelete();
                 return true;
             default:
@@ -275,7 +272,6 @@ public class ViewAllNotesetsActivity extends ListActivity {
                 Noteset notesetToDelete = allNotesetsAndNotes.get(selectedPositionInList)
                         .getNoteset();
 
-                Log.d("MYLOG", "deleting noteset: " + notesetToDelete.getId());
                 deleteNoteset(notesetToDelete);
 
                 Context context = getApplicationContext();

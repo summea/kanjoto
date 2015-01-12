@@ -15,7 +15,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -71,8 +70,6 @@ public class ViewAllLabelsActivity extends ListActivity {
         listView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
-
-                Log.d("MYLOG", "list item id: " + id);
 
                 // launch details activity
                 Intent intent = new Intent(view.getContext(),
@@ -137,7 +134,6 @@ public class ViewAllLabelsActivity extends ListActivity {
                 startActivity(intent);
                 return true;
             case R.id.context_menu_delete:
-                Log.d("MYLOG", "confirming delete");
                 confirmDelete();
                 return true;
             default:
@@ -155,11 +151,8 @@ public class ViewAllLabelsActivity extends ListActivity {
                 // go ahead and delete label
 
                 // get correct label id to delete
-                Log.d("MYLOG", "selected row item: " + selectedPositionInList);
-
                 Label labelToDelete = getLabelFromListPosition(selectedPositionInList);
 
-                Log.d("MYLOG", "deleting label: " + labelToDelete.getId());
                 deleteLabel(labelToDelete);
 
                 Context context = getApplicationContext();
@@ -196,17 +189,12 @@ public class ViewAllLabelsActivity extends ListActivity {
         allLabelsData = lds.getAllLabelListDBTableIds();
         lds.close();
 
-        Log.d("MYLOG", allLabelsData.toString());
-
         // prevent crashes due to lack of database data
         if (allLabelsData.isEmpty())
             allLabelsData.add((long) 0);
 
         Long[] allLabels = allLabelsData
                 .toArray(new Long[allLabelsData.size()]);
-
-        Log.d("MYLOG", "rowId: " + rowId);
-        Log.d("MYLOG", "found label data: " + allLabels[(int) labelId]);
 
         Label label = lds.getLabel(allLabels[(int) labelId]);
 

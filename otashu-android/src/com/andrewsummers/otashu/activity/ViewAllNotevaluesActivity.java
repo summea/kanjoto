@@ -18,7 +18,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -90,8 +89,6 @@ public class ViewAllNotevaluesActivity extends ListActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
 
-                Log.d("MYLOG", "list item id: " + id);
-
                 // launch details activity
                 Intent intent = new Intent(view.getContext(),
                         ViewNotevalueDetailActivity.class);
@@ -154,7 +151,6 @@ public class ViewAllNotevaluesActivity extends ListActivity {
                 startActivity(intent);
                 return true;
             case R.id.context_menu_delete:
-                Log.d("MYLOG", "confirming delete");
                 confirmDelete();
                 return true;
             default:
@@ -172,11 +168,8 @@ public class ViewAllNotevaluesActivity extends ListActivity {
                 // go ahead and delete notevalue
 
                 // get correct notevalue id to delete
-                Log.d("MYLOG", "selected row item: " + selectedPositionInList);
-
                 Notevalue notevalueToDelete = getNotevalueFromListPosition(selectedPositionInList);
 
-                Log.d("MYLOG", "deleting notevalue: " + notevalueToDelete.getId());
                 deleteNotevalue(notevalueToDelete);
 
                 Context context = getApplicationContext();
@@ -213,17 +206,12 @@ public class ViewAllNotevaluesActivity extends ListActivity {
         allNotevaluesData = nvds.getAllNotevalueListDBTableIds();
         nvds.close();
 
-        Log.d("MYLOG", allNotevaluesData.toString());
-
         // prevent crashes due to lack of database data
         if (allNotevaluesData.isEmpty())
             allNotevaluesData.add((long) 0);
 
         Long[] allNotevalues = allNotevaluesData
                 .toArray(new Long[allNotevaluesData.size()]);
-
-        Log.d("MYLOG", "rowId: " + rowId);
-        Log.d("MYLOG", "found notevalue data: " + allNotevalues[(int) notevalueId]);
 
         Notevalue notevalue = nvds.getNotevalue(allNotevalues[(int) notevalueId]);
 

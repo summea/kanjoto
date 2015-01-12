@@ -10,7 +10,6 @@ import com.andrewsummers.otashu.model.Notevalue;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 /**
@@ -32,7 +31,6 @@ public class ViewNotevalueDetailActivity extends Activity {
         // get specific layout for content view
         setContentView(R.layout.activity_view_notevalue_detail);
 
-        Log.d("MYLOG", "got list item id: " + getIntent().getExtras().getLong("list_id"));
         notevalueId = (int) getIntent().getExtras().getLong("list_id");
 
         /*

@@ -66,7 +66,6 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
         // get specific layout for content view
         setContentView(R.layout.activity_view_noteset_detail);
 
-        Log.d("MYLOG", "got list item id: " + getIntent().getExtras().getLong("list_id"));
         notesetId = (int) getIntent().getExtras().getLong("list_id");
 
         NotesetsDataSource nsds = new NotesetsDataSource(this);
@@ -178,7 +177,6 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
                     Note note = new Note();
                     note = notesetBundle.get(key).get(i);
                     notes.add(note);
-                    Log.d("MYLOG", "note value: " + note.getLength());
                 }
 
                 // get default instrument for playback
@@ -255,7 +253,6 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
                 finish();
                 return true;
             case R.id.context_menu_delete:
-                Log.d("MYLOG", "confirming delete");
                 confirmDelete();
                 return true;
             default:
@@ -274,7 +271,6 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
                 // go ahead and delete noteset
                 Noteset notesetToDelete = nds.getNoteset(notesetId);
 
-                Log.d("MYLOG", "deleting noteset: " + notesetToDelete.getId());
                 deleteNoteset(notesetToDelete);
 
                 finish();

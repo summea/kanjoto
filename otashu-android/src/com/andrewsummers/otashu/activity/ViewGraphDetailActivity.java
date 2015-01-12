@@ -7,7 +7,6 @@ import com.andrewsummers.otashu.model.Graph;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 /**
@@ -29,7 +28,6 @@ public class ViewGraphDetailActivity extends Activity {
         // get specific layout for content view
         setContentView(R.layout.activity_view_graph_detail);
 
-        Log.d("MYLOG", "got list item id: " + getIntent().getExtras().getLong("list_id"));
         graphId = (int) getIntent().getExtras().getLong("list_id");
 
         /*

@@ -52,7 +52,6 @@ public class ViewBookmarkDetailActivity extends Activity implements OnClickListe
         // get specific layout for content view
         setContentView(R.layout.activity_view_bookmark_detail);
 
-        Log.d("MYLOG", "got list item id: " + getIntent().getExtras().getLong("list_id"));
         bookmarkId = (int) getIntent().getExtras().getLong("list_id");
 
         /*
