@@ -27,7 +27,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -83,8 +82,6 @@ public class ViewAllBookmarksActivity extends ListActivity {
         listView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
-
-                Log.d("MYLOG", "list item id: " + id);
 
                 // launch details activity
                 Intent intent = new Intent(view.getContext(),
@@ -151,7 +148,6 @@ public class ViewAllBookmarksActivity extends ListActivity {
                 startActivity(intent);
                 return true;
             case R.id.context_menu_delete:
-                Log.d("MYLOG", "confirming delete");
                 confirmDelete();
                 return true;
             default:
@@ -171,7 +167,6 @@ public class ViewAllBookmarksActivity extends ListActivity {
                 // get correct bookmark id to delete
                 Bookmark bookmarkToDelete = getBookmarkFromListPosition(selectedPositionInList);
 
-                Log.d("MYLOG", "deleting bookmark: " + bookmarkToDelete.getId());
                 deleteBookmark(bookmarkToDelete);
 
                 Context context = getApplicationContext();
@@ -208,17 +203,12 @@ public class ViewAllBookmarksActivity extends ListActivity {
         allBookmarksData = bds.getAllBookmarkListDBTableIds();
         bds.close();
 
-        Log.d("MYLOG", allBookmarksData.toString());
-
         // prevent crashes due to lack of database data
         if (allBookmarksData.isEmpty())
             allBookmarksData.add((long) 0);
 
         Long[] allBookmarks = allBookmarksData
                 .toArray(new Long[allBookmarksData.size()]);
-
-        Log.d("MYLOG", "rowId: " + rowId);
-        Log.d("MYLOG", "found bookmark data: " + allBookmarks[(int) bookmarkId]);
 
         Bookmark bookmark = bds.getBookmark(allBookmarks[(int) bookmarkId]);
 
@@ -244,8 +234,6 @@ public class ViewAllBookmarksActivity extends ListActivity {
 
     void play_bookmark(long listId) {
         int bookmarkId = (int) listId;
-
-        Log.d("MYLOG", "bookmark id: " + bookmarkId);
 
         Bookmark bookmark = new Bookmark();
         BookmarksDataSource bds = new BookmarksDataSource(this);

@@ -15,7 +15,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -71,8 +70,6 @@ public class ViewAllGraphsActivity extends ListActivity {
         listView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
-
-                Log.d("MYLOG", "list item id: " + id);
 
                 // launch details activity
                 Intent intent = new Intent(view.getContext(),
@@ -137,7 +134,6 @@ public class ViewAllGraphsActivity extends ListActivity {
                 startActivity(intent);
                 return true;
             case R.id.context_menu_delete:
-                Log.d("MYLOG", "confirming delete");
                 confirmDelete();
                 return true;
             default:
@@ -155,11 +151,8 @@ public class ViewAllGraphsActivity extends ListActivity {
                 // go ahead and delete graph
 
                 // get correct graph id to delete
-                Log.d("MYLOG", "selected row item: " + selectedPositionInList);
-
                 Graph graphToDelete = getGraphFromListPosition(selectedPositionInList);
 
-                Log.d("MYLOG", "deleting graph: " + graphToDelete.getId());
                 deleteGraph(graphToDelete);
 
                 Context context = getApplicationContext();
@@ -194,9 +187,7 @@ public class ViewAllGraphsActivity extends ListActivity {
 
         // get string version of returned graph list
         allGraphsData = lds.getAllGraphListDBTableIds();
-        lds.close();
-
-        Log.d("MYLOG", allGraphsData.toString());
+        lds.close();        
 
         // prevent crashes due to lack of database data
         if (allGraphsData.isEmpty())
@@ -204,9 +195,6 @@ public class ViewAllGraphsActivity extends ListActivity {
 
         Long[] allGraphs = allGraphsData
                 .toArray(new Long[allGraphsData.size()]);
-
-        Log.d("MYLOG", "rowId: " + rowId);
-        Log.d("MYLOG", "found graph data: " + allGraphs[(int) graphId]);
 
         Graph graph = lds.getGraph(allGraphs[(int) graphId]);
 

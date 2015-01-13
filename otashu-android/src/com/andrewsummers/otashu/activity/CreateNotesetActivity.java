@@ -243,8 +243,6 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
 
                     finish();
                 } else {
-                    Log.d("MYLOG", "noteset already exists!");
-
                     Context context = getApplicationContext();
                     int duration = Toast.LENGTH_SHORT;
 
@@ -311,10 +309,6 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
 
         notesetExists = nds.doesNotesetExist(notesetAndRelated);
 
-        if (notesetExists) {
-            Log.d("MYLOG", "notes match... noteset already exists!");
-        }
-
         return notesetExists;
     }
 
@@ -341,8 +335,6 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
      * @param data Incoming string of data to be saved.
      */
     private void saveNoteset(View v, Noteset noteset) {
-
-        Log.d("MYLOG", "noteset to be saved: " + noteset.getEnabled());
         // save noteset in database
         NotesetsDataSource nds = new NotesetsDataSource(this);
         newlyInsertedNoteset = nds.createNoteset(noteset);

@@ -266,8 +266,6 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
 
         switch (v.getId()) {
             case R.id.button_save:
-
-                Log.d("MYLOG", "button save pushed");
                 Spinner spinner;
 
                 // check if noteset already exists, first
@@ -336,8 +334,6 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
 
                     finish();
                 } else {
-                    Log.d("MYLOG", "noteset already exists!");
-
                     Context context = getApplicationContext();
                     int duration = Toast.LENGTH_SHORT;
 
@@ -403,11 +399,6 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
         NotesDataSource nds = new NotesDataSource(this);
 
         notesetExists = nds.doesNotesetExist(notesetAndRelated);
-        Log.d("MYLOG", "editing notes: " + notesetAndRelated.getNotes().toString());
-
-        if (notesetExists) {
-            Log.d("MYLOG", "notes match... noteset already exists!");
-        }
 
         return notesetExists;
     }

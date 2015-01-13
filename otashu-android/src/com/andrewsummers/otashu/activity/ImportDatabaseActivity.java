@@ -13,7 +13,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.widget.Toast;
 
 public class ImportDatabaseActivity extends Activity {
@@ -27,17 +26,12 @@ public class ImportDatabaseActivity extends Activity {
         String importDatabaseLocationText = sharedPref.getString("pref_import_database_location",
                 "");
 
-        Log.d("MYLOG", "importing: " + importDatabaseLocationText);
-
         File externalStorage = Environment.getExternalStorageDirectory();
 
         if (externalStorage.canWrite()) {
             Context context = this;
             File backupDB = new File(importDatabaseLocationText);
             File currentDB = context.getDatabasePath("otashu_collection.db");
-
-            Log.d("MYLOG", "backupDB: " + backupDB.toString());
-            Log.d("MYLOG", "currentDB: " + currentDB.toString());
 
             if (backupDB.exists()) {
                 FileChannel src = null;
