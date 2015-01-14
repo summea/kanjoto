@@ -33,6 +33,7 @@ public class ExportDatabaseActivity extends Activity {
         File path = Environment.getExternalStorageDirectory();
         String newDirectory = path.toString() + "/otashu/";
         File newFile = new File(newDirectory);
+
         if (!newFile.exists()) {
             newFile.mkdirs();
         }

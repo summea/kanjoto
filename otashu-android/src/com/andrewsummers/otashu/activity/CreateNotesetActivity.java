@@ -56,7 +56,6 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
         setContentView(R.layout.activity_create_noteset);
 
         // add listeners to buttons
-        // have to cast to Button in this case
         buttonSave = (Button) findViewById(R.id.button_save);
         buttonSave.setOnClickListener(this);
 
@@ -134,7 +133,6 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
 
         try {
             // add listeners to buttons
-            // have to cast to Button in this case
             buttonPlayNoteset = (Button) findViewById(R.id.button_play_noteset);
             buttonPlayNoteset.setOnClickListener(this);
         } catch (Exception e) {

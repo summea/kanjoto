@@ -41,7 +41,6 @@ public class EditEmotionActivity extends Activity implements OnClickListener {
         setContentView(R.layout.activity_edit_emotion);
 
         // add listeners to buttons
-        // have to cast to Button in this case
         buttonSave = (Button) findViewById(R.id.button_save);
         buttonSave.setOnClickListener(this);
 

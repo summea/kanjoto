@@ -71,7 +71,6 @@ public class ViewBookmarkDetailActivity extends Activity implements OnClickListe
 
         try {
             // add listeners to buttons
-            // have to cast to Button in this case
             buttonPlayBookmark = (Button) findViewById(R.id.button_play_bookmark);
             buttonPlayBookmark.setOnClickListener(this);
         } catch (Exception e) {
