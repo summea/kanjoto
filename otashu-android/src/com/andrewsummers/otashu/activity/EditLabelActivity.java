@@ -44,6 +44,7 @@ public class EditLabelActivity extends Activity implements OnClickListener {
         editLabel = lds.getLabel(labelId);
         lds.close();
 
+        // fill in form data
         EditText labelNameText = (EditText) findViewById(R.id.edittext_label_name);
         labelNameText.setText(editLabel.getName());
 

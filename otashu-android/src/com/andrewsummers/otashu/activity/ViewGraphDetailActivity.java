@@ -40,7 +40,8 @@ public class ViewGraphDetailActivity extends Activity {
         graph = lds.getGraph(graphId);
         lds.close();
 
+        // fill in form data
         TextView graphName = (TextView) findViewById(R.id.graph_name_value);
-        graphName.setText(graph.getName());     
+        graphName.setText(graph.getName());
     }
 }

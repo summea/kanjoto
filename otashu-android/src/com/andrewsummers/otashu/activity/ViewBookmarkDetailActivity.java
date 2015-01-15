@@ -64,6 +64,7 @@ public class ViewBookmarkDetailActivity extends Activity implements OnClickListe
         bookmark = bds.getBookmark(bookmarkId);
         bds.close();
 
+        // fill in form data
         TextView bookmarkName = (TextView) findViewById(R.id.bookmark_detail_name_value);
         bookmarkName.setText(bookmark.getName());
 
@@ -164,5 +165,4 @@ public class ViewBookmarkDetailActivity extends Activity implements OnClickListe
         }
         super.onBackPressed();
     }
-
 }

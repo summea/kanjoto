@@ -43,12 +43,14 @@ public class ViewEmotionDetailActivity extends Activity {
         Label label = lds.getLabel(emotion.getLabelId());
         lds.close();
 
+        // fill in form data
         TextView emotionName = (TextView) findViewById(R.id.emotion_detail_name_value);
         emotionName.setText(emotion.getName());
 
         TextView emotionLabel = (TextView) findViewById(R.id.emotion_detail_label_value);
         emotionLabel.setText(lds.getLabel(emotion.getLabelId()).getName());
 
+        // get label background color, if available
         if (label.getColor() != null) {
             emotionLabel.setBackgroundColor(Color.parseColor(label.getColor()));
         }

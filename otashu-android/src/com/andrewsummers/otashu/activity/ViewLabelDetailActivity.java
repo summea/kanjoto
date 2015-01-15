@@ -41,13 +41,16 @@ public class ViewLabelDetailActivity extends Activity {
         label = lds.getLabel(labelId);
         lds.close();
 
+        // fill in form data
         TextView labelName = (TextView) findViewById(R.id.label_name_value);
         labelName.setText(label.getName());
 
         TextView labelColor = (TextView) findViewById(R.id.label_color_value);
         labelColor.setText(label.getColor());
 
-        if (label.getColor() != null)
+        // get label background color, if available
+        if (label.getColor() != null) {
             labelColor.setBackgroundColor(Color.parseColor(label.getColor()));
+        }
     }
 }

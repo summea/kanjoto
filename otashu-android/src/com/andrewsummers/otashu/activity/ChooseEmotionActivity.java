@@ -159,7 +159,6 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
-                Log.d("MYLOG", "serialized notes: " + data.getStringExtra("serialized_notes"));
                 lastSerializedNotes = data.getStringExtra("serialized_notes");
             }
         }

@@ -373,6 +373,7 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
                 int playbackSpeed = Integer.valueOf(sharedPref.getString(
                         "pref_default_playback_speed", "120"));
 
+                // generate music for playback
                 GenerateMusicActivity generateMusic = new GenerateMusicActivity();
                 generateMusic.generateMusic(notes, musicSource, defaultInstrument, playbackSpeed);
 
