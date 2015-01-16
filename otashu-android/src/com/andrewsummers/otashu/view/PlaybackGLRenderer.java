@@ -36,12 +36,13 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
     private Square mSquare;
     private List<Square> mSquares = new ArrayList<Square>();
     private List<Note> noteSequence = new ArrayList<Note>();
-    private float verticalSpeed = 0.035f;
-    private float horizontalSpeed = 0.035f;
+    private float verticalSpeed = 0.036f;
+    private float horizontalSpeed = 0.075f;
     private int itemCurrentlyPlaying = 0;
     private int tPlay = 0;
-    private int innerMoveUntil = 4;
-    private int innerUnMoveUntil = 8;
+    private int innerMoveUntil = 2;
+    private int innerUnMoveUntil = 4;
+    private int squaresToRemove = 1;
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
     private final float[] mMVPMatrix = new float[16];
@@ -60,7 +61,7 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
 
         noteColorTable = incomingNoteColorTable;
 
-        verticalSpeed = ((0.035f * playbackSpeed) / 120);
+        verticalSpeed = ((verticalSpeed * playbackSpeed) / 120);
     }
 
     @Override
@@ -102,33 +103,42 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
         // innerUnMoveUntil: un-animate until tPlay == this value
 
         for (int i = 0; i < mSquares.size(); i++) {
-            // Calculate the projection and view transformation
-            Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
+            if (mSquares.get(i) != null) {
+                // Calculate the projection and view transformation
+                Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 
-            // speed of squares
-            mSquares.get(i).setY(mSquares.get(i).getY() + verticalSpeed);
+                // speed of squares
+                mSquares.get(i).setY(mSquares.get(i).getY() + verticalSpeed);
 
-            if (i == itemCurrentlyPlaying && (tPlay < (tPlay + innerMoveUntil))) {
-                mSquares.get(i).setX(mSquares.get(i).getX() + horizontalSpeed);
-            } else if (i == itemCurrentlyPlaying
-                    && (tPlay > (tPlay + innerMoveUntil) && tPlay < (tPlay + innerUnMoveUntil))) {
-                mSquares.get(i).setX(mSquares.get(i).getX() - horizontalSpeed);
+                if (i == itemCurrentlyPlaying && (tPlay < (tPlay + innerMoveUntil))) {
+                    mSquares.get(i).setX(mSquares.get(i).getX() + horizontalSpeed);
+                } else if (i == itemCurrentlyPlaying
+                        && (tPlay > (tPlay + innerMoveUntil) && tPlay < (tPlay + innerUnMoveUntil))) {
+                    mSquares.get(i).setX(mSquares.get(i).getX() - horizontalSpeed);
+                }
+
+                Matrix.setIdentityM(mModelMatrix, 0);
+                Matrix.translateM(mModelMatrix, 0, mSquares.get(i).getX(), mSquares.get(i).getY(),
+                        0);
+                Matrix.multiplyMM(mMVPMatrix, 0, mMVPMatrix, 0, mModelMatrix, 0);
+
+                // Draw square
+                mSquares.get(i).draw(mMVPMatrix);
+
+                if (mSquares.get(i).getY() > 30 && squaresToRemove > 0) {
+                    mSquares.remove(i);
+                    squaresToRemove--;
+                    Log.d("MYLOG", "deleting square...");
+                }
             }
-
-            Matrix.setIdentityM(mModelMatrix, 0);
-            Matrix.translateM(mModelMatrix, 0, mSquares.get(i).getX(), mSquares.get(i).getY(), 0);
-            Matrix.multiplyMM(mMVPMatrix, 0, mMVPMatrix, 0, mModelMatrix, 0);
-
-            // Draw square
-            mSquares.get(i).draw(mMVPMatrix);
         }
 
         innerMoveUntil--;
         innerUnMoveUntil--;
 
         if (tPlay % 10 == 0) {
-            innerMoveUntil = 4;
-            innerUnMoveUntil = 8;
+            innerMoveUntil = 2;
+            innerUnMoveUntil = 4;
         }
 
         // note: MediaPlayer begins playing music slightly before visualizer starts, so the
@@ -138,7 +148,7 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
         }
 
         // Log.d("MYLOG", "pTime: " + tPlay + " innerMU: " + innerMoveUntil + " innerUMU: "
-                // + innerUnMoveUntil);
+        // + innerUnMoveUntil);
 
         tPlay++;
     }
