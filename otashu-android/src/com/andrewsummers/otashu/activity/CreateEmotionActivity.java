@@ -83,6 +83,7 @@ public class CreateEmotionActivity extends Activity implements OnClickListener {
                 List<Long> allLabelIds = lds.getAllLabelListDBTableIds();
                 lds.close();
 
+                // gather form data
                 Emotion emotionToInsert = new Emotion();
 
                 emotionName = ((EditText) findViewById(R.id.edittext_emotion_name)).getText()

@@ -164,32 +164,6 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         Log.d("MYLOG", ">>> new database version: " + newVersion);
         Log.d("MYLOG", "updating database...");
 
-        // v14
-        // db.execSQL("DROP TABLE " + TABLE_GRAPHS);
-        // db.execSQL("DROP TABLE " + TABLE_VERTICES);
-        // db.execSQL("DROP TABLE " + TABLE_EDGES);
-        // db.execSQL(CREATE_TABLE_GRAPHS);
-        // db.execSQL(CREATE_TABLE_VERTICES);
-        // db.execSQL(CREATE_TABLE_EDGES);
-
-        // v15
-        // db.execSQL("ALTER TABLE " + TABLE_NOTESETS + " ADD COLUMN enabled integer");
-        // db.execSQL("UPDATE " + TABLE_NOTESETS + " SET enabled=1");
-
-        // v16
-        // db.execSQL("DROP TABLE " + TABLE_VERTICES);
-        // db.execSQL("DROP TABLE " + TABLE_EDGES);
-        // db.execSQL(CREATE_TABLE_VERTICES);
-        // db.execSQL(CREATE_TABLE_EDGES);
-
-        // v17
-        // db.execSQL(CREATE_TABLE_APPRENTICE_SCORES);
-
-        // v18
-        // db.execSQL("DROP TABLE " + TABLE_APPRENTICE_SCORECARDS);
-        // db.execSQL(CREATE_TABLE_APPRENTICE_SCORECARDS);
-        // db.execSQL(CREATE_TABLE_APPRENTICE_SCORES);
-
         // v19
         db.execSQL("DROP TABLE " + TABLE_APPRENTICE_SCORES);
         db.execSQL(CREATE_TABLE_APPRENTICE_SCORES);

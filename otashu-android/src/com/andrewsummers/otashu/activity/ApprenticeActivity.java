@@ -627,7 +627,7 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
         // check if scorecard already exists
         if (scorecardId <= 0) {
             TimeZone timezone = TimeZone.getTimeZone("UTC");
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'", Locale.getDefault());
             dateFormat.setTimeZone(timezone);
             String takenAtISO = dateFormat.format(new Date());
 

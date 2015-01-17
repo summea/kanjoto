@@ -17,7 +17,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -123,17 +122,18 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
 
         switch (v.getId()) {
             case R.id.button_go:
-                EmotionsDataSource eds = new EmotionsDataSource(this);
-                eds.open();
-
+                // get all emotions for spinner list
                 List<Integer> allEmotionIds = new ArrayList<Integer>();
+                EmotionsDataSource eds = new EmotionsDataSource(this);
                 allEmotionIds = eds.getAllEmotionIds();
 
+                // set selected emotion in spinner
                 Spinner emotionSpinner = (Spinner) findViewById(R.id.spinner_emotion);
                 int selectedEmotionValue = allEmotionIds.get(emotionSpinner
                         .getSelectedItemPosition());
                 eds.close();
 
+                // set selected instrument in spinner
                 Spinner instrumentSpinner = (Spinner) findViewById(R.id.spinner_instrument);
                 String[] allInstrumentIds = getResources().getStringArray(
                         R.array.instrument_values_array);
@@ -146,10 +146,13 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
 
                 intent = new Intent(this, GenerateMusicActivity.class);
                 intent.putExtras(bundle);
+
+                // we want to get a result back from this activity in order to know what to save for
+                // last generated note sequence (used for saving bookmark data)
                 startActivityForResult(intent, 1);
                 break;
             case R.id.button_bookmark:
-                // save last generated noteset as a bookmark
+                // save last generated note sequence as a bookmark
                 save_bookmark();
                 break;
         }
@@ -159,6 +162,7 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
+                // save last generated note sequence for saving bookmark (if necessary)
                 lastSerializedNotes = data.getStringExtra("serialized_notes");
             }
         }
