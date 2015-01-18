@@ -217,18 +217,20 @@ public class DatabaseDumperActivity extends Activity {
         }
 
         debugText.setText(debugText.getText().toString() + "\nTable: Apprentice Scorecards\n"
-                + OtashuDatabaseHelper.COLUMN_ID + "\n");
+                + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_TAKEN_AT
+                + "\n");
 
         for (ApprenticeScorecard aScorecard : allApprenticeScorecards) {
 
             String newText = debugText.getText().toString();
-            newText += aScorecard.getId() + "\n";
+            newText += aScorecard.getId() + "|" + aScorecard.getTakenAt() + "\n";
 
             debugText.setText(newText);
         }
 
         debugText.setText(debugText.getText().toString() + "\nTable: Apprentice Scores\n"
                 + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_SCORECARD_ID
+                + "|" + OtashuDatabaseHelper.COLUMN_QUESTION_NUMBER
                 + "|" + OtashuDatabaseHelper.COLUMN_CORRECT + "|"
                 + OtashuDatabaseHelper.COLUMN_EDGE_ID
                 + "\n");
@@ -236,7 +238,9 @@ public class DatabaseDumperActivity extends Activity {
         for (ApprenticeScore aScore : allApprenticeScores) {
 
             String newText = debugText.getText().toString();
-            newText += aScore.getId() + "|" + aScore.getScorecardId() + "|" + aScore.getCorrect()
+            newText += aScore.getId() + "|" + aScore.getScorecardId()
+                    + "|" + aScore.getQuestionNumber()
+                    + "|" + aScore.getCorrect()
                     + "|" + aScore.getEdgeId() + "\n";
 
             debugText.setText(newText);

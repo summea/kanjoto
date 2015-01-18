@@ -1,8 +1,11 @@
 <resources>
     <string name="app_name">otashu</string>
-    <string name="apprentice_guess_method_label">Guess Method:</string>
+    <string name="apprentice_guess_method_label">Guess Method:</string>    
+    <string name="apprentice_scorecard_deleted">Scorecard deleted</string>
+    <string name="apprentice_scorecard_detail_taken_at_label">Taken At</string>
     <string name="apprentice_text">Apprentice Text</string>
     <string name="apprentice_title">Apprentice</string>
+    <string name="apprentice_top_scores_title">Apprentice Top Scores</string>
     <string name="apprentice_total_guesses_label">Guesses Correct:</string>
     <string name="bookmark_deleted">bookmark deleted</string>
     <string name="bookmark_detail_name_label">Name</string>
@@ -77,6 +80,7 @@
     <string name="menu_button_graphs">Graphs</string>
     <string name="menu_button_import_database">Import Database</string>
     <string name="menu_button_notevalues">Notevalues</string>
+    <string name="menu_button_scorecards">Scorecards</string>
     <string name="menu_button_settings">Settings</string>
     <string name="menu_button_view_labels">Labels</string>
     <string name="menu_title">otashu</string>
@@ -120,6 +124,7 @@
     <string name="toggle_enabled_off">Off</string>
     <string name="toggle_enabled_on">On</string>
     <string name="view_all_notesets_title">View All Notesets</string>
+    <string name="view_apprentice_scorecard_detail_title">Scorecard Details</string>
     <string name="view_bookmark_detail_title">Bookmark Details</string>
     <string name="view_emotion_detail_title">Emotion Details</string>
     <string name="view_graph_detail_title">Graph Details</string>

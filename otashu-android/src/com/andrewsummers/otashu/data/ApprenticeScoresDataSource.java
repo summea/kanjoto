@@ -22,6 +22,7 @@ public class ApprenticeScoresDataSource {
     private String[] allColumns = {
             OtashuDatabaseHelper.COLUMN_ID,
             OtashuDatabaseHelper.COLUMN_SCORECARD_ID,
+            OtashuDatabaseHelper.COLUMN_QUESTION_NUMBER,
             OtashuDatabaseHelper.COLUMN_CORRECT,
             OtashuDatabaseHelper.COLUMN_EDGE_ID,
     };
@@ -61,6 +62,8 @@ public class ApprenticeScoresDataSource {
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_SCORECARD_ID,
                 apprenticeScore.getScorecardId());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_QUESTION_NUMBER,
+                apprenticeScore.getQuestionNumber());
         contentValues.put(OtashuDatabaseHelper.COLUMN_CORRECT, apprenticeScore.getCorrect());
         contentValues.put(OtashuDatabaseHelper.COLUMN_EDGE_ID, apprenticeScore.getEdgeId());
 
@@ -122,8 +125,45 @@ public class ApprenticeScoresDataSource {
                 apprenticeScore = new ApprenticeScore();
                 apprenticeScore.setId(cursor.getLong(0));
                 apprenticeScore.setScorecardId(cursor.getLong(1));
-                apprenticeScore.setCorrect(cursor.getInt(2));
-                apprenticeScore.setEdgeId(cursor.getLong(3));
+                apprenticeScore.setQuestionNumber(cursor.getInt(2));
+                apprenticeScore.setCorrect(cursor.getInt(3));
+                apprenticeScore.setEdgeId(cursor.getLong(4));
+
+                // add note string to list of strings
+                apprenticeScores.add(apprenticeScore);
+            } while (cursor.moveToNext());
+        }
+
+        return apprenticeScores;
+    }
+
+    /**
+     * Get all apprenticeScores from database table for a specific Scorecard
+     * 
+     * @return List of ApprenticeScores.
+     */
+    public List<ApprenticeScore> getAllApprenticeScores(long scorecardId) {
+        List<ApprenticeScore> apprenticeScores = new ArrayList<ApprenticeScore>();
+
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES + " WHERE "
+                + OtashuDatabaseHelper.COLUMN_SCORECARD_ID + "=" + scorecardId;
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notes from database
+        Cursor cursor = db.rawQuery(query, null);
+
+        ApprenticeScore apprenticeScore = null;
+        if (cursor.moveToFirst()) {
+            do {
+                // create note objects based on note data from database
+                apprenticeScore = new ApprenticeScore();
+                apprenticeScore.setId(cursor.getLong(0));
+                apprenticeScore.setScorecardId(cursor.getLong(1));
+                apprenticeScore.setQuestionNumber(cursor.getInt(2));
+                apprenticeScore.setCorrect(cursor.getInt(3));
+                apprenticeScore.setEdgeId(cursor.getLong(4));
 
                 // add note string to list of strings
                 apprenticeScores.add(apprenticeScore);
@@ -166,8 +206,9 @@ public class ApprenticeScoresDataSource {
         ApprenticeScore apprenticeScore = new ApprenticeScore();
         apprenticeScore.setId(cursor.getLong(0));
         apprenticeScore.setScorecardId(cursor.getLong(1));
-        apprenticeScore.setCorrect(cursor.getInt(2));
-        apprenticeScore.setEdgeId(cursor.getLong(3));
+        apprenticeScore.setQuestionNumber(cursor.getInt(2));
+        apprenticeScore.setCorrect(cursor.getInt(3));
+        apprenticeScore.setEdgeId(cursor.getLong(4));
         return apprenticeScore;
     }
 
@@ -194,8 +235,9 @@ public class ApprenticeScoresDataSource {
                 apprenticeScore = new ApprenticeScore();
                 apprenticeScore.setId(cursor.getLong(0));
                 apprenticeScore.setScorecardId(cursor.getLong(1));
-                apprenticeScore.setCorrect(cursor.getInt(2));
-                apprenticeScore.setEdgeId(cursor.getLong(3));
+                apprenticeScore.setQuestionNumber(cursor.getInt(2));
+                apprenticeScore.setCorrect(cursor.getInt(3));
+                apprenticeScore.setEdgeId(cursor.getLong(4));
 
                 // add apprenticeScore string to list of strings
                 apprenticeScores.add(apprenticeScore.toString());
@@ -255,8 +297,9 @@ public class ApprenticeScoresDataSource {
                 apprenticeScore = new ApprenticeScore();
                 apprenticeScore.setId(cursor.getLong(0));
                 apprenticeScore.setScorecardId(cursor.getLong(1));
-                apprenticeScore.setCorrect(cursor.getInt(2));
-                apprenticeScore.setEdgeId(cursor.getLong(3));
+                apprenticeScore.setQuestionNumber(cursor.getInt(2));
+                apprenticeScore.setCorrect(cursor.getInt(3));
+                apprenticeScore.setEdgeId(cursor.getLong(4));
             } while (cursor.moveToNext());
         }
 
@@ -272,6 +315,8 @@ public class ApprenticeScoresDataSource {
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, apprenticeScore.getId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_SCORECARD_ID,
                 apprenticeScore.getScorecardId());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_QUESTION_NUMBER,
+                apprenticeScore.getQuestionNumber());
         contentValues.put(OtashuDatabaseHelper.COLUMN_CORRECT, apprenticeScore.getCorrect());
         contentValues.put(OtashuDatabaseHelper.COLUMN_EDGE_ID, apprenticeScore.getEdgeId());
 
@@ -293,5 +338,47 @@ public class ApprenticeScoresDataSource {
         apprenticeScore = allApprenticeScores.get(chosenIndex);
 
         return apprenticeScore;
+    }
+
+    /**
+     * Get total number of correct scores from database table for a specific Scorecard
+     * 
+     * @return int of total number correct
+     */
+    public int getCorrectApprenticeScoresCount(long scorecardId) {
+        int totalCorrect = 0;
+
+        String query = "SELECT COUNT(*) FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES
+                + " WHERE "
+                + OtashuDatabaseHelper.COLUMN_SCORECARD_ID + "=" + scorecardId + " AND "
+                + OtashuDatabaseHelper.COLUMN_CORRECT + "=1"
+                + " GROUP BY " + OtashuDatabaseHelper.COLUMN_QUESTION_NUMBER;
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        totalCorrect = (int) db.compileStatement(query).simpleQueryForLong();
+
+        return totalCorrect;
+    }
+
+    /**
+     * Get total number of correct scores from database table for a specific Scorecard
+     * 
+     * @return int of total number correct
+     */
+    public int getApprenticeScoresCount(long scorecardId) {
+        int total = 0;
+
+        String query = "SELECT COUNT(*) FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_SCORECARD_ID + "=" + scorecardId
+                + " GROUP BY " + OtashuDatabaseHelper.COLUMN_QUESTION_NUMBER;
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        total = (int) db.compileStatement(query).simpleQueryForLong();
+
+        return total;
     }
 }

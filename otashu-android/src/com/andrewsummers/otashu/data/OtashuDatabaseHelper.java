@@ -11,7 +11,7 @@ import android.util.Log;
  * application database.
  */
 public class OtashuDatabaseHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 19;
+    private static final int DATABASE_VERSION = 24;
     private static final String DATABASE_NAME = "otashu_collection.db";
 
     public static final String COLUMN_ID = "_id";
@@ -56,8 +56,9 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_APPRENTICE_SCORES = "apprentice_scores";
     public static final String COLUMN_SCORECARD_ID = "scorecard_id";
+    public static final String COLUMN_QUESTION_NUMBER = "question_number";
     public static final String COLUMN_CORRECT = "correct";
-    public static final String COLUMN_EDGE_ID = "edge_id";
+    public static final String COLUMN_EDGE_ID = "edge_id";    
 
     private static final String CREATE_TABLE_NOTESETS = "CREATE TABLE " + TABLE_NOTESETS
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
@@ -121,7 +122,8 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
             + COLUMN_SCORECARD_ID + " integer,"
             + COLUMN_CORRECT + " integer,"
-            + COLUMN_EDGE_ID + " integer);";
+            + COLUMN_EDGE_ID + " integer,"
+            + COLUMN_QUESTION_NUMBER + " integer);";
 
     /**
      * NotesetCollectionOpenHelper constructor.
@@ -163,9 +165,11 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.d("MYLOG", ">>> new database version: " + newVersion);
         Log.d("MYLOG", "updating database...");
-
-        // v19
+        
+        // v24
+        db.execSQL("DROP TABLE " + TABLE_APPRENTICE_SCORECARDS);
         db.execSQL("DROP TABLE " + TABLE_APPRENTICE_SCORES);
+        db.execSQL(CREATE_TABLE_APPRENTICE_SCORECARDS);        
         db.execSQL(CREATE_TABLE_APPRENTICE_SCORES);
     }
 }

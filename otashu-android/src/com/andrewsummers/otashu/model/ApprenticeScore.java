@@ -7,6 +7,7 @@ package com.andrewsummers.otashu.model;
 public class ApprenticeScore {
     private long id;
     private long scorecardId;
+    private int questionNumber;
     private int correct;
     private long edgeId;
 
@@ -44,6 +45,24 @@ public class ApprenticeScore {
      */
     public void setScorecardId(long scorecardId) {
         this.scorecardId = scorecardId;
+    }
+    
+    /**
+     * getQuestionNumber gets ApprenticeScore question number
+     * 
+     * @return <code>int</code> questionNumber value
+     */
+    public int getQuestionNumber() {
+        return questionNumber;
+    }
+
+    /**
+     * setQuestionNumber sets ApprenticeScore question number
+     * 
+     * @param questionNumber New questionNumber value.
+     */
+    public void setQuestionNumber(int questionNumber) {
+        this.questionNumber = questionNumber;
     }
 
     /**
