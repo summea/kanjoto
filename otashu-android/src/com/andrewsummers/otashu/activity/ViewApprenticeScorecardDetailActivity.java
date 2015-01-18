@@ -3,6 +3,7 @@ package com.andrewsummers.otashu.activity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.ApprenticeScorecardsDataSource;
@@ -37,8 +38,8 @@ public class ViewApprenticeScorecardDetailActivity extends Activity {
         apprenticeScorecardId = (int) getIntent().getExtras().getLong("list_id");
 
         /*
-         * // prevent crashes due to lack of database data if (allApprenticeScorecardsData.isEmpty())
-         * allApprenticeScorecardsData.add((long) 0);
+         * // prevent crashes due to lack of database data if
+         * (allApprenticeScorecardsData.isEmpty()) allApprenticeScorecardsData.add((long) 0);
          */
 
         ApprenticeScorecard apprenticeScorecard = new ApprenticeScorecard();
@@ -49,13 +50,26 @@ public class ViewApprenticeScorecardDetailActivity extends Activity {
         // fill in form data
         TextView apprenticeScorecardTakenAt = (TextView) findViewById(R.id.apprentice_scorecard_taken_at_value);
         apprenticeScorecardTakenAt.setText(apprenticeScorecard.getTakenAt());
-        
+
         // get number of correct answers
         ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
         int total = asds.getApprenticeScoresCount(apprenticeScorecard.getId());
         int totalCorrect = asds.getCorrectApprenticeScoresCount(apprenticeScorecard.getId());
         asds.close();
-        
+
+        double guessesCorrectPercentage = 0.0d;
+
+        if (total > 0) {
+            guessesCorrectPercentage = ((double) totalCorrect / (double) total) * 100.0;
+        }
+
+        String guessesCorrectPercentageString = String.format(Locale.getDefault(), "%.02f",
+                guessesCorrectPercentage);
+
+        TextView apprenticeTotalGuesses = (TextView) findViewById(R.id.apprentice_total_guesses);
+        apprenticeTotalGuesses.setText(totalCorrect + "/" + total + " ("
+                + guessesCorrectPercentageString + "%)");
+
         Log.d("MYLOG", "total: " + total + " correct: " + totalCorrect);
     }
 }

@@ -13,6 +13,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class ApprenticeScoresDataSource {
     private SQLiteDatabase database;
@@ -349,15 +350,15 @@ public class ApprenticeScoresDataSource {
         int totalCorrect = 0;
 
         String query = "SELECT COUNT(*) FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES
-                + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_SCORECARD_ID + "=" + scorecardId + " AND "
-                + OtashuDatabaseHelper.COLUMN_CORRECT + "=1"
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_SCORECARD_ID + "=" + scorecardId
+                + " AND " + OtashuDatabaseHelper.COLUMN_CORRECT + "=1"
                 + " GROUP BY " + OtashuDatabaseHelper.COLUMN_QUESTION_NUMBER;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        totalCorrect = (int) db.compileStatement(query).simpleQueryForLong();
+        Cursor cursor = db.rawQuery(query, null);
+        totalCorrect = cursor.getCount();
 
         return totalCorrect;
     }
@@ -372,12 +373,16 @@ public class ApprenticeScoresDataSource {
 
         String query = "SELECT COUNT(*) FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES
                 + " WHERE " + OtashuDatabaseHelper.COLUMN_SCORECARD_ID + "=" + scorecardId
+                + " AND " + OtashuDatabaseHelper.COLUMN_CORRECT + "=1"
                 + " GROUP BY " + OtashuDatabaseHelper.COLUMN_QUESTION_NUMBER;
+
+        Log.d("MYLOG", query);
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        total = (int) db.compileStatement(query).simpleQueryForLong();
+        Cursor cursor = db.rawQuery(query, null);
+        total = cursor.getCount();
 
         return total;
     }

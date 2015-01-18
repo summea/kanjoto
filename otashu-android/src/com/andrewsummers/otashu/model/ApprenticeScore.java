@@ -46,7 +46,7 @@ public class ApprenticeScore {
     public void setScorecardId(long scorecardId) {
         this.scorecardId = scorecardId;
     }
-    
+
     /**
      * getQuestionNumber gets ApprenticeScore question number
      * 
@@ -108,6 +108,7 @@ public class ApprenticeScore {
      */
     @Override
     public String toString() {
-        return "" + edgeId;
+        return "id: " + id + " scorecard_id: " + scorecardId + " question_number: "
+                + questionNumber + " correct: " + correct + " edgeId: " + edgeId + "\n";
     }
 }

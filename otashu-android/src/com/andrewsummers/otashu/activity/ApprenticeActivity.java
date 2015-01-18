@@ -627,7 +627,8 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
         // check if scorecard already exists
         if (scorecardId <= 0) {
             TimeZone timezone = TimeZone.getTimeZone("UTC");
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'", Locale.getDefault());
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'",
+                    Locale.getDefault());
             dateFormat.setTimeZone(timezone);
             String takenAtISO = dateFormat.format(new Date());
 
@@ -645,9 +646,11 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
         // save Apprentice's score results to database
         ApprenticeScore aScore = new ApprenticeScore();
         aScore.setScorecardId(scorecardId);
-        aScore.setQuestionNumber(totalGuesses+1);
+        aScore.setQuestionNumber(totalGuesses + 1);
         aScore.setCorrect(isCorrect);
         aScore.setEdgeId(edgeId);
+
+        Log.d("MYLOG", "score: " + aScore.toString());
 
         ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
         asds.createApprenticeScore(aScore);
