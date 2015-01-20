@@ -22,6 +22,8 @@ public class ApprenticeScorecardsDataSource {
     private String[] allColumns = {
             OtashuDatabaseHelper.COLUMN_ID,
             OtashuDatabaseHelper.COLUMN_TAKEN_AT,
+            OtashuDatabaseHelper.COLUMN_TOTAL,
+            OtashuDatabaseHelper.COLUMN_CORRECT,
     };
 
     /**
@@ -58,6 +60,8 @@ public class ApprenticeScorecardsDataSource {
     public ApprenticeScorecard createApprenticeScorecard(ApprenticeScorecard apprenticeScorecard) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_TAKEN_AT, apprenticeScorecard.getTakenAt());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_TOTAL, apprenticeScorecard.getTotal());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_CORRECT, apprenticeScorecard.getCorrect());
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -117,6 +121,8 @@ public class ApprenticeScorecardsDataSource {
                 apprenticeScorecard = new ApprenticeScorecard();
                 apprenticeScorecard.setId(cursor.getLong(0));
                 apprenticeScorecard.setTakenAt(cursor.getString(1));
+                apprenticeScorecard.setTotal(cursor.getInt(2));
+                apprenticeScorecard.setCorrect(cursor.getInt(3));
 
                 // add note string to list of strings
                 apprenticeScorecards.add(apprenticeScorecard);
@@ -125,7 +131,7 @@ public class ApprenticeScorecardsDataSource {
 
         return apprenticeScorecards;
     }
-
+    
     /**
      * Get all apprenticeScorecard ids from database table.
      * 
@@ -159,6 +165,8 @@ public class ApprenticeScorecardsDataSource {
         ApprenticeScorecard apprenticeScorecard = new ApprenticeScorecard();
         apprenticeScorecard.setId(cursor.getLong(0));
         apprenticeScorecard.setTakenAt(cursor.getString(1));
+        apprenticeScorecard.setTotal(cursor.getInt(2));
+        apprenticeScorecard.setCorrect(cursor.getInt(3));
         return apprenticeScorecard;
     }
 
@@ -186,6 +194,8 @@ public class ApprenticeScorecardsDataSource {
                 apprenticeScorecard = new ApprenticeScorecard();
                 apprenticeScorecard.setId(cursor.getLong(0));
                 apprenticeScorecard.setTakenAt(cursor.getString(1));
+                apprenticeScorecard.setTotal(cursor.getInt(2));
+                apprenticeScorecard.setCorrect(cursor.getInt(3));
 
                 // add apprenticeScorecard string to list of strings
                 apprenticeScorecards.add(apprenticeScorecard.toString());
@@ -220,6 +230,8 @@ public class ApprenticeScorecardsDataSource {
                 apprenticeScorecard = new ApprenticeScorecard();
                 apprenticeScorecard.setId(cursor.getLong(0));
                 apprenticeScorecard.setTakenAt(cursor.getString(1));
+                apprenticeScorecard.setTotal(cursor.getInt(2));
+                apprenticeScorecard.setCorrect(cursor.getInt(3));
 
                 // add apprenticeScorecard to apprenticeScorecards list
                 apprenticeScorecards.add(apprenticeScorecard.getId());
@@ -248,6 +260,8 @@ public class ApprenticeScorecardsDataSource {
                 apprenticeScorecard = new ApprenticeScorecard();
                 apprenticeScorecard.setId(cursor.getLong(0));
                 apprenticeScorecard.setTakenAt(cursor.getString(1));
+                apprenticeScorecard.setTotal(cursor.getInt(2));
+                apprenticeScorecard.setCorrect(cursor.getInt(3));
             } while (cursor.moveToNext());
         }
 
@@ -262,6 +276,8 @@ public class ApprenticeScorecardsDataSource {
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, apprenticeScorecard.getId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_TAKEN_AT, apprenticeScorecard.getTakenAt());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_TOTAL, apprenticeScorecard.getTotal());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_CORRECT, apprenticeScorecard.getCorrect());
 
         db.update(OtashuDatabaseHelper.TABLE_APPRENTICE_SCORECARDS, contentValues,
                 OtashuDatabaseHelper.COLUMN_ID + "=" + apprenticeScorecard.getId(), null);

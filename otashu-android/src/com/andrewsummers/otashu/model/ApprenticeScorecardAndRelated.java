@@ -1,11 +1,13 @@
 
 package com.andrewsummers.otashu.model;
 
-public class ApprenticeScorecard {
+import java.util.ArrayList;
+import java.util.List;
+
+public class ApprenticeScorecardAndRelated {
     private long id;
     private String takenAt;
-    private int total;
-    private int correct;
+    private List<ApprenticeScore> apprenticeScores = new ArrayList<ApprenticeScore>();
 
     /**
      * getId gets ApprenticeScorecard id
@@ -42,41 +44,23 @@ public class ApprenticeScorecard {
     public void setTakenAt(String takenAt) {
         this.takenAt = takenAt;
     }
-
+    
     /**
-     * getTotal gets ApprenticeScorecard total number of test questions
+     * getApprenticeScores gets List<ApprenticeScore> scores
      * 
-     * @return <code>int</code> total number of test questions
+     * @return <code>List<ApprenticeScore></code> of List<ApprenticeScore> scores list
      */
-    public int getTotal() {
-        return total;
+    public List<ApprenticeScore> getApprenticeScores() {
+        return apprenticeScores;
     }
 
     /**
-     * setTotal sets ApprenticeScorecard total number of test questions
+     * setApprenticeScores sets List<ApprenticeScore> scores
      * 
-     * @param total New total value.
+     * @param apprenticeScores New List<ApprenticeScore> scores list
      */
-    public void setTotal(int total) {
-        this.total = total;
-    }
-
-    /**
-     * getTotal gets ApprenticeScorecard total number of correct test questions
-     * 
-     * @return <code>int</code> total number of correct test questions
-     */
-    public int getCorrect() {
-        return correct;
-    }
-
-    /**
-     * setTotal sets ApprenticeScorecard total number of correct test questions
-     * 
-     * @return <code>int</code> total number of correct test questions
-     */
-    public void setCorrect(int correct) {
-        this.correct = correct;
+    public void setApprenticeScores(List<ApprenticeScore> apprenticeScores) {
+        this.apprenticeScores = apprenticeScores;
     }
 
     /**
@@ -86,7 +70,6 @@ public class ApprenticeScorecard {
      */
     @Override
     public String toString() {
-        return "" + this.id + " " + this.correct + "/" + this.total + " ("
-                + ((this.correct / this.total) * 100) + "%)";
+        return "" + this.id;
     }
 }

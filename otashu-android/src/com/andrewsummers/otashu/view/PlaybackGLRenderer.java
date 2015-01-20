@@ -37,11 +37,11 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
     private List<Square> mSquares = new ArrayList<Square>();
     private List<Note> noteSequence = new ArrayList<Note>();
     private float verticalSpeed = 0.036f;
-    private float horizontalSpeed = 0.075f;
+    private float horizontalSpeed = 0.035f;
     private int itemCurrentlyPlaying = 0;
     private int tPlay = 0;
-    private int innerMoveUntil = 2;
-    private int innerUnMoveUntil = 4;
+    private int innerMoveUntil = 3;
+    private int innerUnMoveUntil = 6;
     private int squaresToRemove = 1;
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
@@ -125,7 +125,11 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
                 // Draw square
                 mSquares.get(i).draw(mMVPMatrix);
 
-                if (mSquares.get(i).getY() > 30 && squaresToRemove > 0) {
+                // this is used to fix timing issue
+                // sometimes blocks slow down as they are drawn on screen this section takes out a
+                // specific number of blocks once blocks are out of sight... which speeds up the
+                // "currently playing" block animation
+                if (mSquares.get(i).getY() > 35 && squaresToRemove > 0) {
                     mSquares.remove(i);
                     squaresToRemove--;
                     Log.d("MYLOG", "deleting square...");
@@ -137,8 +141,8 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
         innerUnMoveUntil--;
 
         if (tPlay % 10 == 0) {
-            innerMoveUntil = 2;
-            innerUnMoveUntil = 4;
+            innerMoveUntil = 3;
+            innerUnMoveUntil = 6;
         }
 
         // note: MediaPlayer begins playing music slightly before visualizer starts, so the

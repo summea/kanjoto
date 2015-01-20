@@ -1,14 +1,11 @@
 
 package com.andrewsummers.otashu.activity;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.ApprenticeScorecardsDataSource;
 import com.andrewsummers.otashu.data.ApprenticeScoresDataSource;
-import com.andrewsummers.otashu.model.ApprenticeScore;
 import com.andrewsummers.otashu.model.ApprenticeScorecard;
 
 import android.app.Activity;

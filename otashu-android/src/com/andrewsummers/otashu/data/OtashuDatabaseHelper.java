@@ -11,7 +11,7 @@ import android.util.Log;
  * application database.
  */
 public class OtashuDatabaseHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 25;
+    private static final int DATABASE_VERSION = 27;
     private static final String DATABASE_NAME = "otashu_collection.db";
 
     public static final String COLUMN_ID = "_id";
@@ -53,6 +53,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_APPRENTICE_SCORECARDS = "apprentice_scorecards";
     public static final String COLUMN_TAKEN_AT = "taken_at";
+    public static final String COLUMN_TOTAL = "total";
 
     public static final String TABLE_APPRENTICE_SCORES = "apprentice_scores";
     public static final String COLUMN_SCORECARD_ID = "scorecard_id";
@@ -115,7 +116,9 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_APPRENTICE_SCORECARDS = "CREATE TABLE "
             + TABLE_APPRENTICE_SCORECARDS
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
-            + COLUMN_TAKEN_AT + " text);";
+            + COLUMN_TAKEN_AT + " text, "
+            + COLUMN_TOTAL + " integer,"
+            + COLUMN_CORRECT + " integer);";
 
     private static final String CREATE_TABLE_APPRENTICE_SCORES = "CREATE TABLE "
             + TABLE_APPRENTICE_SCORES
@@ -166,7 +169,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         Log.d("MYLOG", ">>> new database version: " + newVersion);
         Log.d("MYLOG", "updating database...");
 
-        // v25
+        // v27
         db.execSQL("DROP TABLE " + TABLE_APPRENTICE_SCORECARDS);
         db.execSQL("DROP TABLE " + TABLE_APPRENTICE_SCORES);
         db.execSQL(CREATE_TABLE_APPRENTICE_SCORECARDS);

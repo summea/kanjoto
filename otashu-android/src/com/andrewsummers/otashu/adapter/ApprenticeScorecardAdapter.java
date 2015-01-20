@@ -47,7 +47,7 @@ public class ApprenticeScorecardAdapter extends BaseAdapter {
         }
 
         TextView apprenticeScorecard = (TextView) convertView.findViewById(R.id.apprentice_scorecard);
-        apprenticeScorecard.setText(apprenticeScorecards.get(position).getId() + " " + apprenticeScorecards.get(position).getTakenAt());
+        apprenticeScorecard.setText(apprenticeScorecards.toString());
 
         return convertView;
     }

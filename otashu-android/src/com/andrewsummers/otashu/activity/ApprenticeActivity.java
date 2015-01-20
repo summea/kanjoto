@@ -636,12 +636,25 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
             ApprenticeScorecardsDataSource asds = new ApprenticeScorecardsDataSource(this);
             ApprenticeScorecard aScorecard = new ApprenticeScorecard();
             aScorecard.setTakenAt(takenAtISO);
+            
             aScorecard = asds.createApprenticeScorecard(aScorecard);
             asds.close();
 
             // then get scorecard_id for the score to save
             scorecardId = aScorecard.getId();
         }
+        
+        // also, update scorecard question totals
+        ApprenticeScorecardsDataSource ascds = new ApprenticeScorecardsDataSource(this);
+        ApprenticeScorecard scorecard = new ApprenticeScorecard();
+        scorecard = ascds.getApprenticeScorecard(scorecardId);
+        if (isCorrect == 1) {
+            scorecard.setCorrect(guessesCorrect);
+        }
+        scorecard.setTotal(totalGuesses);
+        ascds.updateApprenticeScorecard(scorecard);
+        ascds.close();
+        Log.d("MYLOG", "guesses correct: " + guessesCorrect + " total guesses: " + totalGuesses);
 
         // save Apprentice's score results to database
         ApprenticeScore aScore = new ApprenticeScore();

@@ -135,15 +135,24 @@ public class EmotionsDataSource {
     public List<Integer> getAllEmotionIds() {
         List<Integer> emotion_ids = new ArrayList<Integer>();
 
-        Cursor cursor = database.query(
-                OtashuDatabaseHelper.TABLE_EMOTIONS, allColumns, null,
-                null, null, null, null);
+        String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
+                + OtashuDatabaseHelper.TABLE_EMOTIONS;
 
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Emotion emotion = cursorToEmotion(cursor);
-            emotion_ids.add((int) emotion.getId());
-            cursor.moveToNext();
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notes from database
+        Cursor cursor = db.rawQuery(query, null);
+        
+        if (cursor.moveToFirst()) {
+            do {
+                // create note objects based on note data from database
+                Emotion emotion = new Emotion();
+                emotion.setId(cursor.getLong(0));
+         
+                // add note string to list of strings
+                emotion_ids.add((int) emotion.getId());
+            } while (cursor.moveToNext());
         }
 
         cursor.close();

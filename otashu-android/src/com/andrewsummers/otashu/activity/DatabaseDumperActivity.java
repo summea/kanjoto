@@ -217,13 +217,15 @@ public class DatabaseDumperActivity extends Activity {
         }
 
         debugText.setText(debugText.getText().toString() + "\nTable: Apprentice Scorecards\n"
-                + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_TAKEN_AT
+                + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_TAKEN_AT + "|"
+                + OtashuDatabaseHelper.COLUMN_CORRECT + "|" + OtashuDatabaseHelper.COLUMN_TOTAL
                 + "\n");
 
         for (ApprenticeScorecard aScorecard : allApprenticeScorecards) {
 
             String newText = debugText.getText().toString();
-            newText += aScorecard.getId() + "|" + aScorecard.getTakenAt() + "\n";
+            newText += aScorecard.getId() + "|" + aScorecard.getTakenAt()
+                    + aScorecard.getCorrect() + "|" + aScorecard.getTotal() + "\n";
 
             debugText.setText(newText);
         }

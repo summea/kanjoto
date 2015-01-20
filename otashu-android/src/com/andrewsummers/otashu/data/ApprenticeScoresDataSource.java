@@ -373,7 +373,6 @@ public class ApprenticeScoresDataSource {
 
         String query = "SELECT COUNT(*) FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES
                 + " WHERE " + OtashuDatabaseHelper.COLUMN_SCORECARD_ID + "=" + scorecardId
-                + " AND " + OtashuDatabaseHelper.COLUMN_CORRECT + "=1"
                 + " GROUP BY " + OtashuDatabaseHelper.COLUMN_QUESTION_NUMBER;
 
         Log.d("MYLOG", query);
