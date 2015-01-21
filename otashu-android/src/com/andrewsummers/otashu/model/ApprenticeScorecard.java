@@ -1,6 +1,14 @@
 
 package com.andrewsummers.otashu.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import org.apache.http.ParseException;
+
+import android.util.Log;
+
 public class ApprenticeScorecard {
     private long id;
     private String takenAt;
@@ -29,9 +37,21 @@ public class ApprenticeScorecard {
      * getTakenAt gets ApprenticeScore taken-at date-timestamp.
      * 
      * @return <code>String</code> of ApprenticeScore taken-at date-timestamp.
+     * @throws java.text.ParseException
      */
     public String getTakenAt() {
-        return takenAt;
+        String formattedDate = "";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'", Locale.getDefault());
+        try {
+            Date date = sdf.parse(this.takenAt);
+            formattedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+                    .format(date);
+        } catch (ParseException e) {
+            Log.d("MYLOG", e.toString());
+        } catch (java.text.ParseException e) {
+            Log.d("MYLOG", e.toString());
+        }
+        return formattedDate;
     }
 
     /**
@@ -86,7 +106,15 @@ public class ApprenticeScorecard {
      */
     @Override
     public String toString() {
-        return "" + this.id + " " + this.correct + "/" + this.total + " ("
-                + ((this.correct / this.total) * 100) + "%)";
+        double percentage = 0d;
+
+        if (this.total > 0) {
+            percentage = ((double) this.correct / (double) this.total) * 100;
+        }
+        String guessesCorrectPercentageString = String.format(Locale.getDefault(), "%.02f",
+                percentage);
+
+        return "" + this.getTakenAt() + " " + this.correct + "/" + this.total + " ("
+                + guessesCorrectPercentageString + "%)";
     }
 }

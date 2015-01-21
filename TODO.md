@@ -2,7 +2,6 @@
 
 ## TODO:
 - fix horizontal animation timing for music generation activity
-- show Apprentice's top scores for correct noteset questions
 - show Apprentice's top 3 strongest noteset-emotion relationship learned knowledge
 - standardize strings view naming
 - noteset folders (lists by label or emotion)
@@ -11,6 +10,8 @@
 
 
 ## DONE:
+- 20150120: added "show Apprentice's top scores for correct noteset questions" feature
+- 20150120:  added "view past Apprentice test results" feature
 - 20150102: added "prevent duplicate notesets with same emotion and note order in ApprenticeActivity" feature
 - 20150101: added "show what note is playing for playback visualization" feature
 - 20141231: added playback speed in settings

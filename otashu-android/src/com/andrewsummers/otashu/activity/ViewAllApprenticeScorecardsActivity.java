@@ -7,6 +7,7 @@ import java.util.List;
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.adapter.ApprenticeScorecardAdapter;
 import com.andrewsummers.otashu.data.ApprenticeScorecardsDataSource;
+import com.andrewsummers.otashu.data.OtashuDatabaseHelper;
 import com.andrewsummers.otashu.model.ApprenticeScorecard;
 
 import android.app.AlertDialog;
@@ -36,7 +37,8 @@ public class ViewAllApprenticeScorecardsActivity extends ListActivity {
     private ApprenticeScorecardAdapter adapter = null;
 
     /**
-     * onCreate override used to gather and display a list of all apprenticeScorecards saved in database.
+     * onCreate override used to gather and display a list of all apprenticeScorecards saved in
+     * database.
      * 
      * @param savedInstanceState Current application state data.
      */
@@ -49,9 +51,9 @@ public class ViewAllApprenticeScorecardsActivity extends ListActivity {
     public void fillList() {
         List<ApprenticeScorecard> allApprenticeScorecards = new LinkedList<ApprenticeScorecard>();
         ApprenticeScorecardsDataSource lds = new ApprenticeScorecardsDataSource(this);
-
-        allApprenticeScorecards = lds.getAllApprenticeScorecards();
-
+        allApprenticeScorecards = lds.getAllApprenticeScorecards("("
+                + OtashuDatabaseHelper.COLUMN_CORRECT + "/" + OtashuDatabaseHelper.COLUMN_TOTAL
+                + ")");
         lds.close();
 
         /*
@@ -176,7 +178,7 @@ public class ViewAllApprenticeScorecardsActivity extends ListActivity {
 
         // get string version of returned apprenticeScorecard list
         allApprenticeScorecardsData = lds.getAllApprenticeScorecardListDBTableIds();
-        lds.close();        
+        lds.close();
 
         // prevent crashes due to lack of database data
         if (allApprenticeScorecardsData.isEmpty())
@@ -185,7 +187,8 @@ public class ViewAllApprenticeScorecardsActivity extends ListActivity {
         Long[] allApprenticeScorecards = allApprenticeScorecardsData
                 .toArray(new Long[allApprenticeScorecardsData.size()]);
 
-        ApprenticeScorecard apprenticeScorecard = lds.getApprenticeScorecard(allApprenticeScorecards[(int) apprenticeScorecardId]);
+        ApprenticeScorecard apprenticeScorecard = lds
+                .getApprenticeScorecard(allApprenticeScorecards[(int) apprenticeScorecardId]);
 
         lds.close();
 

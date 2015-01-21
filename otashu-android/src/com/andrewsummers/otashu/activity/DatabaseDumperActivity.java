@@ -78,7 +78,7 @@ public class DatabaseDumperActivity extends Activity {
         gds.close();
 
         ApprenticeScorecardsDataSource ascds = new ApprenticeScorecardsDataSource(this);
-        List<ApprenticeScorecard> allApprenticeScorecards = ascds.getAllApprenticeScorecards();
+        List<ApprenticeScorecard> allApprenticeScorecards = ascds.getAllApprenticeScorecards("");
         ascds.close();
 
         ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);

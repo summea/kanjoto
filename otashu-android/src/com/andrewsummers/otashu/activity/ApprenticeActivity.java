@@ -171,9 +171,18 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
         VerticesDataSource vds = new VerticesDataSource(this);
         EdgesDataSource edds = new EdgesDataSource(this);
 
+        Log.d("MYLOG", "+++ totalGuesses: " + totalGuesses);
+
         switch (v.getId()) {
             case R.id.button_no:
                 guessesIncorrect++;
+
+                totalGuesses = guessesCorrect + guessesIncorrect;
+                Log.d("MYLOG", "TOTAL: " + totalGuesses);
+
+                if (totalGuesses > 0) {
+                    guessesCorrectPercentage = ((double) guessesCorrect / (double) totalGuesses) * 100.0;
+                }
 
                 // don't add generated noteset to user collection (even if Apprentice is allowed to
                 // auto-add generated noteset)
@@ -277,6 +286,13 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                 break;
             case R.id.button_yes:
                 guessesCorrect++;
+
+                totalGuesses = guessesCorrect + guessesIncorrect;
+                Log.d("MYLOG", "TOTAL: " + totalGuesses);
+
+                if (totalGuesses > 0) {
+                    guessesCorrectPercentage = ((double) guessesCorrect / (double) totalGuesses) * 100.0;
+                }
 
                 // disable buttons while playing
                 buttonYes = (Button) findViewById(R.id.button_yes);
@@ -535,12 +551,6 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
         TextView apprenticeGuessMethod = (TextView) findViewById(R.id.apprentice_guess_method);
         apprenticeGuessMethod.setText(approach);
 
-        totalGuesses = guessesCorrect + guessesIncorrect;
-
-        if (totalGuesses > 0) {
-            guessesCorrectPercentage = ((double) guessesCorrect / (double) totalGuesses) * 100.0;
-        }
-
         String guessesCorrectPercentageString = String.format(Locale.getDefault(), "%.02f",
                 guessesCorrectPercentage);
 
@@ -636,14 +646,14 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
             ApprenticeScorecardsDataSource asds = new ApprenticeScorecardsDataSource(this);
             ApprenticeScorecard aScorecard = new ApprenticeScorecard();
             aScorecard.setTakenAt(takenAtISO);
-            
+
             aScorecard = asds.createApprenticeScorecard(aScorecard);
             asds.close();
 
             // then get scorecard_id for the score to save
             scorecardId = aScorecard.getId();
         }
-        
+
         // also, update scorecard question totals
         ApprenticeScorecardsDataSource ascds = new ApprenticeScorecardsDataSource(this);
         ApprenticeScorecard scorecard = new ApprenticeScorecard();
@@ -656,10 +666,12 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
         ascds.close();
         Log.d("MYLOG", "guesses correct: " + guessesCorrect + " total guesses: " + totalGuesses);
 
+        // TODO: this is one value behind actual total...
+
         // save Apprentice's score results to database
         ApprenticeScore aScore = new ApprenticeScore();
         aScore.setScorecardId(scorecardId);
-        aScore.setQuestionNumber(totalGuesses + 1);
+        aScore.setQuestionNumber(totalGuesses);
         aScore.setCorrect(isCorrect);
         aScore.setEdgeId(edgeId);
 

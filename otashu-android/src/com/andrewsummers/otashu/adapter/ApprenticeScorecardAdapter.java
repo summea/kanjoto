@@ -18,7 +18,8 @@ public class ApprenticeScorecardAdapter extends BaseAdapter {
     private Context mContext;
     private List<ApprenticeScorecard> apprenticeScorecards;
 
-    public ApprenticeScorecardAdapter(Context context, List<ApprenticeScorecard> allApprenticeScorecards) {
+    public ApprenticeScorecardAdapter(Context context,
+            List<ApprenticeScorecard> allApprenticeScorecards) {
         mContext = context;
         apprenticeScorecards = allApprenticeScorecards;
     }
@@ -42,12 +43,14 @@ public class ApprenticeScorecardAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = ((LayoutInflater) mContext
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.row_apprentice_scorecard,
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
+                    R.layout.row_apprentice_scorecard,
                     null);
         }
 
-        TextView apprenticeScorecard = (TextView) convertView.findViewById(R.id.apprentice_scorecard);
-        apprenticeScorecard.setText(apprenticeScorecards.toString());
+        TextView apprenticeScorecard = (TextView) convertView
+                .findViewById(R.id.apprentice_scorecard);
+        apprenticeScorecard.setText(apprenticeScorecards.get(position).toString());
 
         return convertView;
     }

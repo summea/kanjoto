@@ -4,7 +4,6 @@ package com.andrewsummers.otashu.data;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 import com.andrewsummers.otashu.model.ApprenticeScorecard;
 
@@ -13,6 +12,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class ApprenticeScorecardsDataSource {
     private SQLiteDatabase database;
@@ -103,10 +103,15 @@ public class ApprenticeScorecardsDataSource {
      * 
      * @return List of ApprenticeScorecards.
      */
-    public List<ApprenticeScorecard> getAllApprenticeScorecards() {
+    public List<ApprenticeScorecard> getAllApprenticeScorecards(String orderBy) {
         List<ApprenticeScorecard> apprenticeScorecards = new ArrayList<ApprenticeScorecard>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORECARDS;
+        if (orderBy != null && !orderBy.isEmpty()) {
+            query += " ORDER BY " + orderBy + " DESC";
+        }
+
+        Log.d("MYLOG", "order query: " + query);
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -131,7 +136,7 @@ public class ApprenticeScorecardsDataSource {
 
         return apprenticeScorecards;
     }
-    
+
     /**
      * Get all apprenticeScorecard ids from database table.
      * 
@@ -281,20 +286,6 @@ public class ApprenticeScorecardsDataSource {
 
         db.update(OtashuDatabaseHelper.TABLE_APPRENTICE_SCORECARDS, contentValues,
                 OtashuDatabaseHelper.COLUMN_ID + "=" + apprenticeScorecard.getId(), null);
-
-        return apprenticeScorecard;
-    }
-
-    public ApprenticeScorecard getRandomApprenticeScorecard() {
-        ApprenticeScorecard apprenticeScorecard = new ApprenticeScorecard();
-
-        // get all apprenticeScorecards first
-        List<ApprenticeScorecard> allApprenticeScorecards = getAllApprenticeScorecards();
-
-        // choose random apprenticeScorecard
-        int chosenIndex = new Random().nextInt(allApprenticeScorecards.size());
-
-        apprenticeScorecard = allApprenticeScorecards.get(chosenIndex);
 
         return apprenticeScorecard;
     }
