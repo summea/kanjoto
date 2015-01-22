@@ -40,10 +40,11 @@ public class ApprenticeScorecard {
      * @throws java.text.ParseException
      */
     public String getTakenAt() {
+        /*
         String formattedDate = "";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'", Locale.getDefault());
         try {
-            Date date = sdf.parse(this.takenAt);
+            Date date = sdf.parse(takenAt);
             formattedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
                     .format(date);
         } catch (ParseException e) {
@@ -52,6 +53,8 @@ public class ApprenticeScorecard {
             Log.d("MYLOG", e.toString());
         }
         return formattedDate;
+        */
+        return takenAt;
     }
 
     /**

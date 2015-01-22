@@ -7,11 +7,13 @@
 - noteset folders (lists by label or emotion)
 - create emotion fingerprint
 - save generated song to file
+- fix getTakenAt ISO date issue
 
 
 ## DONE:
+- 20150121: added correct ordering for Apprentice scorecards
 - 20150120: added "show Apprentice's top scores for correct noteset questions" feature
-- 20150120:  added "view past Apprentice test results" feature
+- 20150120: added "view past Apprentice test results" feature
 - 20150102: added "prevent duplicate notesets with same emotion and note order in ApprenticeActivity" feature
 - 20150101: added "show what note is playing for playback visualization" feature
 - 20141231: added playback speed in settings

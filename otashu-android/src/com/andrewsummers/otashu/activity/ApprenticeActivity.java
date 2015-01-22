@@ -641,12 +641,15 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                     Locale.getDefault());
             dateFormat.setTimeZone(timezone);
             String takenAtISO = dateFormat.format(new Date());
+            //Log.d("MYLOG", ">> taken at iso 2: " + takenAtISOTwo);
+
+            //String takenAtISO = new Date().toString();
 
             // if scorecard doesn't yet exist, create it
             ApprenticeScorecardsDataSource asds = new ApprenticeScorecardsDataSource(this);
             ApprenticeScorecard aScorecard = new ApprenticeScorecard();
             aScorecard.setTakenAt(takenAtISO);
-
+            Log.d("MYLOG", ">> TAKEN AT ISO: " + aScorecard.getTakenAt());
             aScorecard = asds.createApprenticeScorecard(aScorecard);
             asds.close();
 
@@ -662,11 +665,10 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
             scorecard.setCorrect(guessesCorrect);
         }
         scorecard.setTotal(totalGuesses);
+        Log.d("MYLOG", ">> OLD TAKEN AT ISO: " + scorecard.getTakenAt());
         ascds.updateApprenticeScorecard(scorecard);
         ascds.close();
         Log.d("MYLOG", "guesses correct: " + guessesCorrect + " total guesses: " + totalGuesses);
-
-        // TODO: this is one value behind actual total...
 
         // save Apprentice's score results to database
         ApprenticeScore aScore = new ApprenticeScore();

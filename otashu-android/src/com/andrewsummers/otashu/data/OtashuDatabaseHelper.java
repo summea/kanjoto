@@ -11,7 +11,7 @@ import android.util.Log;
  * application database.
  */
 public class OtashuDatabaseHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 28;
+    private static final int DATABASE_VERSION = 32;
     private static final String DATABASE_NAME = "otashu_collection.db";
 
     public static final String COLUMN_ID = "_id";
@@ -169,7 +169,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         Log.d("MYLOG", ">>> new database version: " + newVersion);
         Log.d("MYLOG", "updating database...");
 
-        // v28
+        // v32
         db.execSQL("DROP TABLE " + TABLE_APPRENTICE_SCORECARDS);
         db.execSQL("DROP TABLE " + TABLE_APPRENTICE_SCORES);
         db.execSQL(CREATE_TABLE_APPRENTICE_SCORECARDS);

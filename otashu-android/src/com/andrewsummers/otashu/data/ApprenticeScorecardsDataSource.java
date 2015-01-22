@@ -108,7 +108,7 @@ public class ApprenticeScorecardsDataSource {
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORECARDS;
         if (orderBy != null && !orderBy.isEmpty()) {
-            query += " ORDER BY " + orderBy + " DESC";
+            query += " ORDER BY " + orderBy + " ASC";
         }
 
         Log.d("MYLOG", "order query: " + query);
@@ -260,6 +260,8 @@ public class ApprenticeScorecardsDataSource {
 
         if (cursor.moveToFirst()) {
             do {
+                Log.d("MYLOG", ">>> FOUND ISO FROM DB: " + cursor.getLong(0) + " " + cursor.getString(1) + " " + cursor.getInt(2));
+                
                 // create apprenticeScorecard objects based on apprenticeScorecard data from
                 // database
                 apprenticeScorecard = new ApprenticeScorecard();
