@@ -186,6 +186,52 @@ public class EdgesDataSource {
      * 
      * @param graphId
      * @param emotionId
+     * @param weightLimit
+     * @param position
+     * @return List of Edges.
+     */
+    public List<Edge> getAllEdges(long graphId, long emotionId, float weightLimit, int position) {
+        List<Edge> edges = new ArrayList<Edge>();
+
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES + " WHERE "
+                + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId + " AND "
+                + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId + " AND "
+                + OtashuDatabaseHelper.COLUMN_WEIGHT + "<" + weightLimit + " AND "
+                + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position
+                + " ORDER BY " + OtashuDatabaseHelper.COLUMN_WEIGHT + " ASC";
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notes from database
+        Cursor cursor = db.rawQuery(query, null);
+
+        Edge edge = null;
+        if (cursor.moveToFirst()) {
+            do {
+                // create note objects based on note data from database
+                edge = new Edge();
+                edge.setId(cursor.getLong(0));
+                edge.setGraphId(cursor.getLong(1));
+                edge.setEmotionId(cursor.getLong(2));
+                edge.setFromNodeId(cursor.getInt(3));
+                edge.setToNodeId(cursor.getInt(4));
+                edge.setWeight(cursor.getFloat(5));
+                edge.setPosition(cursor.getInt(6));
+
+                // add note string to list of strings
+                edges.add(edge);
+            } while (cursor.moveToNext());
+        }
+
+        return edges;
+    }
+
+    /**
+     * Get all edges from database table.
+     * 
+     * @param graphId
+     * @param emotionId
      * @param fromNodeId
      * @param toNodeId
      * @return List of Edges.

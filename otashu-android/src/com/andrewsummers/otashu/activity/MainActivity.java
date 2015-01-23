@@ -114,6 +114,9 @@ public class MainActivity extends Activity implements OnClickListener {
             case R.id.view_apprentice_scorecards:
                 intent = new Intent(this, ViewAllApprenticeScorecardsActivity.class);
                 break;
+            case R.id.view_apprentice_strongest_paths:
+                intent = new Intent(this, ViewApprenticeStrongestPathsActivity.class);
+                break;
         }
 
         startActivity(intent);

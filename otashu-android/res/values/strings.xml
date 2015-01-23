@@ -69,6 +69,7 @@
     <string name="label_detail_name_label">Name</string>
     <string name="label_name">Name</string>
     <string name="label_saved">label saved</string>
+    <string name="menu_button_apprentice_strongest_paths">Apprentice Strongest Paths</string>
     <string name="menu_button_bookmarks">Bookmarks</string>
     <string name="menu_button_create_emotion">New</string>
     <string name="menu_button_create_graph">New</string>

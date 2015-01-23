@@ -27,4 +27,7 @@
     <item
         android:id="@+id/view_apprentice_scorecards"
         android:title="@string/menu_button_scorecards" />
+    <item
+        android:id="@+id/view_apprentice_strongest_paths"
+        android:title="@string/menu_button_apprentice_strongest_paths" />
 </menu>
