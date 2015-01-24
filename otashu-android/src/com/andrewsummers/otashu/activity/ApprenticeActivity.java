@@ -46,7 +46,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class ApprenticeActivity extends Activity implements OnClickListener {
-
     private File path = Environment.getExternalStorageDirectory();
     private String externalDirectory = path.toString() + "/otashu/";
     private File musicSource = new File(externalDirectory + "otashu_preview.mid");
@@ -138,10 +137,6 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
             note.setPosition(i + 1);
 
             notesToInsert.add(note);
-
-            Log.d("MYLOG", "random note: " + randomNote);
-            Log.d("MYLOG", "random length: " + randomLength);
-            Log.d("MYLOG", "random velocity: " + randomVelocity);
         }
 
         return notesToInsert;
@@ -171,14 +166,11 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
         VerticesDataSource vds = new VerticesDataSource(this);
         EdgesDataSource edds = new EdgesDataSource(this);
 
-        Log.d("MYLOG", "+++ totalGuesses: " + totalGuesses);
-
         switch (v.getId()) {
             case R.id.button_no:
                 guessesIncorrect++;
 
                 totalGuesses = guessesCorrect + guessesIncorrect;
-                Log.d("MYLOG", "TOTAL: " + totalGuesses);
 
                 if (totalGuesses > 0) {
                     guessesCorrectPercentage = ((double) guessesCorrect / (double) totalGuesses) * 100.0;
@@ -188,10 +180,6 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                 // auto-add generated noteset)
 
                 // examine notes for graph purposes
-
-                Log.d("MYLOG", "> how many notes to insert? " + notesToInsert.size());
-
-                Log.d("MYLOG", "> examining noteset...");
                 for (int i = 0; i < notesToInsert.size() - 1; i++) {
                     long edgeId = 0;
 
@@ -205,7 +193,7 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
 
                     // If nodes don't exist, create new nodes in graph
                     if (nodeA.getNode() <= 0) {
-                        Log.d("MYLOG", "> nodeA doesn't exist... creating new vertex");
+                        // nodeA doesn't exist... creating new vertex
                         Vertex newNodeA = new Vertex();
                         newNodeA.setGraphId(emotionGraphId);
                         newNodeA.setNode(noteA.getNotevalue());
@@ -213,7 +201,7 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                         nodeA.setNode(noteA.getNotevalue());
                     }
                     if (nodeB.getNode() <= 0) {
-                        Log.d("MYLOG", "> nodeB doesn't exist... creating new vertex");
+                        // nodeB doesn't exist... creating new vertex
                         Vertex newNodeB = new Vertex();
                         newNodeB.setGraphId(emotionGraphId);
                         newNodeB.setNode(noteB.getNotevalue());
@@ -226,9 +214,8 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                             nodeB.getNode());
 
                     if (edge.getWeight() < 0.0f || edge.getWeight() > 1.0f) {
-                        Log.d("MYLOG",
-                                "> edge doesn't exist... creating new edge between "
-                                        + nodeA.getNode() + " and " + nodeB.getNode());
+                        // edge doesn't exist... creating new edge between nodeA and nodeB
+
                         // If edge doesn't exist, create new edge in graph (and set weight at 0.5)
                         // [note: 0.0 = stronger edge / more likely to be chosen than a 1.0 edge]
                         Edge newEdge = new Edge();
@@ -241,14 +228,11 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                         newEdge = edds.createEdge(newEdge);
                         edgeId = newEdge.getId();
                     } else {
-                        Log.d("MYLOG",
-                                "> edge exists between " + nodeA.getNode() + " and "
-                                        + nodeB.getNode()
-                                        + " ... just updating weight which is currently: "
-                                        + edge.getWeight());
+                        // edge exists between nodeA and nodeB, just update weight
+
                         // If edge does exist, update weight (weight + 0.1)
                         if ((edge.getWeight() + 0.1f) <= 1.0f) {
-                            Log.d("MYLOG", "> adding 0.1f to weight...");
+                            // adding 0.1f to weight... (lower weight is stronger)
                             // round float addition in order to avoid awkward zeros
                             BigDecimal bd = new BigDecimal(Float.toString(edge.getWeight() + 0.1f));
                             bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
@@ -288,7 +272,6 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                 guessesCorrect++;
 
                 totalGuesses = guessesCorrect + guessesIncorrect;
-                Log.d("MYLOG", "TOTAL: " + totalGuesses);
 
                 if (totalGuesses > 0) {
                     guessesCorrectPercentage = ((double) guessesCorrect / (double) totalGuesses) * 100.0;
@@ -344,7 +327,6 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                 // long defaultGraphId = Long.parseLong(sharedPref.getString(
                 // "pref_default_graph_for_apprentice", "1"));
 
-                Log.d("MYLOG", "> examining noteset...");
                 for (int i = 0; i < notesToInsert.size() - 1; i++) {
                     long edgeId = 0;
 
@@ -358,7 +340,7 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
 
                     // If nodes don't exist, create new nodes in graph
                     if (nodeA.getNode() <= 0) {
-                        Log.d("MYLOG", "> nodeA doesn't exist... creating new vertex");
+                        // nodeA doesn't exist... creating new vertex
                         Vertex newNodeA = new Vertex();
                         newNodeA.setGraphId(emotionGraphId);
                         newNodeA.setNode(noteA.getNotevalue());
@@ -366,7 +348,7 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                         nodeA.setNode(noteA.getNotevalue());
                     }
                     if (nodeB.getNode() <= 0) {
-                        Log.d("MYLOG", "> nodeB doesn't exist... creating new vertex");
+                        // nodeB doesn't exist... creating new vertex
                         Vertex newNodeB = new Vertex();
                         newNodeB.setGraphId(emotionGraphId);
                         newNodeB.setNode(noteB.getNotevalue());
@@ -379,9 +361,8 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                             nodeB.getNode());
 
                     if (edge.getWeight() < 0.0f || edge.getWeight() > 1.0f) {
-                        Log.d("MYLOG",
-                                "> edge doesn't exist... creating new edge between "
-                                        + nodeA.getNode() + " and " + nodeB.getNode());
+                        // edge doesn't exist... creating new edge between nodeA and nodeB
+
                         // If edge doesn't exist, create new edge in graph (and set weight at 0.5)
                         // [note: 0.0 = stronger edge / more likely to be chosen than a 1.0 edge]
                         Edge newEdge = new Edge();
@@ -394,14 +375,11 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                         newEdge = edds.createEdge(newEdge);
                         edgeId = newEdge.getId();
                     } else {
-                        Log.d("MYLOG",
-                                "> edge exists between " + nodeA.getNode() + " and "
-                                        + nodeB.getNode()
-                                        + " ... just updating weight which is currently: "
-                                        + edge.getWeight());
+                        // edge exists between nodeA and nodeB, just update weight
+
                         // If edge does exist, update weight (weight - 0.1)
                         if ((edge.getWeight() - 0.1f) >= 0.0f) {
-                            Log.d("MYLOG", "> subtracting 0.1f from weight...");
+                            // subtracting 0.1f from weight... (lower weight is stronger)
                             // round float addition in order to avoid awkward zeros
                             BigDecimal bd = new BigDecimal(Float.toString(edge.getWeight() - 0.1f));
                             bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
@@ -463,7 +441,7 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
         notesetExists = nds.doesNotesetExist(notesetAndRelated);
 
         if (notesetExists) {
-            Log.d("MYLOG", "notes match... noteset already exists!");
+            // notes match... noteset already exists
         }
 
         return notesetExists;
@@ -500,17 +478,13 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
         String approach = "";
 
         try {
-            Log.d("MYLOG", ">> Using Learned Data Approach");
+            // Using Learned Data Approach (thoughtfully-generated noteset)
             approach = "Learned Data";
             Edge edgeOne = edds.getRandomEdge(emotionGraphId, emotionId, 0, 0, 1, 0);
             Edge edgeTwo = edds.getRandomEdge(emotionGraphId, emotionId, edgeOne.getFromNodeId(),
                     edgeOne.getToNodeId(), 2, 3);
             Edge edgeThree = edds.getRandomEdge(emotionGraphId, emotionId, edgeOne.getFromNodeId(),
                     edgeOne.getToNodeId(), 3, 3);
-
-            Log.d("MYLOG", "^^ edgeOne: " + edgeOne);
-            Log.d("MYLOG", "^^ edgeTwo: " + edgeTwo);
-            Log.d("MYLOG", "^^ edgeThree: " + edgeThree);
 
             Note note1 = new Note();
             note1.setNotevalue(edgeOne.getFromNodeId());
@@ -524,11 +498,8 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
             Note note4 = new Note();
             note4.setNotevalue(edgeThree.getToNodeId());
             notes.add(note4);
-
-            Log.d("MYLOG", ">> thoughtfully-generated noteset: " + notes.toString());
-
         } catch (Exception e) {
-            Log.d("MYLOG", ">> Using Random Approach");
+            // Using Random Approach
             approach = "Random";
             // stay within 39..50 for now (C4..B4)
             notes = generateNotes(39, 50);
@@ -598,10 +569,6 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
     }
 
     private void saveNote(View v, Note note) {
-
-        Log.d("MYLOG", Long.toString(note.getNotesetId()));
-        Log.d("MYLOG", Integer.toString(note.getNotevalue()));
-
         // save noteset in database
         NotesDataSource nds = new NotesDataSource(this);
         nds.createNote(note);
@@ -641,15 +608,13 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                     Locale.getDefault());
             dateFormat.setTimeZone(timezone);
             String takenAtISO = dateFormat.format(new Date());
-            //Log.d("MYLOG", ">> taken at iso 2: " + takenAtISOTwo);
 
-            //String takenAtISO = new Date().toString();
+            // String takenAtISO = new Date().toString();
 
             // if scorecard doesn't yet exist, create it
             ApprenticeScorecardsDataSource asds = new ApprenticeScorecardsDataSource(this);
             ApprenticeScorecard aScorecard = new ApprenticeScorecard();
             aScorecard.setTakenAt(takenAtISO);
-            Log.d("MYLOG", ">> TAKEN AT ISO: " + aScorecard.getTakenAt());
             aScorecard = asds.createApprenticeScorecard(aScorecard);
             asds.close();
 
@@ -665,10 +630,8 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
             scorecard.setCorrect(guessesCorrect);
         }
         scorecard.setTotal(totalGuesses);
-        Log.d("MYLOG", ">> OLD TAKEN AT ISO: " + scorecard.getTakenAt());
         ascds.updateApprenticeScorecard(scorecard);
         ascds.close();
-        Log.d("MYLOG", "guesses correct: " + guessesCorrect + " total guesses: " + totalGuesses);
 
         // save Apprentice's score results to database
         ApprenticeScore aScore = new ApprenticeScore();
@@ -676,8 +639,6 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
         aScore.setQuestionNumber(totalGuesses);
         aScore.setCorrect(isCorrect);
         aScore.setEdgeId(edgeId);
-
-        Log.d("MYLOG", "score: " + aScore.toString());
 
         ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
         asds.createApprenticeScore(aScore);

@@ -32,8 +32,6 @@ public class ViewApprenticeStrongestPathsActivity extends Activity {
 
         EdgesDataSource eds = new EdgesDataSource(this);
 
-        // TODO: get strongest paths
-
         // select a given graph
         long graphId = 2;
 
