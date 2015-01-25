@@ -1,0 +1,121 @@
+
+package com.andrewsummers.otashu.activity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
+
+import com.andrewsummers.otashu.R;
+import com.andrewsummers.otashu.data.EdgesDataSource;
+import com.andrewsummers.otashu.model.Edge;
+
+public class ViewApprenticeStrongestPathDetailActivity extends Activity {
+    /**
+     * onCreate override that provides emotion-choose view to user.
+     * 
+     * @param savedInstanceState Current application state data.
+     */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // get specific layout for content view
+        setContentView(R.layout.activity_view_apprentice_strongest_path_detail);
+
+        TextView pathText = (TextView) findViewById(R.id.path_text);
+        pathText.setText("Strongest Path\n");
+
+        EdgesDataSource eds = new EdgesDataSource(this);
+
+        // select a given graph
+        long graphId = 2;
+
+        // select a given emotion
+        long emotionId = 1;
+        emotionId = getIntent().getExtras().getLong("list_id");
+
+        // select a given weight limit
+        float weightLimit = 0.5f;
+
+        // select an edge position
+        int position = 1;
+
+        // select all position one edges for given emotion with given threshold (e.g. all rows that
+        // have a weight less than 0.5)
+        List<Edge> p1Edges = eds.getAllEdges(graphId, emotionId, weightLimit, position);
+
+        position = 2;
+        // select all position two edges for given emotion with given threshold (e.g. all rows that
+        // have a weight less than 0.5)
+        List<Edge> p2Edges = eds.getAllEdges(graphId, emotionId, weightLimit, position);
+
+        position = 3;
+        // select all position three edges for given emotion with given threshold (e.g. all rows
+        // that have a weight less than 0.5)
+        List<Edge> p3Edges = eds.getAllEdges(graphId, emotionId, weightLimit, position);
+
+        List<Edge> bestMatch = new ArrayList<Edge>();
+        List<Long> usedOnce = new ArrayList<Long>();
+
+        // get top 3
+        for (int i = 0; i < 3; i++) {
+
+            boolean edge1To2Match = false;
+            boolean edge2To3Match = false;
+            // check to see if any of the lowest-weight edges are related nodes (i.e. do they
+            // connect in the graph?)
+            outerloop: for (Edge edge1 : p1Edges) {
+                if (!usedOnce.contains(edge1.getId())) {
+                    for (Edge edge2 : p2Edges) {
+                        if (!usedOnce.contains(edge2.getId())) {
+                            if (edge1.getToNodeId() == edge2.getFromNodeId()) {
+                                // edge1 to edge2 match!
+                                edge1To2Match = true;
+                            }
+                            for (Edge edge3 : p3Edges) {
+                                if (!usedOnce.contains(edge3.getId())) {
+                                    if (edge2.getToNodeId() == edge3.getFromNodeId()) {
+                                        // edge2 to edge3 match!
+                                        edge2To3Match = true;
+
+                                        if (edge1To2Match && edge2To3Match) {
+                                            Log.d("MYLOG", "cross section match found!");
+                                            bestMatch.add(edge1);
+                                            bestMatch.add(edge2);
+                                            bestMatch.add(edge3);
+                                            break outerloop;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            try {
+                // return results
+                Log.d("MYLOG", bestMatch.toString());
+                pathText.setText(pathText.getText() + "\n" + bestMatch.toString());
+
+                // keep track of what edges have been used already
+                for (int j = 0; j < 3; j++) {
+                    if (!usedOnce.contains(bestMatch.get(j).getId())) {
+                        usedOnce.add(bestMatch.get(j).getId());
+                    }
+                }
+
+                Log.d("MYLOG", usedOnce.toString());
+            } catch (Exception e) {
+                Log.d("MYLOG", e.getStackTrace().toString());
+            }
+
+            // clear out past results
+            bestMatch.clear();
+        }
+    }
+}

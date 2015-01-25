@@ -2,7 +2,6 @@
 
 ## TODO:
 - fix horizontal animation timing for music generation activity
-- show Apprentice's top 3 strongest noteset-emotion relationship learned knowledge
 - standardize strings view naming
 - noteset folders (lists by label or emotion)
 - create emotion fingerprint
@@ -11,6 +10,9 @@
 
 
 ## DONE:
+- 20150124: added detail activity for Apprentice strongest emotion-noteset combinations
+- 20150124: added "view all Apprentice strongest emotion-noteset combinations (by emotion)" list activity
+- 20150124: added "show Apprentice's top 3 strongest noteset-emotion relationship learned knowledge" feature
 - 20150121: added correct ordering for Apprentice scorecards
 - 20150120: added "show Apprentice's top scores for correct noteset questions" feature
 - 20150120: added "view past Apprentice test results" feature

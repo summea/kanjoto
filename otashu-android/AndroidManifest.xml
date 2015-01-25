@@ -58,7 +58,8 @@
         <activity android:name="com.andrewsummers.otashu.activity.EditGraphActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.ViewAllApprenticeScorecardsActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.ViewApprenticeScorecardDetailActivity" />
-        <activity android:name="com.andrewsummers.otashu.activity.ViewApprenticeStrongestPathsActivity" />
+        <activity android:name="com.andrewsummers.otashu.activity.ViewAllApprenticeStrongestPathsActivity" />
+        <activity android:name="com.andrewsummers.otashu.activity.ViewApprenticeStrongestPathDetailActivity" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

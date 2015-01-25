@@ -5,10 +5,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.andrewsummers.otashu.R;
-import com.andrewsummers.otashu.adapter.ApprenticeScorecardAdapter;
-import com.andrewsummers.otashu.data.ApprenticeScorecardsDataSource;
-import com.andrewsummers.otashu.data.OtashuDatabaseHelper;
-import com.andrewsummers.otashu.model.ApprenticeScorecard;
+import com.andrewsummers.otashu.adapter.EmotionAdapter;
+import com.andrewsummers.otashu.data.EmotionsDataSource;
+import com.andrewsummers.otashu.data.LabelsDataSource;
+import com.andrewsummers.otashu.model.Emotion;
+import com.andrewsummers.otashu.model.Label;
+import com.andrewsummers.otashu.model.EmotionAndRelated;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -29,16 +31,15 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
 /**
- * View all apprenticeScorecards as a list.
+ * View all Apprentice strongest emotion-noteset paths as a list.
  */
-public class ViewAllApprenticeScorecardsActivity extends ListActivity {
+public class ViewAllApprenticeStrongestPathsActivity extends ListActivity {
 
     private int selectedPositionInList = 0;
-    private ApprenticeScorecardAdapter adapter = null;
+    private EmotionAdapter adapter = null;
 
     /**
-     * onCreate override used to gather and display a list of all apprenticeScorecards saved in
-     * database.
+     * onCreate override used to gather and display a list of all emotions saved in database.
      * 
      * @param savedInstanceState Current application state data.
      */
@@ -49,36 +50,48 @@ public class ViewAllApprenticeScorecardsActivity extends ListActivity {
     }
 
     public void fillList() {
-        List<ApprenticeScorecard> allApprenticeScorecards = new LinkedList<ApprenticeScorecard>();
-        ApprenticeScorecardsDataSource lds = new ApprenticeScorecardsDataSource(this);
-        // allApprenticeScorecards = lds.getAllApprenticeScorecards("("
-        // + OtashuDatabaseHelper.COLUMN_CORRECT + "/" + OtashuDatabaseHelper.COLUMN_TOTAL
-        // + ")");
-        allApprenticeScorecards = lds.getAllApprenticeScorecards("("
-                + OtashuDatabaseHelper.COLUMN_TOTAL + " - " + OtashuDatabaseHelper.COLUMN_CORRECT
-                + ")");
+        Label relatedLabel = new Label();
+        List<Emotion> allEmotions = new LinkedList<Emotion>();
+
+        List<EmotionAndRelated> allEmotionsAndRelated = new LinkedList<EmotionAndRelated>();
+
+        EmotionsDataSource eds = new EmotionsDataSource(this);
+        LabelsDataSource lds = new LabelsDataSource(this);
+
+        allEmotions = eds.getAllEmotions();
+
+        for (Emotion emotion : allEmotions) {
+            relatedLabel = lds.getLabel(emotion.getLabelId());
+            EmotionAndRelated emotionAndRelated = new EmotionAndRelated();
+            emotionAndRelated.setEmotion(emotion);
+            emotionAndRelated.setLabel(relatedLabel);
+            allEmotionsAndRelated.add(emotionAndRelated);
+        }
+
+        eds.close();
         lds.close();
 
-        /*
-         * // prevent crashes due to lack of database data if (allApprenticeScorecards.isEmpty())
-         * allApprenticeScorecards.add("empty");
-         */
+        // TODO: check if crash still happens when there is no database data...
+
+        // prevent crashes due to lack of database data
+        // if (allNotesetsData.isEmpty())
+        // allNotesetsData.add("empty");
 
         // pass list data to adapter
-        adapter = new ApprenticeScorecardAdapter(this, allApprenticeScorecards);
+        adapter = new EmotionAdapter(this, allEmotionsAndRelated);
 
         final ListView listView = getListView();
         listView.setTextFilterEnabled(true);
         listView.setAdapter(adapter);
 
-        // get individual apprenticeScorecard details
+        // get individual emotion details
         listView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
 
                 // launch details activity
                 Intent intent = new Intent(view.getContext(),
-                        ViewApprenticeScorecardDetailActivity.class);
+                        ViewApprenticeStrongestPathDetailActivity.class);
 
                 intent.putExtra("list_id", id);
                 startActivity(intent);
@@ -92,14 +105,20 @@ public class ViewAllApprenticeScorecardsActivity extends ListActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_apprentice_scorecards, menu);
+        inflater.inflate(R.menu.menu_emotions, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = null;
+
         // handle menu item selection
         switch (item.getItemId()) {
+            case R.id.view_settings:
+                intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -113,22 +132,18 @@ public class ViewAllApprenticeScorecardsActivity extends ListActivity {
         selectedPositionInList = info.position;
 
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.context_menu_apprentice_scorecard, menu);
+        inflater.inflate(R.menu.context_menu_emotion, menu);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
         Intent intent = null;
-
         switch (item.getItemId()) {
             case R.id.context_menu_view:
-                intent = new Intent(this, ViewApprenticeScorecardDetailActivity.class);
+                intent = new Intent(this, ViewEmotionDetailActivity.class);
                 intent.putExtra("list_id", info.id);
                 startActivity(intent);
-                return true;
-            case R.id.context_menu_delete:
-                confirmDelete();
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -142,18 +157,18 @@ public class ViewAllApprenticeScorecardsActivity extends ListActivity {
         builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // user clicked ok
-                // go ahead and delete apprenticeScorecard
+                // go ahead and delete emotion
 
-                // get correct apprenticeScorecard id to delete
-                ApprenticeScorecard apprenticeScorecardToDelete = getApprenticeScorecardFromListPosition(selectedPositionInList);
+                // get correct emotion id to delete
+                Emotion emotionToDelete = getEmotionFromListPosition(selectedPositionInList);
 
-                deleteApprenticeScorecard(apprenticeScorecardToDelete);
+                deleteEmotion(emotionToDelete);
 
                 Context context = getApplicationContext();
                 int duration = Toast.LENGTH_SHORT;
 
                 Toast toast = Toast.makeText(context,
-                        context.getResources().getString(R.string.apprentice_scorecard_deleted),
+                        context.getResources().getString(R.string.emotion_deleted),
                         duration);
                 toast.show();
 
@@ -172,36 +187,35 @@ public class ViewAllApprenticeScorecardsActivity extends ListActivity {
         dialog.show();
     }
 
-    public ApprenticeScorecard getApprenticeScorecardFromListPosition(long rowId) {
+    public Emotion getEmotionFromListPosition(long rowId) {
 
-        long apprenticeScorecardId = rowId;
+        long emotionId = rowId;
 
-        List<Long> allApprenticeScorecardsData = new LinkedList<Long>();
-        ApprenticeScorecardsDataSource lds = new ApprenticeScorecardsDataSource(this);
+        List<Long> allEmotionsData = new LinkedList<Long>();
+        EmotionsDataSource eds = new EmotionsDataSource(this);
 
-        // get string version of returned apprenticeScorecard list
-        allApprenticeScorecardsData = lds.getAllApprenticeScorecardListDBTableIds();
-        lds.close();
+        // get string version of returned emotion list
+        allEmotionsData = eds.getAllEmotionListDBTableIds();
+        eds.close();
 
         // prevent crashes due to lack of database data
-        if (allApprenticeScorecardsData.isEmpty())
-            allApprenticeScorecardsData.add((long) 0);
+        if (allEmotionsData.isEmpty())
+            allEmotionsData.add((long) 0);
 
-        Long[] allApprenticeScorecards = allApprenticeScorecardsData
-                .toArray(new Long[allApprenticeScorecardsData.size()]);
+        Long[] allEmotions = allEmotionsData
+                .toArray(new Long[allEmotionsData.size()]);
 
-        ApprenticeScorecard apprenticeScorecard = lds
-                .getApprenticeScorecard(allApprenticeScorecards[(int) apprenticeScorecardId]);
+        Emotion emotion = eds.getEmotion(allEmotions[(int) emotionId]);
 
-        lds.close();
+        eds.close();
 
-        return apprenticeScorecard;
+        return emotion;
     }
 
-    public void deleteApprenticeScorecard(ApprenticeScorecard apprenticeScorecard) {
-        ApprenticeScorecardsDataSource lds = new ApprenticeScorecardsDataSource(this);
-        lds.deleteApprenticeScorecard(apprenticeScorecard);
-        lds.close();
+    public void deleteEmotion(Emotion emotion) {
+        EmotionsDataSource eds = new EmotionsDataSource(this);
+        eds.deleteEmotion(emotion);
+        eds.close();
     }
 
     @Override
