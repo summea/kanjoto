@@ -92,7 +92,6 @@ public class ViewAllApprenticeStrongestPathsByEmotionActivity extends ListActivi
                 // launch details activity
                 Intent intent = new Intent(view.getContext(),
                         ViewTopApprenticeStrongestPathsActivity.class);
-                        //ViewApprenticeStrongestPathDetailActivity.class);
 
                 intent.putExtra("list_id", id);
                 startActivity(intent);

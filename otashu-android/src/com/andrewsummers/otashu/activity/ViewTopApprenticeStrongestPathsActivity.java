@@ -6,15 +6,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.andrewsummers.otashu.R;
-import com.andrewsummers.otashu.adapter.EmotionAdapter;
 import com.andrewsummers.otashu.adapter.PathAdapter;
 import com.andrewsummers.otashu.data.EdgesDataSource;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
-import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.model.Edge;
 import com.andrewsummers.otashu.model.Emotion;
-import com.andrewsummers.otashu.model.Label;
-import com.andrewsummers.otashu.model.EmotionAndRelated;
 import com.andrewsummers.otashu.model.Path;
 
 import android.app.AlertDialog;
@@ -56,7 +52,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
     }
 
     public void fillList() {
-        
+
         // fill list with Top 3 strongest Apprentice paths (if available)
         List<Path> topPaths = new ArrayList<Path>();
         EdgesDataSource eds = new EdgesDataSource(this);
@@ -94,7 +90,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         for (int i = 0; i < 3; i++) {
 
             List<Edge> bestMatch = new ArrayList<Edge>();
-            
+
             boolean edge1To2Match = false;
             boolean edge2To3Match = false;
             // check to see if any of the lowest-weight edges are related nodes (i.e. do they
@@ -155,7 +151,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         }
 
         Log.d("MYLOG", "top paths being passed to adapter: " + topPaths.toString());
-        
+
         // pass list data to adapter
         adapter = new PathAdapter(this, topPaths);
 

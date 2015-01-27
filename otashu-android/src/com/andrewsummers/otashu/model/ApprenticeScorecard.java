@@ -1,13 +1,7 @@
 
 package com.andrewsummers.otashu.model;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
-
-import org.apache.http.ParseException;
-
-import android.util.Log;
 
 public class ApprenticeScorecard {
     private long id;
@@ -41,19 +35,13 @@ public class ApprenticeScorecard {
      */
     public String getTakenAt() {
         /*
-        String formattedDate = "";
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'", Locale.getDefault());
-        try {
-            Date date = sdf.parse(takenAt);
-            formattedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
-                    .format(date);
-        } catch (ParseException e) {
-            Log.d("MYLOG", e.toString());
-        } catch (java.text.ParseException e) {
-            Log.d("MYLOG", e.toString());
-        }
-        return formattedDate;
-        */
+         * String formattedDate = ""; SimpleDateFormat sdf = new
+         * SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'", Locale.getDefault()); try { Date date =
+         * sdf.parse(takenAt); formattedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm",
+         * Locale.getDefault()) .format(date); } catch (ParseException e) { Log.d("MYLOG",
+         * e.toString()); } catch (java.text.ParseException e) { Log.d("MYLOG", e.toString()); }
+         * return formattedDate;
+         */
         return takenAt;
     }
 

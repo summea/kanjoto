@@ -143,13 +143,13 @@ public class EmotionsDataSource {
 
         // select all notes from database
         Cursor cursor = db.rawQuery(query, null);
-        
+
         if (cursor.moveToFirst()) {
             do {
                 // create note objects based on note data from database
                 Emotion emotion = new Emotion();
                 emotion.setId(cursor.getLong(0));
-         
+
                 // add note string to list of strings
                 emotion_ids.add((int) emotion.getId());
             } while (cursor.moveToNext());
