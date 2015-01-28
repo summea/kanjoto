@@ -51,18 +51,10 @@ public class ViewAllApprenticeScorecardsActivity extends ListActivity {
     public void fillList() {
         List<ApprenticeScorecard> allApprenticeScorecards = new LinkedList<ApprenticeScorecard>();
         ApprenticeScorecardsDataSource lds = new ApprenticeScorecardsDataSource(this);
-        // allApprenticeScorecards = lds.getAllApprenticeScorecards("("
-        // + OtashuDatabaseHelper.COLUMN_CORRECT + "/" + OtashuDatabaseHelper.COLUMN_TOTAL
-        // + ")");
         allApprenticeScorecards = lds.getAllApprenticeScorecards("("
                 + OtashuDatabaseHelper.COLUMN_TOTAL + " - " + OtashuDatabaseHelper.COLUMN_CORRECT
                 + ")");
         lds.close();
-
-        /*
-         * // prevent crashes due to lack of database data if (allApprenticeScorecards.isEmpty())
-         * allApprenticeScorecards.add("empty");
-         */
 
         // pass list data to adapter
         adapter = new ApprenticeScorecardAdapter(this, allApprenticeScorecards);
@@ -184,8 +176,9 @@ public class ViewAllApprenticeScorecardsActivity extends ListActivity {
         lds.close();
 
         // prevent crashes due to lack of database data
-        if (allApprenticeScorecardsData.isEmpty())
+        if (allApprenticeScorecardsData.isEmpty()) {
             allApprenticeScorecardsData.add((long) 0);
+        }
 
         Long[] allApprenticeScorecards = allApprenticeScorecardsData
                 .toArray(new Long[allApprenticeScorecardsData.size()]);

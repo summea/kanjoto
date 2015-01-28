@@ -286,8 +286,12 @@ public class GenerateMusicActivity extends Activity {
         mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer aMediaPlayer) {
+                // fill return intent with values we are passing to parent activity
                 Intent output = new Intent();
                 output.putExtra("serialized_notes", serializeNotes(finalNotes));
+
+                // sending back data to parent activity (the activity that originally launched this
+                // activity)
                 setResult(RESULT_OK, output);
 
                 if (mediaPlayer != null) {
@@ -406,10 +410,11 @@ public class GenerateMusicActivity extends Activity {
 
             noteTrack.insertNote(channel, pitch, velocity, i * currentTotalNoteLength, length);
 
-            if (length > 0)
+            if (length > 0) {
                 currentTotalNoteLength = 480; // TODO: make this match note length (better) somehow
-            else
+            } else {
                 currentTotalNoteLength = 480;
+            }
         }
 
         ArrayList<MidiTrack> tracks = new ArrayList<MidiTrack>();

@@ -52,12 +52,10 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
         buttonGo = (Button) findViewById(R.id.button_go);
         buttonGo.setOnClickListener(this);
 
+        // get all emotions for spinner
         EmotionsDataSource eds = new EmotionsDataSource(this);
-        eds.open();
-
         List<Emotion> allEmotions = new ArrayList<Emotion>();
         allEmotions = eds.getAllEmotions();
-
         eds.close();
 
         Spinner spinner = null;
@@ -89,12 +87,14 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String defaultInstrument = sharedPref.getString("pref_default_instrument", "");
 
+        // get instrument values for spinner
         String[] instrumentLabels = getResources().getStringArray(R.array.instrument_labels_array);
         String[] instrumentValues = getResources().getStringArray(R.array.instrument_values_array);
 
         int position = 0;
-        if (Arrays.asList(instrumentValues).indexOf(defaultInstrument) > 0)
+        if (Arrays.asList(instrumentValues).indexOf(defaultInstrument) > 0) {
             position = Arrays.asList(instrumentValues).indexOf(defaultInstrument);
+        }
 
         spinner.setSelection(adapter.getPosition(instrumentLabels[position]));
 
@@ -140,6 +140,7 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
                 int selectedInstrumentId = Integer.valueOf(allInstrumentIds[instrumentSpinner
                         .getSelectedItemPosition()]);
 
+                // fill bundle with values we are passing to next activity
                 Bundle bundle = new Bundle();
                 bundle.putInt("emotion_id", selectedEmotionValue);
                 bundle.putInt("instrument_id", selectedInstrumentId);
@@ -160,6 +161,7 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // if we have a successful result returned from our child activity
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 // save last generated note sequence for saving bookmark (if necessary)
