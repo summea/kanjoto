@@ -1,6 +1,12 @@
 # otashu
 
 ## TODO:
+- Check if the "empty list" checks are still necessary
+- add noteset playback to "top 3 strengths" detail activity
+- show emotion name in "top 3 strengths" list activity
+- add note colors to notes on "top 3 strengths" layout
+- add UI formatting to Apprentice top three strengths detail activity
+- use Apprentice memory (graph) for generating music playback
 - fix horizontal animation timing for music generation activity
 - standardize strings view naming
 - noteset folders (lists by label or emotion)
@@ -10,6 +16,8 @@
 
 
 ## DONE:
+- 20150128: connected "top 3 strengths" list items to correct id for detail activity
+- 20150128: checked if the "empty list" checks are still necessary
 - 20150124: added detail activity for Apprentice strongest emotion-noteset combinations
 - 20150124: added "view all Apprentice strongest emotion-noteset combinations (by emotion)" list activity
 - 20150124: added "show Apprentice's top 3 strongest noteset-emotion relationship learned knowledge" feature

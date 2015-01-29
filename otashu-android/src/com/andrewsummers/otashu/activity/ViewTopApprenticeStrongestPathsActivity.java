@@ -39,6 +39,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
 
     private int selectedPositionInList = 0;
     private PathAdapter adapter = null;
+    private long emotionId = 0;
 
     /**
      * onCreate override used to gather and display a list of all emotions saved in database.
@@ -61,7 +62,6 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         long graphId = 2;
 
         // select a given emotion
-        long emotionId = 1;
         emotionId = getIntent().getExtras().getLong("list_id");
 
         // select a given weight limit
@@ -168,6 +168,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
                 Intent intent = new Intent(view.getContext(),
                         ViewApprenticeStrongestPathDetailActivity.class);
 
+                intent.putExtra("emotion_id", emotionId);
                 intent.putExtra("list_id", id);
                 startActivity(intent);
             }

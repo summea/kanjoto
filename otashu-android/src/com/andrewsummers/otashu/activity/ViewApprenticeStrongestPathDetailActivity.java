@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.EdgesDataSource;
 import com.andrewsummers.otashu.model.Edge;
+import com.andrewsummers.otashu.model.Path;
 
 public class ViewApprenticeStrongestPathDetailActivity extends Activity {
     /**
@@ -29,6 +30,7 @@ public class ViewApprenticeStrongestPathDetailActivity extends Activity {
         TextView pathText = (TextView) findViewById(R.id.path_text);
         pathText.setText("Strongest Path\n");
 
+        List<Path> topPaths = new ArrayList<Path>();
         EdgesDataSource eds = new EdgesDataSource(this);
 
         // select a given graph
@@ -36,7 +38,8 @@ public class ViewApprenticeStrongestPathDetailActivity extends Activity {
 
         // select a given emotion
         long emotionId = 1;
-        emotionId = getIntent().getExtras().getLong("list_id");
+        emotionId = getIntent().getExtras().getLong("emotion_id");
+        Log.d("MYLOG", "emotion id: " + emotionId);
 
         // select a given weight limit
         float weightLimit = 0.5f;
@@ -58,11 +61,12 @@ public class ViewApprenticeStrongestPathDetailActivity extends Activity {
         // that have a weight less than 0.5)
         List<Edge> p3Edges = eds.getAllEdges(graphId, emotionId, weightLimit, position);
 
-        List<Edge> bestMatch = new ArrayList<Edge>();
         List<Long> usedOnce = new ArrayList<Long>();
 
         // get top 3
         for (int i = 0; i < 3; i++) {
+
+            List<Edge> bestMatch = new ArrayList<Edge>();
 
             boolean edge1To2Match = false;
             boolean edge2To3Match = false;
@@ -99,8 +103,7 @@ public class ViewApprenticeStrongestPathDetailActivity extends Activity {
 
             try {
                 // return results
-                Log.d("MYLOG", bestMatch.toString());
-                pathText.setText(pathText.getText() + "\n" + bestMatch.toString());
+                Log.d("MYLOG", "best match results: " + bestMatch.toString());
 
                 // keep track of what edges have been used already
                 for (int j = 0; j < 3; j++) {
@@ -114,8 +117,22 @@ public class ViewApprenticeStrongestPathDetailActivity extends Activity {
                 Log.d("MYLOG", e.getStackTrace().toString());
             }
 
-            // clear out past results
-            bestMatch.clear();
+            if (!bestMatch.isEmpty()) {
+                // add path for list
+                Path path = new Path();
+                path.setPath(bestMatch);
+                Log.d("MYLOG", "adding best match: " + bestMatch.toString());
+                topPaths.add(path);
+                Log.d("MYLOG", "current state of topPaths: " + topPaths.toString());
+            }
+        }
+
+        // get correct path detail for clicked list item
+        try {
+            long pathListPosition = getIntent().getExtras().getLong("list_id");
+            pathText.setText(pathText.getText() + "\n" + topPaths.get((int) pathListPosition));
+        } catch (Exception e) {
+            Log.d("MYLOG", e.getStackTrace().toString());
         }
     }
 }
