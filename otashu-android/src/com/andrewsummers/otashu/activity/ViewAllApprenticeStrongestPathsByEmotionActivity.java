@@ -23,9 +23,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
@@ -35,6 +37,7 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 public class ViewAllApprenticeStrongestPathsByEmotionActivity extends ListActivity {
 
+    private ListView listView = null;
     private int selectedPositionInList = 0;
     private EmotionAdapter adapter = null;
 
@@ -46,6 +49,17 @@ public class ViewAllApprenticeStrongestPathsByEmotionActivity extends ListActivi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // initialize ListView
+        listView = getListView();
+
+        // set title for list activity
+        ViewGroup listHeader = (ViewGroup) getLayoutInflater().inflate(R.layout.list_header,
+                listView, false);
+        TextView headerText = (TextView) listHeader.findViewById(R.id.list_header_title);
+        headerText.setText(R.string.top_apprentice_strongest_paths_list_header);
+        listView.addHeaderView(listHeader);
+
         fillList();
     }
 
@@ -74,8 +88,6 @@ public class ViewAllApprenticeStrongestPathsByEmotionActivity extends ListActivi
         // pass list data to adapter
         adapter = new EmotionAdapter(this, allEmotionsAndRelated);
 
-        final ListView listView = getListView();
-        listView.setTextFilterEnabled(true);
         listView.setAdapter(adapter);
 
         // get individual emotion details

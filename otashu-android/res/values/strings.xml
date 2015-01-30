@@ -69,6 +69,7 @@
     <string name="label_detail_name_label">Name</string>
     <string name="label_name">Name</string>
     <string name="label_saved">label saved</string>
+    <string name="list_header_title">List Title</string>
     <string name="menu_button_apprentice_strongest_paths">Apprentice Strongest Paths</string>
     <string name="menu_button_bookmarks">Bookmarks</string>
     <string name="menu_button_create_emotion">New</string>
@@ -124,6 +125,8 @@
     <string name="toggle_enabled_label">Enabled</string>
     <string name="toggle_enabled_off">Off</string>
     <string name="toggle_enabled_on">On</string>
+    <string name="top_apprentice_strongest_paths_list_header">Apprentice\'s Strongest Paths</string>
+    <string name="view_all_notesets_list_header">All Notesets</string>
     <string name="view_all_notesets_title">View All Notesets</string>
     <string name="view_apprentice_scorecard_detail_title">Scorecard Details</string>
     <string name="view_bookmark_detail_title">Bookmark Details</string>

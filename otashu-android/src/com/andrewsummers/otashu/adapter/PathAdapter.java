@@ -35,7 +35,7 @@ public class PathAdapter extends BaseAdapter {
         paths = allPaths;
 
         Log.d("MYLOG", "all paths: " + allPaths.toString());
-        
+
         NotevaluesDataSource nvds = new NotevaluesDataSource(mContext);
         List<Notevalue> allNotevalues = nvds.getAllNotevalues();
         nvds.close();
@@ -82,14 +82,10 @@ public class PathAdapter extends BaseAdapter {
 
         String backgroundColor = "#dddddd";
         /*
-        if (path.get(position).getLabel().getColor() != null) {
-            backgroundColor = path.get(position).getLabel().getColor();
-        }
-
-        if (path.get(position).getNoteset().getEnabled() == 0) {
-            backgroundColor = "#e8e8e8";
-        }
-        */
+         * if (path.get(position).getLabel().getColor() != null) { backgroundColor =
+         * path.get(position).getLabel().getColor(); } if
+         * (path.get(position).getNoteset().getEnabled() == 0) { backgroundColor = "#e8e8e8"; }
+         */
 
         // add correct color to background (but maintain default state "pressed" and "selected"
         // effects)
@@ -109,31 +105,24 @@ public class PathAdapter extends BaseAdapter {
         TextView note = null;
 
         Log.d("MYLOG", "note items length: " + noteItems.length + "");
-        
+
         // fill in note names for each note in each row of this custom list
-        for (int i = 0; i < noteItems.length-1; i++) {
+        for (int i = 0; i < noteItems.length - 1; i++) {
             note = (TextView) convertView.findViewById(noteItems[i]);
             // note.setText(getNoteName(path.get(position).getNotes().get(i).getNotevalue()));
-            
+
             note.setText(notevalues.get(
                     paths.get(position).getPath().get(i).getFromNodeId())
                     .getNotelabel());
 
             backgroundColor = "#dddddd";
             /*
-            if (labels.get(
-                    (int) notevalues.get(
-                            paths.get(position).getNotes().get(i).getNotevalue())
-                            .getLabelId()).getColor() != null)
-                backgroundColor = labels.get(
-                        (int) notevalues.get(
-                                paths.get(position).getNotes().get(i).getNotevalue())
-                                .getLabelId()).getColor();
-
-            if (paths.get(position).getNoteset().getEnabled() == 0) {
-                backgroundColor = "#e8e8e8";
-            }
-            */
+             * if (labels.get( (int) notevalues.get(
+             * paths.get(position).getNotes().get(i).getNotevalue()) .getLabelId()).getColor() !=
+             * null) backgroundColor = labels.get( (int) notevalues.get(
+             * paths.get(position).getNotes().get(i).getNotevalue()) .getLabelId()).getColor(); if
+             * (paths.get(position).getNoteset().getEnabled() == 0) { backgroundColor = "#e8e8e8"; }
+             */
 
             drawable = new StateListDrawable();
             drawable.addState(new int[] {
@@ -146,30 +135,24 @@ public class PathAdapter extends BaseAdapter {
             note.setBackground(drawable);
 
             // make sure to add last note (because of the "from" and "to" differences)
-            if (i == noteItems.length-2) {
-            
-                note = (TextView) convertView.findViewById(noteItems[i+1]);
+            if (i == noteItems.length - 2) {
+
+                note = (TextView) convertView.findViewById(noteItems[i + 1]);
                 // note.setText(getNoteName(path.get(position).getNotes().get(i).getNotevalue()));
-                
+
                 note.setText(notevalues.get(
                         paths.get(position).getPath().get(i).getToNodeId())
                         .getNotelabel());
 
                 backgroundColor = "#dddddd";
                 /*
-                if (labels.get(
-                        (int) notevalues.get(
-                                paths.get(position).getNotes().get(i).getNotevalue())
-                                .getLabelId()).getColor() != null)
-                    backgroundColor = labels.get(
-                            (int) notevalues.get(
-                                    paths.get(position).getNotes().get(i).getNotevalue())
-                                    .getLabelId()).getColor();
-
-                if (paths.get(position).getNoteset().getEnabled() == 0) {
-                    backgroundColor = "#e8e8e8";
-                }
-                */
+                 * if (labels.get( (int) notevalues.get(
+                 * paths.get(position).getNotes().get(i).getNotevalue()) .getLabelId()).getColor()
+                 * != null) backgroundColor = labels.get( (int) notevalues.get(
+                 * paths.get(position).getNotes().get(i).getNotevalue()) .getLabelId()).getColor();
+                 * if (paths.get(position).getNoteset().getEnabled() == 0) { backgroundColor =
+                 * "#e8e8e8"; }
+                 */
 
                 drawable = new StateListDrawable();
                 drawable.addState(new int[] {
@@ -178,9 +161,10 @@ public class PathAdapter extends BaseAdapter {
                 drawable.addState(new int[] {
                         android.R.attr.state_selected
                 }, mContext.getResources().getDrawable(R.drawable.row_selector));
-                drawable.addState(new int[] {}, new ColorDrawable(Color.parseColor(backgroundColor)));
+                drawable.addState(new int[] {},
+                        new ColorDrawable(Color.parseColor(backgroundColor)));
                 note.setBackground(drawable);
-            
+
             }
         }
 

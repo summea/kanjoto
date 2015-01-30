@@ -372,8 +372,15 @@ public class GenerateMusicActivity extends Activity {
         Tempo t = new Tempo();
         t.setBpm(playbackSpeed);
 
-        if ((selectedInstrumentId < 0) && (defaultInstrument != null))
-            selectedInstrumentId = Integer.valueOf(defaultInstrument);
+        if ((selectedInstrumentId < 0) && (defaultInstrument != null)) {
+            try {
+                selectedInstrumentId = Integer.valueOf(defaultInstrument);
+            } catch (Exception e) {
+                Log.d("MYLOG", e.getStackTrace().toString());
+                // set default to 1 (piano) if no default preference found
+                selectedInstrumentId = 1;
+            }
+        }
 
         // set instrument type
         ProgramChange pc = new ProgramChange(0, 0, selectedInstrumentId);

@@ -29,8 +29,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
@@ -41,6 +43,7 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 public class ViewAllNotesetsActivity extends ListActivity {
 
+    private ListView listView = null;
     private int selectedPositionInList = 0;
     private NotesetAdapter adapter = null;
     List<NotesetAndRelated> allNotesetsAndNotes = new LinkedList<NotesetAndRelated>();
@@ -57,6 +60,16 @@ public class ViewAllNotesetsActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // initialize ListView
+        listView = getListView();
+
+        // set title for list activity
+        ViewGroup listHeader = (ViewGroup) getLayoutInflater().inflate(R.layout.list_header,
+                listView, false);
+        TextView headerText = (TextView) listHeader.findViewById(R.id.list_header_title);
+        headerText.setText(R.string.view_all_notesets_list_header);
+        listView.addHeaderView(listHeader);
 
         NotesetsDataSource nds = new NotesetsDataSource(this);
         totalNotesetsAvailable = nds.getCount();
@@ -96,8 +109,6 @@ public class ViewAllNotesetsActivity extends ListActivity {
             // pass list data to adapter
             adapter = new NotesetAdapter(this, allNotesetsAndNotes);
 
-            final ListView listView = getListView();
-            listView.setTextFilterEnabled(true);
             listView.setAdapter(adapter);
             listView.setOnScrollListener(new AbsListView.OnScrollListener() {
 
@@ -111,9 +122,10 @@ public class ViewAllNotesetsActivity extends ListActivity {
                         int visibleItemCount, int totalItemCount) {
                     try {
                         // if we've reached the end of the visible list, get more items (if
-                        // available)
-                        if ((getListView().getLastVisiblePosition() == adapter.getCount() - 1)
-                                && (getListView().getChildAt(getListView().getChildCount() - 1)
+                        // available) ... also note: the list header takes up 1 row, so we need to
+                        // subtract 2 to get an accurate measurement of our current last row
+                        if ((getListView().getLastVisiblePosition() == adapter.getCount() - 2)
+                                && (getListView().getChildAt(getListView().getChildCount() - 2)
                                         .getBottom() <= getListView().getHeight())) {
 
                             // get more items for list
@@ -130,6 +142,9 @@ public class ViewAllNotesetsActivity extends ListActivity {
             listView.setOnItemClickListener(new OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View view,
                         int position, long id) {
+
+                    // the list header row takes up one row space... make sure to subtract it first
+                    position = position - 1;
 
                     // launch details activity
                     Intent intent = new Intent(view.getContext(),

@@ -1,7 +1,6 @@
 # otashu
 
 ## TODO:
-- Check if the "empty list" checks are still necessary
 - add noteset playback to "top 3 strengths" detail activity
 - show emotion name in "top 3 strengths" list activity
 - add note colors to notes on "top 3 strengths" layout
