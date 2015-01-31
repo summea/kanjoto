@@ -45,6 +45,24 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * The ApprenticeActivity class provides tests for the Apprentice with test results noted as judged
+ * by the User.
+ * <p>
+ * In this activity, the Apprentice chooses a random emotion and chooses notesets (either randomly
+ * or using previously-learned data) and presents the noteset-emotion combination to the User to
+ * check for accuracy. If the noteset-emotion combination is correct (or passing), the Apprentice
+ * will go and save this noteset-emotion combination information in a database graph table. This
+ * noteset-emotion combination is also saved in the User's noteset collection (if enabled in the
+ * program settings).
+ * </p>
+ * <p>
+ * If the Apprentice incorrectly chooses a noteset-emotion combination (as determined by the User),
+ * the noteset-emotion combination information is noted by raising the related path edge weights in
+ * the database graph table. Also, the incorrect noteset-emotion combination is not saved in the
+ * User's noteset collection.
+ * </p>
+ */
 public class ApprenticeActivity extends Activity implements OnClickListener {
     private File path = Environment.getExternalStorageDirectory();
     private String externalDirectory = path.toString() + "/otashu/";

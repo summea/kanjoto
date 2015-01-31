@@ -27,6 +27,21 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+/**
+ * The ChooseEmotionActivity class provides a form to get User input for what emotion to use for
+ * music generation and playback.
+ * <p>
+ * Before music is generated and played back for the User, the User must decide what emotion to
+ * choose for the music generation and playback. The emotion value is passed to the
+ * GenerateMusicActivity class along with other data so that the GenerateMusicActivity class knows
+ * what type of music should be generated.
+ * </p>
+ * <p>
+ * In the case of when the alarm clock goes off (as set in the program settings), this
+ * ChooseEmotionActivity class is used temporarily to get to the GenerateMusicActivity class while
+ * using a default emotion value (whatever emotion is first in the related spinner list).
+ * </p>
+ */
 public class ChooseEmotionActivity extends Activity implements OnClickListener {
 
     private Button buttonGo = null;
