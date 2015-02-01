@@ -16,6 +16,11 @@ import android.widget.Toast;
 
 /**
  * CreateLabelActivity is an Activity which provides users the ability to create new labels.
+ * <p>
+ * This activity provides a form for creating a new Label. Labels are used for a variety of
+ * different purposes, for example: assigning colors to notes for lists and visual playback, and
+ * providing background colors for emotions.
+ * </p>
  */
 public class CreateLabelActivity extends Activity implements OnClickListener {
     private Button buttonSave = null;
@@ -48,14 +53,11 @@ public class CreateLabelActivity extends Activity implements OnClickListener {
         switch (v.getId()) {
             case R.id.button_save:
                 // gather label data from form
-                String labelName;
-                String labelColor;
-
                 Label labelToInsert = new Label();
 
-                labelName = ((EditText) findViewById(R.id.edittext_label_name)).getText()
+                String labelName = ((EditText) findViewById(R.id.edittext_label_name)).getText()
                         .toString();
-                labelColor = ((EditText) findViewById(R.id.edittext_label_color)).getText()
+                String labelColor = ((EditText) findViewById(R.id.edittext_label_color)).getText()
                         .toString();
 
                 labelToInsert.setName(labelName.toString());
@@ -64,6 +66,7 @@ public class CreateLabelActivity extends Activity implements OnClickListener {
                 // first insert new label (parent of all related notes)
                 saveLabel(v, labelToInsert);
 
+                // close activity
                 finish();
                 break;
         }
@@ -92,7 +95,6 @@ public class CreateLabelActivity extends Activity implements OnClickListener {
      * @param data Incoming string of data to be saved.
      */
     private void saveLabel(View v, Label label) {
-
         // save label in database
         LabelsDataSource lds = new LabelsDataSource(this);
         setNewlyInsertedLabel(lds.createLabel(label));

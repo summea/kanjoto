@@ -22,9 +22,14 @@ import android.widget.Toast;
 
 /**
  * CreateEmotionActivity is an Activity which provides users the ability to create new emotions.
+ * <p>
+ * This activity provides a form for creating a new Emotion. An Emotion is basically a label
+ * or tag for an emotion that is s;aved into the database for later use. Emotions are typically used
+ * in connection with Noteset objects (e.g. noteset-emotion combinations).
+ * </p>
  */
 public class CreateEmotionActivity extends Activity implements OnClickListener {
-    private Button buttonSave = null;
+    private Button buttonSave;
     private Emotion newlyInsertedEmotion = new Emotion();
 
     /**
@@ -49,10 +54,8 @@ public class CreateEmotionActivity extends Activity implements OnClickListener {
         allLabels = lds.getAllLabelListPreviews();
         lds.close();
 
-        Spinner spinner = null;
-
         // locate next spinner in layout
-        spinner = (Spinner) findViewById(R.id.spinner_emotion_label);
+        Spinner spinner = (Spinner) findViewById(R.id.spinner_emotion_label);
 
         // create array adapter for list of emotions
         ArrayAdapter<String> labelsAdapter = new ArrayAdapter<String>(this,
@@ -75,27 +78,25 @@ public class CreateEmotionActivity extends Activity implements OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_save:
-                // gather emotion data from form
-                String emotionName;
-                Spinner emotionLabel;
-
                 LabelsDataSource lds = new LabelsDataSource(this);
                 List<Long> allLabelIds = lds.getAllLabelListDBTableIds();
                 lds.close();
 
-                // gather form data
+                // gather emotion data from form
                 Emotion emotionToInsert = new Emotion();
 
-                emotionName = ((EditText) findViewById(R.id.edittext_emotion_name)).getText()
+                String emotionName = ((EditText) findViewById(R.id.edittext_emotion_name))
+                        .getText()
                         .toString();
-                emotionLabel = (Spinner) findViewById(R.id.spinner_emotion_label);
+                Spinner emotionLabel = (Spinner) findViewById(R.id.spinner_emotion_label);
 
                 emotionToInsert.setName(emotionName.toString());
                 emotionToInsert.setLabelId(allLabelIds.get(emotionLabel.getSelectedItemPosition()));
 
-                // first insert new emotion (parent of all related notes)
+                // save emotion to database
                 saveEmotion(v, emotionToInsert);
 
+                // close activity
                 finish();
                 break;
         }
@@ -124,7 +125,6 @@ public class CreateEmotionActivity extends Activity implements OnClickListener {
      * @param data Incoming string of data to be saved.
      */
     private void saveEmotion(View v, Emotion emotion) {
-
         // save emotion in database
         EmotionsDataSource eds = new EmotionsDataSource(this);
         setNewlyInsertedEmotion(eds.createEmotion(emotion));

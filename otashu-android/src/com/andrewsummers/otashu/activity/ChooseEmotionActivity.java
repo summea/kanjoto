@@ -73,10 +73,8 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
         allEmotions = eds.getAllEmotions();
         eds.close();
 
-        Spinner spinner = null;
-
         // locate next spinner in layout
-        spinner = (Spinner) findViewById(R.id.spinner_emotion);
+        Spinner spinner = (Spinner) findViewById(R.id.spinner_emotion);
 
         // create array adapter for list of emotions
         ArrayAdapter<Emotion> emotionsAdapter = new ArrayAdapter<Emotion>(this,
@@ -90,9 +88,8 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
         spinner.setAdapter(emotionsAdapter);
 
         // instrument spinner
-        ArrayAdapter<CharSequence> adapter = null;
         spinner = (Spinner) findViewById(R.id.spinner_instrument);
-        adapter = ArrayAdapter
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter
                 .createFromResource(this, R.array.instrument_labels_array,
                         android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

@@ -16,6 +16,13 @@ import android.widget.Toast;
 
 /**
  * CreateGraphActivity is an Activity which provides users the ability to create new graphs.
+ * <p>
+ * This activity provides a form for creating a new Graph. User may want to create separate
+ * graphs for different purposes. For example, there might be a graph for
+ * "general note relationships" (i.e. how music notes typically fit together in sequence for certain
+ * keys) or a graph for "emotions" (i.e. how notes fit together in sequence in relation to a
+ * specific emotion).
+ * </p>
  */
 public class CreateGraphActivity extends Activity implements OnClickListener {
     private Button buttonSave = null;
@@ -48,11 +55,9 @@ public class CreateGraphActivity extends Activity implements OnClickListener {
         switch (v.getId()) {
             case R.id.button_save:
                 // gather graph data from form
-                String graphName;
-
                 Graph graphToInsert = new Graph();
 
-                graphName = ((EditText) findViewById(R.id.edittext_graph_name)).getText()
+                String graphName = ((EditText) findViewById(R.id.edittext_graph_name)).getText()
                         .toString();
 
                 graphToInsert.setName(graphName.toString());
@@ -88,7 +93,6 @@ public class CreateGraphActivity extends Activity implements OnClickListener {
      * @param data Incoming string of data to be saved.
      */
     private void saveGraph(View v, Graph graph) {
-
         // save graph in database
         GraphsDataSource gds = new GraphsDataSource(this);
         setNewlyInsertedGraph(gds.createGraph(graph));
