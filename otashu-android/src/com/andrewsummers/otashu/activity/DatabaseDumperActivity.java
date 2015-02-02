@@ -32,6 +32,14 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+/**
+ * DatabaseDumperActivity is an Activity which provides a dump of database data.
+ * <p>
+ * Directly working with database files on Android seems to be surprisingly difficult. Until a
+ * better way is found, the Database Dumper allows for data from the database to be dumped to a page
+ * for debug and informational purposes.
+ * </p>
+ */
 public class DatabaseDumperActivity extends Activity {
 
     @Override

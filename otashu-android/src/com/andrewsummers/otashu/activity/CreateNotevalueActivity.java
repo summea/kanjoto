@@ -21,6 +21,10 @@ import android.widget.Toast;
 
 /**
  * CreateNotevalueActivity is an Activity which provides users the ability to create new notevalues.
+ * <p>
+ * This activity provides a form for creating a new Notevalue. A Notevalue is an object that maps a
+ * musical note value (e.g. C3, D3, E3) to MIDI note values (e.g. 48, 50, 52).
+ * </p>
  */
 public class CreateNotevalueActivity extends Activity implements OnClickListener {
     private Button buttonSave = null;
@@ -48,11 +52,9 @@ public class CreateNotevalueActivity extends Activity implements OnClickListener
         allLabels = lds.getAllLabelListPreviews();
         lds.close();
 
-        Spinner spinner = null;
-
         ArrayAdapter<CharSequence> adapter = null;
 
-        spinner = (Spinner) findViewById(R.id.spinner_notelabel);
+        Spinner spinner = (Spinner) findViewById(R.id.spinner_notelabel);
         adapter = ArrayAdapter
                 .createFromResource(this, R.array.note_labels_array,
                         android.R.layout.simple_spinner_item);
@@ -85,8 +87,6 @@ public class CreateNotevalueActivity extends Activity implements OnClickListener
         switch (v.getId()) {
             case R.id.button_save:
                 // gather notevalue data from form
-                Spinner notevalueNotevalue;
-                Spinner notevalueLabel;
                 String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
                 String[] noteLabelsArray = getResources().getStringArray(R.array.note_labels_array);
 
@@ -96,9 +96,8 @@ public class CreateNotevalueActivity extends Activity implements OnClickListener
 
                 Notevalue notevalueToInsert = new Notevalue();
 
-                notevalueNotevalue = (Spinner) findViewById(R.id.spinner_notelabel);
-                // notevalueNotelabel = (Spinner) findViewById(R.id.spinner_notelabel);
-                notevalueLabel = (Spinner) findViewById(R.id.spinner_label);
+                Spinner notevalueNotevalue = (Spinner) findViewById(R.id.spinner_notelabel);
+                Spinner notevalueLabel = (Spinner) findViewById(R.id.spinner_label);
 
                 notevalueToInsert.setNotevalue(Integer.parseInt(noteValuesArray[notevalueNotevalue
                         .getSelectedItemPosition()]));

@@ -33,6 +33,11 @@ import android.widget.Toast;
 
 /**
  * CreateNotesetActivity is an Activity which provides users the ability to create new notesets.
+ * <p>
+ * This activity provides a form for creating a new Noteset. A Noteset is made up of a specified
+ * number of Note objects (and Note objects correspond to a musical note value). Each note in the
+ * noteset can also have a specific velocity and note length, as well.
+ * </p>
  */
 public class CreateNotesetActivity extends Activity implements OnClickListener {
     private Button buttonSave = null;
@@ -68,10 +73,8 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
 
         eds.close();
 
-        Spinner spinner = null;
-
         // locate next spinner in layout
-        spinner = (Spinner) findViewById(R.id.spinner_emotion);
+        Spinner spinner = (Spinner) findViewById(R.id.spinner_emotion);
 
         // create array adapter for list of emotions
         ArrayAdapter<Emotion> emotionsAdapter = new ArrayAdapter<Emotion>(this,
@@ -305,9 +308,7 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
     private boolean doesNotesetExist(NotesetAndRelated notesetAndRelated) {
         boolean notesetExists = true;
         NotesDataSource nds = new NotesDataSource(this);
-
         notesetExists = nds.doesNotesetExist(notesetAndRelated);
-
         return notesetExists;
     }
 
