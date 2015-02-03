@@ -109,6 +109,7 @@ public class CreateNotevalueActivity extends Activity implements OnClickListener
                 // first insert new notevalue (parent of all related notes)
                 saveNotevalue(v, notevalueToInsert);
 
+                // close activity
                 finish();
                 break;
         }

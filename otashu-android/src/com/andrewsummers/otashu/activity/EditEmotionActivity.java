@@ -22,11 +22,17 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 /**
- * CreateEmotionActivity is an Activity which provides users the ability to create new emotions.
+ * EditEmotionActivity is an Activity which provides users the ability to edit emotions.
+ * <p>
+ * This activity provides a form for editing existing Emotions. Emotion to edit is selected either
+ * via the "view all emotions" activity or by the related "edit" context menu. The edit form fills
+ * in data found (from the database) for specified Emotion to edit and (if successful) any saved
+ * updates will then be saved in the database.
+ * </p>
  */
 public class EditEmotionActivity extends Activity implements OnClickListener {
     private Button buttonSave = null;
-    private Emotion editEmotion;
+    private Emotion editEmotion;    // keep track of which Emotion is currently being edited
 
     /**
      * onCreate override that provides emotion creation view to user .
@@ -44,18 +50,15 @@ public class EditEmotionActivity extends Activity implements OnClickListener {
         buttonSave = (Button) findViewById(R.id.button_save);
         buttonSave.setOnClickListener(this);
 
-        // open data source handle
-        EmotionsDataSource eds = new EmotionsDataSource(this);
-        eds.open();
-
         int emotionId = (int) getIntent().getExtras().getLong("list_id");
-
+        
+        // open data source handle
+        EmotionsDataSource eds = new EmotionsDataSource(this);        
+        editEmotion = eds.getEmotion(emotionId);
         eds.close();
 
-        editEmotion = eds.getEmotion(emotionId);
-
+        // fill in existing form data
         EditText emotionNameText = (EditText) findViewById(R.id.edittext_emotion_name);
-        // emotionNameText.setText(allEmotions.get(emotionId).getName());
         emotionNameText.setText(editEmotion.getName());
 
         LabelsDataSource lds = new LabelsDataSource(this);
@@ -94,9 +97,6 @@ public class EditEmotionActivity extends Activity implements OnClickListener {
         switch (v.getId()) {
             case R.id.button_save:
                 // gather emotion data from form
-                String emotionName;
-                Spinner emotionLabel;
-
                 LabelsDataSource lds = new LabelsDataSource(this);
                 List<Long> allLabelIds = lds.getAllLabelListDBTableIds();
                 lds.close();
@@ -104,9 +104,9 @@ public class EditEmotionActivity extends Activity implements OnClickListener {
                 Emotion emotionToUpdate = new Emotion();
                 emotionToUpdate.setId(editEmotion.getId());
 
-                emotionName = ((EditText) findViewById(R.id.edittext_emotion_name)).getText()
+                String emotionName = ((EditText) findViewById(R.id.edittext_emotion_name)).getText()
                         .toString();
-                emotionLabel = (Spinner) findViewById(R.id.spinner_emotion_label);
+                Spinner emotionLabel = (Spinner) findViewById(R.id.spinner_emotion_label);
 
                 emotionToUpdate.setName(emotionName.toString());
                 emotionToUpdate.setLabelId(allLabelIds.get(emotionLabel.getSelectedItemPosition()));
@@ -114,6 +114,7 @@ public class EditEmotionActivity extends Activity implements OnClickListener {
                 // first insert new emotion (parent of all related notes)
                 saveEmotionUpdates(v, emotionToUpdate);
 
+                // close activity
                 finish();
                 break;
         }

@@ -242,6 +242,7 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
                         saveNote(v, note);
                     }
 
+                    // close activity
                     finish();
                 } else {
                     Context context = getApplicationContext();
