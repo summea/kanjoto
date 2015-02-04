@@ -21,11 +21,17 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 /**
- * CreateNotevalueActivity is an Activity which provides users the ability to create new notevalues.
+ * EditNotevalueActivity is an Activity which provides users the ability to edit notevalues.
+ * <p>
+ * This activity provides a form for editing existing Notevalues. Notevalues to edit is selected
+ * either via the "view all notevalues" activity or by the related "edit" context menu. The edit
+ * form fills in data found (from the database) for specified Notevalue to edit and (if successful)
+ * any saved updates will then be saved in the database.
+ * </p>
  */
 public class EditNotevalueActivity extends Activity implements OnClickListener {
     private Button buttonSave = null;
-    private Notevalue editNotevalue;
+    private Notevalue editNotevalue; // keep track of which Notevalue is currently being edited
 
     /**
      * onCreate override that provides notevalue creation view to user .
@@ -56,11 +62,9 @@ public class EditNotevalueActivity extends Activity implements OnClickListener {
         Label selectedLabel = lds.getLabel(editNotevalue.getLabelId());
         lds.close();
 
-        Spinner spinner = null;
-
         ArrayAdapter<CharSequence> adapter = null;
 
-        spinner = (Spinner) findViewById(R.id.spinner_notelabel);
+        Spinner spinner = (Spinner) findViewById(R.id.spinner_notelabel);
         adapter = ArrayAdapter
                 .createFromResource(this, R.array.note_labels_array,
                         android.R.layout.simple_spinner_item);
@@ -94,8 +98,6 @@ public class EditNotevalueActivity extends Activity implements OnClickListener {
         switch (v.getId()) {
             case R.id.button_save:
                 // gather notevalue data from form
-                Spinner notevalueNotevalue;
-                Spinner notevalueLabel;
                 String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
                 String[] noteLabelsArray = getResources().getStringArray(R.array.note_labels_array);
 
@@ -105,9 +107,9 @@ public class EditNotevalueActivity extends Activity implements OnClickListener {
 
                 Notevalue notevalueToUpdate = new Notevalue();
 
-                notevalueNotevalue = (Spinner) findViewById(R.id.spinner_notelabel);
+                Spinner notevalueNotevalue = (Spinner) findViewById(R.id.spinner_notelabel);
                 // notevalueNotelabel = (Spinner) findViewById(R.id.spinner_notelabel);
-                notevalueLabel = (Spinner) findViewById(R.id.spinner_label);
+                Spinner notevalueLabel = (Spinner) findViewById(R.id.spinner_label);
 
                 notevalueToUpdate.setId(editNotevalue.getId());
                 notevalueToUpdate.setNotevalue(Integer.parseInt(noteValuesArray[notevalueNotevalue
@@ -120,6 +122,7 @@ public class EditNotevalueActivity extends Activity implements OnClickListener {
                 // first insert new notevalue (parent of all related notes)
                 saveNotevalueUpdates(v, notevalueToUpdate);
 
+                // close activity
                 finish();
                 break;
         }
@@ -148,7 +151,6 @@ public class EditNotevalueActivity extends Activity implements OnClickListener {
      * @param data Incoming string of data to be saved.
      */
     private void saveNotevalueUpdates(View v, Notevalue notevalue) {
-
         // save notevalue in database
         NotevaluesDataSource eds = new NotevaluesDataSource(this);
         eds.updateNotevalue(notevalue);

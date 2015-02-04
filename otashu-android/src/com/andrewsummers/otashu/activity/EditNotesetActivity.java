@@ -35,12 +35,19 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 /**
- * CreateNotesetActivity is an Activity which provides users the ability to create new notesets.
+ * EditNotesetActivity is an Activity which provides users the ability to edit notesets.
+ * <p>
+ * This activity provides a form for editing existing Notesets. Noteset to edit is selected either
+ * via the "view all notesets" activity or by the related "edit" context menu. The edit form fills
+ * in data found (from the database) for specified Noteset to edit and (if successful) any saved
+ * updates will then be saved in the database.
+ * </p>
  */
 public class EditNotesetActivity extends Activity implements OnClickListener {
     private Button buttonSave = null;
-    private Noteset editNoteset;
-    private List<Note> editNotes = new LinkedList<Note>();
+    private Noteset editNoteset; // keep track of which Noteset is currently being edited
+    private List<Note> editNotes = new LinkedList<Note>(); // keep track of which Notes are
+                                                           // currently being edited
     private Button buttonPlayNoteset = null;
     private File path = Environment.getExternalStorageDirectory();
     private String externalDirectory = path.toString() + "/otashu/";
@@ -75,15 +82,7 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
             notesetId = notesetIdInTable;
         }
 
-        // List<Long> allNotesetsData = new LinkedList<Long>();
         NotesetsDataSource nds = new NotesetsDataSource(this);
-
-        /*
-         * // prevent crashes due to lack of database data if (allNotesetsData.isEmpty())
-         * allNotesetsData.add((long) 0); Long[] allNotesets = allNotesetsData .toArray(new
-         * Long[allNotesetsData.size()]);
-         */
-
         Noteset noteset = new Noteset();
 
         // if requested id is from ViewAllNotesetsActivity, get actual (long) id from allNotesets
@@ -118,13 +117,10 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
         List<Emotion> allEmotions = new ArrayList<Emotion>();
         EmotionsDataSource eds = new EmotionsDataSource(this);
         allEmotions = eds.getAllEmotions();
-
         eds.close();
 
-        Spinner spinner = null;
-
         // locate next spinner in layout
-        spinner = (Spinner) findViewById(R.id.spinner_emotion);
+        Spinner spinner = (Spinner) findViewById(R.id.spinner_emotion);
 
         // create array adapter for list of emotions
         ArrayAdapter<Emotion> emotionsAdapter = new ArrayAdapter<Emotion>(this,
@@ -236,7 +232,6 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
      */
     @Override
     public void onClick(View v) {
-
         String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
         String[] velocityValuesArray = getResources().getStringArray(R.array.velocity_values_array);
         String[] lengthValuesArray = getResources().getStringArray(R.array.length_values_array);
@@ -264,8 +259,6 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
 
         switch (v.getId()) {
             case R.id.button_save:
-                Spinner spinner;
-
                 // check if noteset already exists, first
                 NotesetAndRelated notesetAndRelated = new NotesetAndRelated();
 
@@ -276,8 +269,6 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
                 // get select emotion's id
 
                 EmotionsDataSource eds = new EmotionsDataSource(this);
-                eds.open();
-
                 List<Integer> allEmotionIds = new ArrayList<Integer>();
                 allEmotionIds = eds.getAllEmotionIds();
 
@@ -298,7 +289,7 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
                         .getSelectedItemId()));
 
                 for (int i = 0; i < spinnerIds.length; i++) {
-                    spinner = (Spinner) findViewById(spinnerIds[i]);
+                    Spinner spinner = (Spinner) findViewById(spinnerIds[i]);
                     Spinner velocitySpinner = (Spinner) findViewById(velocitySpinnerIds[i]);
                     Spinner lengthSpinner = (Spinner) findViewById(lengthSpinnerIds[i]);
 
@@ -330,6 +321,7 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
                         saveNoteUpdates(v, note);
                     }
 
+                    // close activity
                     finish();
                 } else {
                     Context context = getApplicationContext();
@@ -352,7 +344,7 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
                 List<Note> notes = new ArrayList<Note>();
 
                 for (int i = 0; i < spinnerIds.length; i++) {
-                    spinner = (Spinner) findViewById(spinnerIds[i]);
+                    Spinner spinner = (Spinner) findViewById(spinnerIds[i]);
                     Spinner velocitySpinner = (Spinner) findViewById(velocitySpinnerIds[i]);
                     Spinner lengthSpinner = (Spinner) findViewById(lengthSpinnerIds[i]);
 
@@ -396,9 +388,7 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
     private boolean doesNotesetExist(NotesetAndRelated notesetAndRelated) {
         boolean notesetExists = true;
         NotesDataSource nds = new NotesDataSource(this);
-
         notesetExists = nds.doesNotesetExist(notesetAndRelated);
-
         return notesetExists;
     }
 
@@ -425,7 +415,6 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
      * @param data Incoming string of data to be saved.
      */
     private void saveNotesetUpdates(View v, Noteset noteset) {
-
         // update noteset in database
         NotesetsDataSource nds = new NotesetsDataSource(this);
         nds.updateNoteset(noteset);
@@ -441,7 +430,6 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
     }
 
     private void saveNoteUpdates(View v, Note note) {
-
         // update note in database
         NotesDataSource nds = new NotesDataSource(this);
         nds.updateNote(note);

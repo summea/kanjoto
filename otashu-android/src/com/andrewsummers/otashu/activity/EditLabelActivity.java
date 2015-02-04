@@ -15,11 +15,17 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 /**
- * CreateLabelActivity is an Activity which provides users the ability to create new labels.
+ * EditLabelActivity is an Activity which provides users the ability to edit labels.
+ * <p>
+ * This activity provides a form for editing existing Labels. Label to edit is selected either via
+ * the "view all labels" activity or by the related "edit" context menu. The edit form fills in data
+ * found (from the database) for specified Label to edit and (if successful) any saved updates will
+ * then be saved in the database.
+ * </p>
  */
 public class EditLabelActivity extends Activity implements OnClickListener {
     private Button buttonSave = null;
-    private Label editLabel;
+    private Label editLabel; // keep track of which Label is currently being edited
 
     /**
      * onCreate override that provides label creation view to user .
@@ -62,16 +68,13 @@ public class EditLabelActivity extends Activity implements OnClickListener {
         switch (v.getId()) {
             case R.id.button_save:
                 // gather label data from form
-                String labelColor;
-                String labelName;
-
                 Label labelToUpdate = new Label();
 
                 labelToUpdate.setId(editLabel.getId());
 
-                labelName = ((EditText) findViewById(R.id.edittext_label_name)).getText()
+                String labelName = ((EditText) findViewById(R.id.edittext_label_name)).getText()
                         .toString();
-                labelColor = ((EditText) findViewById(R.id.edittext_label_color)).getText()
+                String labelColor = ((EditText) findViewById(R.id.edittext_label_color)).getText()
                         .toString();
 
                 labelToUpdate.setName(labelName.toString());
@@ -80,6 +83,7 @@ public class EditLabelActivity extends Activity implements OnClickListener {
                 // first insert new label (parent of all related notes)
                 saveLabelUpdates(v, labelToUpdate);
 
+                // close activity
                 finish();
                 break;
         }
@@ -108,7 +112,6 @@ public class EditLabelActivity extends Activity implements OnClickListener {
      * @param data Incoming string of data to be saved.
      */
     private void saveLabelUpdates(View v, Label label) {
-
         // save label in database
         LabelsDataSource lds = new LabelsDataSource(this);
         lds.updateLabel(label);
