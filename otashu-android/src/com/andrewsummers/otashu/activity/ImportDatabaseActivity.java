@@ -15,6 +15,15 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
+/**
+ * ImportDatabaseActivity is an Activity which provides users the ability to import a database.
+ * <p>
+ * This activity provides a way to import a program database back into the program. Note: existing
+ * database will be overwritten if another database is imported. Valid database format is required
+ * for import to be used successfully; a valid database format can be found by using the
+ * ExportDatabaseActivity.
+ * </p>
+ */
 public class ImportDatabaseActivity extends Activity {
 
     @Override
@@ -63,8 +72,7 @@ public class ImportDatabaseActivity extends Activity {
             }
         }
 
-        // return to main menu
+        // close activity
         finish();
     }
-
 }

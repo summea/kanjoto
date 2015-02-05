@@ -24,7 +24,7 @@ import android.widget.Toast;
 
 /**
  * GetRemoteNotesetActivity is used to get a remote source of noteset data which can then be used in
- * a variety of ways.
+ * the program. This is a placeholder demo for future development options.
  */
 public class GetRemoteNotesetActivity extends Activity {
     private TextView notesetData;

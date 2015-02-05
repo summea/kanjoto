@@ -23,6 +23,14 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
+/**
+ * ExportDatabaseActivity is an Activity which provides users the ability to export the database.
+ * <p>
+ * This activity provides a way to export the program database to a file. This allows for database
+ * backups and historical database archives that can later be imported back into the program if
+ * desired.
+ * </p>
+ */
 public class ExportDatabaseActivity extends Activity {
 
     @Override
@@ -124,7 +132,7 @@ public class ExportDatabaseActivity extends Activity {
             }
         }
 
-        // return to main menu
+        // close activity
         finish();
     }
 

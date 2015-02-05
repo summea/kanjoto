@@ -42,21 +42,26 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.SparseArray;
 
+/**
+ * GenerateMusicActivity is an Activity which generates music.
+ * <p>
+ * This activity provides a way to generate music for later playback. There are a small variety of
+ * generation algorithms included, namely: Logic A (music generation based on notesets matching on
+ * first or last notes in each noteset sequence) and Logic B (music generation based on transition
+ * data the Apprentice has previously learned).
+ * </p>
+ */
 public class GenerateMusicActivity extends Activity {
-
     private GLSurfaceView mGLView;
-
+    int selectedEmotionId = 1;
     int selectedInstrumentId = -1;
     int playbackSpeed = 120;
     File path = Environment.getExternalStorageDirectory();
     String externalDirectory = path.toString() + "/otashu/";
     File musicSource = new File(externalDirectory + "otashu.mid");
     private static MediaPlayer mediaPlayer;
-
     private SparseArray<List<Integer>> musicalKeys = new SparseArray<List<Integer>>();
-
     private SparseArray<float[]> noteColorTable = new SparseArray<float[]>();
-
     private static SparseArray<String> noteMap;
     static
     {
@@ -86,6 +91,7 @@ public class GenerateMusicActivity extends Activity {
 
         // get selected instrument_id from spinner
         Bundle bundle = getIntent().getExtras();
+        selectedEmotionId = bundle.getInt("emotion_id");
         selectedInstrumentId = bundle.getInt("instrument_id");
 
         // TODO: double-check this section later
@@ -211,10 +217,11 @@ public class GenerateMusicActivity extends Activity {
         });
 
         SparseArray<List<Note>> allNotesets = gatherRelatedEmotions();
-
         List<Note> notes = new ArrayList<Note>();
 
         notes = logicA(allNotesets);
+        // notes = logicB(allNotesets);
+
         final List<Note> finalNotes = notes;
 
         /*
@@ -314,18 +321,13 @@ public class GenerateMusicActivity extends Activity {
      * @return HashMap of notes related to given emotion
      */
     public SparseArray<List<Note>> gatherRelatedEmotions() {
-        // HashMap<Integer, List<Note>> allNotesetBundles = new HashMap<Integer, List<Note>>();
         SparseArray<List<Note>> allNotesetBundles = new SparseArray<List<Note>>();
         Note emptyNote = new Note();
         List<Note> emptyNoteList = new LinkedList<Note>();
         emptyNoteList.add(emptyNote);
 
-        // get selected emotion_id from spinner
-        Bundle bundle = getIntent().getExtras();
-        int selectedEmotionValue = bundle.getInt("emotion_id");
-
         NotesetsDataSource nds = new NotesetsDataSource(this);
-        allNotesetBundles = nds.getAllNotesetBundles(selectedEmotionValue);
+        allNotesetBundles = nds.getAllNotesetBundles(selectedEmotionId);
         nds.close();
 
         // prevent crashes due to lack of database data
@@ -468,9 +470,7 @@ public class GenerateMusicActivity extends Activity {
     }
 
     private List<Note> logicA(SparseArray<List<Note>> allNotesets) {
-        // private List<Note> logicA(HashMap<Integer, List<Note>> allNotesets) {
         List<Note> notes = new ArrayList<Note>();
-
         List<Integer> lookingForNotesInKey = new ArrayList<Integer>();
         Note lastNote = new Note();
         lastNote.setNotevalue(0);
@@ -487,35 +487,20 @@ public class GenerateMusicActivity extends Activity {
 
         // loop through all found emotion-related notesets
         for (int i = 0; i < 16; i++) {
-
             List<Note> nsets = new ArrayList<Note>();
 
-            // Log.d("MYLOG", "> last note: " + lastNote.getNotevalue());
-
-            // if (lastNote.getNotevalue() == 0) {
             // get random noteset (and try to find one that matches the new musical key search
             // focus)
             random = new Random();
-            // keys = new ArrayList<Integer>(allNotesets.keySet());
             randomKey = keys.get(random.nextInt(keys.size()));
 
             // get individual noteset
             nsets = allNotesets.get(randomKey);
-            // } else {
-            // if (allNotesets.get(lastNote) != null) {
-            // nsets = allNotesets.get(lastNote);
-            // } else {
-            // nsets = allNotesets.get(60);
-            // }
-            // }
 
             try {
-                // check if last note in current noteset sequence matches first note in a musical
-                // key list
-                // a match gives us criteria for finding another, similar noteset to append for
-                // playback
-                // Log.d("MYLOG", "found matching musical key for end note: " +
-                // nsets.get(3).getNotevalue());
+                // Check if last note in current noteset sequence matches first note in a musical
+                // key list. A match gives us criteria for finding another, similar noteset to
+                // append for playback
 
                 if (musicalKeys.get(nsets.get(3).getNotevalue()) != null) {
                     lookingForNotesInKey = musicalKeys.get(nsets.get(3).getNotevalue());
@@ -528,15 +513,11 @@ public class GenerateMusicActivity extends Activity {
 
             for (int j = 0; j < 50; j++) {
                 random = new Random();
-                // keys = new ArrayList<Integer>(allNotesets.keySet());
                 randomKey = keys.get(random.nextInt(keys.size()));
 
                 List<Note> noteset = allNotesets.get(randomKey);
 
                 if (lookingForNotesInKey.contains(noteset.get(0).getNotevalue())) {
-                    // Log.d("MYLOG", "looking for notes in key: " + lookingForNotesInKey.toString()
-                    // + " -- note 0: " + noteset.get(0).getNotevalue());
-
                     for (int k = 0; k < 4; k++) {
                         try {
                             notes.add(noteset.get(k));
@@ -548,6 +529,43 @@ public class GenerateMusicActivity extends Activity {
                     break;
                 }
 
+            }
+        }
+
+        return notes;
+    }
+
+    private List<Note> logicB(SparseArray<List<Note>> gatheredNotesetList) {
+        List<Note> notes = new ArrayList<Note>();
+        Note lastNote = new Note();
+        lastNote.setNotevalue(0);
+
+        Random random = new Random();
+
+        List<Integer> keys = new ArrayList<Integer>();
+        for (int i = 0; i < gatheredNotesetList.size(); i++) {
+            keys.add(gatheredNotesetList.keyAt(i));
+        }
+
+        Integer randomKey = keys.get(random.nextInt(keys.size()));
+
+        // loop through all found emotion-related notesets
+        for (int i = 0; i < 16; i++) {
+            List<Note> nset = new ArrayList<Note>();
+
+            // get random noteset
+            random = new Random();
+            randomKey = keys.get(random.nextInt(keys.size()));
+
+            // get individual noteset
+            nset = gatheredNotesetList.get(randomKey);
+
+            try {
+                for (Note note : nset) {
+                    notes.add(note);
+                }
+            } catch (Exception e) {
+                Log.d("MYLOG", e.getStackTrace().toString());
             }
         }
 
