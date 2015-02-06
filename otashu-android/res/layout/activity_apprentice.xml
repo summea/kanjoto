@@ -24,97 +24,24 @@
         android:textStyle="bold"
         android:layout_marginBottom="10dp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
         
         <Button
-            android:id="@+id/button_no"
-            android:text="@string/button_no"
+            android:id="@+id/button_apprentice_emotion_test"
+            android:text="@string/button_apprentice_emotion_test"
             android:padding="20dp"
             android:layout_marginBottom="5dp"
-            android:layout_width="0dp"        
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:background="@drawable/button_no_selector" />
+            android:background="@drawable/button_selector" />
         
         <Button
-            android:id="@+id/button_yes"
-            android:text="@string/button_yes"
+            android:id="@+id/button_apprentice_transition_test"
+            android:text="@string/button_apprentice_transition_test"
             android:padding="20dp"
             android:layout_marginBottom="5dp"
-            android:layout_width="0dp"        
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:background="@drawable/button_yes_selector" />
+            android:background="@drawable/button_selector" />
             
-    </LinearLayout>
-        
-    <Button
-        android:id="@+id/button_play_noteset"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/button_play_noteset"
-        android:padding="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/button_play_alternate_selector" />
-        
-    <TextView
-        android:id="@+id/apprentice_thoughts"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="bold" />
-    
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-        
-        <TextView
-            android:id="@+id/apprentice_guess_method_label"
-            android:layout_width="0dp"        
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:text="@string/apprentice_guess_method_label"
-            android:textStyle="bold"
-            android:textSize="16sp" />
-        
-        <TextView
-            android:id="@+id/apprentice_guess_method"
-            android:layout_width="0dp"        
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:layout_marginBottom="20dp"
-            android:textSize="16sp" />
-            
-    </LinearLayout>
-    
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-        
-        <TextView
-            android:id="@+id/apprentice_total_guesses_label"
-            android:layout_width="0dp"        
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:text="@string/apprentice_total_guesses_label"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-        
-        <TextView
-            android:id="@+id/apprentice_total_guesses"
-            android:layout_width="0dp"        
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:layout_marginBottom="20dp"
-            android:textSize="16sp" />
-            
-    </LinearLayout>
 
 </LinearLayout>

@@ -41,15 +41,15 @@
             android:key="pref_apprentice_auto_add_noteset"
             android:title="@string/pref_apprentice_auto_add_noteset"
             android:defaultValue="false" />
-                
-        <EditTextPreference
-            android:key="pref_default_graph_for_apprentice"
-            android:title="@string/pref_default_graph_for_apprentice"
-            android:defaultValue="1" />
-            
+
         <EditTextPreference
             android:key="pref_emotion_graph_for_apprentice"
             android:title="@string/pref_emotion_graph_for_apprentice"
+            android:defaultValue="1" />
+            
+        <EditTextPreference
+            android:key="pref_transition_graph_for_apprentice"
+            android:title="@string/pref_transition_graph_for_apprentice"
             android:defaultValue="2" />
 
     </PreferenceCategory>

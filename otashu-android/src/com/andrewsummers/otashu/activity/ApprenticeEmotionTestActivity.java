@@ -46,10 +46,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * The ApprenticeTransitionTestActivity class provides tests for the Apprentice with test results
- * noted as judged by the User.
+ * The ApprenticeEmotionTestActivity class provides tests for the Apprentice with test results noted
+ * as judged by the User.
+ * <p>
+ * In this activity, the Apprentice chooses a random emotion and chooses notesets (either randomly
+ * or using previously-learned data) and presents the noteset-emotion combination to the User to
+ * check for accuracy. If the noteset-emotion combination is correct (or passing), the Apprentice
+ * will go and save this noteset-emotion combination information in a database graph table. This
+ * noteset-emotion combination is also saved in the User's noteset collection (if enabled in the
+ * program settings).
+ * </p>
+ * <p>
+ * If the Apprentice incorrectly chooses a noteset-emotion combination (as determined by the User),
+ * the noteset-emotion combination information is noted by raising the related path edge weights in
+ * the database graph table. Also, the incorrect noteset-emotion combination is not saved in the
+ * User's noteset collection.
+ * </p>
  */
-public class ApprenticeTransitionTestActivity extends Activity implements OnClickListener {
+public class ApprenticeEmotionTestActivity extends Activity implements OnClickListener {
     private File path = Environment.getExternalStorageDirectory();
     private String externalDirectory = path.toString() + "/otashu/";
     private File musicSource = new File(externalDirectory + "otashu_preview.mid");
@@ -62,7 +76,7 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
     private Button buttonNo = null;
     private Button buttonPlayNoteset = null;
     private SharedPreferences sharedPref;
-    private long transitionGraphId;
+    private long emotionGraphId;
     private long emotionId;
     private int guessesCorrect = 0;
     private int guessesIncorrect = 0;
@@ -82,8 +96,8 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
 
         // get emotion graph id for Apprentice's note relationships graph
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        transitionGraphId = Long.parseLong(sharedPref.getString(
-                "pref_transition_graph_for_apprentice", "2"));
+        emotionGraphId = Long.parseLong(sharedPref.getString(
+                "pref_emotion_graph_for_apprentice", "1"));
 
         try {
             // add listeners to buttons
@@ -165,9 +179,6 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
         mediaPlayer.start();
     }
 
-    // TODO: keep track of correct edge to update... don't insert every edge like in the Emotion
-    // Test
-
     @Override
     public void onClick(View v) {
         VerticesDataSource vds = new VerticesDataSource(this);
@@ -195,14 +206,14 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                     Note noteB = notesToInsert.get(i + 1);
 
                     // Do nodes exist?
-                    Vertex nodeA = vds.getVertex(transitionGraphId, noteA.getNotevalue());
-                    Vertex nodeB = vds.getVertex(transitionGraphId, noteB.getNotevalue());
+                    Vertex nodeA = vds.getVertex(emotionGraphId, noteA.getNotevalue());
+                    Vertex nodeB = vds.getVertex(emotionGraphId, noteB.getNotevalue());
 
                     // If nodes don't exist, create new nodes in graph
                     if (nodeA.getNode() <= 0) {
                         // nodeA doesn't exist... creating new vertex
                         Vertex newNodeA = new Vertex();
-                        newNodeA.setGraphId(transitionGraphId);
+                        newNodeA.setGraphId(emotionGraphId);
                         newNodeA.setNode(noteA.getNotevalue());
                         vds.createVertex(newNodeA);
                         nodeA.setNode(noteA.getNotevalue());
@@ -210,14 +221,14 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                     if (nodeB.getNode() <= 0) {
                         // nodeB doesn't exist... creating new vertex
                         Vertex newNodeB = new Vertex();
-                        newNodeB.setGraphId(transitionGraphId);
+                        newNodeB.setGraphId(emotionGraphId);
                         newNodeB.setNode(noteB.getNotevalue());
                         vds.createVertex(newNodeB);
                         nodeB.setNode(noteB.getNotevalue());
                     }
 
                     // Does an edge exist between these two nodes?
-                    Edge edge = edds.getEdge(transitionGraphId, emotionId, nodeA.getNode(),
+                    Edge edge = edds.getEdge(emotionGraphId, emotionId, nodeA.getNode(),
                             nodeB.getNode());
 
                     if (edge.getWeight() < 0.0f || edge.getWeight() > 1.0f) {
@@ -226,7 +237,7 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                         // If edge doesn't exist, create new edge in graph (and set weight at 0.5)
                         // [note: 0.0 = stronger edge / more likely to be chosen than a 1.0 edge]
                         Edge newEdge = new Edge();
-                        newEdge.setGraphId(transitionGraphId);
+                        newEdge.setGraphId(emotionGraphId);
                         newEdge.setEmotionId(emotionId);
                         newEdge.setFromNodeId(nodeA.getNode());
                         newEdge.setToNodeId(nodeB.getNode());
@@ -292,23 +303,42 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                 buttonPlayNoteset = (Button) findViewById(R.id.button_play_noteset);
                 buttonPlayNoteset.setClickable(false);
 
-                /*
-                 * // check if Apprentice is allowed to auto-add generated noteset into User's //
-                 * collection boolean apprenticeCanAutoAddNotset = sharedPref.getBoolean(
-                 * "pref_apprentice_auto_add_noteset", false); if (apprenticeCanAutoAddNotset) { //
-                 * prepare noteset notesetToInsert.setEmotion((int) chosenEmotion.getId());
-                 * notesetToInsert.setEnabled(1); // check if noteset already exists, first
-                 * NotesetAndRelated notesetAndRelated = new NotesetAndRelated();
-                 * notesetAndRelated.setNoteset(notesetToInsert);
-                 * notesetAndRelated.setNotes(notesToInsert); boolean notesetExists =
-                 * doesNotesetExist(notesetAndRelated); if (!notesetExists) { // save noteset
-                 * saveNoteset(v, notesetToInsert); // save notes for (int i = 0; i <
-                 * notesToInsert.size(); i++) { Note note = notesToInsert.get(i);
-                 * note.setNotesetId(newlyInsertedNoteset.getId()); // TODO: these could be
-                 * generated by Apprentice in the future note.setVelocity(100);
-                 * note.setLength(0.5f); note.setPosition(i + 1); saveNote(v, notesToInsert.get(i));
-                 * } } }
-                 */
+                // check if Apprentice is allowed to auto-add generated noteset into User's
+                // collection
+                boolean apprenticeCanAutoAddNotset = sharedPref.getBoolean(
+                        "pref_apprentice_auto_add_noteset", false);
+
+                if (apprenticeCanAutoAddNotset) {
+
+                    // prepare noteset
+                    notesetToInsert.setEmotion((int) chosenEmotion.getId());
+                    notesetToInsert.setEnabled(1);
+
+                    // check if noteset already exists, first
+                    NotesetAndRelated notesetAndRelated = new NotesetAndRelated();
+                    notesetAndRelated.setNoteset(notesetToInsert);
+                    notesetAndRelated.setNotes(notesToInsert);
+                    boolean notesetExists = doesNotesetExist(notesetAndRelated);
+
+                    if (!notesetExists) {
+                        // save noteset
+                        saveNoteset(v, notesetToInsert);
+
+                        // save notes
+                        for (int i = 0; i < notesToInsert.size(); i++) {
+                            Note note = notesToInsert.get(i);
+                            note.setNotesetId(newlyInsertedNoteset.getId());
+
+                            // TODO: these could be generated by Apprentice in the future
+                            note.setVelocity(100);
+                            note.setLength(0.5f);
+
+                            note.setPosition(i + 1);
+
+                            saveNote(v, notesToInsert.get(i));
+                        }
+                    }
+                }
 
                 // examine notes for graph purposes
                 // get default graph id for Apprentice's note relationships graph
@@ -323,14 +353,14 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                     Note noteB = notesToInsert.get(i + 1);
 
                     // Do nodes exist?
-                    Vertex nodeA = vds.getVertex(transitionGraphId, noteA.getNotevalue());
-                    Vertex nodeB = vds.getVertex(transitionGraphId, noteB.getNotevalue());
+                    Vertex nodeA = vds.getVertex(emotionGraphId, noteA.getNotevalue());
+                    Vertex nodeB = vds.getVertex(emotionGraphId, noteB.getNotevalue());
 
                     // If nodes don't exist, create new nodes in graph
                     if (nodeA.getNode() <= 0) {
                         // nodeA doesn't exist... creating new vertex
                         Vertex newNodeA = new Vertex();
-                        newNodeA.setGraphId(transitionGraphId);
+                        newNodeA.setGraphId(emotionGraphId);
                         newNodeA.setNode(noteA.getNotevalue());
                         vds.createVertex(newNodeA);
                         nodeA.setNode(noteA.getNotevalue());
@@ -338,14 +368,14 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                     if (nodeB.getNode() <= 0) {
                         // nodeB doesn't exist... creating new vertex
                         Vertex newNodeB = new Vertex();
-                        newNodeB.setGraphId(transitionGraphId);
+                        newNodeB.setGraphId(emotionGraphId);
                         newNodeB.setNode(noteB.getNotevalue());
                         vds.createVertex(newNodeB);
                         nodeB.setNode(noteB.getNotevalue());
                     }
 
                     // Does an edge exist between these two nodes?
-                    Edge edge = edds.getEdge(transitionGraphId, emotionId, nodeA.getNode(),
+                    Edge edge = edds.getEdge(emotionGraphId, emotionId, nodeA.getNode(),
                             nodeB.getNode());
 
                     if (edge.getWeight() < 0.0f || edge.getWeight() > 1.0f) {
@@ -354,7 +384,7 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                         // If edge doesn't exist, create new edge in graph (and set weight at 0.5)
                         // [note: 0.0 = stronger edge / more likely to be chosen than a 1.0 edge]
                         Edge newEdge = new Edge();
-                        newEdge.setGraphId(transitionGraphId);
+                        newEdge.setGraphId(emotionGraphId);
                         newEdge.setEmotionId(emotionId);
                         newEdge.setFromNodeId(nodeA.getNode());
                         newEdge.setToNodeId(nodeB.getNode());
@@ -468,20 +498,10 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
         try {
             // Using Learned Data Approach (thoughtfully-generated noteset)
             approach = "Learned Data";
-            Edge edgeOne = edds.getRandomEdge(transitionGraphId, emotionId, 0, 0, 1, 0);
-            Edge edgeTwo = edds.getRandomEdge(transitionGraphId, emotionId,
-                    edgeOne.getFromNodeId(),
+            Edge edgeOne = edds.getRandomEdge(emotionGraphId, emotionId, 0, 0, 1, 0);
+            Edge edgeTwo = edds.getRandomEdge(emotionGraphId, emotionId, edgeOne.getFromNodeId(),
                     edgeOne.getToNodeId(), 2, 3);
-            Edge edgeThree = edds.getRandomEdge(transitionGraphId, emotionId,
-                    edgeOne.getFromNodeId(),
-                    edgeOne.getToNodeId(), 3, 3);
-
-            Edge edgeFour = edds.getRandomEdge(transitionGraphId, emotionId, 0, 0, 1, 0);
-            Edge edgeFive = edds.getRandomEdge(transitionGraphId, emotionId,
-                    edgeOne.getFromNodeId(),
-                    edgeOne.getToNodeId(), 2, 3);
-            Edge edgeSix = edds.getRandomEdge(transitionGraphId, emotionId,
-                    edgeOne.getFromNodeId(),
+            Edge edgeThree = edds.getRandomEdge(emotionGraphId, emotionId, edgeOne.getFromNodeId(),
                     edgeOne.getToNodeId(), 3, 3);
 
             Note note1 = new Note();
@@ -496,20 +516,6 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
             Note note4 = new Note();
             note4.setNotevalue(edgeThree.getToNodeId());
             notes.add(note4);
-
-            Note note5 = new Note();
-            note1.setNotevalue(edgeFour.getFromNodeId());
-            notes.add(note5);
-            Note note6 = new Note();
-            note2.setNotevalue(edgeFive.getFromNodeId());
-            notes.add(note6);
-            Note note7 = new Note();
-            note3.setNotevalue(edgeSix.getFromNodeId());
-            notes.add(note7);
-            Note note8 = new Note();
-            note4.setNotevalue(edgeSix.getToNodeId());
-            notes.add(note8);
-
         } catch (Exception e) {
             // Using Random Approach
             approach = "Random";

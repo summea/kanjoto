@@ -61,6 +61,8 @@
         <activity android:name="com.andrewsummers.otashu.activity.ViewAllApprenticeStrongestPathsByEmotionActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.ViewApprenticeStrongestPathDetailActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.ViewTopApprenticeStrongestPathsActivity" />
+        <activity android:name="com.andrewsummers.otashu.activity.ApprenticeEmotionTestActivity" />
+        <activity android:name="com.andrewsummers.otashu.activity.ApprenticeTransitionTestActivity" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

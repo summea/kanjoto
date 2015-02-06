@@ -13,7 +13,9 @@
     <string name="bookmark_name">Name</string>
     <string name="bookmark_saved">bookmark saved</string>
     <string name="bookmark_serialized_value">Serialized Value</string>
-    <string name="button_apprentice">Apprentice</string>
+    <string name="button_apprentice">Apprentice</string>    
+    <string name="button_apprentice_emotion_test">Emotion</string>
+    <string name="button_apprentice_transition_test">Transition</string>
     <string name="button_bookmark">Bookmark</string>
     <string name="button_cancel">Cancel</string>
     <string name="button_choose_emotion">Choose Emotion</string>
@@ -101,14 +103,14 @@
     <string name="notevalue_saved">notevalue label saved</string>
     <string name="pref_alarm_enabled">Alarm Enabled</string>
     <string name="pref_alarm_time_picker">Choose Time</string>
-    <string name="pref_apprentice_auto_add_noteset">Can Apprentice auto-populate noteset collection with generated noteset?</string>
-    <string name="pref_default_graph_for_apprentice">Default Graph Id for Apprentice</string>
+    <string name="pref_apprentice_auto_add_noteset">Can Apprentice auto-populate noteset collection with generated noteset?</string>    
     <string name="pref_default_instrument">Default Instrument</string>
     <string name="pref_default_playback_speed">Default Playback Speed</string>
     <string name="pref_emotion_graph_for_apprentice">Emotion Graph Id for Apprentice</string>
     <string name="pref_general_category">General</string>
     <string name="pref_import_database_location">Import Database from Location</string>
     <string name="pref_screen_alarm">Alarm</string>
+    <string name="pref_transition_graph_for_apprentice">Transition Graph Id for Apprentice</string>
     <string name="remote_noteset">getting remote noteset...</string>
     <string name="spinner_emotion_label_label">Label</string>
     <string name="spinner_emotion_label">Emotion</string>

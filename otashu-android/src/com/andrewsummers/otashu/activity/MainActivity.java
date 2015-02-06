@@ -60,7 +60,9 @@ public class MainActivity extends Activity implements OnClickListener {
                         break;
                 }
 
-                startActivity(intent);
+                if (intent != null) {
+                    startActivity(intent);
+                }
             }
         });
     }

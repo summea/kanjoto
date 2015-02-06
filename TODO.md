@@ -1,6 +1,9 @@
 # otashu
 
 ## TODO:
+- Apprentice transition "test" activity
+- add algorithm for choosing an emotion and then choosing a strong likely noteset match in Apprentice activity
+- add noteset and emotion background colors to UI for "strongest path detail" activity
 - add noteset playback to "top 3 strengths" detail activity
 - show emotion name in "top 3 strengths" list activity
 - add note colors to notes on "top 3 strengths" layout
@@ -15,6 +18,8 @@
 
 
 ## DONE:
+- 20150205: made Apprentice activity a menu for what type of test to take
+- 20150205: moved current Apprentice activity into an "emotion test" activity
 - 20150128: connected "top 3 strengths" list items to correct id for detail activity
 - 20150128: checked if the "empty list" checks are still necessary
 - 20150124: added detail activity for Apprentice strongest emotion-noteset combinations

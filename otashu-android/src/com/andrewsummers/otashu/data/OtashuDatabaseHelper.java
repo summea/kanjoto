@@ -11,7 +11,7 @@ import android.util.Log;
  * application database.
  */
 public class OtashuDatabaseHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 32;
+    private static final int DATABASE_VERSION = 33;
     private static final String DATABASE_NAME = "otashu_collection.db";
 
     public static final String COLUMN_ID = "_id";
@@ -126,7 +126,8 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_SCORECARD_ID + " integer,"
             + COLUMN_QUESTION_NUMBER + " integer,"
             + COLUMN_CORRECT + " integer,"
-            + COLUMN_EDGE_ID + " integer);";
+            + COLUMN_EDGE_ID + " integer,"
+            + COLUMN_GRAPH_ID + " integer);";
 
     /**
      * NotesetCollectionOpenHelper constructor.
@@ -170,9 +171,13 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         Log.d("MYLOG", "updating database...");
 
         // v32
-        db.execSQL("DROP TABLE " + TABLE_APPRENTICE_SCORECARDS);
-        db.execSQL("DROP TABLE " + TABLE_APPRENTICE_SCORES);
-        db.execSQL(CREATE_TABLE_APPRENTICE_SCORECARDS);
-        db.execSQL(CREATE_TABLE_APPRENTICE_SCORES);
+        // db.execSQL("DROP TABLE " + TABLE_APPRENTICE_SCORECARDS);
+        // db.execSQL("DROP TABLE " + TABLE_APPRENTICE_SCORES);
+        // db.execSQL(CREATE_TABLE_APPRENTICE_SCORECARDS);
+        // db.execSQL(CREATE_TABLE_APPRENTICE_SCORES);
+        
+        // v33 (change required for emotion graph id)
+        // db.execSQL("UPDATE " + TABLE_VERTICES + " SET " + COLUMN_GRAPH_ID + "=1");
+        // db.execSQL("UPDATE " + TABLE_EDGES + " SET " + COLUMN_GRAPH_ID + "=1");
     }
 }
