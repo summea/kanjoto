@@ -31,10 +31,12 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
 /**
- * View all emotions as a list.
+ * View all Emotions as a list.
+ * <p>
+ * This activity allows a user to view a list of all saved Emotions.
+ * </p>
  */
 public class ViewAllEmotionsActivity extends ListActivity {
-
     private int selectedPositionInList = 0;
     private EmotionAdapter adapter = null;
 
@@ -52,7 +54,6 @@ public class ViewAllEmotionsActivity extends ListActivity {
     public void fillList() {
         Label relatedLabel = new Label();
         List<Emotion> allEmotions = new LinkedList<Emotion>();
-
         List<EmotionAndRelated> allEmotionsAndRelated = new LinkedList<EmotionAndRelated>();
 
         EmotionsDataSource eds = new EmotionsDataSource(this);
@@ -194,7 +195,6 @@ public class ViewAllEmotionsActivity extends ListActivity {
     }
 
     public Emotion getEmotionFromListPosition(long rowId) {
-
         long emotionId = rowId;
 
         List<Long> allEmotionsData = new LinkedList<Long>();

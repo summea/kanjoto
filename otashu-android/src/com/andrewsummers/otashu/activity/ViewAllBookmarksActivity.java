@@ -39,8 +39,13 @@ import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
+/**
+ * View all Bookmarks as a list.
+ * <p>
+ * This activity allows a user to view a list of all saved Bookmarks.
+ * </p>
+ */
 public class ViewAllBookmarksActivity extends ListActivity {
-
     private int selectedPositionInList = 0;
     private String currentBookmarkSerializedValue = "";
     private File path = Environment.getExternalStorageDirectory();
@@ -65,11 +70,6 @@ public class ViewAllBookmarksActivity extends ListActivity {
         BookmarksDataSource bds = new BookmarksDataSource(this);
         allBookmarks = bds.getAllBookmarks();
         bds.close();
-
-        /*
-         * // prevent crashes due to lack of database data if (allBookmarksData.isEmpty())
-         * allBookmarksData.add("empty");
-         */
 
         // pass list data to adapter
         adapter = new BookmarkAdapter(this, allBookmarks);
@@ -193,7 +193,6 @@ public class ViewAllBookmarksActivity extends ListActivity {
     }
 
     public Bookmark getBookmarkFromListPosition(long rowId) {
-
         long bookmarkId = rowId;
 
         List<Long> allBookmarksData = new LinkedList<Long>();
@@ -211,7 +210,6 @@ public class ViewAllBookmarksActivity extends ListActivity {
                 .toArray(new Long[allBookmarksData.size()]);
 
         Bookmark bookmark = bds.getBookmark(allBookmarks[(int) bookmarkId]);
-
         bds.close();
 
         return bookmark;

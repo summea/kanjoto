@@ -29,10 +29,12 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
 /**
- * View all apprenticeScorecards as a list.
+ * View all ApprenticeScorecards as a list.
+ * <p>
+ * This activity allows a user to view a list of all saved Apprentice test scores.
+ * </p>
  */
 public class ViewAllApprenticeScorecardsActivity extends ListActivity {
-
     private int selectedPositionInList = 0;
     private ApprenticeScorecardAdapter adapter = null;
 
@@ -165,7 +167,6 @@ public class ViewAllApprenticeScorecardsActivity extends ListActivity {
     }
 
     public ApprenticeScorecard getApprenticeScorecardFromListPosition(long rowId) {
-
         long apprenticeScorecardId = rowId;
 
         List<Long> allApprenticeScorecardsData = new LinkedList<Long>();

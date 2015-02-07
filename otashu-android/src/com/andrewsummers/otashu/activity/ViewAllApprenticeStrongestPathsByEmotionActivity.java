@@ -34,6 +34,11 @@ import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * View all Apprentice strongest emotion-noteset paths as a list.
+ * <p>
+ * This activity allows a user to view a list of strongest learned paths grouped by emotion. Before
+ * a user can see the list of strongest learned paths, user must choose an emotion in the list
+ * provided from this activity.
+ * </p>
  */
 public class ViewAllApprenticeStrongestPathsByEmotionActivity extends ListActivity {
 
@@ -66,9 +71,7 @@ public class ViewAllApprenticeStrongestPathsByEmotionActivity extends ListActivi
     public void fillList() {
         Label relatedLabel = new Label();
         List<Emotion> allEmotions = new LinkedList<Emotion>();
-
         List<EmotionAndRelated> allEmotionsAndRelated = new LinkedList<EmotionAndRelated>();
-
         EmotionsDataSource eds = new EmotionsDataSource(this);
         LabelsDataSource lds = new LabelsDataSource(this);
 
@@ -194,7 +197,6 @@ public class ViewAllApprenticeStrongestPathsByEmotionActivity extends ListActivi
     }
 
     public Emotion getEmotionFromListPosition(long rowId) {
-
         long emotionId = rowId;
 
         List<Long> allEmotionsData = new LinkedList<Long>();

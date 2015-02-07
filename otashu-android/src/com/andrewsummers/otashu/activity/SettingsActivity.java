@@ -8,6 +8,11 @@ import android.os.Bundle;
 
 /**
  * Settings are general settings for the overall application.
+ * <p>
+ * Settings uses a fragment-based approach. As such, the majority of the settings logic is filed
+ * away in the SettingsFragment class. The rest of the settings functionality comes from the Android
+ * Preference class.
+ * </p>
  */
 public class SettingsActivity extends Activity {
     /**
