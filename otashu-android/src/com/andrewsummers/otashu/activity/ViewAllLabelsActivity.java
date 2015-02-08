@@ -28,10 +28,14 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
 /**
- * View all labels as a list.
+ * View all Labels as a list.
+ * <p>
+ * This activity allows a user to view a list of all saved Labels. Labels are general purpose ways
+ * to provide a visual label (featuring a user-specified background color) for things like Emotions
+ * and Notevalues.
+ * </p>
  */
 public class ViewAllLabelsActivity extends ListActivity {
-
     private int selectedPositionInList = 0;
     private LabelAdapter adapter = null;
 
@@ -49,15 +53,8 @@ public class ViewAllLabelsActivity extends ListActivity {
     public void fillList() {
         List<Label> allLabels = new LinkedList<Label>();
         LabelsDataSource lds = new LabelsDataSource(this);
-
         allLabels = lds.getAllLabels();
-
         lds.close();
-
-        /*
-         * // prevent crashes due to lack of database data if (allLabels.isEmpty())
-         * allLabels.add("empty");
-         */
 
         // pass list data to adapter
         adapter = new LabelAdapter(this, allLabels);

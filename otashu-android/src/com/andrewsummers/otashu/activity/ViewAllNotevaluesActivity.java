@@ -31,10 +31,14 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
 /**
- * View all notevalues as a list.
+ * View all Notevalues as a list.
+ * <p>
+ * This activity allows a user to view a list of all saved Notevalues. Notevalues are conversion
+ * objects between MIDI notevalues and their respective formatted note strings (e.g. A0:21, C8:108).
+ * Notevalues are used to provide an easier-to-read format for musical notevalues.
+ * </p>
  */
 public class ViewAllNotevaluesActivity extends ListActivity {
-
     private int selectedPositionInList = 0;
     private NotevalueAdapter adapter = null;
 
@@ -52,9 +56,7 @@ public class ViewAllNotevaluesActivity extends ListActivity {
     public void fillList() {
         Label relatedLabel = new Label();
         List<Notevalue> allNotevalues = new LinkedList<Notevalue>();
-
         List<NotevalueAndRelated> allNotevaluesAndRelated = new LinkedList<NotevalueAndRelated>();
-
         NotevaluesDataSource nvds = new NotevaluesDataSource(this);
         LabelsDataSource lds = new LabelsDataSource(this);
 
@@ -190,7 +192,6 @@ public class ViewAllNotevaluesActivity extends ListActivity {
     }
 
     public Notevalue getNotevalueFromListPosition(long rowId) {
-
         long notevalueId = rowId;
 
         List<Long> allNotevaluesData = new LinkedList<Long>();
@@ -208,7 +209,6 @@ public class ViewAllNotevaluesActivity extends ListActivity {
                 .toArray(new Long[allNotevaluesData.size()]);
 
         Notevalue notevalue = nvds.getNotevalue(allNotevalues[(int) notevalueId]);
-
         nvds.close();
 
         return notevalue;

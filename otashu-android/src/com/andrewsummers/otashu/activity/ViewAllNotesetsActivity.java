@@ -39,10 +39,14 @@ import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
 /**
- * View all notesets as a list.
+ * View all Notesets as a list.
+ * <p>
+ * This activity allows a user to view a list of all saved Notesets. Notesets are sequences of Note
+ * objects (i.e. a list of musical notes grouped together in a specified order) that are tagged with
+ * a specified Emotion.
+ * </p>
  */
 public class ViewAllNotesetsActivity extends ListActivity {
-
     private ListView listView = null;
     private int selectedPositionInList = 0;
     private NotesetAdapter adapter = null;

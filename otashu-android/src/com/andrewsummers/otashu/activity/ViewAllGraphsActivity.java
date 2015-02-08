@@ -28,10 +28,14 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
 /**
- * View all graphs as a list.
+ * View all Graphs as a list.
+ * <p>
+ * This activity allows a user to view a list of all saved Graphs. Graphs are used to save
+ * information "learned" by the Apprentice, in particular: noteset-emotion data and
+ * noteset-transition data.
+ * </p>
  */
 public class ViewAllGraphsActivity extends ListActivity {
-
     private int selectedPositionInList = 0;
     private GraphAdapter adapter = null;
 
@@ -49,15 +53,8 @@ public class ViewAllGraphsActivity extends ListActivity {
     public void fillList() {
         List<Graph> allGraphs = new LinkedList<Graph>();
         GraphsDataSource lds = new GraphsDataSource(this);
-
         allGraphs = lds.getAllGraphs();
-
         lds.close();
-
-        /*
-         * // prevent crashes due to lack of database data if (allGraphs.isEmpty())
-         * allGraphs.add("empty");
-         */
 
         // pass list data to adapter
         adapter = new GraphAdapter(this, allGraphs);
@@ -179,15 +176,13 @@ public class ViewAllGraphsActivity extends ListActivity {
     }
 
     public Graph getGraphFromListPosition(long rowId) {
-
         long graphId = rowId;
-
         List<Long> allGraphsData = new LinkedList<Long>();
         GraphsDataSource lds = new GraphsDataSource(this);
 
         // get string version of returned graph list
         allGraphsData = lds.getAllGraphListDBTableIds();
-        lds.close();        
+        lds.close();
 
         // prevent crashes due to lack of database data
         if (allGraphsData.isEmpty())
@@ -197,7 +192,6 @@ public class ViewAllGraphsActivity extends ListActivity {
                 .toArray(new Long[allGraphsData.size()]);
 
         Graph graph = lds.getGraph(allGraphs[(int) graphId]);
-
         lds.close();
 
         return graph;
