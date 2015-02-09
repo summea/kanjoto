@@ -28,10 +28,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 /**
- * View details of a particular bookmark.
+ * View details of a particular Bookmark.
+ * <p>
+ * This activity allows a user to see more information about a particular Bookmark. Bookmarks are
+ * serialized Notes saved in the database and can be played back by the user in this activity.
+ * </p>
  */
 public class ViewBookmarkDetailActivity extends Activity implements OnClickListener {
-
     private int bookmarkId = 0;
     private String currentBookmarkSerializedValue = "";
     private Button buttonPlayBookmark = null;
@@ -53,11 +56,6 @@ public class ViewBookmarkDetailActivity extends Activity implements OnClickListe
         setContentView(R.layout.activity_view_bookmark_detail);
 
         bookmarkId = (int) getIntent().getExtras().getLong("list_id");
-
-        /*
-         * // prevent crashes due to lack of database data if (allBookmarksData.isEmpty())
-         * allBookmarksData.add((long) 0);
-         */
 
         Bookmark bookmark = new Bookmark();
         BookmarksDataSource bds = new BookmarksDataSource(this);

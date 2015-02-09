@@ -10,11 +10,17 @@ import com.andrewsummers.otashu.model.ApprenticeScorecard;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 /**
- * View details of a particular apprenticeScorecard.
+ * View details of a particular ApprenticeScorecard.
+ * <p>
+ * An ApprenticeScorecard keeps track of individual Apprentice test scores for a particular test
+ * session. In a test, the Apprentice gathers an Emotion and related Notes (grouped together in a
+ * Noteset) and asks the user if the noteset-emotion combination sounds "correct" for that
+ * particular Emotion. The ApprenticeScorecard shows the total percentage correct of how the
+ * Apprentice performed during a particular test.
+ * </p>
  */
 public class ViewApprenticeScorecardDetailActivity extends Activity {
 
@@ -33,11 +39,6 @@ public class ViewApprenticeScorecardDetailActivity extends Activity {
         setContentView(R.layout.activity_view_apprentice_scorecard_detail);
 
         apprenticeScorecardId = (int) getIntent().getExtras().getLong("list_id");
-
-        /*
-         * // prevent crashes due to lack of database data if
-         * (allApprenticeScorecardsData.isEmpty()) allApprenticeScorecardsData.add((long) 0);
-         */
 
         ApprenticeScorecard apprenticeScorecard = new ApprenticeScorecard();
         ApprenticeScorecardsDataSource asc = new ApprenticeScorecardsDataSource(this);
@@ -63,10 +64,9 @@ public class ViewApprenticeScorecardDetailActivity extends Activity {
         String guessesCorrectPercentageString = String.format(Locale.getDefault(), "%.02f",
                 guessesCorrectPercentage);
 
+        // display percent correct for this ApprenticeScorecard
         TextView apprenticeTotalGuesses = (TextView) findViewById(R.id.apprentice_total_guesses);
         apprenticeTotalGuesses.setText(totalCorrect + "/" + total + " ("
                 + guessesCorrectPercentageString + "%)");
-
-        Log.d("MYLOG", "total: " + total + " correct: " + totalCorrect);
     }
 }

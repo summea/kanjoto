@@ -50,7 +50,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_FROM_NODE_ID = "from_node_id";
     public static final String COLUMN_TO_NODE_ID = "to_node_id";
     public static final String COLUMN_WEIGHT = "weight";
-
+    
     public static final String TABLE_APPRENTICE_SCORECARDS = "apprentice_scorecards";
     public static final String COLUMN_TAKEN_AT = "taken_at";
     public static final String COLUMN_TOTAL = "total";

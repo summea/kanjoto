@@ -14,6 +14,18 @@ import com.andrewsummers.otashu.data.EdgesDataSource;
 import com.andrewsummers.otashu.model.Edge;
 import com.andrewsummers.otashu.model.Path;
 
+/**
+ * View details of a particular Apprentice strongest path.
+ * <p>
+ * As the Apprentice learns more about which notesets fit well with certain emotions, this
+ * information is saved in a graph in the database. As this data is "learned" by the Apprentice, the
+ * Apprentice becomes more confident in making an educated guess towards certain noteset-emotion
+ * combinations. This confidence comes from lower weights for particular edges in the graph (the
+ * lower the weight, the less effort it takes to follow that path for the Apprentice when making
+ * decisions). This activity displays the strongest paths (i.e. the paths with the lowest weights)
+ * learned up to this point by the Apprentice.
+ * </p>
+ */
 public class ViewApprenticeStrongestPathDetailActivity extends Activity {
     /**
      * onCreate override that provides emotion-choose view to user.
@@ -60,16 +72,14 @@ public class ViewApprenticeStrongestPathDetailActivity extends Activity {
         // select all position three edges for given emotion with given threshold (e.g. all rows
         // that have a weight less than 0.5)
         List<Edge> p3Edges = eds.getAllEdges(graphId, emotionId, weightLimit, position);
-
         List<Long> usedOnce = new ArrayList<Long>();
 
         // get top 3
         for (int i = 0; i < 3; i++) {
-
             List<Edge> bestMatch = new ArrayList<Edge>();
-
             boolean edge1To2Match = false;
             boolean edge2To3Match = false;
+
             // check to see if any of the lowest-weight edges are related nodes (i.e. do they
             // connect in the graph?)
             outerloop: for (Edge edge1 : p1Edges) {
