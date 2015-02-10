@@ -13,10 +13,13 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 /**
- * View details of a particular emotion.
+ * View details of a particular Emotion.
+ * <p>
+ * This activity allows a user to see more information about a particular Emotion. Emotions are tags
+ * that can be assigned to a Noteset either by the User or by the Apprentice.
+ * </p>
  */
 public class ViewEmotionDetailActivity extends Activity {
-
     private int emotionId = 0;
 
     /**
@@ -34,7 +37,6 @@ public class ViewEmotionDetailActivity extends Activity {
         emotionId = (int) getIntent().getExtras().getLong("list_id");
 
         EmotionsDataSource eds = new EmotionsDataSource(this);
-
         Emotion emotion = new Emotion();
         emotion = eds.getEmotion(emotionId);
         eds.close();

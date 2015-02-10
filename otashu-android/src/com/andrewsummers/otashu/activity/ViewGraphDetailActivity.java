@@ -10,10 +10,14 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 /**
- * View details of a particular graph.
+ * View details of a particular Graph.
+ * <p>
+ * This activity allows a user to see more information about a particular Graph. Graphs are mainly
+ * used to store information that the Apprentice has learned. Graphs are fairly complex to display,
+ * so this detail view only shows basic Graph information.
+ * </p>
  */
 public class ViewGraphDetailActivity extends Activity {
-
     private int graphId = 0;
 
     /**
@@ -29,11 +33,6 @@ public class ViewGraphDetailActivity extends Activity {
         setContentView(R.layout.activity_view_graph_detail);
 
         graphId = (int) getIntent().getExtras().getLong("list_id");
-
-        /*
-         * // prevent crashes due to lack of database data if (allGraphsData.isEmpty())
-         * allGraphsData.add((long) 0);
-         */
 
         Graph graph = new Graph();
         GraphsDataSource lds = new GraphsDataSource(this);

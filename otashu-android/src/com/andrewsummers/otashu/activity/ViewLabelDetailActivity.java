@@ -11,10 +11,13 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 /**
- * View details of a particular label.
+ * View details of a particular Label.
+ * <p>
+ * This activity allows a user to see more information about a particular Label. Labels are tags
+ * used to differentiate items based on their assigned label's background color.
+ * </p>
  */
 public class ViewLabelDetailActivity extends Activity {
-
     private int labelId = 0;
 
     /**
@@ -30,11 +33,6 @@ public class ViewLabelDetailActivity extends Activity {
         setContentView(R.layout.activity_view_label_detail);
 
         labelId = (int) getIntent().getExtras().getLong("list_id");
-
-        /*
-         * // prevent crashes due to lack of database data if (allLabelsData.isEmpty())
-         * allLabelsData.add((long) 0);
-         */
 
         Label label = new Label();
         LabelsDataSource lds = new LabelsDataSource(this);
