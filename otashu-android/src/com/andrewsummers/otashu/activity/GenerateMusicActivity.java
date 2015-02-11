@@ -309,6 +309,7 @@ public class GenerateMusicActivity extends Activity {
                     mediaPlayer.release();
                 }
 
+                // close activity
                 finish();
             }
         });

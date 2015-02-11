@@ -41,10 +41,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 /**
- * View details of a particular noteset.
+ * View details of a particular Noteset.
+ * <p>
+ * This activity allows a user to see more information about a particular Noteset. Notesets are
+ * groups of musical Notes ordered in a specific sequence.
+ * </p>
  */
 public class ViewNotesetDetailActivity extends Activity implements OnClickListener {
-
     private int key = 0;
     private int notesetId = 0;
     private SparseArray<List<Note>> notesetBundle = new SparseArray<List<Note>>();
@@ -242,7 +245,6 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent = null;
-        // AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
 
         // handle menu item selection
         switch (item.getItemId()) {
@@ -273,6 +275,7 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
 
                 deleteNoteset(notesetToDelete);
 
+                // close activity
                 finish();
             }
         });
