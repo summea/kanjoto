@@ -36,9 +36,14 @@ import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * View all Apprentice strongest emotion-noteset paths as a list.
+ * <p>
+ * This activity allows a user to see a list of the strongest emotion-noteset paths that the
+ * Apprentice has learned through means of various tests (such as the Emotion Test or Transition
+ * Test). This data can be used in a variety of ways, but providing a visual view into the
+ * Apprentice's memory allows the user to observe the Apprentice's current strengths.
+ * </p>
  */
 public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
-
     private ListView listView = null;
     private int selectedPositionInList = 0;
     private PathAdapter adapter = null;
@@ -67,7 +72,6 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
     }
 
     public void fillList() {
-
         // fill list with Top 3 strongest Apprentice paths (if available)
         List<Path> topPaths = new ArrayList<Path>();
         EdgesDataSource eds = new EdgesDataSource(this);
@@ -294,7 +298,6 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
                 .toArray(new Long[allEmotionsData.size()]);
 
         Emotion emotion = eds.getEmotion(allEmotions[(int) emotionId]);
-
         eds.close();
 
         return emotion;

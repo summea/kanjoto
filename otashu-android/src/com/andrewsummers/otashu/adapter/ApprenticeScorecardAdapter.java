@@ -13,8 +13,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+/**
+ * This adapter provides a customized way of displaying Apprentice Scorecard list information.
+ * <p>
+ * Using this custom adapter allows for a more personalized list for Apprentice Scorecards.
+ * </p>
+ */
 public class ApprenticeScorecardAdapter extends BaseAdapter {
-
     private Context mContext;
     private List<ApprenticeScorecard> apprenticeScorecards;
 

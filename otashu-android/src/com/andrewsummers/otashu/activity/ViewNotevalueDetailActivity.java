@@ -13,12 +13,15 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 /**
- * View details of a particular notevalue.
+ * View details of a particular Notevalue.
+ * <p>
+ * This activity allows a user to see more information about a particular Notevalue. Notevalues are
+ * conversion objects between MIDI notevalues and their respective formatted note strings (e.g.
+ * A0:21, C8:108). Notevalues are used to provide an easier-to-read format for musical notevalues.
+ * </p>
  */
 public class ViewNotevalueDetailActivity extends Activity {
-
     private int notevalueId = 0;
-
     /**
      * onCreate override used to get details view.
      * 
@@ -33,11 +36,6 @@ public class ViewNotevalueDetailActivity extends Activity {
 
         notevalueId = (int) getIntent().getExtras().getLong("list_id");
 
-        /*
-         * // prevent crashes due to lack of database data if (allNotevaluesData.isEmpty())
-         * allNotevaluesData.add((long) 0);
-         */
-
         Notevalue notevalue = new Notevalue();
         NotevaluesDataSource nvds = new NotevaluesDataSource(this);
         notevalue = nvds.getNotevalue(notevalueId);
@@ -47,12 +45,14 @@ public class ViewNotevalueDetailActivity extends Activity {
         Label label = lds.getLabel(notevalue.getLabelId());
         lds.close();
 
+        // load form data
         TextView notevalueNotevalue = (TextView) findViewById(R.id.notevalue_notevalue_value);
         notevalueNotevalue.setText(String.valueOf(notevalue.getNotevalue()));
 
         TextView notevalueLabel = (TextView) findViewById(R.id.notevalue_label_value);
         notevalueLabel.setText(notevalue.getNotelabel());
 
+        // most labels have a background color
         if (label.getColor() != null)
             notevalueLabel.setBackgroundColor(Color.parseColor(label.getColor()));
     }
