@@ -219,7 +219,7 @@ public class GenerateMusicActivity extends Activity {
         SparseArray<List<Note>> allNotesets = gatherRelatedEmotions();
         List<Note> notes = new ArrayList<Note>();
 
-        notes = logicA(allNotesets);
+        notes = logicC(allNotesets);
         // notes = logicB(allNotesets);
 
         final List<Note> finalNotes = notes;
@@ -470,6 +470,9 @@ public class GenerateMusicActivity extends Activity {
         super.onBackPressed();
     }
 
+    /*
+     * Original hard-coded logic
+     */
     private List<Note> logicA(SparseArray<List<Note>> allNotesets) {
         List<Note> notes = new ArrayList<Note>();
         List<Integer> lookingForNotesInKey = new ArrayList<Integer>();
@@ -536,7 +539,49 @@ public class GenerateMusicActivity extends Activity {
         return notes;
     }
 
+    /*
+     * Random-based logic.
+     */
     private List<Note> logicB(SparseArray<List<Note>> gatheredNotesetList) {
+        List<Note> notes = new ArrayList<Note>();
+        Note lastNote = new Note();
+        lastNote.setNotevalue(0);
+
+        Random random = new Random();
+
+        List<Integer> keys = new ArrayList<Integer>();
+        for (int i = 0; i < gatheredNotesetList.size(); i++) {
+            keys.add(gatheredNotesetList.keyAt(i));
+        }
+
+        Integer randomKey = keys.get(random.nextInt(keys.size()));
+
+        // loop through all found emotion-related notesets
+        for (int i = 0; i < 16; i++) {
+            List<Note> nset = new ArrayList<Note>();
+
+            // get random noteset
+            random = new Random();
+            randomKey = keys.get(random.nextInt(keys.size()));
+
+            // get individual noteset
+            nset = gatheredNotesetList.get(randomKey);
+
+            try {
+                for (Note note : nset) {
+                    notes.add(note);
+                }
+            } catch (Exception e) {
+                Log.d("MYLOG", e.getStackTrace().toString());
+            }
+        }
+
+        return notes;
+    }
+
+    // TODO: gather strong noteset-emotion connections for playback
+    // TODO: use transition graph data somehow, too
+    private List<Note> logicC(SparseArray<List<Note>> gatheredNotesetList) {
         List<Note> notes = new ArrayList<Note>();
         Note lastNote = new Note();
         lastNote.setNotevalue(0);

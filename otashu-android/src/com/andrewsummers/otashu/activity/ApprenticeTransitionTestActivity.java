@@ -54,7 +54,7 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
     private String externalDirectory = path.toString() + "/otashu/";
     private File musicSource = new File(externalDirectory + "otashu_preview.mid");
     private static MediaPlayer mediaPlayer;
-    private List<Note> notesToInsert = new ArrayList<Note>();
+    private List<Note> focusNotes = new ArrayList<Note>();
     private Noteset newlyInsertedNoteset = new Noteset();
     private Noteset notesetToInsert = new Noteset();
     private Emotion chosenEmotion = new Emotion();
@@ -69,6 +69,33 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
     private double guessesCorrectPercentage = 0.0;
     private int totalGuesses = 0;
     private long scorecardId = 0;
+    
+    /*
+     *  ## Transition Test Logic
+        1. Generate two notesets
+          - Use learned Transition data approach for deciding which notesets more likely fit together based on their head/tail notes
+          - Use random data approach
+        2. Play notesets for User
+        3. Do these notesets fit together?
+        4. Yes
+          - Get the noteset transition between the first noteset's last note, and the second noteset's first note
+          - Save transition information as an edge in Transition Graph
+            - Does edge already exist?
+              - Yes
+                - (Just update edge's weight later)
+              - No
+                - Create new edge
+            - Lower weight (lower is stronger) and save
+        5. No
+          - Get the noteset transition between the first noteset's last note, and the second noteset's first note
+          - Save transition information as an edge in Transition Graph
+            - Does edge already exist?
+              - Yes
+                - (Just update edge's weight later)
+              - No
+                - Create new edge
+            - Lower weight (lower is stronger) and save
+     */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -117,8 +144,9 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
 
     public List<Note> generateNotes(int fromIndex, int toIndex) {
         String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
-        notesToInsert.clear();
-
+        //notesToInsert.clear();
+        List<Note> notes = new ArrayList<Note>();
+        
         int randomNoteIndex = 0;
         String randomNote = "";
         float randomLength = 0.0f;
@@ -140,16 +168,16 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
             note.setVelocity(randomVelocity);
             note.setPosition(i + 1);
 
-            notesToInsert.add(note);
+            notes.add(note);
         }
 
-        return notesToInsert;
+        return notes;
     }
 
     public void askQuestion() {
         TextView apprenticeText = (TextView) findViewById(R.id.apprentice_text);
 
-        apprenticeText.setText("Does this sound " + chosenEmotion.getName() + "?");
+        apprenticeText.setText("Is this a natural sounding transition?");
     }
 
     public void playMusic(File musicSource) {
@@ -173,6 +201,16 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
         VerticesDataSource vds = new VerticesDataSource(this);
         EdgesDataSource edds = new EdgesDataSource(this);
 
+        long edgeId = 0;
+
+        // Examine note1 + note2
+        Note noteA = focusNotes.get(0);
+        Note noteB = focusNotes.get(1);
+
+        // Do nodes exist?
+        Vertex nodeA = vds.getVertex(transitionGraphId, noteA.getNotevalue());
+        Vertex nodeB = vds.getVertex(transitionGraphId, noteB.getNotevalue());
+        
         switch (v.getId()) {
             case R.id.button_no:
                 guessesIncorrect++;
@@ -183,75 +221,60 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                     guessesCorrectPercentage = ((double) guessesCorrect / (double) totalGuesses) * 100.0;
                 }
 
-                // don't add generated noteset to user collection (even if Apprentice is allowed to
-                // auto-add generated noteset)
-
                 // examine notes for graph purposes
-                for (int i = 0; i < notesToInsert.size() - 1; i++) {
-                    long edgeId = 0;
-
-                    // Examine note1 + note2
-                    Note noteA = notesToInsert.get(i);
-                    Note noteB = notesToInsert.get(i + 1);
-
-                    // Do nodes exist?
-                    Vertex nodeA = vds.getVertex(transitionGraphId, noteA.getNotevalue());
-                    Vertex nodeB = vds.getVertex(transitionGraphId, noteB.getNotevalue());
-
-                    // If nodes don't exist, create new nodes in graph
-                    if (nodeA.getNode() <= 0) {
-                        // nodeA doesn't exist... creating new vertex
-                        Vertex newNodeA = new Vertex();
-                        newNodeA.setGraphId(transitionGraphId);
-                        newNodeA.setNode(noteA.getNotevalue());
-                        vds.createVertex(newNodeA);
-                        nodeA.setNode(noteA.getNotevalue());
-                    }
-                    if (nodeB.getNode() <= 0) {
-                        // nodeB doesn't exist... creating new vertex
-                        Vertex newNodeB = new Vertex();
-                        newNodeB.setGraphId(transitionGraphId);
-                        newNodeB.setNode(noteB.getNotevalue());
-                        vds.createVertex(newNodeB);
-                        nodeB.setNode(noteB.getNotevalue());
-                    }
-
-                    // Does an edge exist between these two nodes?
-                    Edge edge = edds.getEdge(transitionGraphId, emotionId, nodeA.getNode(),
-                            nodeB.getNode());
-
-                    if (edge.getWeight() < 0.0f || edge.getWeight() > 1.0f) {
-                        // edge doesn't exist... creating new edge between nodeA and nodeB
-
-                        // If edge doesn't exist, create new edge in graph (and set weight at 0.5)
-                        // [note: 0.0 = stronger edge / more likely to be chosen than a 1.0 edge]
-                        Edge newEdge = new Edge();
-                        newEdge.setGraphId(transitionGraphId);
-                        newEdge.setEmotionId(emotionId);
-                        newEdge.setFromNodeId(nodeA.getNode());
-                        newEdge.setToNodeId(nodeB.getNode());
-                        newEdge.setWeight(0.5f);
-                        newEdge.setPosition(i + 1);
-                        newEdge = edds.createEdge(newEdge);
-                        edgeId = newEdge.getId();
-                    } else {
-                        // edge exists between nodeA and nodeB, just update weight
-
-                        // If edge does exist, update weight (weight + 0.1)
-                        if ((edge.getWeight() + 0.1f) <= 1.0f) {
-                            // adding 0.1f to weight... (lower weight is stronger)
-                            // round float addition in order to avoid awkward zeros
-                            BigDecimal bd = new BigDecimal(Float.toString(edge.getWeight() + 0.1f));
-                            bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
-                            edge.setWeight(bd.floatValue());
-                            edds.updateEdge(edge);
-                            edgeId = edge.getId();
-                        }
-                    }
-
-                    // save score
-                    saveScore(0, edgeId);
+                // If nodes don't exist, create new nodes in graph
+                if (nodeA.getNode() <= 0) {
+                    // nodeA doesn't exist... creating new vertex
+                    Vertex newNodeA = new Vertex();
+                    newNodeA.setGraphId(transitionGraphId);
+                    newNodeA.setNode(noteA.getNotevalue());
+                    vds.createVertex(newNodeA);
+                    nodeA.setNode(noteA.getNotevalue());
                 }
+                if (nodeB.getNode() <= 0) {
+                    // nodeB doesn't exist... creating new vertex
+                    Vertex newNodeB = new Vertex();
+                    newNodeB.setGraphId(transitionGraphId);
+                    newNodeB.setNode(noteB.getNotevalue());
+                    vds.createVertex(newNodeB);
+                    nodeB.setNode(noteB.getNotevalue());
+                }
+
+                // Does an edge exist between these two nodes?
+                Edge edge = edds.getEdge(transitionGraphId, emotionId, nodeA.getNode(),
+                        nodeB.getNode());
+
+                if (edge.getWeight() < 0.0f || edge.getWeight() > 1.0f) {
+                    // edge doesn't exist... creating new edge between nodeA and nodeB
+
+                    // If edge doesn't exist, create new edge in graph (and set weight at 0.5)
+                    // [note: 0.0 = stronger edge / more likely to be chosen than a 1.0 edge]
+                    Edge newEdge = new Edge();
+                    newEdge.setGraphId(transitionGraphId);
+                    newEdge.setEmotionId(emotionId);
+                    newEdge.setFromNodeId(nodeA.getNode());
+                    newEdge.setToNodeId(nodeB.getNode());
+                    newEdge.setWeight(0.5f);
+                    newEdge.setPosition(1);
+                    newEdge = edds.createEdge(newEdge);
+                    edgeId = newEdge.getId();
+                } else {
+                    // edge exists between nodeA and nodeB, just update weight
+
+                    // If edge does exist, update weight (weight + 0.1)
+                    if ((edge.getWeight() + 0.1f) <= 1.0f) {
+                        // adding 0.1f to weight... (lower weight is stronger)
+                        // round float addition in order to avoid awkward zeros
+                        BigDecimal bd = new BigDecimal(Float.toString(edge.getWeight() + 0.1f));
+                        bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+                        edge.setWeight(bd.floatValue());
+                        edds.updateEdge(edge);
+                        edgeId = edge.getId();
+                    }
+                }
+
+                // save score
+                saveScore(0, edgeId);
 
                 // disable buttons while playing
                 buttonYes = (Button) findViewById(R.id.button_yes);
@@ -292,94 +315,61 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                 buttonPlayNoteset = (Button) findViewById(R.id.button_play_noteset);
                 buttonPlayNoteset.setClickable(false);
 
-                /*
-                 * // check if Apprentice is allowed to auto-add generated noteset into User's //
-                 * collection boolean apprenticeCanAutoAddNotset = sharedPref.getBoolean(
-                 * "pref_apprentice_auto_add_noteset", false); if (apprenticeCanAutoAddNotset) { //
-                 * prepare noteset notesetToInsert.setEmotion((int) chosenEmotion.getId());
-                 * notesetToInsert.setEnabled(1); // check if noteset already exists, first
-                 * NotesetAndRelated notesetAndRelated = new NotesetAndRelated();
-                 * notesetAndRelated.setNoteset(notesetToInsert);
-                 * notesetAndRelated.setNotes(notesToInsert); boolean notesetExists =
-                 * doesNotesetExist(notesetAndRelated); if (!notesetExists) { // save noteset
-                 * saveNoteset(v, notesetToInsert); // save notes for (int i = 0; i <
-                 * notesToInsert.size(); i++) { Note note = notesToInsert.get(i);
-                 * note.setNotesetId(newlyInsertedNoteset.getId()); // TODO: these could be
-                 * generated by Apprentice in the future note.setVelocity(100);
-                 * note.setLength(0.5f); note.setPosition(i + 1); saveNote(v, notesToInsert.get(i));
-                 * } } }
-                 */
-
                 // examine notes for graph purposes
-                // get default graph id for Apprentice's note relationships graph
-                // long defaultGraphId = Long.parseLong(sharedPref.getString(
-                // "pref_default_graph_for_apprentice", "1"));
 
-                for (int i = 0; i < notesToInsert.size() - 1; i++) {
-                    long edgeId = 0;
-
-                    // Examine note1 + note2
-                    Note noteA = notesToInsert.get(i);
-                    Note noteB = notesToInsert.get(i + 1);
-
-                    // Do nodes exist?
-                    Vertex nodeA = vds.getVertex(transitionGraphId, noteA.getNotevalue());
-                    Vertex nodeB = vds.getVertex(transitionGraphId, noteB.getNotevalue());
-
-                    // If nodes don't exist, create new nodes in graph
-                    if (nodeA.getNode() <= 0) {
-                        // nodeA doesn't exist... creating new vertex
-                        Vertex newNodeA = new Vertex();
-                        newNodeA.setGraphId(transitionGraphId);
-                        newNodeA.setNode(noteA.getNotevalue());
-                        vds.createVertex(newNodeA);
-                        nodeA.setNode(noteA.getNotevalue());
-                    }
-                    if (nodeB.getNode() <= 0) {
-                        // nodeB doesn't exist... creating new vertex
-                        Vertex newNodeB = new Vertex();
-                        newNodeB.setGraphId(transitionGraphId);
-                        newNodeB.setNode(noteB.getNotevalue());
-                        vds.createVertex(newNodeB);
-                        nodeB.setNode(noteB.getNotevalue());
-                    }
-
-                    // Does an edge exist between these two nodes?
-                    Edge edge = edds.getEdge(transitionGraphId, emotionId, nodeA.getNode(),
-                            nodeB.getNode());
-
-                    if (edge.getWeight() < 0.0f || edge.getWeight() > 1.0f) {
-                        // edge doesn't exist... creating new edge between nodeA and nodeB
-
-                        // If edge doesn't exist, create new edge in graph (and set weight at 0.5)
-                        // [note: 0.0 = stronger edge / more likely to be chosen than a 1.0 edge]
-                        Edge newEdge = new Edge();
-                        newEdge.setGraphId(transitionGraphId);
-                        newEdge.setEmotionId(emotionId);
-                        newEdge.setFromNodeId(nodeA.getNode());
-                        newEdge.setToNodeId(nodeB.getNode());
-                        newEdge.setWeight(0.5f);
-                        newEdge.setPosition(i + 1);
-                        newEdge = edds.createEdge(newEdge);
-                        edgeId = newEdge.getId();
-                    } else {
-                        // edge exists between nodeA and nodeB, just update weight
-
-                        // If edge does exist, update weight (weight - 0.1)
-                        if ((edge.getWeight() - 0.1f) >= 0.0f) {
-                            // subtracting 0.1f from weight... (lower weight is stronger)
-                            // round float addition in order to avoid awkward zeros
-                            BigDecimal bd = new BigDecimal(Float.toString(edge.getWeight() - 0.1f));
-                            bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
-                            edge.setWeight(bd.floatValue());
-                            edds.updateEdge(edge);
-                            edgeId = edge.getId();
-                        }
-                    }
-
-                    // save score
-                    saveScore(1, edgeId);
+                // If nodes don't exist, create new nodes in graph
+                if (nodeA.getNode() <= 0) {
+                    // nodeA doesn't exist... creating new vertex
+                    Vertex newNodeA = new Vertex();
+                    newNodeA.setGraphId(transitionGraphId);
+                    newNodeA.setNode(noteA.getNotevalue());
+                    vds.createVertex(newNodeA);
+                    nodeA.setNode(noteA.getNotevalue());
                 }
+                if (nodeB.getNode() <= 0) {
+                    // nodeB doesn't exist... creating new vertex
+                    Vertex newNodeB = new Vertex();
+                    newNodeB.setGraphId(transitionGraphId);
+                    newNodeB.setNode(noteB.getNotevalue());
+                    vds.createVertex(newNodeB);
+                    nodeB.setNode(noteB.getNotevalue());
+                }
+
+                // Does an edge exist between these two nodes?
+                edge = edds.getEdge(transitionGraphId, emotionId, nodeA.getNode(),
+                        nodeB.getNode());
+
+                if (edge.getWeight() < 0.0f || edge.getWeight() > 1.0f) {
+                    // edge doesn't exist... creating new edge between nodeA and nodeB
+
+                    // If edge doesn't exist, create new edge in graph (and set weight at 0.5)
+                    // [note: 0.0 = stronger edge / more likely to be chosen than a 1.0 edge]
+                    Edge newEdge = new Edge();
+                    newEdge.setGraphId(transitionGraphId);
+                    newEdge.setEmotionId(emotionId);
+                    newEdge.setFromNodeId(nodeA.getNode());
+                    newEdge.setToNodeId(nodeB.getNode());
+                    newEdge.setWeight(0.5f);
+                    newEdge.setPosition(1);
+                    newEdge = edds.createEdge(newEdge);
+                    edgeId = newEdge.getId();
+                } else {
+                    // edge exists between nodeA and nodeB, just update weight
+
+                    // If edge does exist, update weight (weight - 0.1)
+                    if ((edge.getWeight() - 0.1f) >= 0.0f) {
+                        // subtracting 0.1f from weight... (lower weight is stronger)
+                        // round float addition in order to avoid awkward zeros
+                        BigDecimal bd = new BigDecimal(Float.toString(edge.getWeight() - 0.1f));
+                        bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+                        edge.setWeight(bd.floatValue());
+                        edds.updateEdge(edge);
+                        edgeId = edge.getId();
+                    }
+                }
+
+                // save score
+                saveScore(1, edgeId);
 
                 // try another noteset
                 apprenticeAskProcess();
@@ -435,37 +425,21 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
         return notesetExists;
     }
 
-    public void apprenticeAskProcess() {
-
-        // get random emotion
-        EmotionsDataSource eds = new EmotionsDataSource(this);
-        chosenEmotion = eds.getRandomEmotion();
-        eds.close();
-
-        emotionId = chosenEmotion.getId();
-
+    public void apprenticeAskProcess() { 
         // clear old generated notes
-        notesToInsert.clear();
+        focusNotes.clear();
 
-        List<Note> notes = new ArrayList<Note>();
-
-        // draw from past learned emotion graph data for generating noteset for question
-        // for example:
-        // node_from_id: 1, node_to_id: 2, position: 1
-        // node_from_id: 2, node_to_id: 3, position: 2
-        // node_from_id: 3, node_to_id: 4, position: 3
-        //
-        // process:
-        // 1. select random position1 set within selected emotion
-        // 2. select random position2 set within selected emotion and including node_to_id from
-        // position1
-        // 3. select random position3 set within selected emotion and including node_to_id from
-        // position2
+        List<Note> notesetOne = new ArrayList<Note>();
+        List<Note> notesetTwo = new ArrayList<Note>();
+        List<Note> blankNotes = new ArrayList<Note>();
+        List<Note> totalNotes = new ArrayList<Note>();
 
         EdgesDataSource edds = new EdgesDataSource(this);
         String approach = "";
 
+        /*
         try {
+            
             // Using Learned Data Approach (thoughtfully-generated noteset)
             approach = "Learned Data";
             Edge edgeOne = edds.getRandomEdge(transitionGraphId, emotionId, 0, 0, 1, 0);
@@ -511,13 +485,41 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
             notes.add(note8);
 
         } catch (Exception e) {
+        */
             // Using Random Approach
             approach = "Random";
             // stay within 39..50 for now (C4..B4)
-            notes = generateNotes(39, 50);
-        }
-
-        notesToInsert = notes;
+            notesetOne = generateNotes(39, 50);
+            notesetTwo = generateNotes(39, 50);
+            
+            Note note = new Note();
+            note.setNotevalue(0);
+            blankNotes.add(note);
+            
+            totalNotes.addAll(notesetOne);
+            totalNotes.addAll(blankNotes);  // spacing to separate the two notesets
+            totalNotes.addAll(notesetTwo);
+            
+            try {
+                // last noteset of first noteset
+                focusNotes.add(notesetOne.get(notesetOne.size()-1));
+                // first noteset of last noteset
+                focusNotes.add(notesetTwo.get(0));
+                
+                //focusNotes.add(notesetOne.size()
+                Log.d("MYLOG", notesetOne.toString());
+                Log.d("MYLOG", notesetTwo.toString());
+                Log.d("MYLOG", focusNotes.get(0)+"");
+                Log.d("MYLOG", focusNotes.get(1)+"");
+            } catch(Exception e) {
+                Log.d("MYLOG", e.getStackTrace().toString());
+            }
+            
+            totalNotes.addAll(blankNotes);  // spacing to separate the two notesets
+            totalNotes.addAll(blankNotes);  // spacing to separate the two notesets
+            totalNotes.addAll(focusNotes);  // add what we are focusing on at the end
+            
+        //}
 
         // get default instrument for playback
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -526,7 +528,7 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                 "120"));
 
         GenerateMusicActivity generateMusic = new GenerateMusicActivity();
-        generateMusic.generateMusic(notes, musicSource, defaultInstrument, playbackSpeed);
+        generateMusic.generateMusic(totalNotes, musicSource, defaultInstrument, playbackSpeed);
 
         // does generated noteset sounds like chosen emotion?
         askQuestion();
@@ -612,7 +614,6 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
     }
 
     public void saveScore(int isCorrect, long edgeId) {
-
         // check if scorecard already exists
         if (scorecardId <= 0) {
             TimeZone timezone = TimeZone.getTimeZone("UTC");

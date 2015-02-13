@@ -7,6 +7,7 @@ package com.andrewsummers.otashu.model;
 public class Graph {
     private long id;
     private String name;
+    private long label_id;
 
     /**
      * getId gets Graph id
@@ -42,6 +43,24 @@ public class Graph {
      */
     public void setName(String name) {
         this.name = name;
+    }
+    
+    /**
+     * getLabelId gets Graph label_id.
+     * 
+     * @return <code>long</code> of label_id.
+     */
+    public long getLabelId() {
+        return label_id;
+    }
+
+    /**
+     * setLabelId sets Graph label_id.
+     * 
+     * @param label_id New label_id.
+     */
+    public void setLabelId(long label_id) {
+        this.label_id = label_id;
     }
 
     /**

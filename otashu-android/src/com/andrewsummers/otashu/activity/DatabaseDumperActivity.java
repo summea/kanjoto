@@ -178,12 +178,12 @@ public class DatabaseDumperActivity extends Activity {
         }
 
         debugText.setText(debugText.getText().toString() + "\nTable: Graphs\n"
-                + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NAME + "\n");
+                + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NAME + "|" + OtashuDatabaseHelper.COLUMN_LABEL_ID + "\n");
 
         for (Graph graph : allGraphs) {
 
             String newText = debugText.getText().toString();
-            newText += graph.getId() + "|" + graph.getName() + "\n";
+            newText += graph.getId() + "|" + graph.getName() + "|" + graph.getLabelId() + "\n";
 
             debugText.setText(newText);
         }

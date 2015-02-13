@@ -11,7 +11,7 @@ import android.util.Log;
  * application database.
  */
 public class OtashuDatabaseHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 33;
+    private static final int DATABASE_VERSION = 34;
     private static final String DATABASE_NAME = "otashu_collection.db";
 
     public static final String COLUMN_ID = "_id";
@@ -97,7 +97,8 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_GRAPHS = "CREATE TABLE " + TABLE_GRAPHS
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
-            + COLUMN_NAME + " text);";
+            + COLUMN_NAME + " text,"
+            + COLUMN_LABEL_ID + ");";
 
     private static final String CREATE_TABLE_VERTICES = "CREATE TABLE " + TABLE_VERTICES
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
@@ -179,5 +180,9 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         // v33 (change required for emotion graph id)
         // db.execSQL("UPDATE " + TABLE_VERTICES + " SET " + COLUMN_GRAPH_ID + "=1");
         // db.execSQL("UPDATE " + TABLE_EDGES + " SET " + COLUMN_GRAPH_ID + "=1");
+        
+        // v34
+        // db.execSQL("DROP TABLE " + TABLE_GRAPHS);
+        // db.execSQL(CREATE_TABLE_GRAPHS);
     }
 }

@@ -53,9 +53,7 @@ public class ViewAllApprenticeScorecardsActivity extends ListActivity {
     public void fillList() {
         List<ApprenticeScorecard> allApprenticeScorecards = new LinkedList<ApprenticeScorecard>();
         ApprenticeScorecardsDataSource lds = new ApprenticeScorecardsDataSource(this);
-        allApprenticeScorecards = lds.getAllApprenticeScorecards("("
-                + OtashuDatabaseHelper.COLUMN_TOTAL + " - " + OtashuDatabaseHelper.COLUMN_CORRECT
-                + ")");
+        allApprenticeScorecards = lds.getAllApprenticeScorecards(OtashuDatabaseHelper.COLUMN_TAKEN_AT);
         lds.close();
 
         // pass list data to adapter
