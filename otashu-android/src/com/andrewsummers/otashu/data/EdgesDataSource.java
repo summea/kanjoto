@@ -576,4 +576,158 @@ public class EdgesDataSource {
             return edgeTwo;
         }
     }
+    
+    public List<Edge> getStrongPath(long graphId, long emotionId, int position) {
+        List<Edge> results = new ArrayList<Edge>();
+
+        int lastToNotevalue = 0;
+        for (int i = 0; i < 3; i++) {
+            // get lowest first edge
+            String  query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES + " WHERE "
+                    + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId + " AND "
+                    + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId;
+                    if (i > 0) {
+                        query += " AND " + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=" + lastToNotevalue;
+                    }
+                    if (position > 0) {
+                        query += " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position;
+                    } else {
+                        int nextI = i + 1;
+                        query += " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=" + nextI;
+                    }
+                    query += " ORDER BY " + OtashuDatabaseHelper.COLUMN_WEIGHT + " ASC LIMIT 1";
+
+            Log.d("MYLOG", "query: " + query);
+            
+            // create database handle
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+    
+            // select all edges from database
+            Cursor cursor = db.rawQuery(query, null);
+    
+            //Random random = new Random();
+            //int stopAt = random.nextInt(1) + 1;
+            
+            if (cursor.moveToFirst()) {
+                do {
+                    // create edge objects based on edge data from database
+                    Edge edge = new Edge();
+                    edge.setId(cursor.getLong(0));
+                    edge.setGraphId(cursor.getLong(1));
+                    edge.setEmotionId(cursor.getLong(2));
+                    edge.setFromNodeId(cursor.getInt(3));
+                    edge.setToNodeId(cursor.getInt(4));
+                    edge.setWeight(cursor.getFloat(5));
+                    edge.setPosition(cursor.getInt(6));
+                    results.add(edge);
+                    
+                    lastToNotevalue = edge.getToNodeId();
+                } while (cursor.moveToNext());
+            }
+            
+            Log.d("MYLOG", "strong found edge: " + results.toString());
+            
+            if (position == 1) {
+                Log.d("MYLOG", "taking an early break");
+                break;
+            }
+        }
+        return results;
+    }
+    
+    public Edge getStrongTransitionPath(long graphId, long emotionId, int fromNodeId) {
+        Edge result = new Edge();
+
+        // get lowest first edge
+        String  query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES + " WHERE "
+                + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId + " AND "
+                + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId + " AND "
+                + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=" + fromNodeId
+                + " ORDER BY " + OtashuDatabaseHelper.COLUMN_WEIGHT + " ASC LIMIT 1";
+
+        Log.d("MYLOG", "query: " + query);
+        
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all edges from database
+        Cursor cursor = db.rawQuery(query, null);
+
+        //Random random = new Random();
+        //int stopAt = random.nextInt(1) + 1;
+        
+        if (cursor.moveToFirst()) {
+            do {
+                // create edge objects based on edge data from database
+                Edge edge = new Edge();
+                edge.setId(cursor.getLong(0));
+                edge.setGraphId(cursor.getLong(1));
+                edge.setEmotionId(cursor.getLong(2));
+                edge.setFromNodeId(cursor.getInt(3));
+                edge.setToNodeId(cursor.getInt(4));
+                edge.setWeight(cursor.getFloat(5));
+                edge.setPosition(cursor.getInt(6));
+                result = edge;
+            } while (cursor.moveToNext());
+        }
+        
+        Log.d("MYLOG", "strong found transition edge: " + result.toString());
+        return result;
+    }
+    
+    public List<Edge> getStrongPath(long graphId, long emotionId, int position, int fromNode) {
+        List<Edge> results = new ArrayList<Edge>();
+
+        int lastToNotevalue = 0;
+        for (int i = 0; i < 3; i++) {
+            // get lowest first edge
+            String  query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES + " WHERE "
+                    + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId + " AND "
+                    + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId;
+                    if (i > 0 && fromNode <= 0) {
+                        query += " AND " + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=" + lastToNotevalue;
+                    } else {
+                        query += " AND " + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=" + fromNode;
+                    }
+                    if (position > 0) {
+                        query += " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position;
+                    } else {
+                        int nextI = i + 1;
+                        query += " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=" + nextI;
+                    }
+                    query += " ORDER BY " + OtashuDatabaseHelper.COLUMN_WEIGHT + " ASC LIMIT 1";
+
+            Log.d("MYLOG", "query: " + query);
+            
+            // create database handle
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+    
+            // select all edges from database
+            Cursor cursor = db.rawQuery(query, null);
+    
+            if (cursor.moveToFirst()) {
+                do {
+                    // create edge objects based on edge data from database
+                    Edge edge = new Edge();
+                    edge.setId(cursor.getLong(0));
+                    edge.setGraphId(cursor.getLong(1));
+                    edge.setEmotionId(cursor.getLong(2));
+                    edge.setFromNodeId(cursor.getInt(3));
+                    edge.setToNodeId(cursor.getInt(4));
+                    edge.setWeight(cursor.getFloat(5));
+                    edge.setPosition(cursor.getInt(6));
+                    results.add(edge);
+                    lastToNotevalue = edge.getToNodeId();
+                } while (cursor.moveToNext());
+            }
+            
+            Log.d("MYLOG", "strong found edge: " + results.toString());
+            
+            if (position == 1) {
+                Log.d("MYLOG", "taking an early break");
+                break;
+            }
+        }
+        return results;
+    }
 }
