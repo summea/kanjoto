@@ -11,7 +11,7 @@ import android.util.Log;
  * application database.
  */
 public class OtashuDatabaseHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 34;
+    private static final int DATABASE_VERSION = 36;
     private static final String DATABASE_NAME = "otashu_collection.db";
 
     public static final String COLUMN_ID = "_id";
@@ -50,7 +50,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_FROM_NODE_ID = "from_node_id";
     public static final String COLUMN_TO_NODE_ID = "to_node_id";
     public static final String COLUMN_WEIGHT = "weight";
-    
+
     public static final String TABLE_APPRENTICE_SCORECARDS = "apprentice_scorecards";
     public static final String COLUMN_TAKEN_AT = "taken_at";
     public static final String COLUMN_TOTAL = "total";
@@ -176,13 +176,16 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         // db.execSQL("DROP TABLE " + TABLE_APPRENTICE_SCORES);
         // db.execSQL(CREATE_TABLE_APPRENTICE_SCORECARDS);
         // db.execSQL(CREATE_TABLE_APPRENTICE_SCORES);
-        
+
         // v33 (change required for emotion graph id)
         // db.execSQL("UPDATE " + TABLE_VERTICES + " SET " + COLUMN_GRAPH_ID + "=1");
         // db.execSQL("UPDATE " + TABLE_EDGES + " SET " + COLUMN_GRAPH_ID + "=1");
-        
+
         // v34
         // db.execSQL("DROP TABLE " + TABLE_GRAPHS);
         // db.execSQL(CREATE_TABLE_GRAPHS);
+
+        // v36
+        // db.execSQL("DELETE FROM " + TABLE_EDGES + " WHERE " + COLUMN_GRAPH_ID + "=2");
     }
 }

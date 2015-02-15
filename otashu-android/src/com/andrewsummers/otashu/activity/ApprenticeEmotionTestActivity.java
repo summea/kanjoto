@@ -466,7 +466,6 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
     }
 
     public void apprenticeAskProcess() {
-
         // get random emotion
         EmotionsDataSource eds = new EmotionsDataSource(this);
         chosenEmotion = eds.getRandomEmotion();

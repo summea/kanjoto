@@ -218,7 +218,7 @@ public class GenerateMusicActivity extends Activity {
             }
         });
 
-        //SparseArray<List<Note>> allNotesets = gatherRelatedEmotions();
+        // SparseArray<List<Note>> allNotesets = gatherRelatedEmotions();
         List<Note> notes = new ArrayList<Note>();
 
         notes = logicC();
@@ -582,40 +582,48 @@ public class GenerateMusicActivity extends Activity {
     }
 
     private List<Note> logicC() {
-        
+
         /*
-         * ## LogicC
-         * 1. Get selected emotion
-         * 2. Gather a strong (low-weight) noteset from Emotions graph using selected emotion
-         * 3. Get a strong Transition graph edge for current noteset's tail
-         * 4. Check if there is any strong noteset with a head beginning with previously found strong Transition graph edge
-         * 5. If noteset found, add to output list and repeat from Step 3 until done
-         * 5b. If noteset not found, randomly find an emotion-related noteset and repeat from Step 3 until done
+         * ## LogicC 1. Get selected emotion 2. Gather a strong (low-weight) noteset from Emotions
+         * graph using selected emotion 3. Get a strong Transition graph edge for current noteset's
+         * tail 4. Check if there is any strong noteset with a head beginning with previously found
+         * strong Transition graph edge 5. If noteset found, add to output list and repeat from Step
+         * 3 until done 5b. If noteset not found, randomly find an emotion-related noteset and
+         * repeat from Step 3 until done
          */
-        
+
         List<Note> notes = new ArrayList<Note>();
         int nextNodeTo = 0;
-        
+        int improvisationLevel = 1;
+
         for (int i = 0; i < 8; i++) {
-            
+
             List<Edge> edges = new ArrayList<Edge>();
-            
+
             // 1. Get selected emotion (selectedEmotionId)
             // get Emotion graph id
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
             long graphId = Long.parseLong(sharedPref.getString(
                     "pref_emotion_graph_for_apprentice", "1"));
-            
+
             // 2. Gather a strong (low-weight) noteset from Emotions graph using selected emotion
+            // TODO: don't always use the strongest noteset path each time
             EdgesDataSource eds = new EdgesDataSource(this);
             if (nextNodeTo != 0) {
                 Log.d("MYLOG", "using nextNodeTo: " + nextNodeTo);
-                edges = eds.getStrongPath(graphId, selectedEmotionId, 0, nextNodeTo);
+                Random random = new Random();
+                int randomNumber = random.nextInt(3) + 1;
+                if (randomNumber == 1) {
+                    edges = eds.getStrongPath(graphId, selectedEmotionId, 0, nextNodeTo, 3,
+                            improvisationLevel);
+                } else {
+                    edges = eds.getStrongPath(graphId, selectedEmotionId, 0, nextNodeTo, 3, 0);
+                }
             } else {
                 Log.d("MYLOG", "not using nextNodeTo...");
-                edges = eds.getStrongPath(graphId, selectedEmotionId, 0);
+                edges = eds.getStrongPath(graphId, selectedEmotionId, 0, 0, 3, improvisationLevel);
             }
-            
+
             // add edge results to notes list
             for (int j = 0; j < edges.size(); j++) {
                 Note note = new Note();
@@ -624,32 +632,35 @@ public class GenerateMusicActivity extends Activity {
             }
             // add last edge
             Note note = new Note();
-            note.setNotevalue(edges.get(edges.size()-1).getToNodeId());
+            note.setNotevalue(edges.get(edges.size() - 1).getToNodeId());
             notes.add(note);
-            
+
             // 3. Get a strong Transition graph edge for current noteset's tail
             graphId = Long.parseLong(sharedPref.getString(
                     "pref_transition_graph_for_apprentice", "2"));
-            
-            Edge edge = eds.getStrongTransitionPath(graphId, selectedEmotionId, edges.get(edges.size()-1).getToNodeId());
-            
-            // 4. Check if there is any strong noteset with a head beginning with previously found strong Transition graph edge
+
+            Edge edge = eds.getStrongTransitionPath(graphId, selectedEmotionId,
+                    edges.get(edges.size() - 1).getToNodeId());
+
+            // 4. Check if there is any strong noteset with a head beginning with previously found
+            // strong Transition graph edge
             // 5. If noteset found, add to output list and repeat from Step 3 until done
             if (edge != null) {
                 Log.d("MYLOG", "logic c found transition: " + edges.toString());
                 nextNodeTo = edge.getToNodeId();
             }
-            // 5b. If noteset not found, randomly find an emotion-related noteset and repeat from Step 3 until done
+            // 5b. If noteset not found, randomly find an emotion-related noteset and repeat from
+            // Step 3 until done
             else {
                 Log.d("MYLOG", "logic c didn't find a transition... using random approach");
                 nextNodeTo = 0;
             }
-            
+
             eds.close();
         }
-        
+
         Log.d("MYLOG", "logic c notes: " + notes.toString());
-        
+
         return notes;
     }
 
@@ -674,7 +685,7 @@ public class GenerateMusicActivity extends Activity {
             e.printStackTrace();
         }
 
-        //Log.d("MYLOG", mainJsonObj.toString());
+        // Log.d("MYLOG", mainJsonObj.toString());
         return mainJsonObj.toString();
     }
 }

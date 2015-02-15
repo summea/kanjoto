@@ -69,32 +69,18 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
     private double guessesCorrectPercentage = 0.0;
     private int totalGuesses = 0;
     private long scorecardId = 0;
-    
+
     /*
-     *  ## Transition Test Logic
-        1. Generate two notesets
-          - Use learned Transition data approach for deciding which notesets more likely fit together based on their head/tail notes
-          - Use random data approach
-        2. Play notesets for User
-        3. Do these notesets fit together?
-        4. Yes
-          - Get the noteset transition between the first noteset's last note, and the second noteset's first note
-          - Save transition information as an edge in Transition Graph
-            - Does edge already exist?
-              - Yes
-                - (Just update edge's weight later)
-              - No
-                - Create new edge
-            - Lower weight (lower is stronger) and save
-        5. No
-          - Get the noteset transition between the first noteset's last note, and the second noteset's first note
-          - Save transition information as an edge in Transition Graph
-            - Does edge already exist?
-              - Yes
-                - (Just update edge's weight later)
-              - No
-                - Create new edge
-            - Lower weight (lower is stronger) and save
+     * ## Transition Test Logic 1. Generate two notesets - Use learned Transition data approach for
+     * deciding which notesets more likely fit together based on their head/tail notes - Use random
+     * data approach 2. Play notesets for User 3. Do these notesets fit together? 4. Yes - Get the
+     * noteset transition between the first noteset's last note, and the second noteset's first note
+     * - Save transition information as an edge in Transition Graph - Does edge already exist? - Yes
+     * - (Just update edge's weight later) - No - Create new edge - Lower weight (lower is stronger)
+     * and save 5. No - Get the noteset transition between the first noteset's last note, and the
+     * second noteset's first note - Save transition information as an edge in Transition Graph -
+     * Does edge already exist? - Yes - (Just update edge's weight later) - No - Create new edge -
+     * Lower weight (lower is stronger) and save
      */
 
     @Override
@@ -142,11 +128,37 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
         });
     }
 
+    public Note generateNote(int fromIndex, int toIndex) {
+        String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
+        Note note = new Note();
+
+        int randomNoteIndex = 0;
+        String randomNote = "";
+        float randomLength = 0.0f;
+        int randomVelocity = 100;
+        float lengthValues[] = {
+                0.25f, 0.5f, 0.75f, 1.0f
+        };
+
+        randomNoteIndex = new Random().nextInt((toIndex - fromIndex) + 1) + fromIndex;
+        randomNote = noteValuesArray[randomNoteIndex];
+        int randomLengthIndex = new Random().nextInt(lengthValues.length);
+        randomLength = lengthValues[randomLengthIndex];
+        randomVelocity = new Random().nextInt(120 - 60 + 1) + 60;
+
+        note.setNotevalue(Integer.valueOf((randomNote)));
+        note.setLength(randomLength);
+        note.setVelocity(randomVelocity);
+        note.setPosition(1);
+
+        return note;
+    }
+
     public List<Note> generateNotes(int fromIndex, int toIndex) {
         String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
-        //notesToInsert.clear();
+        // notesToInsert.clear();
         List<Note> notes = new ArrayList<Note>();
-        
+
         int randomNoteIndex = 0;
         String randomNote = "";
         float randomLength = 0.0f;
@@ -177,7 +189,7 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
     public void askQuestion() {
         TextView apprenticeText = (TextView) findViewById(R.id.apprentice_text);
 
-        apprenticeText.setText("Is this a natural sounding transition?");
+        apprenticeText.setText("Is this a " + chosenEmotion.getName() + " transition?");
     }
 
     public void playMusic(File musicSource) {
@@ -210,7 +222,7 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
         // Do nodes exist?
         Vertex nodeA = vds.getVertex(transitionGraphId, noteA.getNotevalue());
         Vertex nodeB = vds.getVertex(transitionGraphId, noteB.getNotevalue());
-        
+
         switch (v.getId()) {
             case R.id.button_no:
                 guessesIncorrect++;
@@ -425,101 +437,71 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
         return notesetExists;
     }
 
-    public void apprenticeAskProcess() { 
+    public void apprenticeAskProcess() {
+        // get random emotion
+        EmotionsDataSource eds = new EmotionsDataSource(this);
+        chosenEmotion = eds.getRandomEmotion();
+        eds.close();
+
+        emotionId = chosenEmotion.getId();
+
         // clear old generated notes
         focusNotes.clear();
 
-        List<Note> notesetOne = new ArrayList<Note>();
-        List<Note> notesetTwo = new ArrayList<Note>();
+        Note noteOne = new Note();
+        Note noteTwo = new Note();
         List<Note> blankNotes = new ArrayList<Note>();
         List<Note> totalNotes = new ArrayList<Note>();
 
         EdgesDataSource edds = new EdgesDataSource(this);
         String approach = "";
 
+        // TODO: add learned data approach
         /*
+         * try { // Using Learned Data Approach (thoughtfully-generated noteset) approach =
+         * "Learned Data"; Edge edgeOne = edds.getRandomEdge(transitionGraphId, emotionId, 0, 0, 1,
+         * 0); Edge edgeTwo = edds.getRandomEdge(transitionGraphId, emotionId,
+         * edgeOne.getFromNodeId(), edgeOne.getToNodeId(), 2, 3); Edge edgeThree =
+         * edds.getRandomEdge(transitionGraphId, emotionId, edgeOne.getFromNodeId(),
+         * edgeOne.getToNodeId(), 3, 3); Edge edgeFour = edds.getRandomEdge(transitionGraphId,
+         * emotionId, 0, 0, 1, 0); Edge edgeFive = edds.getRandomEdge(transitionGraphId, emotionId,
+         * edgeOne.getFromNodeId(), edgeOne.getToNodeId(), 2, 3); Edge edgeSix =
+         * edds.getRandomEdge(transitionGraphId, emotionId, edgeOne.getFromNodeId(),
+         * edgeOne.getToNodeId(), 3, 3); Note note1 = new Note();
+         * note1.setNotevalue(edgeOne.getFromNodeId()); notes.add(note1); Note note2 = new Note();
+         * note2.setNotevalue(edgeTwo.getFromNodeId()); notes.add(note2); Note note3 = new Note();
+         * note3.setNotevalue(edgeThree.getFromNodeId()); notes.add(note3); Note note4 = new Note();
+         * note4.setNotevalue(edgeThree.getToNodeId()); notes.add(note4); Note note5 = new Note();
+         * note1.setNotevalue(edgeFour.getFromNodeId()); notes.add(note5); Note note6 = new Note();
+         * note2.setNotevalue(edgeFive.getFromNodeId()); notes.add(note6); Note note7 = new Note();
+         * note3.setNotevalue(edgeSix.getFromNodeId()); notes.add(note7); Note note8 = new Note();
+         * note4.setNotevalue(edgeSix.getToNodeId()); notes.add(note8); } catch (Exception e) {
+         */
+        // Using Random Approach
+        approach = "Random";
+        // stay within 39..50 for now (C4..B4)
+        noteOne = generateNote(39, 50);
+        noteTwo = generateNote(39, 50);
+
+        totalNotes.add(noteOne);
+        totalNotes.add(noteTwo);
+
         try {
-            
-            // Using Learned Data Approach (thoughtfully-generated noteset)
-            approach = "Learned Data";
-            Edge edgeOne = edds.getRandomEdge(transitionGraphId, emotionId, 0, 0, 1, 0);
-            Edge edgeTwo = edds.getRandomEdge(transitionGraphId, emotionId,
-                    edgeOne.getFromNodeId(),
-                    edgeOne.getToNodeId(), 2, 3);
-            Edge edgeThree = edds.getRandomEdge(transitionGraphId, emotionId,
-                    edgeOne.getFromNodeId(),
-                    edgeOne.getToNodeId(), 3, 3);
+            // last noteset of first noteset
+            focusNotes.add(noteOne);
+            // first noteset of last noteset
+            focusNotes.add(noteTwo);
 
-            Edge edgeFour = edds.getRandomEdge(transitionGraphId, emotionId, 0, 0, 1, 0);
-            Edge edgeFive = edds.getRandomEdge(transitionGraphId, emotionId,
-                    edgeOne.getFromNodeId(),
-                    edgeOne.getToNodeId(), 2, 3);
-            Edge edgeSix = edds.getRandomEdge(transitionGraphId, emotionId,
-                    edgeOne.getFromNodeId(),
-                    edgeOne.getToNodeId(), 3, 3);
-
-            Note note1 = new Note();
-            note1.setNotevalue(edgeOne.getFromNodeId());
-            notes.add(note1);
-            Note note2 = new Note();
-            note2.setNotevalue(edgeTwo.getFromNodeId());
-            notes.add(note2);
-            Note note3 = new Note();
-            note3.setNotevalue(edgeThree.getFromNodeId());
-            notes.add(note3);
-            Note note4 = new Note();
-            note4.setNotevalue(edgeThree.getToNodeId());
-            notes.add(note4);
-
-            Note note5 = new Note();
-            note1.setNotevalue(edgeFour.getFromNodeId());
-            notes.add(note5);
-            Note note6 = new Note();
-            note2.setNotevalue(edgeFive.getFromNodeId());
-            notes.add(note6);
-            Note note7 = new Note();
-            note3.setNotevalue(edgeSix.getFromNodeId());
-            notes.add(note7);
-            Note note8 = new Note();
-            note4.setNotevalue(edgeSix.getToNodeId());
-            notes.add(note8);
-
+            // focusNotes.add(notesetOne.size()
+            Log.d("MYLOG", noteOne.toString());
+            Log.d("MYLOG", noteTwo.toString());
+            Log.d("MYLOG", focusNotes.get(0) + "");
+            Log.d("MYLOG", focusNotes.get(1) + "");
         } catch (Exception e) {
-        */
-            // Using Random Approach
-            approach = "Random";
-            // stay within 39..50 for now (C4..B4)
-            notesetOne = generateNotes(39, 50);
-            notesetTwo = generateNotes(39, 50);
-            
-            Note note = new Note();
-            note.setNotevalue(0);
-            blankNotes.add(note);
-            
-            totalNotes.addAll(notesetOne);
-            totalNotes.addAll(blankNotes);  // spacing to separate the two notesets
-            totalNotes.addAll(notesetTwo);
-            
-            try {
-                // last noteset of first noteset
-                focusNotes.add(notesetOne.get(notesetOne.size()-1));
-                // first noteset of last noteset
-                focusNotes.add(notesetTwo.get(0));
-                
-                //focusNotes.add(notesetOne.size()
-                Log.d("MYLOG", notesetOne.toString());
-                Log.d("MYLOG", notesetTwo.toString());
-                Log.d("MYLOG", focusNotes.get(0)+"");
-                Log.d("MYLOG", focusNotes.get(1)+"");
-            } catch(Exception e) {
-                Log.d("MYLOG", e.getStackTrace().toString());
-            }
-            
-            totalNotes.addAll(blankNotes);  // spacing to separate the two notesets
-            totalNotes.addAll(blankNotes);  // spacing to separate the two notesets
-            totalNotes.addAll(focusNotes);  // add what we are focusing on at the end
-            
-        //}
+            Log.d("MYLOG", e.getStackTrace().toString());
+        }
+
+        // }
 
         // get default instrument for playback
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
