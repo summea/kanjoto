@@ -596,7 +596,7 @@ public class GenerateMusicActivity extends Activity {
         int nextNodeTo = 0;
         int improvisationLevel = 1;
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 16; i++) {
 
             List<Edge> edges = new ArrayList<Edge>();
 
@@ -614,14 +614,14 @@ public class GenerateMusicActivity extends Activity {
                 Random random = new Random();
                 int randomNumber = random.nextInt(3) + 1;
                 if (randomNumber == 1) {
-                    edges = eds.getStrongPath(graphId, selectedEmotionId, 0, nextNodeTo, 3,
+                    edges = eds.getStrongPath(graphId, selectedEmotionId, 0, nextNodeTo,
                             improvisationLevel);
                 } else {
-                    edges = eds.getStrongPath(graphId, selectedEmotionId, 0, nextNodeTo, 3, 0);
+                    edges = eds.getStrongPath(graphId, selectedEmotionId, 0, nextNodeTo, 0);
                 }
             } else {
                 Log.d("MYLOG", "not using nextNodeTo...");
-                edges = eds.getStrongPath(graphId, selectedEmotionId, 0, 0, 3, improvisationLevel);
+                edges = eds.getStrongPath(graphId, selectedEmotionId, 0, 0, improvisationLevel);
             }
 
             // add edge results to notes list
@@ -639,6 +639,7 @@ public class GenerateMusicActivity extends Activity {
             graphId = Long.parseLong(sharedPref.getString(
                     "pref_transition_graph_for_apprentice", "2"));
 
+            Log.d("MYLOG", "> current edges: " + edges.toString());
             Edge edge = eds.getStrongTransitionPath(graphId, selectedEmotionId,
                     edges.get(edges.size() - 1).getToNodeId());
 
@@ -647,6 +648,7 @@ public class GenerateMusicActivity extends Activity {
             // 5. If noteset found, add to output list and repeat from Step 3 until done
             if (edge != null) {
                 Log.d("MYLOG", "logic c found transition: " + edges.toString());
+                Log.d("MYLOG", "node from: " + edge.getFromNodeId());
                 nextNodeTo = edge.getToNodeId();
             }
             // 5b. If noteset not found, randomly find an emotion-related noteset and repeat from

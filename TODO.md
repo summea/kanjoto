@@ -17,6 +17,7 @@
 
 
 ## DONE:
+- 20150214: added "does this transition sound like X emotion?" in Transition test
 - 20150212: added Apprentice transition "test" activity
 - 20150212: added label_id field to Graph database table
 - 20150205: made Apprentice activity a menu for what type of test to take

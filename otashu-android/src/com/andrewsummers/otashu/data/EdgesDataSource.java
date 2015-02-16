@@ -578,7 +578,7 @@ public class EdgesDataSource {
     }
 
     public List<Edge> getStrongPath(long graphId, long emotionId, int position, int fromNode,
-            int limit, int improvisationLevel) {
+            int improvisationLevel) {
         List<Edge> results = new ArrayList<Edge>();
 
         int lastToNotevalue = 0;
@@ -596,7 +596,7 @@ public class EdgesDataSource {
                 int nextI = i + 1;
                 query += " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=" + nextI;
             }
-            query += " ORDER BY " + OtashuDatabaseHelper.COLUMN_WEIGHT + " ASC LIMIT " + limit;
+            query += " ORDER BY " + OtashuDatabaseHelper.COLUMN_WEIGHT + " ASC LIMIT 1";
 
             Log.d("MYLOG", "query: " + query);
 
@@ -606,10 +606,6 @@ public class EdgesDataSource {
             // select all edges from database
             Cursor cursor = db.rawQuery(query, null);
 
-            Random random = new Random();
-            int stopAt = random.nextInt(limit) + 1;
-
-            int j = 0;
             if (cursor.moveToFirst()) {
                 do {
                     // create edge objects based on edge data from database
@@ -628,11 +624,6 @@ public class EdgesDataSource {
                     edge.setPosition(cursor.getInt(6));
                     results.add(edge);
                     lastToNotevalue = edge.getToNodeId();
-
-                    if (j == stopAt) {
-                        break;
-                    }
-                    j++;
                 } while (cursor.moveToNext());
             }
 
@@ -659,9 +650,6 @@ public class EdgesDataSource {
         // select all edges from database
         Cursor cursor = db.rawQuery(query, null);
 
-        // Random random = new Random();
-        // int stopAt = random.nextInt(1) + 1;
-
         if (cursor.moveToFirst()) {
             do {
                 // create edge objects based on edge data from database
@@ -673,8 +661,6 @@ public class EdgesDataSource {
                 edge.setToNodeId(cursor.getInt(4));
                 edge.setWeight(cursor.getFloat(5));
                 edge.setPosition(cursor.getInt(6));
-                edge.setToNodeId(60);
-                Log.d("MYLOG", "current edge state: " + edge.toString());
                 result = edge;
             } while (cursor.moveToNext());
         }
