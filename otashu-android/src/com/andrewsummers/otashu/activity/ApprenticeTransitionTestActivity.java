@@ -456,32 +456,22 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
         EdgesDataSource edds = new EdgesDataSource(this);
         String approach = "";
 
-        // TODO: add learned data approach
-        /*
-         * try { // Using Learned Data Approach (thoughtfully-generated noteset) approach =
-         * "Learned Data"; Edge edgeOne = edds.getRandomEdge(transitionGraphId, emotionId, 0, 0, 1,
-         * 0); Edge edgeTwo = edds.getRandomEdge(transitionGraphId, emotionId,
-         * edgeOne.getFromNodeId(), edgeOne.getToNodeId(), 2, 3); Edge edgeThree =
-         * edds.getRandomEdge(transitionGraphId, emotionId, edgeOne.getFromNodeId(),
-         * edgeOne.getToNodeId(), 3, 3); Edge edgeFour = edds.getRandomEdge(transitionGraphId,
-         * emotionId, 0, 0, 1, 0); Edge edgeFive = edds.getRandomEdge(transitionGraphId, emotionId,
-         * edgeOne.getFromNodeId(), edgeOne.getToNodeId(), 2, 3); Edge edgeSix =
-         * edds.getRandomEdge(transitionGraphId, emotionId, edgeOne.getFromNodeId(),
-         * edgeOne.getToNodeId(), 3, 3); Note note1 = new Note();
-         * note1.setNotevalue(edgeOne.getFromNodeId()); notes.add(note1); Note note2 = new Note();
-         * note2.setNotevalue(edgeTwo.getFromNodeId()); notes.add(note2); Note note3 = new Note();
-         * note3.setNotevalue(edgeThree.getFromNodeId()); notes.add(note3); Note note4 = new Note();
-         * note4.setNotevalue(edgeThree.getToNodeId()); notes.add(note4); Note note5 = new Note();
-         * note1.setNotevalue(edgeFour.getFromNodeId()); notes.add(note5); Note note6 = new Note();
-         * note2.setNotevalue(edgeFive.getFromNodeId()); notes.add(note6); Note note7 = new Note();
-         * note3.setNotevalue(edgeSix.getFromNodeId()); notes.add(note7); Note note8 = new Note();
-         * note4.setNotevalue(edgeSix.getToNodeId()); notes.add(note8); } catch (Exception e) {
-         */
-        // Using Random Approach
-        approach = "Random";
-        // stay within 39..50 for now (C4..B4)
-        noteOne = generateNote(39, 50);
-        noteTwo = generateNote(39, 50);
+        try {
+            // Using Learned Data Approach (thoughtfully-generated transition)
+            approach = "Learned Data";
+            Edge foundEdge = edds.getRandomEdge(transitionGraphId, emotionId, 0, 0, 1, 0);
+
+            noteOne = new Note();
+            noteTwo = new Note();
+            noteOne.setNotevalue(foundEdge.getFromNodeId());
+            noteTwo.setNotevalue(foundEdge.getToNodeId());
+        } catch (Exception e) {
+            // Using Random Approach
+            approach = "Random";
+            // stay within 39..50 for now (C4..B4)
+            noteOne = generateNote(39, 50);
+            noteTwo = generateNote(39, 50);
+        }
 
         totalNotes.add(noteOne);
         totalNotes.add(noteTwo);

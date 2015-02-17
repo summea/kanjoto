@@ -17,6 +17,9 @@
 
 
 ## DONE:
+- 20150216: updated Logic B to work with Logic C format
+- 20150216: updated Logic A to work with Logic C format
+- 20150216: added Logic C
 - 20150214: added "does this transition sound like X emotion?" in Transition test
 - 20150212: added Apprentice transition "test" activity
 - 20150212: added label_id field to Graph database table
