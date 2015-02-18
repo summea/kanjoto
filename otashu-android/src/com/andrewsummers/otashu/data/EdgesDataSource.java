@@ -15,6 +15,10 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+/**
+ * The EdgesDataSource class provides a way to interact with the Edges database table. This class is
+ * primarily used to create, read, update, or delete data from the database table.
+ */
 public class EdgesDataSource {
     private SQLiteDatabase database;
     private OtashuDatabaseHelper dbHelper;

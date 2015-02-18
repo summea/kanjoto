@@ -17,20 +17,15 @@ import com.andrewsummers.otashu.data.ApprenticeScorecardsDataSource;
 import com.andrewsummers.otashu.data.ApprenticeScoresDataSource;
 import com.andrewsummers.otashu.data.EdgesDataSource;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
-import com.andrewsummers.otashu.data.NotesDataSource;
-import com.andrewsummers.otashu.data.NotesetsDataSource;
 import com.andrewsummers.otashu.data.VerticesDataSource;
 import com.andrewsummers.otashu.model.ApprenticeScore;
 import com.andrewsummers.otashu.model.ApprenticeScorecard;
 import com.andrewsummers.otashu.model.Edge;
 import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.Note;
-import com.andrewsummers.otashu.model.Noteset;
-import com.andrewsummers.otashu.model.NotesetAndRelated;
 import com.andrewsummers.otashu.model.Vertex;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -43,11 +38,17 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * The ApprenticeTransitionTestActivity class provides tests for the Apprentice with test results
  * noted as judged by the User.
+ * <p>
+ * The Transition test attempts to provide a way for the Apprentice to learn about what notes go
+ * well in sequence based on a given emotion. This is different than the Emotion test in that the
+ * Emotion test focuses on individual notesets while the Transition test focuses on how entire
+ * notesets fit together with each other. For example, does the ending note of Noteset A fit well
+ * together with the beginning note of Noteset B for this particular emotion?
+ * </p>
  */
 public class ApprenticeTransitionTestActivity extends Activity implements OnClickListener {
     private File path = Environment.getExternalStorageDirectory();
@@ -55,8 +56,6 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
     private File musicSource = new File(externalDirectory + "otashu_preview.mid");
     private static MediaPlayer mediaPlayer;
     private List<Note> focusNotes = new ArrayList<Note>();
-    private Noteset newlyInsertedNoteset = new Noteset();
-    private Noteset notesetToInsert = new Noteset();
     private Emotion chosenEmotion = new Emotion();
     private Button buttonYes = null;
     private Button buttonNo = null;
@@ -69,19 +68,6 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
     private double guessesCorrectPercentage = 0.0;
     private int totalGuesses = 0;
     private long scorecardId = 0;
-
-    /*
-     * ## Transition Test Logic 1. Generate two notesets - Use learned Transition data approach for
-     * deciding which notesets more likely fit together based on their head/tail notes - Use random
-     * data approach 2. Play notesets for User 3. Do these notesets fit together? 4. Yes - Get the
-     * noteset transition between the first noteset's last note, and the second noteset's first note
-     * - Save transition information as an edge in Transition Graph - Does edge already exist? - Yes
-     * - (Just update edge's weight later) - No - Create new edge - Lower weight (lower is stronger)
-     * and save 5. No - Get the noteset transition between the first noteset's last note, and the
-     * second noteset's first note - Save transition information as an edge in Transition Graph -
-     * Does edge already exist? - Yes - (Just update edge's weight later) - No - Create new edge -
-     * Lower weight (lower is stronger) and save
-     */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -424,19 +410,6 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
         }
     }
 
-    private boolean doesNotesetExist(NotesetAndRelated notesetAndRelated) {
-        boolean notesetExists = true;
-        NotesDataSource nds = new NotesDataSource(this);
-
-        notesetExists = nds.doesNotesetExist(notesetAndRelated);
-
-        if (notesetExists) {
-            // notes match... noteset already exists
-        }
-
-        return notesetExists;
-    }
-
     public void apprenticeAskProcess() {
         // get random emotion
         EmotionsDataSource eds = new EmotionsDataSource(this);
@@ -450,7 +423,6 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
 
         Note noteOne = new Note();
         Note noteTwo = new Note();
-        List<Note> blankNotes = new ArrayList<Note>();
         List<Note> totalNotes = new ArrayList<Note>();
 
         EdgesDataSource edds = new EdgesDataSource(this);
@@ -530,43 +502,6 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                 buttonPlayNoteset.setClickable(true);
             }
         });
-    }
-
-    /**
-     * Save noteset data.
-     * 
-     * @param v Incoming view.
-     * @param data Incoming string of data to be saved.
-     */
-    private void saveNoteset(View v, Noteset noteset) {
-
-        // save noteset in database
-        NotesetsDataSource nds = new NotesetsDataSource(this);
-        newlyInsertedNoteset = nds.createNoteset(noteset);
-        nds.close();
-
-        Context context = getApplicationContext();
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(context,
-                context.getResources().getString(R.string.noteset_saved),
-                duration);
-        toast.show();
-    }
-
-    private void saveNote(View v, Note note) {
-        // save noteset in database
-        NotesDataSource nds = new NotesDataSource(this);
-        nds.createNote(note);
-        nds.close();
-
-        Context context = getApplicationContext();
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(context,
-                context.getResources().getString(R.string.noteset_saved),
-                duration);
-        toast.show();
     }
 
     /**
