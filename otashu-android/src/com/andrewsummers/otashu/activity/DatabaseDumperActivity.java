@@ -1,36 +1,17 @@
 
 package com.andrewsummers.otashu.activity;
 
-import java.util.List;
-
 import com.andrewsummers.otashu.R;
-import com.andrewsummers.otashu.data.ApprenticeScorecardsDataSource;
-import com.andrewsummers.otashu.data.ApprenticeScoresDataSource;
-import com.andrewsummers.otashu.data.BookmarksDataSource;
-import com.andrewsummers.otashu.data.EdgesDataSource;
-import com.andrewsummers.otashu.data.EmotionsDataSource;
-import com.andrewsummers.otashu.data.GraphsDataSource;
-import com.andrewsummers.otashu.data.LabelsDataSource;
-import com.andrewsummers.otashu.data.NotesDataSource;
-import com.andrewsummers.otashu.data.NotesetsDataSource;
-import com.andrewsummers.otashu.data.NotevaluesDataSource;
 import com.andrewsummers.otashu.data.OtashuDatabaseHelper;
-import com.andrewsummers.otashu.data.VerticesDataSource;
-import com.andrewsummers.otashu.model.ApprenticeScore;
-import com.andrewsummers.otashu.model.ApprenticeScorecard;
-import com.andrewsummers.otashu.model.Bookmark;
-import com.andrewsummers.otashu.model.Edge;
-import com.andrewsummers.otashu.model.Emotion;
-import com.andrewsummers.otashu.model.Graph;
-import com.andrewsummers.otashu.model.Label;
-import com.andrewsummers.otashu.model.Note;
-import com.andrewsummers.otashu.model.Noteset;
-import com.andrewsummers.otashu.model.Notevalue;
-import com.andrewsummers.otashu.model.Vertex;
 
-import android.app.Activity;
+import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * DatabaseDumperActivity is an Activity which provides a dump of database data.
@@ -40,26 +21,55 @@ import android.widget.TextView;
  * for debug and informational purposes.
  * </p>
  */
-public class DatabaseDumperActivity extends Activity {
+public class DatabaseDumperActivity extends ListActivity {
 
+    static final String[] database_tables = new String[] {
+        OtashuDatabaseHelper.TABLE_BOOKMARKS,
+        OtashuDatabaseHelper.TABLE_EDGES,
+        OtashuDatabaseHelper.TABLE_NOTES,
+        OtashuDatabaseHelper.TABLE_NOTESETS,
+    };
+    
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        
+        setListAdapter(new ArrayAdapter<String>(this, R.layout.list_database_table, database_tables));
+        
+        ListView listView = getListView();
+        
+        listView.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                Intent intent = null;
+                switch (position) {
+                    case 0:
+                        intent = new Intent(DatabaseDumperActivity.this, DatabaseDumperBookmarksActivity.class);
+                        break;
+                    case 1:
+                        intent = new Intent(DatabaseDumperActivity.this, DatabaseDumperEdgesActivity.class);
+                        break;
+                    case 2:
+                        intent = new Intent(DatabaseDumperActivity.this, DatabaseDumperNotesActivity.class);
+                        break;
+                    case 3:
+                        intent = new Intent(DatabaseDumperActivity.this, DatabaseDumperNotesetsActivity.class);
+                        break;
+                }
+
+                if (intent != null) {
+                    startActivity(intent);
+                }
+            }
+        });
+    }
+    
+    /*
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // get specific layout for content view
-        setContentView(R.layout.activity_database_dumper);
-
-        BookmarksDataSource bds = new BookmarksDataSource(this);
-        List<Bookmark> allBookmarks = bds.getAllBookmarks();
-        bds.close();
-
-        NotesetsDataSource nsds = new NotesetsDataSource(this);
-        List<Noteset> allNotesets = nsds.getAllNotesets();
-        nsds.close();
-
-        NotesDataSource nds = new NotesDataSource(this);
-        List<Note> allNotes = nds.getAllNotes();
-        nds.close();
+        setContentView(R.layout.activity_database_dumper);        
 
         EmotionsDataSource eds = new EmotionsDataSource(this);
         List<Emotion> allEmotions = eds.getAllEmotions();
@@ -75,11 +85,7 @@ public class DatabaseDumperActivity extends Activity {
 
         VerticesDataSource vds = new VerticesDataSource(this);
         List<Vertex> allVertices = vds.getAllVertices();
-        vds.close();
-
-        EdgesDataSource edds = new EdgesDataSource(this);
-        List<Edge> allEdges = edds.getAllEdges();
-        edds.close();
+        vds.close();        
 
         GraphsDataSource gds = new GraphsDataSource(this);
         List<Graph> allGraphs = gds.getAllGraphs();
@@ -95,19 +101,6 @@ public class DatabaseDumperActivity extends Activity {
 
         TextView debugText = (TextView) findViewById(R.id.debug_text);
 
-        debugText.setText(debugText.getText().toString() + "Table: Bookmarks\n"
-                + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NAME + "|"
-                + OtashuDatabaseHelper.COLUMN_SERIALIZED_VALUE + "\n");
-
-        for (Bookmark bookmark : allBookmarks) {
-
-            String newText = debugText.getText().toString();
-            newText += bookmark.getId() + "|" + bookmark.getName() + "|"
-                    + bookmark.getSerializedValue() + "\n";
-
-            debugText.setText(newText);
-        }
-
         debugText.setText(debugText.getText().toString() + "Table: Emotions\n"
                 + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NAME + "|"
                 + OtashuDatabaseHelper.COLUMN_LABEL_ID + "\n");
@@ -116,36 +109,6 @@ public class DatabaseDumperActivity extends Activity {
 
             String newText = debugText.getText().toString();
             newText += emotion.getId() + "|" + emotion.getName() + "|" + emotion.getLabelId()
-                    + "\n";
-
-            debugText.setText(newText);
-        }
-
-        debugText.setText(debugText.getText().toString() + "\nTable: Notes\n"
-                + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NOTESET_ID
-                + "|" + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "|"
-                + OtashuDatabaseHelper.COLUMN_VELOCITY + "|" + OtashuDatabaseHelper.COLUMN_LENGTH
-                + "|" + OtashuDatabaseHelper.COLUMN_POSITION + "\n");
-
-        for (Note note : allNotes) {
-
-            String newText = debugText.getText().toString();
-            newText += note.getId() + "|" + note.getNotesetId() + "|" + note.getNotevalue() + "|"
-                    + note.getVelocity() + "|" + note.getLength() + "|" + note.getPosition() + "\n";
-
-            debugText.setText(newText);
-        }
-
-        debugText.setText(debugText.getText().toString() + "\nTable: Notesets\n"
-                + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NAME + "|"
-                + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "|"
-                + OtashuDatabaseHelper.COLUMN_ENABLED + "\n");
-
-        for (Noteset noteset : allNotesets) {
-
-            String newText = debugText.getText().toString();
-            newText += noteset.getId() + "|" + noteset.getName() + "|" + noteset.getEmotion() + "|"
-                    + noteset.getEnabled()
                     + "\n";
 
             debugText.setText(newText);
@@ -200,30 +163,6 @@ public class DatabaseDumperActivity extends Activity {
             debugText.setText(newText);
         }
 
-        debugText
-                .setText(debugText.getText().toString() + "\nTable: Edges\n"
-                        + OtashuDatabaseHelper.COLUMN_ID + "|"
-                        + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "|"
-                        + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "|"
-                        + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "|"
-                        + OtashuDatabaseHelper.COLUMN_TO_NODE_ID + "|"
-                        + OtashuDatabaseHelper.COLUMN_WEIGHT + "|"
-                        + OtashuDatabaseHelper.COLUMN_POSITION + "\n");
-
-        for (Edge edge : allEdges) {
-
-            String newText = debugText.getText().toString();
-            newText += edge.getId() + "|"
-                    + edge.getGraphId() + "|"
-                    + edge.getEmotionId() + "|"
-                    + edge.getFromNodeId() + "|"
-                    + edge.getToNodeId() + "|"
-                    + edge.getWeight() + "|"
-                    + edge.getPosition() + "\n";
-
-            debugText.setText(newText);
-        }
-
         debugText.setText(debugText.getText().toString() + "\nTable: Apprentice Scorecards\n"
                 + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_TAKEN_AT + "|"
                 + OtashuDatabaseHelper.COLUMN_CORRECT + "|" + OtashuDatabaseHelper.COLUMN_TOTAL
@@ -256,4 +195,5 @@ public class DatabaseDumperActivity extends Activity {
             debugText.setText(newText);
         }
     }
+    */
 }

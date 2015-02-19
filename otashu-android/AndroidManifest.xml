@@ -38,6 +38,10 @@
         <activity android:name="com.andrewsummers.otashu.activity.EditEmotionActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.ViewEmotionDetailActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.DatabaseDumperActivity" />
+        <activity android:name="com.andrewsummers.otashu.activity.DatabaseDumperBookmarksActivity" />
+        <activity android:name="com.andrewsummers.otashu.activity.DatabaseDumperEdgesActivity" />
+        <activity android:name="com.andrewsummers.otashu.activity.DatabaseDumperNotesActivity" />
+        <activity android:name="com.andrewsummers.otashu.activity.DatabaseDumperNotesetsActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.ApprenticeActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.ViewAllLabelsActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.CreateLabelActivity" />
