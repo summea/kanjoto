@@ -17,6 +17,7 @@
 
 
 ## DONE:
+- 20150219: broke out database dumper into separate sections
 - 20150216: updated Logic B to work with Logic C format
 - 20150216: updated Logic A to work with Logic C format
 - 20150216: added Logic C

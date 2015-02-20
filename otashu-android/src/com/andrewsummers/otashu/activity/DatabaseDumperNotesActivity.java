@@ -27,7 +27,7 @@ public class DatabaseDumperNotesActivity extends Activity {
 
         TextView debugText = (TextView) findViewById(R.id.debug_text);
 
-        debugText.setText(debugText.getText().toString() + "\nTable: Notes\n"
+        debugText.setText(debugText.getText().toString() + "Table: Notes\n"
                 + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NOTESET_ID
                 + "|" + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "|"
                 + OtashuDatabaseHelper.COLUMN_VELOCITY + "|" + OtashuDatabaseHelper.COLUMN_LENGTH
