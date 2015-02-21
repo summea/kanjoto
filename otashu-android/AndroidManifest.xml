@@ -72,6 +72,7 @@
         <activity android:name="com.andrewsummers.otashu.activity.ViewApprenticeStrongestPathDetailActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.ViewTopApprenticeStrongestPathsActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.ApprenticeEmotionTestActivity" />
+        <activity android:name="com.andrewsummers.otashu.activity.ApprenticeScaleTestActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.ApprenticeTransitionTestActivity" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />

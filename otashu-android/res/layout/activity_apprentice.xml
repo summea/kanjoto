@@ -35,6 +35,15 @@
             android:background="@drawable/button_selector" />
         
         <Button
+            android:id="@+id/button_apprentice_scale_test"
+            android:text="@string/button_apprentice_scale_test"
+            android:padding="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_selector" />
+            
+        <Button
             android:id="@+id/button_apprentice_transition_test"
             android:text="@string/button_apprentice_transition_test"
             android:padding="20dp"
@@ -42,6 +51,5 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/button_selector" />
-            
 
 </LinearLayout>

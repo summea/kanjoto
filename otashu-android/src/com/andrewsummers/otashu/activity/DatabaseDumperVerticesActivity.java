@@ -1,3 +1,4 @@
+package com.andrewsummers.otashu.activity;
 import java.util.List;
 
 import android.app.Activity;

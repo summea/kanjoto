@@ -46,8 +46,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * The ApprenticeEmotionTestActivity class provides tests for the Apprentice with test results noted
- * as judged by the User.
+ * The ApprenticeEmotionTestActivity class provides a specific test for the Apprentice with test
+ * results noted as judged by the User.
  * <p>
  * In this activity, the Apprentice chooses a random emotion and chooses notesets (either randomly
  * or using previously-learned data) and presents the noteset-emotion combination to the User to
@@ -89,7 +89,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
         super.onCreate(savedInstanceState);
 
         // get specific layout for content view
-        setContentView(R.layout.activity_apprentice_emotion_test);
+        setContentView(R.layout.activity_apprentice_test);
 
         buttonNo = (Button) findViewById(R.id.button_yes);
         buttonYes = (Button) findViewById(R.id.button_no);

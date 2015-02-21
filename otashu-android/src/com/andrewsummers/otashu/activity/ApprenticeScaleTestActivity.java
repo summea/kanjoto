@@ -16,13 +16,14 @@ import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.ApprenticeScorecardsDataSource;
 import com.andrewsummers.otashu.data.ApprenticeScoresDataSource;
 import com.andrewsummers.otashu.data.EdgesDataSource;
-import com.andrewsummers.otashu.data.EmotionsDataSource;
+import com.andrewsummers.otashu.data.NotevaluesDataSource;
 import com.andrewsummers.otashu.data.VerticesDataSource;
 import com.andrewsummers.otashu.model.ApprenticeScore;
 import com.andrewsummers.otashu.model.ApprenticeScorecard;
 import com.andrewsummers.otashu.model.Edge;
 import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.Note;
+import com.andrewsummers.otashu.model.Notevalue;
 import com.andrewsummers.otashu.model.Vertex;
 
 import android.app.Activity;
@@ -40,28 +41,21 @@ import android.widget.Button;
 import android.widget.TextView;
 
 /**
- * The ApprenticeTransitionTestActivity class provides a specific test for the Apprentice with test
+ * The ApprenticeEmotionTestActivity class provides a specific test for the Apprentice with test
  * results noted as judged by the User.
- * <p>
- * The Transition test attempts to provide a way for the Apprentice to learn about what notes go
- * well in sequence based on a given emotion. This is different than the Emotion test in that the
- * Emotion test focuses on individual notesets while the Transition test focuses on how entire
- * notesets fit together with each other. For example, does the ending note of Noteset A fit well
- * together with the beginning note of Noteset B for this particular emotion?
- * </p>
  */
-public class ApprenticeTransitionTestActivity extends Activity implements OnClickListener {
+public class ApprenticeScaleTestActivity extends Activity implements OnClickListener {
     private File path = Environment.getExternalStorageDirectory();
     private String externalDirectory = path.toString() + "/otashu/";
     private File musicSource = new File(externalDirectory + "otashu_preview.mid");
     private static MediaPlayer mediaPlayer;
-    private List<Note> focusNotes = new ArrayList<Note>();
+    private List<Note> notesToInsert = new ArrayList<Note>();
     private Emotion chosenEmotion = new Emotion();
     private Button buttonYes = null;
     private Button buttonNo = null;
     private Button buttonPlayNoteset = null;
     private SharedPreferences sharedPref;
-    private long transitionGraphId;
+    private long scaleGraphId;
     private long emotionId;
     private int guessesCorrect = 0;
     private int guessesIncorrect = 0;
@@ -81,8 +75,8 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
 
         // get emotion graph id for Apprentice's note relationships graph
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        transitionGraphId = Long.parseLong(sharedPref.getString(
-                "pref_transition_graph_for_apprentice", "2"));
+        scaleGraphId = Long.parseLong(sharedPref.getString(
+                "pref_scale_graph_for_apprentice", "3"));
 
         try {
             // add listeners to buttons
@@ -114,36 +108,9 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
         });
     }
 
-    public Note generateNote(int fromIndex, int toIndex) {
-        String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
-        Note note = new Note();
-
-        int randomNoteIndex = 0;
-        String randomNote = "";
-        float randomLength = 0.0f;
-        int randomVelocity = 100;
-        float lengthValues[] = {
-                0.25f, 0.5f, 0.75f, 1.0f
-        };
-
-        randomNoteIndex = new Random().nextInt((toIndex - fromIndex) + 1) + fromIndex;
-        randomNote = noteValuesArray[randomNoteIndex];
-        int randomLengthIndex = new Random().nextInt(lengthValues.length);
-        randomLength = lengthValues[randomLengthIndex];
-        randomVelocity = new Random().nextInt(120 - 60 + 1) + 60;
-
-        note.setNotevalue(Integer.valueOf((randomNote)));
-        note.setLength(randomLength);
-        note.setVelocity(randomVelocity);
-        note.setPosition(1);
-
-        return note;
-    }
-
     public List<Note> generateNotes(int fromIndex, int toIndex) {
         String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
-        // notesToInsert.clear();
-        List<Note> notes = new ArrayList<Note>();
+        notesToInsert.clear();
 
         int randomNoteIndex = 0;
         String randomNote = "";
@@ -153,7 +120,7 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                 0.25f, 0.5f, 0.75f, 1.0f
         };
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 3; i++) {
             randomNoteIndex = new Random().nextInt((toIndex - fromIndex) + 1) + fromIndex;
             randomNote = noteValuesArray[randomNoteIndex];
             int randomLengthIndex = new Random().nextInt(lengthValues.length);
@@ -166,16 +133,23 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
             note.setVelocity(randomVelocity);
             note.setPosition(i + 1);
 
-            notes.add(note);
+            notesToInsert.add(note);
         }
 
-        return notes;
+        return notesToInsert;
     }
 
     public void askQuestion() {
         TextView apprenticeText = (TextView) findViewById(R.id.apprentice_text);
 
-        apprenticeText.setText("Is this a " + chosenEmotion.getName() + " transition?");
+        String notes = "";
+        NotevaluesDataSource nvds = new NotevaluesDataSource(this);
+        for (int i = 0; i < notesToInsert.size(); i++) {
+            Notevalue note = nvds.getNotevalueByNoteValue(notesToInsert.get(i).getNotevalue());
+            notes += note.getNotelabel() + " ";
+        }
+        
+        apprenticeText.setText("Are these notes part of the same scale? (" + notes + ")");
     }
 
     public void playMusic(File musicSource) {
@@ -191,23 +165,10 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
         mediaPlayer.start();
     }
 
-    // TODO: keep track of correct edge to update... don't insert every edge like in the Emotion
-    // Test
-
     @Override
     public void onClick(View v) {
         VerticesDataSource vds = new VerticesDataSource(this);
         EdgesDataSource edds = new EdgesDataSource(this);
-
-        long edgeId = 0;
-
-        // Examine note1 + note2
-        Note noteA = focusNotes.get(0);
-        Note noteB = focusNotes.get(1);
-
-        // Do nodes exist?
-        Vertex nodeA = vds.getVertex(transitionGraphId, noteA.getNotevalue());
-        Vertex nodeB = vds.getVertex(transitionGraphId, noteB.getNotevalue());
 
         switch (v.getId()) {
             case R.id.button_no:
@@ -220,59 +181,71 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                 }
 
                 // examine notes for graph purposes
-                // If nodes don't exist, create new nodes in graph
-                if (nodeA.getNode() <= 0) {
-                    // nodeA doesn't exist... creating new vertex
-                    Vertex newNodeA = new Vertex();
-                    newNodeA.setGraphId(transitionGraphId);
-                    newNodeA.setNode(noteA.getNotevalue());
-                    vds.createVertex(newNodeA);
-                    nodeA.setNode(noteA.getNotevalue());
-                }
-                if (nodeB.getNode() <= 0) {
-                    // nodeB doesn't exist... creating new vertex
-                    Vertex newNodeB = new Vertex();
-                    newNodeB.setGraphId(transitionGraphId);
-                    newNodeB.setNode(noteB.getNotevalue());
-                    vds.createVertex(newNodeB);
-                    nodeB.setNode(noteB.getNotevalue());
-                }
+                for (int i = 0; i < notesToInsert.size() - 1; i++) {
+                    long edgeId = 0;
 
-                // Does an edge exist between these two nodes?
-                Edge edge = edds.getEdge(transitionGraphId, emotionId, nodeA.getNode(),
-                        nodeB.getNode());
+                    // Examine note1 + note2
+                    Note noteA = notesToInsert.get(i);
+                    Note noteB = notesToInsert.get(i + 1);
 
-                if (edge.getWeight() < 0.0f || edge.getWeight() > 1.0f) {
-                    // edge doesn't exist... creating new edge between nodeA and nodeB
+                    // Do nodes exist?
+                    Vertex nodeA = vds.getVertex(scaleGraphId, noteA.getNotevalue());
+                    Vertex nodeB = vds.getVertex(scaleGraphId, noteB.getNotevalue());
 
-                    // If edge doesn't exist, create new edge in graph (and set weight at 0.5)
-                    // [note: 0.0 = stronger edge / more likely to be chosen than a 1.0 edge]
-                    Edge newEdge = new Edge();
-                    newEdge.setGraphId(transitionGraphId);
-                    newEdge.setEmotionId(emotionId);
-                    newEdge.setFromNodeId(nodeA.getNode());
-                    newEdge.setToNodeId(nodeB.getNode());
-                    newEdge.setWeight(0.5f);
-                    newEdge.setPosition(1);
-                    newEdge = edds.createEdge(newEdge);
-                    edgeId = newEdge.getId();
-                } else {
-                    // edge exists between nodeA and nodeB, just update weight
-
-                    // If edge does exist, update weight (weight + 0.1)
-                    if ((edge.getWeight() + 0.1f) <= 1.0f) {
-                        // adding 0.1f to weight... (lower weight is stronger)
-                        // round float addition in order to avoid awkward zeros
-                        BigDecimal bd = new BigDecimal(Float.toString(edge.getWeight() + 0.1f));
-                        bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
-                        edge.setWeight(bd.floatValue());
-                        edds.updateEdge(edge);
-                        edgeId = edge.getId();
+                    // If nodes don't exist, create new nodes in graph
+                    if (nodeA.getNode() <= 0) {
+                        // nodeA doesn't exist... creating new vertex
+                        Vertex newNodeA = new Vertex();
+                        newNodeA.setGraphId(scaleGraphId);
+                        newNodeA.setNode(noteA.getNotevalue());
+                        vds.createVertex(newNodeA);
+                        nodeA.setNode(noteA.getNotevalue());
                     }
-                }
+                    if (nodeB.getNode() <= 0) {
+                        // nodeB doesn't exist... creating new vertex
+                        Vertex newNodeB = new Vertex();
+                        newNodeB.setGraphId(scaleGraphId);
+                        newNodeB.setNode(noteB.getNotevalue());
+                        vds.createVertex(newNodeB);
+                        nodeB.setNode(noteB.getNotevalue());
+                    }
 
-                // save score
-                saveScore(0, edgeId);
+                    // Does an edge exist between these two nodes?
+                    Edge edge = edds.getEdge(scaleGraphId, emotionId, nodeA.getNode(),
+                            nodeB.getNode());
+
+                    if (edge.getWeight() < 0.0f || edge.getWeight() > 1.0f) {
+                        // edge doesn't exist... creating new edge between nodeA and nodeB
+
+                        // If edge doesn't exist, create new edge in graph (and set weight at 0.5)
+                        // [note: 0.0 = stronger edge / more likely to be chosen than a 1.0 edge]
+                        Edge newEdge = new Edge();
+                        newEdge.setGraphId(scaleGraphId);
+                        newEdge.setEmotionId(emotionId);
+                        newEdge.setFromNodeId(nodeA.getNode());
+                        newEdge.setToNodeId(nodeB.getNode());
+                        newEdge.setWeight(0.5f);
+                        newEdge.setPosition(i + 1);
+                        newEdge = edds.createEdge(newEdge);
+                        edgeId = newEdge.getId();
+                    } else {
+                        // edge exists between nodeA and nodeB, just update weight
+
+                        // If edge does exist, update weight (weight + 0.1)
+                        if ((edge.getWeight() + 0.1f) <= 1.0f) {
+                            // adding 0.1f to weight... (lower weight is stronger)
+                            // round float addition in order to avoid awkward zeros
+                            BigDecimal bd = new BigDecimal(Float.toString(edge.getWeight() + 0.1f));
+                            bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+                            edge.setWeight(bd.floatValue());
+                            edds.updateEdge(edge);
+                            edgeId = edge.getId();
+                        }
+                    }
+
+                    // save score
+                    saveScore(0, edgeId);
+                }
 
                 // disable buttons while playing
                 buttonYes = (Button) findViewById(R.id.button_yes);
@@ -314,60 +287,75 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                 buttonPlayNoteset.setClickable(false);
 
                 // examine notes for graph purposes
+                // get default graph id for Apprentice's note relationships graph
+                // long defaultGraphId = Long.parseLong(sharedPref.getString(
+                // "pref_default_graph_for_apprentice", "1"));
 
-                // If nodes don't exist, create new nodes in graph
-                if (nodeA.getNode() <= 0) {
-                    // nodeA doesn't exist... creating new vertex
-                    Vertex newNodeA = new Vertex();
-                    newNodeA.setGraphId(transitionGraphId);
-                    newNodeA.setNode(noteA.getNotevalue());
-                    vds.createVertex(newNodeA);
-                    nodeA.setNode(noteA.getNotevalue());
-                }
-                if (nodeB.getNode() <= 0) {
-                    // nodeB doesn't exist... creating new vertex
-                    Vertex newNodeB = new Vertex();
-                    newNodeB.setGraphId(transitionGraphId);
-                    newNodeB.setNode(noteB.getNotevalue());
-                    vds.createVertex(newNodeB);
-                    nodeB.setNode(noteB.getNotevalue());
-                }
+                for (int i = 0; i < notesToInsert.size() - 1; i++) {
+                    long edgeId = 0;
 
-                // Does an edge exist between these two nodes?
-                edge = edds.getEdge(transitionGraphId, emotionId, nodeA.getNode(),
-                        nodeB.getNode());
+                    // Examine note1 + note2
+                    Note noteA = notesToInsert.get(i);
+                    Note noteB = notesToInsert.get(i + 1);
 
-                if (edge.getWeight() < 0.0f || edge.getWeight() > 1.0f) {
-                    // edge doesn't exist... creating new edge between nodeA and nodeB
+                    // Do nodes exist?
+                    Vertex nodeA = vds.getVertex(scaleGraphId, noteA.getNotevalue());
+                    Vertex nodeB = vds.getVertex(scaleGraphId, noteB.getNotevalue());
 
-                    // If edge doesn't exist, create new edge in graph (and set weight at 0.5)
-                    // [note: 0.0 = stronger edge / more likely to be chosen than a 1.0 edge]
-                    Edge newEdge = new Edge();
-                    newEdge.setGraphId(transitionGraphId);
-                    newEdge.setEmotionId(emotionId);
-                    newEdge.setFromNodeId(nodeA.getNode());
-                    newEdge.setToNodeId(nodeB.getNode());
-                    newEdge.setWeight(0.5f);
-                    newEdge.setPosition(1);
-                    newEdge = edds.createEdge(newEdge);
-                    edgeId = newEdge.getId();
-                } else {
-                    // edge exists between nodeA and nodeB, just update weight
-
-                    // If edge does exist, update weight (weight - 0.1)
-                    if ((edge.getWeight() - 0.1f) >= 0.0f) {
-                        // subtracting 0.1f from weight... (lower weight is stronger)
-                        // round float addition in order to avoid awkward zeros
-                        BigDecimal bd = new BigDecimal(Float.toString(edge.getWeight() - 0.1f));
-                        bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
-                        edge.setWeight(bd.floatValue());
-                        edds.updateEdge(edge);
-                        edgeId = edge.getId();
+                    // If nodes don't exist, create new nodes in graph
+                    if (nodeA.getNode() <= 0) {
+                        // nodeA doesn't exist... creating new vertex
+                        Vertex newNodeA = new Vertex();
+                        newNodeA.setGraphId(scaleGraphId);
+                        newNodeA.setNode(noteA.getNotevalue());
+                        vds.createVertex(newNodeA);
+                        nodeA.setNode(noteA.getNotevalue());
                     }
-                }
+                    if (nodeB.getNode() <= 0) {
+                        // nodeB doesn't exist... creating new vertex
+                        Vertex newNodeB = new Vertex();
+                        newNodeB.setGraphId(scaleGraphId);
+                        newNodeB.setNode(noteB.getNotevalue());
+                        vds.createVertex(newNodeB);
+                        nodeB.setNode(noteB.getNotevalue());
+                    }
 
-                // save score
-                saveScore(1, edgeId);
+                    // Does an edge exist between these two nodes?
+                    Edge edge = edds.getEdge(scaleGraphId, emotionId, nodeA.getNode(),
+                            nodeB.getNode());
+
+                    if (edge.getWeight() < 0.0f || edge.getWeight() > 1.0f) {
+                        // edge doesn't exist... creating new edge between nodeA and nodeB
+
+                        // If edge doesn't exist, create new edge in graph (and set weight at 0.5)
+                        // [note: 0.0 = stronger edge / more likely to be chosen than a 1.0 edge]
+                        Edge newEdge = new Edge();
+                        newEdge.setGraphId(scaleGraphId);
+                        newEdge.setEmotionId(emotionId);
+                        newEdge.setFromNodeId(nodeA.getNode());
+                        newEdge.setToNodeId(nodeB.getNode());
+                        newEdge.setWeight(0.5f);
+                        newEdge.setPosition(i + 1);
+                        newEdge = edds.createEdge(newEdge);
+                        edgeId = newEdge.getId();
+                    } else {
+                        // edge exists between nodeA and nodeB, just update weight
+
+                        // If edge does exist, update weight (weight - 0.1)
+                        if ((edge.getWeight() - 0.1f) >= 0.0f) {
+                            // subtracting 0.1f from weight... (lower weight is stronger)
+                            // round float addition in order to avoid awkward zeros
+                            BigDecimal bd = new BigDecimal(Float.toString(edge.getWeight() - 0.1f));
+                            bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+                            edge.setWeight(bd.floatValue());
+                            edds.updateEdge(edge);
+                            edgeId = edge.getId();
+                        }
+                    }
+
+                    // save score
+                    saveScore(1, edgeId);
+                }
 
                 // try another noteset
                 apprenticeAskProcess();
@@ -412,58 +400,60 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
 
     public void apprenticeAskProcess() {
         // get random emotion
-        EmotionsDataSource eds = new EmotionsDataSource(this);
-        chosenEmotion = eds.getRandomEmotion();
-        eds.close();
+        // EmotionsDataSource eds = new EmotionsDataSource(this);
+        // chosenEmotion = eds.getRandomEmotion();
+        // eds.close();
 
-        emotionId = chosenEmotion.getId();
+        // emotionId = chosenEmotion.getId();
+
+        // for now, this test is just for general use... not a specific emotion
+        emotionId = 0;
 
         // clear old generated notes
-        focusNotes.clear();
+        notesToInsert.clear();
 
-        Note noteOne = new Note();
-        Note noteTwo = new Note();
-        List<Note> totalNotes = new ArrayList<Note>();
+        List<Note> notes = new ArrayList<Note>();
 
         EdgesDataSource edds = new EdgesDataSource(this);
         String approach = "";
 
+        Random random = new Random();
+        int approachType = random.nextInt(2) + 1;
+        Log.d("MYLOG", "approach type: " + approachType);
+        
         try {
-            // Using Learned Data Approach (thoughtfully-generated transition)
-            approach = "Learned Data";
-            Edge foundEdge = edds.getRandomEdge(transitionGraphId, emotionId, 0, 0, 1, 0);
+            switch(approachType) {
+                case 1:
+                    // Using Random Approach
+                    approach = "Random";
+                    // stay within 39..50 for now (C4..B4)
+                    notes = generateNotes(39, 50);
+                    break;
+                default:
+                    // Using Learned Data Approach
+                    approach = "Learned Data";
+                    Edge edgeOne = edds.getRandomEdge(scaleGraphId, emotionId, 0, 0, 1, 0);
+                    Edge edgeTwo = edds.getRandomEdge(scaleGraphId, emotionId, edgeOne.getFromNodeId(),
+                            edgeOne.getToNodeId(), 2, 3);
 
-            noteOne = new Note();
-            noteTwo = new Note();
-            noteOne.setNotevalue(foundEdge.getFromNodeId());
-            noteTwo.setNotevalue(foundEdge.getToNodeId());
+                    Note note1 = new Note();
+                    note1.setNotevalue(edgeOne.getFromNodeId());
+                    notes.add(note1);
+                    Note note2 = new Note();
+                    note2.setNotevalue(edgeTwo.getFromNodeId());
+                    notes.add(note2);
+                    Note note3 = new Note();
+                    note3.setNotevalue(edgeTwo.getToNodeId());
+                    notes.add(note3);
+            }
         } catch (Exception e) {
             // Using Random Approach
             approach = "Random";
             // stay within 39..50 for now (C4..B4)
-            noteOne = generateNote(39, 50);
-            noteTwo = generateNote(39, 50);
+            notes = generateNotes(39, 50);
         }
 
-        totalNotes.add(noteOne);
-        totalNotes.add(noteTwo);
-
-        try {
-            // last noteset of first noteset
-            focusNotes.add(noteOne);
-            // first noteset of last noteset
-            focusNotes.add(noteTwo);
-
-            // focusNotes.add(notesetOne.size()
-            Log.d("MYLOG", noteOne.toString());
-            Log.d("MYLOG", noteTwo.toString());
-            Log.d("MYLOG", focusNotes.get(0) + "");
-            Log.d("MYLOG", focusNotes.get(1) + "");
-        } catch (Exception e) {
-            Log.d("MYLOG", e.getStackTrace().toString());
-        }
-
-        // }
+        notesToInsert = notes;
 
         // get default instrument for playback
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -472,7 +462,7 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                 "120"));
 
         GenerateMusicActivity generateMusic = new GenerateMusicActivity();
-        generateMusic.generateMusic(totalNotes, musicSource, defaultInstrument, playbackSpeed);
+        generateMusic.generateMusic(notes, musicSource, defaultInstrument, playbackSpeed);
 
         // does generated noteset sounds like chosen emotion?
         askQuestion();
@@ -521,6 +511,7 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
     }
 
     public void saveScore(int isCorrect, long edgeId) {
+
         // check if scorecard already exists
         if (scorecardId <= 0) {
             TimeZone timezone = TimeZone.getTimeZone("UTC");

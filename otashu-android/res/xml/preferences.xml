@@ -51,6 +51,11 @@
             android:key="pref_transition_graph_for_apprentice"
             android:title="@string/pref_transition_graph_for_apprentice"
             android:defaultValue="2" />
+            
+        <EditTextPreference
+            android:key="pref_scale_graph_for_apprentice"
+            android:title="@string/pref_scale_graph_for_apprentice"
+            android:defaultValue="3" />
 
     </PreferenceCategory>
 

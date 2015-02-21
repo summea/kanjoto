@@ -41,6 +41,7 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
         TextView apprenticeText = (TextView) findViewById(R.id.apprentice_text);
         Button buttonApprenticeEmotionTest = (Button) findViewById(R.id.button_apprentice_emotion_test);
         Button buttonApprenticeTransitionTest = (Button) findViewById(R.id.button_apprentice_transition_test);
+        Button buttonApprenticeScaleTest = (Button) findViewById(R.id.button_apprentice_scale_test);
         
         apprenticeText.setText("Take a test?");
 
@@ -48,6 +49,7 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
             // add listeners to buttons
             buttonApprenticeEmotionTest.setOnClickListener(this);
             buttonApprenticeTransitionTest.setOnClickListener(this);
+            buttonApprenticeScaleTest.setOnClickListener(this);
         } catch (Exception e) {
             Log.d("MYLOG", e.getStackTrace().toString());
         }
@@ -62,6 +64,9 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                 break;
             case R.id.button_apprentice_transition_test:
                 intent = new Intent(this, ApprenticeTransitionTestActivity.class);
+                break;
+            case R.id.button_apprentice_scale_test:
+                intent = new Intent(this, ApprenticeScaleTestActivity.class);
                 break;
         }
         if (intent != null) {
