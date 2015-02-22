@@ -293,22 +293,50 @@ public class EdgesDataSource {
         // select all notes from database
         Cursor cursor = db.rawQuery(query, null);
 
-        Edge edge = null;
-        if (cursor.moveToFirst()) {
-            do {
-                // create note objects based on note data from database
-                edge = new Edge();
-                edge.setId(cursor.getLong(0));
-                edge.setGraphId(cursor.getLong(1));
-                edge.setEmotionId(cursor.getLong(2));
-                edge.setFromNodeId(cursor.getInt(3));
-                edge.setToNodeId(cursor.getInt(4));
-                edge.setWeight(cursor.getFloat(5));
-                edge.setPosition(cursor.getInt(6));
+        // check if any results have been found
+        if (cursor.getCount() > 0) {
+            Edge edge = null;
+            if (cursor.moveToFirst()) {
+                do {
+                    // create note objects based on note data from database
+                    edge = new Edge();
+                    edge.setId(cursor.getLong(0));
+                    edge.setGraphId(cursor.getLong(1));
+                    edge.setEmotionId(cursor.getLong(2));
+                    edge.setFromNodeId(cursor.getInt(3));
+                    edge.setToNodeId(cursor.getInt(4));
+                    edge.setWeight(cursor.getFloat(5));
+                    edge.setPosition(cursor.getInt(6));
 
-                // add note string to list of strings
-                edges.add(edge);
-            } while (cursor.moveToNext());
+                    // add note string to list of strings
+                    edges.add(edge);
+                } while (cursor.moveToNext());
+            }
+        } else {
+            query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES + " WHERE "
+                    + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId + " AND "
+                    + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId + " AND "
+                    + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position;
+
+            cursor = db.rawQuery(query, null);
+
+            Edge edge = null;
+            if (cursor.moveToFirst()) {
+                do {
+                    // create note objects based on note data from database
+                    edge = new Edge();
+                    edge.setId(cursor.getLong(0));
+                    edge.setGraphId(cursor.getLong(1));
+                    edge.setEmotionId(cursor.getLong(2));
+                    edge.setFromNodeId(cursor.getInt(3));
+                    edge.setToNodeId(cursor.getInt(4));
+                    edge.setWeight(cursor.getFloat(5));
+                    edge.setPosition(cursor.getInt(6));
+
+                    // add note string to list of strings
+                    edges.add(edge);
+                } while (cursor.moveToNext());
+            }
         }
 
         return edges;

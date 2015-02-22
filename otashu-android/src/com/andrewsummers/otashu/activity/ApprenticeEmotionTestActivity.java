@@ -498,10 +498,10 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
             // Using Learned Data Approach (thoughtfully-generated noteset)
             approach = "Learned Data";
             Edge edgeOne = edds.getRandomEdge(emotionGraphId, emotionId, 0, 0, 1, 0);
-            Edge edgeTwo = edds.getRandomEdge(emotionGraphId, emotionId, edgeOne.getFromNodeId(),
-                    edgeOne.getToNodeId(), 2, 3);
-            Edge edgeThree = edds.getRandomEdge(emotionGraphId, emotionId, edgeOne.getFromNodeId(),
-                    edgeOne.getToNodeId(), 3, 3);
+            Edge edgeTwo = edds.getRandomEdge(emotionGraphId, emotionId, edgeOne.getToNodeId(), 0,
+                    2, 3);
+            Edge edgeThree = edds.getRandomEdge(emotionGraphId, emotionId, edgeTwo.getToNodeId(),
+                    0, 3, 3);
 
             Note note1 = new Note();
             note1.setNotevalue(edgeOne.getFromNodeId());

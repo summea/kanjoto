@@ -16,6 +16,7 @@ import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.ApprenticeScorecardsDataSource;
 import com.andrewsummers.otashu.data.ApprenticeScoresDataSource;
 import com.andrewsummers.otashu.data.EdgesDataSource;
+import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.NotevaluesDataSource;
 import com.andrewsummers.otashu.data.VerticesDataSource;
 import com.andrewsummers.otashu.model.ApprenticeScore;
@@ -148,8 +149,9 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
             Notevalue note = nvds.getNotevalueByNoteValue(notesToInsert.get(i).getNotevalue());
             notes += note.getNotelabel() + " ";
         }
-        
-        apprenticeText.setText("Are these notes part of the same scale? (" + notes + ")");
+
+        apprenticeText.setText("Are these notes part of the same scale for "
+                + chosenEmotion.getName() + "? (" + notes + ")");
     }
 
     public void playMusic(File musicSource) {
@@ -400,14 +402,11 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
 
     public void apprenticeAskProcess() {
         // get random emotion
-        // EmotionsDataSource eds = new EmotionsDataSource(this);
-        // chosenEmotion = eds.getRandomEmotion();
-        // eds.close();
+        EmotionsDataSource eds = new EmotionsDataSource(this);
+        chosenEmotion = eds.getRandomEmotion();
+        eds.close();
 
-        // emotionId = chosenEmotion.getId();
-
-        // for now, this test is just for general use... not a specific emotion
-        emotionId = 0;
+        emotionId = chosenEmotion.getId();
 
         // clear old generated notes
         notesToInsert.clear();
@@ -417,38 +416,34 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
         EdgesDataSource edds = new EdgesDataSource(this);
         String approach = "";
 
-        Random random = new Random();
-        int approachType = random.nextInt(2) + 1;
-        Log.d("MYLOG", "approach type: " + approachType);
-        
         try {
-            switch(approachType) {
-                case 1:
-                    // Using Random Approach
-                    approach = "Random";
-                    // stay within 39..50 for now (C4..B4)
-                    notes = generateNotes(39, 50);
-                    break;
-                default:
-                    // Using Learned Data Approach
-                    approach = "Learned Data";
-                    Edge edgeOne = edds.getRandomEdge(scaleGraphId, emotionId, 0, 0, 1, 0);
-                    Edge edgeTwo = edds.getRandomEdge(scaleGraphId, emotionId, edgeOne.getFromNodeId(),
-                            edgeOne.getToNodeId(), 2, 3);
+            // Using Learned Data Approach
+            approach = "Learned Data";
+            Edge edgeOne = edds.getRandomEdge(scaleGraphId, emotionId, 0, 0, 1, 0);
+            Edge edgeTwo = edds.getRandomEdge(scaleGraphId, emotionId,
+                    edgeOne.getToNodeId(), 0, 2, 3);
 
-                    Note note1 = new Note();
-                    note1.setNotevalue(edgeOne.getFromNodeId());
-                    notes.add(note1);
-                    Note note2 = new Note();
-                    note2.setNotevalue(edgeTwo.getFromNodeId());
-                    notes.add(note2);
-                    Note note3 = new Note();
-                    note3.setNotevalue(edgeTwo.getToNodeId());
-                    notes.add(note3);
-            }
+            Random rnd = new Random();
+            int randomNotevalue = rnd.nextInt((71 - 60) + 1) + 60;
+
+            Edge edgeThree = new Edge();
+            edgeThree.setFromNodeId(edgeTwo.getToNodeId());
+            edgeThree.setToNodeId(randomNotevalue);
+
+            Note note1 = new Note();
+            note1.setNotevalue(edgeOne.getFromNodeId());
+            notes.add(note1);
+            Note note2 = new Note();
+            note2.setNotevalue(edgeTwo.getFromNodeId());
+            notes.add(note2);
+            Note note3 = new Note();
+            note3.setNotevalue(edgeThree.getToNodeId());
+            notes.add(note3);
         } catch (Exception e) {
+            Log.d("MYLOG", e.toString());
             // Using Random Approach
             approach = "Random";
+            // 60..71 (C4..B4)
             // stay within 39..50 for now (C4..B4)
             notes = generateNotes(39, 50);
         }
