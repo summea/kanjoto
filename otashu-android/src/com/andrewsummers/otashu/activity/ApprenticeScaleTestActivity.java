@@ -418,17 +418,25 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
 
         try {
             // Using Learned Data Approach
+            Random rnd = new Random();
+            int randomOption = rnd.nextInt((2-1) + 1) + 1;
+            int randomNotevalue = rnd.nextInt((71 - 60) + 1) + 60;
+
             approach = "Learned Data";
             Edge edgeOne = edds.getRandomEdge(scaleGraphId, emotionId, 0, 0, 1, 0);
             Edge edgeTwo = edds.getRandomEdge(scaleGraphId, emotionId,
                     edgeOne.getToNodeId(), 0, 2, 3);
 
-            Random rnd = new Random();
-            int randomNotevalue = rnd.nextInt((71 - 60) + 1) + 60;
-
             Edge edgeThree = new Edge();
-            edgeThree.setFromNodeId(edgeTwo.getToNodeId());
-            edgeThree.setToNodeId(randomNotevalue);
+            
+            if (randomOption == 1) {
+                approach = "Learned Data +";
+                edgeThree.setFromNodeId(edgeTwo.getToNodeId());
+                edgeThree.setToNodeId(randomNotevalue);
+            } else {
+                edgeThree = edds.getRandomEdge(scaleGraphId, emotionId, edgeTwo.getToNodeId(),
+                        0, 3, 3);
+            }
 
             Note note1 = new Note();
             note1.setNotevalue(edgeOne.getFromNodeId());

@@ -430,8 +430,16 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
 
         try {
             // Using Learned Data Approach (thoughtfully-generated transition)
+            Random rnd = new Random();
+            int randomOption = rnd.nextInt((2-1) + 1) + 1;
+            int randomNotevalue = rnd.nextInt((71 - 60) + 1) + 60;
+            
             approach = "Learned Data";
             Edge foundEdge = edds.getRandomEdge(transitionGraphId, emotionId, 0, 0, 1, 0);
+            if (randomOption == 1) {
+                approach = "Learned Data +";
+                foundEdge.setToNodeId(randomNotevalue);
+            }
 
             noteOne = new Note();
             noteTwo = new Note();

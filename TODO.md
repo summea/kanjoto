@@ -7,7 +7,6 @@
 - show emotion name in "top 3 strengths" list activity
 - add note colors to notes on "top 3 strengths" layout
 - add UI formatting to Apprentice top three strengths detail activity
-- use Apprentice memory (graph) for generating music playback
 - fix horizontal animation timing for music generation activity
 - standardize strings view naming
 - noteset folders (lists by label or emotion)
@@ -17,9 +16,12 @@
 
 
 ## DONE:
+- 20150222: Added a more-often used Random Approach for Emotion test
+- 20150222: Added a more-often used Random Approach for Transition test
 - 20150219: broke out database dumper into separate sections
 - 20150216: updated Logic B to work with Logic C format
 - 20150216: updated Logic A to work with Logic C format
+- 20150216: used Apprentice memory (graph) for generating music playback
 - 20150216: added Logic C
 - 20150214: added "does this transition sound like X emotion?" in Transition test
 - 20150212: added Apprentice transition "test" activity
