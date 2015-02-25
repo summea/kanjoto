@@ -1,6 +1,10 @@
 # otashu
 
 ## TODO:
+- use scale data for music generation
+- connect label_id to background color in "list all scorecards" activity
+- connect label_id to background color in "view graph detail" activity
+- connect label_id to background color in "list all graphs" activity
 - add algorithm for choosing an emotion and then choosing a strong likely noteset match in Apprentice activity
 - add noteset and emotion background colors to UI for "strongest path detail" activity
 - add noteset playback to "top 3 strengths" detail activity

@@ -21,9 +21,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
@@ -35,6 +37,7 @@ import android.widget.AdapterView.OnItemClickListener;
  * </p>
  */
 public class ViewAllApprenticeScorecardsActivity extends ListActivity {
+    private ListView listView = null;
     private int selectedPositionInList = 0;
     private ApprenticeScorecardAdapter adapter = null;
 
@@ -47,20 +50,30 @@ public class ViewAllApprenticeScorecardsActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // initialize ListView
+        listView = getListView();
+
+        // set title for list activity
+        ViewGroup listHeader = (ViewGroup) getLayoutInflater().inflate(R.layout.list_header,
+                listView, false);
+        TextView headerText = (TextView) listHeader.findViewById(R.id.list_header_title);
+        headerText.setText(R.string.view_all_apprentice_scorecards_list_header);
+        listView.addHeaderView(listHeader);
+
         fillList();
     }
 
     public void fillList() {
         List<ApprenticeScorecard> allApprenticeScorecards = new LinkedList<ApprenticeScorecard>();
         ApprenticeScorecardsDataSource lds = new ApprenticeScorecardsDataSource(this);
-        allApprenticeScorecards = lds.getAllApprenticeScorecards(OtashuDatabaseHelper.COLUMN_TAKEN_AT);
+        allApprenticeScorecards = lds
+                .getAllApprenticeScorecards(OtashuDatabaseHelper.COLUMN_TAKEN_AT);
         lds.close();
 
         // pass list data to adapter
         adapter = new ApprenticeScorecardAdapter(this, allApprenticeScorecards);
 
-        final ListView listView = getListView();
-        listView.setTextFilterEnabled(true);
         listView.setAdapter(adapter);
 
         // get individual apprenticeScorecard details

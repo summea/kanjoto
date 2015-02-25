@@ -41,7 +41,6 @@ import android.widget.AdapterView.OnItemClickListener;
  * </p>
  */
 public class ViewAllApprenticeStrongestPathsByEmotionActivity extends ListActivity {
-
     private ListView listView = null;
     private int selectedPositionInList = 0;
     private EmotionAdapter adapter = null;

@@ -130,10 +130,13 @@
     <string name="toggle_enabled_off">Off</string>
     <string name="toggle_enabled_on">On</string>
     <string name="top_apprentice_strongest_paths_list_header">Apprentice\'s Strongest Paths</string>
-    <string name="view_all_emotions_list_header">All Emotions</string>
+    <string name="view_all_apprentice_scorecards_list_header">All Apprentice Scorecards</string>
     <string name="view_all_bookmarks_list_header">All Bookmarks</string>
+    <string name="view_all_emotions_list_header">All Emotions</string>
+    <string name="view_all_graphs_list_header">All Graphs</string>
     <string name="view_all_labels_list_header">All Labels</string>
     <string name="view_all_notesets_list_header">All Notesets</string>
+    <string name="view_all_notevalues_list_header">All Notevalues</string>
     <string name="view_all_notesets_title">View All Notesets</string>
     <string name="view_apprentice_scorecard_detail_title">Scorecard Details</string>
     <string name="view_bookmark_detail_title">Bookmark Details</string>
