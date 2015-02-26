@@ -64,6 +64,8 @@ public class GenerateMusicActivity extends Activity {
     private static MediaPlayer mediaPlayer;
     private SparseArray<List<Integer>> musicalKeys = new SparseArray<List<Integer>>();
     private SparseArray<float[]> noteColorTable = new SparseArray<float[]>();
+
+    // TODO: make this more dynamic
     private static SparseArray<String> noteMap;
     static
     {
@@ -95,128 +97,6 @@ public class GenerateMusicActivity extends Activity {
         Bundle bundle = getIntent().getExtras();
         selectedEmotionId = bundle.getInt("emotion_id");
         selectedInstrumentId = bundle.getInt("instrument_id");
-
-        // TODO: double-check this section later
-
-        // C4, E4, G4
-        musicalKeys.put(60, new ArrayList<Integer>() {
-            private static final long serialVersionUID = 1L;
-            {
-                add(60);
-                add(64);
-                add(67);
-            }
-        });
-
-        // C#4, F4, G#4
-        musicalKeys.put(61, new ArrayList<Integer>() {
-            private static final long serialVersionUID = 1L;
-            {
-                add(61);
-                add(65);
-                add(67);
-            }
-        });
-
-        // D4, F#4, A4
-        musicalKeys.put(62, new ArrayList<Integer>() {
-            private static final long serialVersionUID = 1L;
-            {
-                add(62);
-                add(66);
-                add(69);
-            }
-        });
-
-        // D#4, G4, A#4
-        musicalKeys.put(63, new ArrayList<Integer>() {
-            private static final long serialVersionUID = 1L;
-            {
-                add(63);
-                add(67);
-                add(70);
-            }
-        });
-
-        // E4, G#4, B4
-        musicalKeys.put(64, new ArrayList<Integer>() {
-            private static final long serialVersionUID = 1L;
-            {
-                add(64);
-                add(68);
-                add(71);
-            }
-        });
-
-        // F4, A4, C4
-        musicalKeys.put(65, new ArrayList<Integer>() {
-            private static final long serialVersionUID = 1L;
-            {
-                add(65);
-                add(69);
-                add(60);
-            }
-        });
-
-        // F#4, A#4, C#4
-        musicalKeys.put(66, new ArrayList<Integer>() {
-            private static final long serialVersionUID = 1L;
-            {
-                add(66);
-                add(70);
-                add(61);
-            }
-        });
-
-        // G4, B4, D4
-        musicalKeys.put(67, new ArrayList<Integer>() {
-            private static final long serialVersionUID = 1L;
-            {
-                add(67);
-                add(71);
-                add(62);
-            }
-        });
-
-        // G#4, C4, D#4
-        musicalKeys.put(68, new ArrayList<Integer>() {
-            private static final long serialVersionUID = 1L;
-            {
-                add(68);
-                add(60);
-                add(63);
-            }
-        });
-
-        // A4, C#4, E4
-        musicalKeys.put(69, new ArrayList<Integer>() {
-            private static final long serialVersionUID = 1L;
-            {
-                add(69);
-                add(61);
-                add(64);
-            }
-        });
-
-        // A#4, D4, F4
-        musicalKeys.put(70, new ArrayList<Integer>() {
-            private static final long serialVersionUID = 1L;
-            {
-                add(70);
-                add(62);
-                add(65);
-            }
-        });
-
-        // B4, D#4, F#4
-        musicalKeys.put(71, new ArrayList<Integer>() {
-            private static final long serialVersionUID = 1L;
-            {
-                add(71);
-                add(63);
-                add(66);
-            }
-        });
 
         List<Note> notes = new ArrayList<Note>();
 
@@ -483,9 +363,12 @@ public class GenerateMusicActivity extends Activity {
         }
         super.onBackPressed();
     }
-
-    /*
-     * Original hard-coded logic
+   
+    /**
+     * Logic A
+     * <p>
+     * Original logic.
+     * </p>
      */
     private List<Note> logicA() {
         SparseArray<List<Note>> gatheredNotesetList = gatherRelatedEmotions();
@@ -493,6 +376,126 @@ public class GenerateMusicActivity extends Activity {
         List<Integer> lookingForNotesInKey = new ArrayList<Integer>();
         Note lastNote = new Note();
         lastNote.setNotevalue(0);
+
+        // C4, E4, G4
+        musicalKeys.put(60, new ArrayList<Integer>() {
+            private static final long serialVersionUID = 1L;
+            {
+                add(60);
+                add(64);
+                add(67);
+            }
+        });
+
+        // C#4, F4, G#4
+        musicalKeys.put(61, new ArrayList<Integer>() {
+            private static final long serialVersionUID = 1L;
+            {
+                add(61);
+                add(65);
+                add(67);
+            }
+        });
+
+        // D4, F#4, A4
+        musicalKeys.put(62, new ArrayList<Integer>() {
+            private static final long serialVersionUID = 1L;
+            {
+                add(62);
+                add(66);
+                add(69);
+            }
+        });
+
+        // D#4, G4, A#4
+        musicalKeys.put(63, new ArrayList<Integer>() {
+            private static final long serialVersionUID = 1L;
+            {
+                add(63);
+                add(67);
+                add(70);
+            }
+        });
+
+        // E4, G#4, B4
+        musicalKeys.put(64, new ArrayList<Integer>() {
+            private static final long serialVersionUID = 1L;
+            {
+                add(64);
+                add(68);
+                add(71);
+            }
+        });
+
+        // F4, A4, C4
+        musicalKeys.put(65, new ArrayList<Integer>() {
+            private static final long serialVersionUID = 1L;
+            {
+                add(65);
+                add(69);
+                add(60);
+            }
+        });
+
+        // F#4, A#4, C#4
+        musicalKeys.put(66, new ArrayList<Integer>() {
+            private static final long serialVersionUID = 1L;
+            {
+                add(66);
+                add(70);
+                add(61);
+            }
+        });
+
+        // G4, B4, D4
+        musicalKeys.put(67, new ArrayList<Integer>() {
+            private static final long serialVersionUID = 1L;
+            {
+                add(67);
+                add(71);
+                add(62);
+            }
+        });
+
+        // G#4, C4, D#4
+        musicalKeys.put(68, new ArrayList<Integer>() {
+            private static final long serialVersionUID = 1L;
+            {
+                add(68);
+                add(60);
+                add(63);
+            }
+        });
+
+        // A4, C#4, E4
+        musicalKeys.put(69, new ArrayList<Integer>() {
+            private static final long serialVersionUID = 1L;
+            {
+                add(69);
+                add(61);
+                add(64);
+            }
+        });
+
+        // A#4, D4, F4
+        musicalKeys.put(70, new ArrayList<Integer>() {
+            private static final long serialVersionUID = 1L;
+            {
+                add(70);
+                add(62);
+                add(65);
+            }
+        });
+
+        // B4, D#4, F#4
+        musicalKeys.put(71, new ArrayList<Integer>() {
+            private static final long serialVersionUID = 1L;
+            {
+                add(71);
+                add(63);
+                add(66);
+            }
+        });
 
         Random random = new Random();
 
@@ -554,8 +557,11 @@ public class GenerateMusicActivity extends Activity {
         return notes;
     }
 
-    /*
+    /**
+     * Logic B
+     * <p>
      * Random-based logic.
+     * </p>
      */
     private List<Note> logicB() {
         SparseArray<List<Note>> gatheredNotesetList = gatherRelatedEmotions();
@@ -595,17 +601,17 @@ public class GenerateMusicActivity extends Activity {
         return notes;
     }
 
+    /**
+     * Logic C <code>
+     * 1. Get selected emotion
+     * 2. Gather a strong (low-weight) noteset from Emotions graph using selected emotion
+     * 3. Get a strong Transition graph edge for current noteset's tail
+     * 4. Check if there is any strong noteset with a head beginning with previously found strong Transition graph edge
+     * 5. If noteset found, add to output list and repeat from Step 3 until done
+     * 5b. If noteset not found, randomly find an emotion-related noteset and repeat from Step 3 until done
+     * </code>
+     */
     private List<Note> logicC() {
-
-        /*
-         * ## LogicC 1. Get selected emotion 2. Gather a strong (low-weight) noteset from Emotions
-         * graph using selected emotion 3. Get a strong Transition graph edge for current noteset's
-         * tail 4. Check if there is any strong noteset with a head beginning with previously found
-         * strong Transition graph edge 5. If noteset found, add to output list and repeat from Step
-         * 3 until done 5b. If noteset not found, randomly find an emotion-related noteset and
-         * repeat from Step 3 until done
-         */
-
         List<Note> notes = new ArrayList<Note>();
         int nextNodeTo = 0;
         int improvisationLevel = 1;

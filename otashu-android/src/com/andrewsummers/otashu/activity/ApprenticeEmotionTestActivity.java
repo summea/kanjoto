@@ -83,6 +83,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
     private double guessesCorrectPercentage = 0.0;
     private int totalGuesses = 0;
     private long scorecardId = 0;
+    private boolean autoMode = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

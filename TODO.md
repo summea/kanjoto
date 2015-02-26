@@ -1,6 +1,7 @@
 # otashu
 
 ## TODO:
+- create auto test/learn for Emotion test
 - use scale data for music generation
 - connect label_id to background color in "list all scorecards" activity
 - connect label_id to background color in "view graph detail" activity
