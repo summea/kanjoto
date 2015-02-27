@@ -3,10 +3,12 @@
 ## TODO:
 - create auto test/learn for Emotion test
 - use scale data for music generation
+- add algorithm for choosing an emotion and then choosing a strong likely noteset match in Apprentice activity
+- create emotion fingerprint
+
 - connect label_id to background color in "list all scorecards" activity
 - connect label_id to background color in "view graph detail" activity
 - connect label_id to background color in "list all graphs" activity
-- add algorithm for choosing an emotion and then choosing a strong likely noteset match in Apprentice activity
 - add noteset and emotion background colors to UI for "strongest path detail" activity
 - add noteset playback to "top 3 strengths" detail activity
 - show emotion name in "top 3 strengths" list activity
@@ -15,14 +17,14 @@
 - fix horizontal animation timing for music generation activity
 - standardize strings view naming
 - noteset folders (lists by label or emotion)
-- create emotion fingerprint
 - save generated song to file
 - fix getTakenAt ISO date issue
 
 
 ## DONE:
-- 20150222: Added a more-often used Random Approach for Emotion test
-- 20150222: Added a more-often used Random Approach for Transition test
+- 20150226: added Apprentice and ApprenticeState classes
+- 20150222: added a more-often used Random Approach for Emotion test
+- 20150222: added a more-often used Random Approach for Transition test
 - 20150219: broke out database dumper into separate sections
 - 20150216: updated Logic B to work with Logic C format
 - 20150216: updated Logic A to work with Logic C format

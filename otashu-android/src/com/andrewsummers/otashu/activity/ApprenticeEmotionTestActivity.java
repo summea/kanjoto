@@ -20,8 +20,10 @@ import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.NotesDataSource;
 import com.andrewsummers.otashu.data.NotesetsDataSource;
 import com.andrewsummers.otashu.data.VerticesDataSource;
+import com.andrewsummers.otashu.model.Apprentice;
 import com.andrewsummers.otashu.model.ApprenticeScore;
 import com.andrewsummers.otashu.model.ApprenticeScorecard;
+import com.andrewsummers.otashu.model.ApprenticeState;
 import com.andrewsummers.otashu.model.Edge;
 import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.Note;
@@ -84,6 +86,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
     private int totalGuesses = 0;
     private long scorecardId = 0;
     private boolean autoMode = false;
+    private Apprentice apprentice;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,6 +95,10 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
         // get specific layout for content view
         setContentView(R.layout.activity_apprentice_test);
 
+        if (apprentice == null) {
+            apprentice = new Apprentice(ApprenticeState.IDLE);
+        }
+        
         buttonNo = (Button) findViewById(R.id.button_yes);
         buttonYes = (Button) findViewById(R.id.button_no);
 
@@ -182,11 +189,13 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
 
     @Override
     public void onClick(View v) {
+        apprentice.setState(ApprenticeState.LISTEN);
         VerticesDataSource vds = new VerticesDataSource(this);
         EdgesDataSource edds = new EdgesDataSource(this);
 
         switch (v.getId()) {
             case R.id.button_no:
+                apprentice.setState(ApprenticeState.MEMO);
                 guessesIncorrect++;
 
                 totalGuesses = guessesCorrect + guessesIncorrect;
@@ -288,6 +297,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
 
                 break;
             case R.id.button_yes:
+                apprentice.setState(ApprenticeState.MEMO);
                 guessesCorrect++;
 
                 totalGuesses = guessesCorrect + guessesIncorrect;
@@ -454,19 +464,15 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
     }
 
     private boolean doesNotesetExist(NotesetAndRelated notesetAndRelated) {
-        boolean notesetExists = true;
+        boolean notesetExists = false;
         NotesDataSource nds = new NotesDataSource(this);
-
         notesetExists = nds.doesNotesetExist(notesetAndRelated);
-
-        if (notesetExists) {
-            // notes match... noteset already exists
-        }
-
         return notesetExists;
     }
 
     public void apprenticeAskProcess() {
+        apprentice.setState(ApprenticeState.CHOOSE_EMOTION);
+        
         // get random emotion
         EmotionsDataSource eds = new EmotionsDataSource(this);
         chosenEmotion = eds.getRandomEmotion();
@@ -495,6 +501,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
         EdgesDataSource edds = new EdgesDataSource(this);
         String approach = "";
 
+        apprentice.setState(ApprenticeState.CHOOSE_NOTESET);
         try {
             // Using Learned Data Approach (thoughtfully-generated noteset)
             Random rnd = new Random();
@@ -542,10 +549,12 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
         int playbackSpeed = Integer.valueOf(sharedPref.getString("pref_default_playback_speed",
                 "120"));
 
+        apprentice.setState(ApprenticeState.GENERATE_NOTES);
         GenerateMusicActivity generateMusic = new GenerateMusicActivity();
         generateMusic.generateMusic(notes, musicSource, defaultInstrument, playbackSpeed);
 
         // does generated noteset sounds like chosen emotion?
+        apprentice.setState(ApprenticeState.ASK);
         askQuestion();
 
         TextView apprenticeGuessMethod = (TextView) findViewById(R.id.apprentice_guess_method);
