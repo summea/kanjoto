@@ -1,6 +1,9 @@
 
 package com.andrewsummers.otashu.model;
 
+/**
+ * The ApprenticeState class provides a way to keep track of specific Apprentice states.
+ */
 public class ApprenticeState {
     public static final int IDLE = 0;
     public static final int CHOOSE_EMOTION = 1;
