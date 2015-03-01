@@ -60,6 +60,14 @@
 - notelabel
 - label_id
 
+#### sets
+- id
+- emotion_id
+
+#### set_members
+- id
+- value
+
 #### vertices
 - id
 - graph_id
