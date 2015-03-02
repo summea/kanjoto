@@ -4,10 +4,13 @@ package com.andrewsummers.otashu.activity;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -64,6 +67,7 @@ public class GenerateMusicActivity extends Activity {
     private static MediaPlayer mediaPlayer;
     private SparseArray<List<Integer>> musicalKeys = new SparseArray<List<Integer>>();
     private SparseArray<float[]> noteColorTable = new SparseArray<float[]>();
+    private int currentKeySignature = 1;
 
     // TODO: make this more dynamic
     private static SparseArray<String> noteMap;
@@ -82,6 +86,32 @@ public class GenerateMusicActivity extends Activity {
         noteMap.put(69, "A4");
         noteMap.put(70, "A#4");
         noteMap.put(71, "B4");
+    }
+    
+    private static SparseArray<Set<Integer>> keySignatures;
+    static
+    {
+        keySignatures = new SparseArray<Set<Integer>>();
+        // C major
+        Integer items[] = { 60, 62, 64, 65, 67, 69, 71 };
+        keySignatures.put(1, new HashSet<Integer>(Arrays.asList(items)));
+        // G major (F#)
+        items = new Integer[] { 67, 69, 71, 60, 62, 64, 66 };
+        keySignatures.put(2, new HashSet<Integer>(Arrays.asList(items)));
+        // D major (F# C#)
+        items = new Integer[] { 62, 64, 66, 67, 69, 71, 61 };
+        keySignatures.put(3, new HashSet<Integer>(Arrays.asList(items)));
+        // A major (F# C# G#)
+        items = new Integer[] { 69, 71, 61, 62, 64, 66, 68 };
+        keySignatures.put(4, new HashSet<Integer>(Arrays.asList(items)));
+        // E major (F# C# G# D#)
+        items = new Integer[] { 64, 66, 68, 69, 71, 61, 63 };
+        keySignatures.put(5, new HashSet<Integer>(Arrays.asList(items)));
+        // B major (F# C# G# D# A#)
+        items = new Integer[] { 71, 61, 63, 64, 66, 68, 70 };
+        keySignatures.put(6, new HashSet<Integer>(Arrays.asList(items)));
+        
+        Log.d("MYLOG", "key signatures: " + keySignatures.get(1).toString());
     }
 
     /**
@@ -105,6 +135,7 @@ public class GenerateMusicActivity extends Activity {
         int logicType = randomLogic.nextInt(5) + 1;
 
         switch (logicType) {
+            /*
             case 1:
                 notes = logicA();
                 Log.d("MYLOG", "> Using: Logic A");
@@ -117,9 +148,14 @@ public class GenerateMusicActivity extends Activity {
                 notes = logicC();
                 Log.d("MYLOG", "> Using: Logic C");
                 break;
+            */
             default:
                 notes = logicC();
         }
+        
+        // determine key signature from first four notes
+        List<Note> firstNoteset = notes.subList(0, 3);
+        determineKeySignature(firstNoteset);
 
         final List<Note> finalNotes = notes;
 
@@ -709,5 +745,29 @@ public class GenerateMusicActivity extends Activity {
 
         // Log.d("MYLOG", mainJsonObj.toString());
         return mainJsonObj.toString();
+    }
+    
+    public int determineKeySignature(List<Note> notes) {
+        int keySignature = 1;
+        int currentKeySignatureKey = 1;
+        boolean foundKeySignature = false;
+        
+        int key = 1;
+        for (int i = 0; i < keySignatures.size(); i++) {
+            for (Note note : notes) {
+                key = keySignatures.keyAt(i);
+                if (keySignatures.get(key).contains(note.getNotevalue())) {
+                    foundKeySignature = true;
+                    // TODO: check to see if we are still in same current key ...
+                } else {
+                    foundKeySignature = false;
+                }
+            }
+            currentKeySignatureKey++;
+        }
+        
+        Log.d("MYLOG", "> found key signature? " + foundKeySignature);
+        
+        return keySignature;
     }
 }

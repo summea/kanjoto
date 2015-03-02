@@ -2,7 +2,7 @@
 
 ## TODO:
 - create auto test/learn for Emotion test
-- use scale data for music generation
+- use key signature data for music generation
 - add algorithm for choosing an emotion and then choosing a strong likely noteset match in Apprentice activity
 - create emotion fingerprint
 

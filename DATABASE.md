@@ -60,12 +60,13 @@
 - notelabel
 - label_id
 
-#### sets
+#### key_signatures
 - id
 - emotion_id
 
-#### set_members
+#### key_notes
 - id
+- key_signature_id
 - value
 
 #### vertices
