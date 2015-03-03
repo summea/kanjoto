@@ -135,7 +135,6 @@ public class GenerateMusicActivity extends Activity {
         int logicType = randomLogic.nextInt(5) + 1;
 
         switch (logicType) {
-            /*
             case 1:
                 notes = logicA();
                 Log.d("MYLOG", "> Using: Logic A");
@@ -148,7 +147,6 @@ public class GenerateMusicActivity extends Activity {
                 notes = logicC();
                 Log.d("MYLOG", "> Using: Logic C");
                 break;
-            */
             default:
                 notes = logicC();
         }
@@ -750,23 +748,40 @@ public class GenerateMusicActivity extends Activity {
     public int determineKeySignature(List<Note> notes) {
         int keySignature = 1;
         int currentKeySignatureKey = 1;
-        boolean foundKeySignature = false;
-        
+        boolean foundKeySignature = false;        
         int key = 1;
-        for (int i = 0; i < keySignatures.size(); i++) {
-            for (Note note : notes) {
-                key = keySignatures.keyAt(i);
-                if (keySignatures.get(key).contains(note.getNotevalue())) {
-                    foundKeySignature = true;
-                    // TODO: check to see if we are still in same current key ...
-                } else {
-                    foundKeySignature = false;
+        int totalFoundNotes = 0;
+        int notesNeededToDecideKey = 3;
+        
+        // loop through all key signatures
+        while ((notesNeededToDecideKey > 0) && !foundKeySignature) {
+            for (int i = 0; i < keySignatures.size(); i++) {
+                // loop through each of the given notes
+                // checking to see if enough of the given notes match a key signature
+                // if totalFoundNotes is 3 out of 4 notes total, we've found a key signature 
+                for (Note note : notes) {
+                    key = keySignatures.keyAt(i);
+                    if (keySignatures.get(key).contains(note.getNotevalue())) {
+                        Log.d("MYLOG", "found note: " + note.getNotevalue() + " in key set: " + keySignatures.get(key).toString());
+                        totalFoundNotes++;
+                    } else {
+                        foundKeySignature = false;
+                    }
                 }
+                
+                if (totalFoundNotes >= notesNeededToDecideKey) {
+                    foundKeySignature = true;
+                    keySignature = currentKeySignatureKey;  
+                    break;
+                }
+                
+                currentKeySignatureKey++;
+                notesNeededToDecideKey--;
+                totalFoundNotes = 0;
             }
-            currentKeySignatureKey++;
         }
         
-        Log.d("MYLOG", "> found key signature? " + foundKeySignature);
+        Log.d("MYLOG", "> found key signature? " + foundKeySignature + " key: " + keySignature);
         
         return keySignature;
     }
