@@ -2,10 +2,9 @@
 
 ## TODO:
 - create auto test/learn for Emotion test
-- use key signature data for music generation
-- add algorithm for choosing an emotion and then choosing a strong likely noteset match in Apprentice activity
 - create emotion fingerprint
 
+- give emotion and noteset to Apprentice and get match status
 - connect label_id to background color in "list all scorecards" activity
 - connect label_id to background color in "view graph detail" activity
 - connect label_id to background color in "list all graphs" activity
@@ -22,6 +21,8 @@
 
 
 ## DONE:
+- 20150303: added another algorithm for choosing an emotion and then choosing a strong likely noteset match in Apprentice activity
+- 20150303: added use key signature data for music generation (snap to key)
 - 20150226: added Apprentice and ApprenticeState classes
 - 20150222: added a more-often used Random Approach for Emotion test
 - 20150222: added a more-often used Random Approach for Transition test

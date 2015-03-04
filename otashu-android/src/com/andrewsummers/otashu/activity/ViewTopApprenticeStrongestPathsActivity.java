@@ -77,7 +77,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         EdgesDataSource eds = new EdgesDataSource(this);
 
         // select a given graph
-        long graphId = 2;
+        long graphId = 1;
 
         // select a given emotion
         emotionId = getIntent().getExtras().getLong("list_id");

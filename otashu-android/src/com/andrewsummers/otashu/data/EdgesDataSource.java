@@ -628,7 +628,7 @@ public class EdgesDataSource {
                 int nextI = i + 1;
                 query += " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=" + nextI;
             }
-            query += " ORDER BY " + OtashuDatabaseHelper.COLUMN_WEIGHT + " ASC LIMIT 1";
+            query += " ORDER BY RANDOM() LIMIT 3";
 
             Log.d("MYLOG", "query: " + query);
 
@@ -638,8 +638,21 @@ public class EdgesDataSource {
             // select all edges from database
             Cursor cursor = db.rawQuery(query, null);
 
+            // query selects three random emotion-related notesets
+            // now, find which of the notesets here has lowest (strongest) weight
+            float lastWeight = 1.0f;
+            int currentStrongestRow = 0;
             if (cursor.moveToFirst()) {
                 do {
+                    if (cursor.getFloat(5) < lastWeight) {
+                        lastWeight = cursor.getFloat(5);
+                        currentStrongestRow++;
+                    }
+                } while (cursor.moveToNext());
+            }
+            
+            try {
+                if (cursor.moveToPosition(currentStrongestRow)) {
                     // create edge objects based on edge data from database
                     Edge edge = new Edge();
                     edge.setId(cursor.getLong(0));
@@ -656,7 +669,9 @@ public class EdgesDataSource {
                     edge.setPosition(cursor.getInt(6));
                     results.add(edge);
                     lastToNotevalue = edge.getToNodeId();
-                } while (cursor.moveToNext());
+                }
+            } catch (Exception e) {
+                Log.d("MYLOG", e.getStackTrace().toString());
             }
 
             Log.d("MYLOG", "strong found edge: " + results.toString());

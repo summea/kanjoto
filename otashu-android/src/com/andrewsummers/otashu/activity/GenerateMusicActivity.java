@@ -67,7 +67,7 @@ public class GenerateMusicActivity extends Activity {
     private static MediaPlayer mediaPlayer;
     private SparseArray<List<Integer>> musicalKeys = new SparseArray<List<Integer>>();
     private SparseArray<float[]> noteColorTable = new SparseArray<float[]>();
-    private int currentKeySignature = 1;
+    private int currentKeySignatureKey = 1;
 
     // TODO: make this more dynamic
     private static SparseArray<String> noteMap;
@@ -135,6 +135,7 @@ public class GenerateMusicActivity extends Activity {
         int logicType = randomLogic.nextInt(5) + 1;
 
         switch (logicType) {
+            /*
             case 1:
                 notes = logicA();
                 Log.d("MYLOG", "> Using: Logic A");
@@ -147,8 +148,9 @@ public class GenerateMusicActivity extends Activity {
                 notes = logicC();
                 Log.d("MYLOG", "> Using: Logic C");
                 break;
+            */
             default:
-                notes = logicC();
+                notes = logicD();
         }
         
         // determine key signature from first four notes
@@ -719,6 +721,120 @@ public class GenerateMusicActivity extends Activity {
 
         return notes;
     }
+    
+    /**
+     * Logic D <code>
+     * 1. Get selected emotion
+     * 2. Gather a strong (low-weight) noteset from Emotions graph using selected emotion
+     * 3. Get a strong Transition graph edge for current noteset's tail
+     * 4. Check if there is any strong noteset with a head beginning with previously found strong Transition graph edge
+     * 5. If noteset found, add to output list and repeat from Step 3 until done
+     * 5b. If noteset not found, randomly find an emotion-related noteset and repeat from Step 3 until done
+     * </code>
+     */
+    private List<Note> logicD() {
+        List<Note> notes = new ArrayList<Note>();
+        int nextNodeTo = 0;
+        int improvisationLevel = 1;
+
+        for (int i = 0; i < 16; i++) {
+            
+            try {
+                List<Edge> edges = new ArrayList<Edge>();
+    
+                // 1. Get selected emotion (selectedEmotionId)
+                // get Emotion graph id
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                long graphId = Long.parseLong(sharedPref.getString(
+                        "pref_emotion_graph_for_apprentice", "1"));
+    
+                // 2. Gather a strong (low-weight) noteset from Emotions graph using selected emotion
+                // TODO: don't always use the strongest noteset path each time
+                EdgesDataSource eds = new EdgesDataSource(this);
+                if (nextNodeTo != 0) {
+                    Log.d("MYLOG", "using nextNodeTo: " + nextNodeTo);
+                    Random random = new Random();
+                    int randomNumber = random.nextInt(3) + 1;
+                    if (randomNumber == 1) {
+                        edges = eds.getStrongPath(graphId, selectedEmotionId, 0, nextNodeTo,
+                                improvisationLevel);
+                    } else {
+                        edges = eds.getStrongPath(graphId, selectedEmotionId, 0, nextNodeTo, 0);
+                    }
+                } else {
+                    Log.d("MYLOG", "not using nextNodeTo...");
+                    edges = eds.getStrongPath(graphId, selectedEmotionId, 0, 0, improvisationLevel);
+                }
+    
+                // add edge results to notes list
+                for (int j = 0; j < edges.size(); j++) {
+                    Note note = new Note();
+                    note.setNotevalue(edges.get(j).getFromNodeId());
+                    
+                    // "snap to" current key signature (if necessary)
+                    int key = keySignatures.keyAt(currentKeySignatureKey);
+                    if (!keySignatures.get(key).contains(note.getNotevalue())) {
+                        // round down (might be more natural to cut)
+                        if (keySignatures.get(key).contains(note.getNotevalue()-1)) {
+                            note.setNotevalue(note.getNotevalue()-1);
+                        } else if (keySignatures.get(key).contains(note.getNotevalue()-2)) {
+                            note.setNotevalue(note.getNotevalue()-2);
+                        }
+                        Log.d("MYLOG", ">> snapping to key signature!");
+                    }
+                    
+                    notes.add(note);
+                }
+                
+                // add last edge
+                Note note = new Note();
+                // "snap to" current key signature (if necessary)
+                int key = keySignatures.keyAt(currentKeySignatureKey);
+                if (!keySignatures.get(key).contains(note.getNotevalue())) {
+                    // round down (might be more natural to cut)
+                    if (keySignatures.get(key).contains(note.getNotevalue()-1)) {
+                        note.setNotevalue(note.getNotevalue()-1);
+                    } else if (keySignatures.get(key).contains(note.getNotevalue()-2)) {
+                        note.setNotevalue(note.getNotevalue()-2);
+                    }
+                    Log.d("MYLOG", ">> snapping to key signature!");
+                }
+                note.setNotevalue(edges.get(edges.size() - 1).getToNodeId());
+                notes.add(note);
+    
+                // 3. Get a strong Transition graph edge for current noteset's tail
+                graphId = Long.parseLong(sharedPref.getString(
+                        "pref_transition_graph_for_apprentice", "2"));
+    
+                Log.d("MYLOG", "> current edges: " + edges.toString());
+                Edge edge = eds.getStrongTransitionPath(graphId, selectedEmotionId,
+                        edges.get(edges.size() - 1).getToNodeId());
+    
+                // 4. Check if there is any strong noteset with a head beginning with previously found
+                // strong Transition graph edge
+                // 5. If noteset found, add to output list and repeat from Step 3 until done
+                if (edge != null) {
+                    Log.d("MYLOG", "logic d found transition: " + edges.toString());
+                    Log.d("MYLOG", "node from: " + edge.getFromNodeId());
+                    nextNodeTo = edge.getToNodeId();
+                }
+                // 5b. If noteset not found, randomly find an emotion-related noteset and repeat from
+                // Step 3 until done
+                else {
+                    Log.d("MYLOG", "logic d didn't find a transition... using random approach");
+                    nextNodeTo = 0;
+                }
+    
+                eds.close();
+            } catch (Exception e) {
+                Log.d("MYLOG", e.getStackTrace().toString());
+            }
+        }
+
+        Log.d("MYLOG", "logic d notes: " + notes.toString());
+
+        return notes;
+    }
 
     public String serializeNotes(List<Note> notes) {
         JSONObject mainJsonObj = new JSONObject();
@@ -747,7 +863,7 @@ public class GenerateMusicActivity extends Activity {
     
     public int determineKeySignature(List<Note> notes) {
         int keySignature = 1;
-        int currentKeySignatureKey = 1;
+        currentKeySignatureKey = 1;
         boolean foundKeySignature = false;        
         int key = 1;
         int totalFoundNotes = 0;
