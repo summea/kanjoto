@@ -81,6 +81,7 @@
     <string name="menu_button_create_noteset">New</string>
     <string name="menu_button_create_notevalue">New</string>
     <string name="menu_button_database_dumper">Database Dumper</string>
+    <string name="menu_button_emotion_fingerprints">Emotion Fingerprints</string>
     <string name="menu_button_export_database">Export Database</string>
     <string name="menu_button_graphs">Graphs</string>
     <string name="menu_button_import_database">Import Database</string>
@@ -132,6 +133,7 @@
     <string name="top_apprentice_strongest_paths_list_header">Apprentice\'s Strongest Paths</string>
     <string name="view_all_apprentice_scorecards_list_header">All Apprentice Scorecards</string>
     <string name="view_all_bookmarks_list_header">All Bookmarks</string>
+    <string name="view_all_emotion_fingerprints_list_header">All Emotion Fingerprints</string>
     <string name="view_all_emotions_list_header">All Emotions</string>
     <string name="view_all_graphs_list_header">All Graphs</string>
     <string name="view_all_labels_list_header">All Labels</string>

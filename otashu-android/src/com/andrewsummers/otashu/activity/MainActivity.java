@@ -119,6 +119,9 @@ public class MainActivity extends Activity implements OnClickListener {
             case R.id.view_apprentice_strongest_paths:
                 intent = new Intent(this, ViewAllApprenticeStrongestPathsByEmotionActivity.class);
                 break;
+            case R.id.view_emotion_fingerprints:
+                intent = new Intent(this, ViewAllEmotionFingerprintsActivity.class);
+                break;
         }
 
         startActivity(intent);

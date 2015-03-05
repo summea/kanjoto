@@ -735,7 +735,7 @@ public class GenerateMusicActivity extends Activity {
     private List<Note> logicD() {
         List<Note> notes = new ArrayList<Note>();
         int nextNodeTo = 0;
-        int improvisationLevel = 1;
+        int improvisationLevel = 0;
 
         for (int i = 0; i < 16; i++) {
             

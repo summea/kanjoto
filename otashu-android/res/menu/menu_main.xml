@@ -30,4 +30,7 @@
     <item
         android:id="@+id/view_apprentice_strongest_paths"
         android:title="@string/menu_button_apprentice_strongest_paths" />
+    <item
+        android:id="@+id/view_emotion_fingerprints"
+        android:title="@string/menu_button_emotion_fingerprints" />
 </menu>

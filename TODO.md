@@ -1,10 +1,10 @@
 # otashu
 
 ## TODO:
-- create auto test/learn for Emotion test
 - create emotion fingerprint
-
+- create auto test/learn for Emotion test
 - give emotion and noteset to Apprentice and get match status
+
 - connect label_id to background color in "list all scorecards" activity
 - connect label_id to background color in "view graph detail" activity
 - connect label_id to background color in "list all graphs" activity
