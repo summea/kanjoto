@@ -87,30 +87,42 @@ public class GenerateMusicActivity extends Activity {
         noteMap.put(70, "A#4");
         noteMap.put(71, "B4");
     }
-    
+
     private static SparseArray<Set<Integer>> keySignatures;
     static
     {
         keySignatures = new SparseArray<Set<Integer>>();
         // C major
-        Integer items[] = { 60, 62, 64, 65, 67, 69, 71 };
+        Integer items[] = {
+                60, 62, 64, 65, 67, 69, 71
+        };
         keySignatures.put(1, new HashSet<Integer>(Arrays.asList(items)));
         // G major (F#)
-        items = new Integer[] { 67, 69, 71, 60, 62, 64, 66 };
+        items = new Integer[] {
+                67, 69, 71, 60, 62, 64, 66
+        };
         keySignatures.put(2, new HashSet<Integer>(Arrays.asList(items)));
         // D major (F# C#)
-        items = new Integer[] { 62, 64, 66, 67, 69, 71, 61 };
+        items = new Integer[] {
+                62, 64, 66, 67, 69, 71, 61
+        };
         keySignatures.put(3, new HashSet<Integer>(Arrays.asList(items)));
         // A major (F# C# G#)
-        items = new Integer[] { 69, 71, 61, 62, 64, 66, 68 };
+        items = new Integer[] {
+                69, 71, 61, 62, 64, 66, 68
+        };
         keySignatures.put(4, new HashSet<Integer>(Arrays.asList(items)));
         // E major (F# C# G# D#)
-        items = new Integer[] { 64, 66, 68, 69, 71, 61, 63 };
+        items = new Integer[] {
+                64, 66, 68, 69, 71, 61, 63
+        };
         keySignatures.put(5, new HashSet<Integer>(Arrays.asList(items)));
         // B major (F# C# G# D# A#)
-        items = new Integer[] { 71, 61, 63, 64, 66, 68, 70 };
+        items = new Integer[] {
+                71, 61, 63, 64, 66, 68, 70
+        };
         keySignatures.put(6, new HashSet<Integer>(Arrays.asList(items)));
-        
+
         Log.d("MYLOG", "key signatures: " + keySignatures.get(1).toString());
     }
 
@@ -135,24 +147,15 @@ public class GenerateMusicActivity extends Activity {
         int logicType = randomLogic.nextInt(5) + 1;
 
         switch (logicType) {
-            /*
-            case 1:
-                notes = logicA();
-                Log.d("MYLOG", "> Using: Logic A");
-                break;
-            case 2:
-                notes = logicB();
-                Log.d("MYLOG", "> Using: Logic B");
-                break;
-            case 3:
-                notes = logicC();
-                Log.d("MYLOG", "> Using: Logic C");
-                break;
-            */
+        /*
+         * case 1: notes = logicA(); Log.d("MYLOG", "> Using: Logic A"); break; case 2: notes =
+         * logicB(); Log.d("MYLOG", "> Using: Logic B"); break; case 3: notes = logicC();
+         * Log.d("MYLOG", "> Using: Logic C"); break;
+         */
             default:
                 notes = logicD();
         }
-        
+
         // determine key signature from first four notes
         List<Note> firstNoteset = notes.subList(0, 3);
         determineKeySignature(firstNoteset);
@@ -399,7 +402,7 @@ public class GenerateMusicActivity extends Activity {
         }
         super.onBackPressed();
     }
-   
+
     /**
      * Logic A
      * <p>
@@ -721,7 +724,7 @@ public class GenerateMusicActivity extends Activity {
 
         return notes;
     }
-    
+
     /**
      * Logic D <code>
      * 1. Get selected emotion
@@ -738,17 +741,18 @@ public class GenerateMusicActivity extends Activity {
         int improvisationLevel = 0;
 
         for (int i = 0; i < 16; i++) {
-            
+
             try {
                 List<Edge> edges = new ArrayList<Edge>();
-    
+
                 // 1. Get selected emotion (selectedEmotionId)
                 // get Emotion graph id
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
                 long graphId = Long.parseLong(sharedPref.getString(
                         "pref_emotion_graph_for_apprentice", "1"));
-    
-                // 2. Gather a strong (low-weight) noteset from Emotions graph using selected emotion
+
+                // 2. Gather a strong (low-weight) noteset from Emotions graph using selected
+                // emotion
                 // TODO: don't always use the strongest noteset path each time
                 EdgesDataSource eds = new EdgesDataSource(this);
                 if (nextNodeTo != 0) {
@@ -765,52 +769,53 @@ public class GenerateMusicActivity extends Activity {
                     Log.d("MYLOG", "not using nextNodeTo...");
                     edges = eds.getStrongPath(graphId, selectedEmotionId, 0, 0, improvisationLevel);
                 }
-    
+
                 // add edge results to notes list
                 for (int j = 0; j < edges.size(); j++) {
                     Note note = new Note();
                     note.setNotevalue(edges.get(j).getFromNodeId());
-                    
+
                     // "snap to" current key signature (if necessary)
                     int key = keySignatures.keyAt(currentKeySignatureKey);
                     if (!keySignatures.get(key).contains(note.getNotevalue())) {
                         // round down (might be more natural to cut)
-                        if (keySignatures.get(key).contains(note.getNotevalue()-1)) {
-                            note.setNotevalue(note.getNotevalue()-1);
-                        } else if (keySignatures.get(key).contains(note.getNotevalue()-2)) {
-                            note.setNotevalue(note.getNotevalue()-2);
+                        if (keySignatures.get(key).contains(note.getNotevalue() - 1)) {
+                            note.setNotevalue(note.getNotevalue() - 1);
+                        } else if (keySignatures.get(key).contains(note.getNotevalue() - 2)) {
+                            note.setNotevalue(note.getNotevalue() - 2);
                         }
                         Log.d("MYLOG", ">> snapping to key signature!");
                     }
-                    
+
                     notes.add(note);
                 }
-                
+
                 // add last edge
                 Note note = new Note();
                 // "snap to" current key signature (if necessary)
                 int key = keySignatures.keyAt(currentKeySignatureKey);
                 if (!keySignatures.get(key).contains(note.getNotevalue())) {
                     // round down (might be more natural to cut)
-                    if (keySignatures.get(key).contains(note.getNotevalue()-1)) {
-                        note.setNotevalue(note.getNotevalue()-1);
-                    } else if (keySignatures.get(key).contains(note.getNotevalue()-2)) {
-                        note.setNotevalue(note.getNotevalue()-2);
+                    if (keySignatures.get(key).contains(note.getNotevalue() - 1)) {
+                        note.setNotevalue(note.getNotevalue() - 1);
+                    } else if (keySignatures.get(key).contains(note.getNotevalue() - 2)) {
+                        note.setNotevalue(note.getNotevalue() - 2);
                     }
                     Log.d("MYLOG", ">> snapping to key signature!");
                 }
                 note.setNotevalue(edges.get(edges.size() - 1).getToNodeId());
                 notes.add(note);
-    
+
                 // 3. Get a strong Transition graph edge for current noteset's tail
                 graphId = Long.parseLong(sharedPref.getString(
                         "pref_transition_graph_for_apprentice", "2"));
-    
+
                 Log.d("MYLOG", "> current edges: " + edges.toString());
                 Edge edge = eds.getStrongTransitionPath(graphId, selectedEmotionId,
                         edges.get(edges.size() - 1).getToNodeId());
-    
-                // 4. Check if there is any strong noteset with a head beginning with previously found
+
+                // 4. Check if there is any strong noteset with a head beginning with previously
+                // found
                 // strong Transition graph edge
                 // 5. If noteset found, add to output list and repeat from Step 3 until done
                 if (edge != null) {
@@ -818,13 +823,14 @@ public class GenerateMusicActivity extends Activity {
                     Log.d("MYLOG", "node from: " + edge.getFromNodeId());
                     nextNodeTo = edge.getToNodeId();
                 }
-                // 5b. If noteset not found, randomly find an emotion-related noteset and repeat from
+                // 5b. If noteset not found, randomly find an emotion-related noteset and repeat
+                // from
                 // Step 3 until done
                 else {
                     Log.d("MYLOG", "logic d didn't find a transition... using random approach");
                     nextNodeTo = 0;
                 }
-    
+
                 eds.close();
             } catch (Exception e) {
                 Log.d("MYLOG", e.getStackTrace().toString());
@@ -860,45 +866,46 @@ public class GenerateMusicActivity extends Activity {
         // Log.d("MYLOG", mainJsonObj.toString());
         return mainJsonObj.toString();
     }
-    
+
     public int determineKeySignature(List<Note> notes) {
         int keySignature = 1;
         currentKeySignatureKey = 1;
-        boolean foundKeySignature = false;        
+        boolean foundKeySignature = false;
         int key = 1;
         int totalFoundNotes = 0;
         int notesNeededToDecideKey = 3;
-        
+
         // loop through all key signatures
         while ((notesNeededToDecideKey > 0) && !foundKeySignature) {
             for (int i = 0; i < keySignatures.size(); i++) {
                 // loop through each of the given notes
                 // checking to see if enough of the given notes match a key signature
-                // if totalFoundNotes is 3 out of 4 notes total, we've found a key signature 
+                // if totalFoundNotes is 3 out of 4 notes total, we've found a key signature
                 for (Note note : notes) {
                     key = keySignatures.keyAt(i);
                     if (keySignatures.get(key).contains(note.getNotevalue())) {
-                        Log.d("MYLOG", "found note: " + note.getNotevalue() + " in key set: " + keySignatures.get(key).toString());
+                        Log.d("MYLOG", "found note: " + note.getNotevalue() + " in key set: "
+                                + keySignatures.get(key).toString());
                         totalFoundNotes++;
                     } else {
                         foundKeySignature = false;
                     }
                 }
-                
+
                 if (totalFoundNotes >= notesNeededToDecideKey) {
                     foundKeySignature = true;
-                    keySignature = currentKeySignatureKey;  
+                    keySignature = currentKeySignatureKey;
                     break;
                 }
-                
+
                 currentKeySignatureKey++;
                 notesNeededToDecideKey--;
                 totalFoundNotes = 0;
             }
         }
-        
+
         Log.d("MYLOG", "> found key signature? " + foundKeySignature + " key: " + keySignature);
-        
+
         return keySignature;
     }
 }

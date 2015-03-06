@@ -35,7 +35,8 @@ import android.widget.AdapterView.OnItemClickListener;
 /**
  * View all Emotion Fingerprints as a list.
  * <p>
- * This activity allows a user to view a list of all Emotion Fingerprints.
+ * This activity allows a user to view a list of all Emotion Fingerprints. Emotion Fingerprints are
+ * patterns that have been found from past learned noteset-emotion data.
  * </p>
  */
 public class ViewAllEmotionFingerprintsActivity extends ListActivity {
