@@ -99,7 +99,7 @@ public class ViewAllEmotionFingerprintsActivity extends ListActivity {
 
                 // launch details activity
                 Intent intent = new Intent(view.getContext(),
-                        ViewEmotionDetailActivity.class);
+                        ViewEmotionFingerprintDetailActivity.class);
 
                 intent.putExtra("list_id", id);
                 startActivity(intent);

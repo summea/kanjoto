@@ -14,6 +14,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.util.SparseArray;
 
 /**
  * The EdgesDataSource class provides a way to interact with the Edges database table. This class is
@@ -650,7 +651,7 @@ public class EdgesDataSource {
                     }
                 } while (cursor.moveToNext());
             }
-            
+
             try {
                 if (cursor.moveToPosition(currentStrongestRow)) {
                     // create edge objects based on edge data from database
@@ -715,4 +716,68 @@ public class EdgesDataSource {
         Log.d("MYLOG", "strong found transition edge: " + result.toString());
         return result;
     }
+
+    public SparseArray<List<Edge>> getPathsForEmotion(long graphId, long emotionId,
+            float weightLimit) {
+        SparseArray<List<Edge>> results = new SparseArray<List<Edge>>();
+
+        /**
+         * <pre>
+         * 1. Get all edges between positions 1 and 2 below the weightLimit
+         * 2. Get all edges between positions 2 and 3 below the weightLimit
+         * 3. Get all edges between positions 3 and 4 below the weightLimit
+         * 4. Check to see which paths exist between positions 1-4
+         * 5. Return these paths
+         * </pre>
+         */
+
+        // select an edge position
+        int position = 1;
+
+        // select all position one edges for given emotion with given threshold (e.g. all rows that
+        // have a weight less than x)
+        List<Edge> p1Edges = getAllEdges(graphId, emotionId, weightLimit, position);
+
+        position = 2;
+        // select all position two edges for given emotion with given threshold (e.g. all rows that
+        // have a weight less than x)
+        List<Edge> p2Edges = getAllEdges(graphId, emotionId, weightLimit, position);
+
+        position = 3;
+        // select all position three edges for given emotion with given threshold (e.g. all rows
+        // that have a weight less than x)
+        List<Edge> p3Edges = getAllEdges(graphId, emotionId, weightLimit, position);
+
+        int key = 1;
+
+        // loop through all position 1-2 edges
+        for (Edge edge1 : p1Edges) {
+            // loop through all position 2-3 edges and compare with first
+            for (Edge edge2 : p2Edges) {
+                if (edge1.getToNodeId() != edge2.getFromNodeId()) {
+                    break;
+                }
+                // loop through all position 3-4 edges and compare with first
+                for (Edge edge3 : p3Edges) {
+                    if (edge2.getToNodeId() != edge3.getFromNodeId()) {
+                        break;
+                    } else {
+                        // complete path found!
+                        List<Edge> foundEdgePath = new ArrayList<Edge>();
+                        foundEdgePath.add(edge1);
+                        foundEdgePath.add(edge2);
+                        foundEdgePath.add(edge3);
+
+                        Log.d("MYLOG", "> complete path found! " + foundEdgePath.toString());
+
+                        results.put(key, foundEdgePath);
+                        key++;
+                    }
+                }
+            }
+        }
+
+        return results;
+    }
+
 }
