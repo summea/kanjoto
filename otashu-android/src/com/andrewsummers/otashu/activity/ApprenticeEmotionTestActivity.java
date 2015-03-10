@@ -352,10 +352,6 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                 }
 
                 // examine notes for graph purposes
-                // get default graph id for Apprentice's note relationships graph
-                // long defaultGraphId = Long.parseLong(sharedPref.getString(
-                // "pref_default_graph_for_apprentice", "1"));
-
                 for (int i = 0; i < notesToInsert.size() - 1; i++) {
                     long edgeId = 0;
 
@@ -368,16 +364,18 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                     Vertex nodeB = vds.getVertex(emotionGraphId, noteB.getNotevalue());
 
                     // If nodes don't exist, create new nodes in graph
+                    
+                    // if nodeA doesn't exist... create new vertex
                     if (nodeA.getNode() <= 0) {
-                        // nodeA doesn't exist... creating new vertex
                         Vertex newNodeA = new Vertex();
                         newNodeA.setGraphId(emotionGraphId);
                         newNodeA.setNode(noteA.getNotevalue());
                         vds.createVertex(newNodeA);
                         nodeA.setNode(noteA.getNotevalue());
                     }
+                    
+                    // if nodeB doesn't exist... create new vertex
                     if (nodeB.getNode() <= 0) {
-                        // nodeB doesn't exist... creating new vertex
                         Vertex newNodeB = new Vertex();
                         newNodeB.setGraphId(emotionGraphId);
                         newNodeB.setNode(noteB.getNotevalue());
@@ -389,8 +387,9 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                     Edge edge = edds.getEdge(emotionGraphId, emotionId, nodeA.getNode(),
                             nodeB.getNode());
 
+                    // if edge doesn't exist... create new edge between nodeA and nodeB
                     if (edge.getWeight() < 0.0f || edge.getWeight() > 1.0f) {
-                        // edge doesn't exist... creating new edge between nodeA and nodeB
+                        
 
                         // If edge doesn't exist, create new edge in graph (and set weight at 0.5)
                         // [note: 0.0 = stronger edge / more likely to be chosen than a 1.0 edge]

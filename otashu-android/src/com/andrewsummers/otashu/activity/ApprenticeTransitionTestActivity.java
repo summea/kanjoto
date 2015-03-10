@@ -142,7 +142,6 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
 
     public List<Note> generateNotes(int fromIndex, int toIndex) {
         String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
-        // notesToInsert.clear();
         List<Note> notes = new ArrayList<Note>();
 
         int randomNoteIndex = 0;

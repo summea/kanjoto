@@ -18,8 +18,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
 /**
- * MainActivity currently acts as a general menu in order to demo various functionality available in
- * this application.
+ * MainActivity is the first screen that appears for the Otashu program. This main screen acts as a
+ * menu to various areas of the program.
  */
 public class MainActivity extends Activity implements OnClickListener {
 
