@@ -5,6 +5,10 @@
 - create auto test/learn for Emotion test
 - give emotion and noteset to Apprentice and get match status
 
+- decide on an early emofing design
+- add support for non-complete emofing path finding
+- add key_notes database table
+- add key_signatures database table
 - connect label_id to background color in "list all scorecards" activity
 - connect label_id to background color in "view graph detail" activity
 - connect label_id to background color in "list all graphs" activity

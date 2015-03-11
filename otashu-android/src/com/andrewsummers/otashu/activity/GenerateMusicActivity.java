@@ -406,7 +406,9 @@ public class GenerateMusicActivity extends Activity {
     /**
      * Logic A
      * <p>
-     * Original logic.
+     * Original logic. This logic contains hard-coded musical information about certain musical keys
+     * (or chords). This information provides the Apprentice with the ability to transition between
+     * notesets in a somewhat natural way.
      * </p>
      */
     private List<Note> logicA() {
@@ -599,7 +601,9 @@ public class GenerateMusicActivity extends Activity {
     /**
      * Logic B
      * <p>
-     * Random-based logic.
+     * Random-based logic. This logic allows the Apprentice to randomly choose notesets regardless
+     * of if the notesets fit together (but the notesets still have to be within a specific
+     * emotion).
      * </p>
      */
     private List<Note> logicB() {
