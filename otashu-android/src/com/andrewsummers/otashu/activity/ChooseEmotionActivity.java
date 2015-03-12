@@ -87,9 +87,17 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
         // apply this adapter to the spinner
         spinner.setAdapter(emotionsAdapter);
 
+        // logic spinner
+        spinner = (Spinner) findViewById(R.id.spinner_logic);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter
+                .createFromResource(this, R.array.logic_labels_array,
+                        android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
         // instrument spinner
         spinner = (Spinner) findViewById(R.id.spinner_instrument);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter
+        adapter = ArrayAdapter
                 .createFromResource(this, R.array.instrument_labels_array,
                         android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -145,6 +153,13 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
                         .getSelectedItemPosition());
                 eds.close();
 
+                // set selected logic in spinner
+                Spinner logicSpinner = (Spinner) findViewById(R.id.spinner_logic);
+                String[] allLogicIds = getResources().getStringArray(
+                        R.array.logic_values_array);
+                int selectedLogicId = Integer.valueOf(allLogicIds[logicSpinner
+                        .getSelectedItemPosition()]);
+
                 // set selected instrument in spinner
                 Spinner instrumentSpinner = (Spinner) findViewById(R.id.spinner_instrument);
                 String[] allInstrumentIds = getResources().getStringArray(
@@ -155,6 +170,7 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
                 // fill bundle with values we are passing to next activity
                 Bundle bundle = new Bundle();
                 bundle.putInt("emotion_id", selectedEmotionValue);
+                bundle.putInt("logic_id", selectedLogicId);
                 bundle.putInt("instrument_id", selectedInstrumentId);
 
                 intent = new Intent(this, GenerateMusicActivity.class);

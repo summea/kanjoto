@@ -59,6 +59,7 @@ import android.util.SparseArray;
 public class GenerateMusicActivity extends Activity {
     private GLSurfaceView mGLView;
     int selectedEmotionId = 1;
+    int selectedLogicId = 1;
     int selectedInstrumentId = -1;
     int playbackSpeed = 120;
     File path = Environment.getExternalStorageDirectory();
@@ -138,22 +139,39 @@ public class GenerateMusicActivity extends Activity {
         // get selected instrument_id from spinner
         Bundle bundle = getIntent().getExtras();
         selectedEmotionId = bundle.getInt("emotion_id");
+        selectedLogicId = bundle.getInt("logic_id");
         selectedInstrumentId = bundle.getInt("instrument_id");
 
         List<Note> notes = new ArrayList<Note>();
 
         // choose Apprentice's logic type for music generation
-        Random randomLogic = new Random();
-        int logicType = randomLogic.nextInt(5) + 1;
+        //Random randomLogic = new Random();
+        //int logicType = randomLogic.nextInt(5) + 1;
 
-        switch (logicType) {
+        Log.d("MYLOG", "selected logic: " + selectedLogicId);
+        //switch (logicType) {
+        switch (selectedLogicId) {
+            case 1:
+                logicA();
+                break;
+            case 2:
+                logicB();
+                break;
+            case 3:
+                logicC();
+                break;
+            case 4:
+                logicD();
+                break;
+            default:
+                logicA();
         /*
          * case 1: notes = logicA(); Log.d("MYLOG", "> Using: Logic A"); break; case 2: notes =
          * logicB(); Log.d("MYLOG", "> Using: Logic B"); break; case 3: notes = logicC();
          * Log.d("MYLOG", "> Using: Logic C"); break;
          */
-            default:
-                notes = logicD();
+            //default:
+                //notes = logicD();
         }
 
         // determine key signature from first four notes

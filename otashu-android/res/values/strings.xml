@@ -120,6 +120,7 @@
     <string name="spinner_instrument_label">Instrument</string>
     <string name="spinner_label_label">Label</string>
     <string name="spinner_length_label">Length</string>
+    <string name="spinner_logic_label">Logic</string>
     <string name="spinner_note2_label">Note 2</string>
     <string name="spinner_note3_label">Note 3</string>
     <string name="spinner_note4_label">Note 4</string>
