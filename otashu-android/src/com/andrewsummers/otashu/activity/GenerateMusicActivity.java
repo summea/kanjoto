@@ -145,23 +145,22 @@ public class GenerateMusicActivity extends Activity {
         List<Note> notes = new ArrayList<Note>();
 
         // choose Apprentice's logic type for music generation
-        //Random randomLogic = new Random();
-        //int logicType = randomLogic.nextInt(5) + 1;
+        Random randomLogic = new Random();
+        int logicType = randomLogic.nextInt(5) + 1;
 
-        Log.d("MYLOG", "selected logic: " + selectedLogicId);
         //switch (logicType) {
         switch (selectedLogicId) {
             case 1:
-                logicA();
+                notes = logicA();
                 break;
             case 2:
-                logicB();
+                notes = logicB();
                 break;
             case 3:
-                logicC();
+                notes = logicC();
                 break;
             case 4:
-                logicD();
+                notes = logicD();
                 break;
             default:
                 logicA();
