@@ -164,13 +164,6 @@ public class GenerateMusicActivity extends Activity {
                 break;
             default:
                 logicA();
-        /*
-         * case 1: notes = logicA(); Log.d("MYLOG", "> Using: Logic A"); break; case 2: notes =
-         * logicB(); Log.d("MYLOG", "> Using: Logic B"); break; case 3: notes = logicC();
-         * Log.d("MYLOG", "> Using: Logic C"); break;
-         */
-            //default:
-                //notes = logicD();
         }
 
         // determine key signature from first four notes
