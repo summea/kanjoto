@@ -34,6 +34,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/button_selector" />
         
+        <!--
         <Button
             android:id="@+id/button_apprentice_scale_test"
             android:text="@string/button_apprentice_scale_test"
@@ -42,6 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/button_selector" />
+        -->
             
         <Button
             android:id="@+id/button_apprentice_transition_test"
