@@ -73,7 +73,7 @@ public class ViewAllNotesetsActivity extends ListActivity {
                 listView, false);
         TextView headerText = (TextView) listHeader.findViewById(R.id.list_header_title);
         headerText.setText(R.string.view_all_notesets_list_header);
-        listView.addHeaderView(listHeader);
+        listView.addHeaderView(listHeader, "", false);
 
         NotesetsDataSource nds = new NotesetsDataSource(this);
         totalNotesetsAvailable = nds.getCount();

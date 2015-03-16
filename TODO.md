@@ -25,6 +25,7 @@
 
 
 ## DONE:
+- 20150315: fixed "list header tap" issue
 - 20150303: added another algorithm for choosing an emotion and then choosing a strong likely noteset match in Apprentice activity
 - 20150303: added use key signature data for music generation (snap to key)
 - 20150226: added Apprentice and ApprenticeState classes

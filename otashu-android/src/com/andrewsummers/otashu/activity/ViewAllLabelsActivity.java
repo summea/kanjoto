@@ -59,7 +59,7 @@ public class ViewAllLabelsActivity extends ListActivity {
                 listView, false);
         TextView headerText = (TextView) listHeader.findViewById(R.id.list_header_title);
         headerText.setText(R.string.view_all_labels_list_header);
-        listView.addHeaderView(listHeader);
+        listView.addHeaderView(listHeader, "", false);
 
         fillList();
     }
