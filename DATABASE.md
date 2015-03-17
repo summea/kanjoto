@@ -67,7 +67,7 @@
 #### key_notes
 - id
 - key_signature_id
-- value
+- notevalue
 
 #### vertices
 - id

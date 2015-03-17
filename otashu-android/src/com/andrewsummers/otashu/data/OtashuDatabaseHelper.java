@@ -11,7 +11,7 @@ import android.util.Log;
  * application database.
  */
 public class OtashuDatabaseHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 38;
+    private static final int DATABASE_VERSION = 39;
     private static final String DATABASE_NAME = "otashu_collection.db";
 
     public static final String COLUMN_ID = "_id";
@@ -60,6 +60,11 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_QUESTION_NUMBER = "question_number";
     public static final String COLUMN_CORRECT = "correct";
     public static final String COLUMN_EDGE_ID = "edge_id";
+    
+    public static final String TABLE_KEY_SIGNATURES = "key_signatures";
+    
+    public static final String TABLE_KEY_NOTES = "key_notes";
+    public static final String COLUMN_KEY_SIGNATURE_ID = "key_signature_id";
 
     private static final String CREATE_TABLE_NOTESETS = "CREATE TABLE " + TABLE_NOTESETS
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
@@ -129,6 +134,15 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_CORRECT + " integer,"
             + COLUMN_EDGE_ID + " integer,"
             + COLUMN_GRAPH_ID + " integer);";
+    
+    private static final String CREATE_TABLE_KEY_SIGNATURES = "CREATE TABLE " + TABLE_KEY_SIGNATURES
+            + " (" + COLUMN_ID + " integer primary key autoincrement,"
+            + COLUMN_EMOTION_ID + " integer);";
+    
+    private static final String CREATE_TABLE_KEY_NOTES = "CREATE TABLE " + TABLE_KEY_NOTES
+            + " (" + COLUMN_ID + " integer primary key autoincrement,"
+            + COLUMN_KEY_SIGNATURE_ID + " integer,"
+            + COLUMN_NOTEVALUE + " integer);";
 
     /**
      * NotesetCollectionOpenHelper constructor.
@@ -157,6 +171,8 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_EDGES);
         db.execSQL(CREATE_TABLE_APPRENTICE_SCORECARDS);
         db.execSQL(CREATE_TABLE_APPRENTICE_SCORES);
+        db.execSQL(CREATE_TABLE_KEY_SIGNATURES);
+        db.execSQL(CREATE_TABLE_KEY_NOTES);
     }
 
     /**
@@ -190,5 +206,9 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
 
         // v38
         // db.execSQL("DELETE FROM " + TABLE_EDGES + " WHERE " + COLUMN_GRAPH_ID + "=3");
+        
+        // 39
+        db.execSQL(CREATE_TABLE_KEY_SIGNATURES);
+        db.execSQL(CREATE_TABLE_KEY_NOTES);
     }
 }

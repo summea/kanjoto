@@ -5,10 +5,10 @@
 - create auto test/learn for Emotion test
 - give emotion and noteset to Apprentice and get match status
 
+- add data source for key_signatures table
+- connect key_signatures table data with Logic D
 - decide on an early emofing design
 - add support for non-complete emofing path finding
-- add key_notes database table
-- add key_signatures database table
 - connect label_id to background color in "list all scorecards" activity
 - connect label_id to background color in "view graph detail" activity
 - connect label_id to background color in "list all graphs" activity
@@ -25,6 +25,8 @@
 
 
 ## DONE:
+- 20150316: added key_notes database table
+- 20150316: added key_signatures database table
 - 20150315: fixed "list header tap" issue
 - 20150303: added another algorithm for choosing an emotion and then choosing a strong likely noteset match in Apprentice activity
 - 20150303: added use key signature data for music generation (snap to key)
