@@ -5,6 +5,7 @@
 - create auto test/learn for Emotion test
 - give emotion and noteset to Apprentice and get match status
 
+- think about adding support for different note speeds in Logic D
 - add data source for key_signatures table
 - connect key_signatures table data with Logic D
 - decide on an early emofing design
