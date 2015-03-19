@@ -8,6 +8,7 @@ public class KeyNote {
     private long id;
     private long keySignatureId;
     private int notevalue;
+    private float weight;
 
     /**
      * getId gets KeyNote id
@@ -46,7 +47,7 @@ public class KeyNote {
     }
 
     /**
-     * getNotevalue gets Note notevalue.
+     * getNotevalue gets KeyNote notevalue.
      * 
      * @return <code>int</code> of notevalue.
      */
@@ -55,12 +56,30 @@ public class KeyNote {
     }
 
     /**
-     * setNotevalue sets Note notevalue.
+     * setNotevalue sets KeyNote notevalue.
      * 
      * @param notevalue New notevalue.
      */
     public void setNotevalue(int notevalue) {
         this.notevalue = notevalue;
+    }
+
+    /**
+     * getWeight gets KeyNote weight.
+     * 
+     * @return <code>float</code> of weight value.
+     */
+    public float getWeight() {
+        return weight;
+    }
+
+    /**
+     * setWeight sets KeyNote weight.
+     * 
+     * @param weight New KeyNote weight.
+     */
+    public void setWeight(float weight) {
+        this.weight = weight;
     }
 
     /**

@@ -148,7 +148,7 @@ public class GenerateMusicActivity extends Activity {
         Random randomLogic = new Random();
         int logicType = randomLogic.nextInt(5) + 1;
 
-        //switch (logicType) {
+        // switch (logicType) {
         switch (selectedLogicId) {
             case 1:
                 notes = logicA();
