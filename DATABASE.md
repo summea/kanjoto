@@ -1,4 +1,5 @@
 ## DATABASE:
+
 #### apprentice_scorecards
 - id
 - taken_at
