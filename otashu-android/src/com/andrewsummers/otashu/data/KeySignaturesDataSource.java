@@ -217,6 +217,7 @@ public class KeySignaturesDataSource {
                 // create keySignature objects based on keySignature data from database
                 keySignature = new KeySignature();
                 keySignature.setId(cursor.getLong(0));
+                keySignature.setEmotionId(cursor.getLong(1));
 
                 // add keySignature to keySignatures list
                 keySignatures.add(keySignature.getId());
@@ -271,10 +272,11 @@ public class KeySignaturesDataSource {
         // get all keySignatures first
         List<KeySignature> allKeySignatures = getAllKeySignatures();
 
-        // choose random keySignature
-        int chosenIndex = new Random().nextInt(allKeySignatures.size());
-
-        keySignature = allKeySignatures.get(chosenIndex);
+        if (allKeySignatures.size() > 0) {
+            // choose random keySignature
+            int chosenIndex = new Random().nextInt(allKeySignatures.size());
+            keySignature = allKeySignatures.get(chosenIndex);
+        }
 
         return keySignature;
     }
