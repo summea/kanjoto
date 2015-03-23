@@ -5,8 +5,9 @@
 - create auto test/learn for Emotion test
 - give emotion and noteset to Apprentice and get match status
 
+- add greater range for "snap" feature in Logic D
+- add option to disable scorecard saving
 - think about adding support for different note speeds in Logic D
-- add data source for key_signatures table
 - connect key_signatures table data with Logic D
 - decide on an early emofing design
 - add support for non-complete emofing path finding
@@ -26,6 +27,7 @@
 
 
 ## DONE:
+- 20150321: added data source for key_signatures table
 - 20150316: added key_notes database table
 - 20150316: added key_signatures database table
 - 20150315: fixed "list header tap" issue

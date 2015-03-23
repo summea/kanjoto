@@ -263,7 +263,7 @@ public class KeyNotesDataSource {
         return keyNote;
     }
 
-    public List<KeyNote> getKeyNoteByKeySignature(long keySignatureId) {
+    public List<KeyNote> getKeyNotesByKeySignature(long keySignatureId) {
         List<KeyNote> keyNotes = new ArrayList<KeyNote>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_NOTES + " WHERE "
@@ -284,6 +284,27 @@ public class KeyNotesDataSource {
                 keyNote.setNotevalue(cursor.getInt(2));
                 keyNote.setWeight(cursor.getFloat(3));
                 keyNotes.add(keyNote);
+            } while (cursor.moveToNext());
+        }
+
+        return keyNotes;
+    }
+    
+    public List<Integer> getKeyNoteNotevaluesByKeySignature(long keySignatureId) {
+        List<Integer> keyNotes = new ArrayList<Integer>();
+
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_NOTES + " WHERE "
+                + OtashuDatabaseHelper.COLUMN_KEY_SIGNATURE_ID + "=" + keySignatureId;
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all keyNotes from database
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                keyNotes.add(cursor.getInt(2));
             } while (cursor.moveToNext());
         }
 
@@ -321,5 +342,28 @@ public class KeyNotesDataSource {
         }
 
         return keyNote;
+    }
+
+    public List<Long> keySignatureIdsThatContain(int notevalue) {
+        List<Long> keySignatureIds = new ArrayList<Long>();
+
+        String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
+                + OtashuDatabaseHelper.TABLE_KEY_NOTES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "=" + notevalue;
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all keyNotes from database
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                // add keyNote to keyNotes list
+                keySignatureIds.add(cursor.getLong(0));
+            } while (cursor.moveToNext());
+        }
+
+        return keySignatureIds;
     }
 }

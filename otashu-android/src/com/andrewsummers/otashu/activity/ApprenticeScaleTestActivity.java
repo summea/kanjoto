@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -114,6 +115,24 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
         });
     }
 
+    public Note getRandomNote(int fromIndex, int toIndex) {
+        String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
+
+        int randomNoteIndex = 0;
+        String randomNote = "";
+
+        randomNoteIndex = new Random().nextInt((toIndex - fromIndex) + 1) + fromIndex;
+        randomNote = noteValuesArray[randomNoteIndex];
+
+        Note note = new Note();
+        note.setNotevalue(Integer.valueOf((randomNote)));
+        note.setLength(1.0f);
+        note.setVelocity(100);
+        note.setPosition(0);
+
+        return note;
+    }
+
     public List<Note> generateNotes(int fromIndex, int toIndex) {
         String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
         notesToInsert.clear();
@@ -173,7 +192,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
         // iterate through notes shown to user
         // check if note is already in table set
         // if so, raise weight of note in table set
-        // also, prune note from table set
+        // also, prune note from table set (once weight gets past certain value)
             case R.id.button_no:
                 guessesIncorrect++;
 
@@ -289,6 +308,55 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
         // clear old generated notes
         notesToInsert.clear();
 
+        // 1. select random notevalue
+        // 60..71 (C4..B4)
+        // stay within 39..50 for now (C4..B4)
+        Note anchorNote = getRandomNote(39, 50);
+
+        // 2. check to see if a key signature contains notevalue
+        KeyNotesDataSource knds = new KeyNotesDataSource(this);
+        List<Long> keySignatureIds = knds.keySignatureIdsThatContain(anchorNote.getNotevalue());
+
+        long currentKeySignature = 0;
+
+        // 3. if no key signatures exist, create one and put notevalue into key signature
+        if (keySignatureIds.isEmpty()) {
+            KeySignature ks = new KeySignature();
+            ks.setEmotionId(emotionId);
+            KeySignaturesDataSource ksds = new KeySignaturesDataSource(this);
+            ks = ksds.createKeySignature(ks);
+            KeyNote kn = new KeyNote();
+            kn.setKeySignatureId(ks.getId());
+            kn.setNotevalue(anchorNote.getNotevalue());
+            kn.setWeight(0.5f);
+            knds.createKeyNote(kn);
+            currentKeySignature = ks.getId();
+        } else {
+            // get random id from list
+            int randomPosition = new Random().nextInt(((keySignatureIds.size() - 1) - 0));
+            currentKeySignature = keySignatureIds.get(randomPosition);
+        }
+
+        // 4. select all notes from selected key signature
+        List<Integer> currentKeySignatureNotes = knds
+                .getKeyNoteNotevaluesByKeySignature(currentKeySignature);
+
+        // 5. sort notes in list
+        Collections.sort(currentKeySignatureNotes);
+
+        Log.d("MYLOG", "current key signature: " + currentKeySignature);
+        Log.d("MYLOG", "current key signature notes: " + currentKeySignatureNotes.toString());
+
+        // 6. choose an extra note
+        // random approach
+        Note extraNote = getRandomNote(39, 50);
+
+        // 7. add extra note to key signature notes list
+        currentKeySignatureNotes.add(extraNote.getNotevalue());
+
+        // 8. play all notes from set for user
+        // TODO
+
         List<Note> notes = new ArrayList<Note>();
         String approach = "";
 
@@ -305,8 +373,8 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
 
                 notesToInsert.clear();
 
-                KeyNotesDataSource knds = new KeyNotesDataSource(this);
-                List<KeyNote> keyNotes = knds.getKeyNoteByKeySignature(ks.getId());
+                knds = new KeyNotesDataSource(this);
+                List<KeyNote> keyNotes = knds.getKeyNotesByKeySignature(ks.getId());
 
                 int randomNoteIndex = 0;
                 int randomNote = 0;
@@ -350,7 +418,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
         GenerateMusicActivity generateMusic = new GenerateMusicActivity();
         generateMusic.generateMusic(notes, musicSource, defaultInstrument, playbackSpeed);
 
-        // does generated noteset sounds like chosen emotion?
+        // do generated notes fit in selected key for this emotion?
         askQuestion();
 
         TextView apprenticeGuessMethod = (TextView) findViewById(R.id.apprentice_guess_method);
