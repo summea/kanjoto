@@ -76,6 +76,8 @@
         <activity android:name="com.andrewsummers.otashu.activity.ApprenticeTransitionTestActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.ViewAllEmotionFingerprintsActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.ViewEmotionFingerprintDetailActivity" />
+        <activity android:name="com.andrewsummers.otashu.activity.DatabaseDumperKeySignaturesActivity" />
+        <activity android:name="com.andrewsummers.otashu.activity.DatabaseDumperKeyNotesActivity" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

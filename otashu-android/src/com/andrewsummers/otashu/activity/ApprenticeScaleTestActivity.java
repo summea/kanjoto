@@ -2,7 +2,6 @@
 package com.andrewsummers.otashu.activity;
 
 import java.io.File;
-import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,21 +15,17 @@ import java.util.TimeZone;
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.ApprenticeScorecardsDataSource;
 import com.andrewsummers.otashu.data.ApprenticeScoresDataSource;
-import com.andrewsummers.otashu.data.EdgesDataSource;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.KeyNotesDataSource;
 import com.andrewsummers.otashu.data.KeySignaturesDataSource;
 import com.andrewsummers.otashu.data.NotevaluesDataSource;
-import com.andrewsummers.otashu.data.VerticesDataSource;
 import com.andrewsummers.otashu.model.ApprenticeScore;
 import com.andrewsummers.otashu.model.ApprenticeScorecard;
-import com.andrewsummers.otashu.model.Edge;
 import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.KeyNote;
 import com.andrewsummers.otashu.model.KeySignature;
 import com.andrewsummers.otashu.model.Note;
 import com.andrewsummers.otashu.model.Notevalue;
-import com.andrewsummers.otashu.model.Vertex;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -68,7 +63,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
     private double guessesCorrectPercentage = 0.0;
     private int totalGuesses = 0;
     private long scorecardId = 0;
-    private long currentSetId = 0;
+    private long currentKeySignatureId = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -185,28 +180,39 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
 
     @Override
     public void onClick(View v) {
+        KeyNotesDataSource knds = new KeyNotesDataSource(this);
+        
         switch (v.getId()) {
-        // TODO
-
-        // if "no":
-        // iterate through notes shown to user
-        // check if note is already in table set
-        // if so, raise weight of note in table set
-        // also, prune note from table set (once weight gets past certain value)
             case R.id.button_no:
+                Log.d("MYLOG", "10. if 'no':");
                 guessesIncorrect++;
 
                 totalGuesses = guessesCorrect + guessesIncorrect;
 
                 if (totalGuesses > 0) {
                     guessesCorrectPercentage = ((double) guessesCorrect / (double) totalGuesses) * 100.0;
-                }
-
+                }                
+                
                 // iterate through notes shown to user
                 for (int i = 0; i < notesToInsert.size() - 1; i++) {
-
                     // check if note is already in table set
-
+                    //List<Integer> kSNotes = knds.getKeyNoteNotevaluesByKeySignature(currentKeySignatureId);
+                    List<KeyNote> keyNotes = knds.getKeyNotesByKeySignature(currentKeySignatureId);
+                    for (KeyNote kn : keyNotes) {
+                        if (kn.getNotevalue() == notesToInsert.get(i).getNotevalue()) {
+                            // note found in this key signature
+                            if ((kn.getWeight() + 0.1f) >= 1.0f) {
+                                // prune note from table set (once weight gets past certain value)
+                                knds.deleteKeyNote(kn);
+                                Log.d("MYLOG", "deleting keynote -- weight is >= 1.0f");
+                            } else {
+                                // raise weight of note in table set
+                                kn.setWeight(kn.getWeight() + 0.1f);
+                                knds.updateKeyNote(kn);
+                                Log.d("MYLOG", "updating key note -- weight is raised to: " + kn.getWeight());
+                            }
+                        }
+                    }
                 }
 
                 // disable buttons while playing
@@ -232,20 +238,42 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
 
                 break;
             case R.id.button_yes:
-                // TODO
-
-                // if "yes":
-                // iterate through notes shown to user
-                // check if note is already in table set
-                // if so, lower weight of note in table set
-                // else, add note to table set
-
+                Log.d("MYLOG", "11. if 'yes':");
                 guessesCorrect++;
 
                 totalGuesses = guessesCorrect + guessesIncorrect;
 
                 if (totalGuesses > 0) {
                     guessesCorrectPercentage = ((double) guessesCorrect / (double) totalGuesses) * 100.0;
+                }
+                
+                // iterate through notes shown to user
+                for (int i = 0; i < notesToInsert.size() - 1; i++) {
+                    // check if note is already in table set
+                    //List<Integer> kSNotes = knds.getKeyNoteNotevaluesByKeySignature(currentKeySignatureId);
+                    List<KeyNote> keyNotes = knds.getKeyNotesByKeySignature(currentKeySignatureId);
+                    boolean found = false;
+                    for (KeyNote kn : keyNotes) {
+                        if (kn.getNotevalue() == notesToInsert.get(i).getNotevalue()) {
+                            found = true;
+                            // note found in this key signature
+                            if ((kn.getWeight() + 0.1f) >= 0.0f) {
+                                // lower weight of note in table set
+                                kn.setWeight(kn.getWeight() - 0.1f);
+                                knds.updateKeyNote(kn);
+                                Log.d("MYLOG", "updating key note -- weight is lowered to: " + kn.getWeight());
+                            }
+                        }
+                    }
+                    if (!found) {
+                        // note not found in this key signature
+                        // add note to table set
+                        KeyNote newNote = new KeyNote();
+                        newNote.setKeySignatureId(currentKeySignatureId);
+                        newNote.setNotevalue(notesToInsert.get(i).getNotevalue());
+                        newNote.setWeight(0.5f);
+                        knds.createKeyNote(newNote);
+                    }
                 }
 
                 // disable buttons while playing
@@ -309,18 +337,24 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
         notesToInsert.clear();
 
         // 1. select random notevalue
+        Log.d("MYLOG", "1. select random notevalue");
         // 60..71 (C4..B4)
         // stay within 39..50 for now (C4..B4)
         Note anchorNote = getRandomNote(39, 50);
 
         // 2. check to see if a key signature contains notevalue
+        Log.d("MYLOG", "2. check to see if a key signature contains notevalue");
         KeyNotesDataSource knds = new KeyNotesDataSource(this);
         List<Long> keySignatureIds = knds.keySignatureIdsThatContain(anchorNote.getNotevalue());
 
-        long currentKeySignature = 0;
+        List<Note> notes = new ArrayList<Note>();
+        //long currentKeySignature = 0;
+        String approach = "";
 
         // 3. if no key signatures exist, create one and put notevalue into key signature
+        Log.d("MYLOG", "3. if no key signatures exist, create one and put notevalue into key signature");
         if (keySignatureIds.isEmpty()) {
+            approach = "Random";
             KeySignature ks = new KeySignature();
             ks.setEmotionId(emotionId);
             KeySignaturesDataSource ksds = new KeySignaturesDataSource(this);
@@ -330,84 +364,51 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
             kn.setNotevalue(anchorNote.getNotevalue());
             kn.setWeight(0.5f);
             knds.createKeyNote(kn);
-            currentKeySignature = ks.getId();
+            currentKeySignatureId = ks.getId();
         } else {
-            // get random id from list
-            int randomPosition = new Random().nextInt(((keySignatureIds.size() - 1) - 0));
-            currentKeySignature = keySignatureIds.get(randomPosition);
+            approach = "Learned Data";
+            if (keySignatureIds.size() > 1) {
+                // get random id from list
+                int randomPosition = new Random().nextInt(((keySignatureIds.size() - 1) - 0));
+                currentKeySignatureId = keySignatureIds.get(randomPosition);
+            } else {
+                currentKeySignatureId = keySignatureIds.get(0);
+            }
         }
 
         // 4. select all notes from selected key signature
+        Log.d("MYLOG", "4. select all notes from selected key signature");
         List<Integer> currentKeySignatureNotes = knds
-                .getKeyNoteNotevaluesByKeySignature(currentKeySignature);
+                .getKeyNoteNotevaluesByKeySignature(currentKeySignatureId);
 
         // 5. sort notes in list
+        Log.d("MYLOG", "5. sort notes in list");
         Collections.sort(currentKeySignatureNotes);
 
-        Log.d("MYLOG", "current key signature: " + currentKeySignature);
+        Log.d("MYLOG", "current key signature: " + currentKeySignatureId);
         Log.d("MYLOG", "current key signature notes: " + currentKeySignatureNotes.toString());
 
         // 6. choose an extra note
+        Log.d("MYLOG", "6. choose an extra note");
         // random approach
         Note extraNote = getRandomNote(39, 50);
+        notesToInsert.clear();
+        notesToInsert.add(extraNote);
 
         // 7. add extra note to key signature notes list
+        Log.d("MYLOG", "7. add extra note to key signature notes list");
         currentKeySignatureNotes.add(extraNote.getNotevalue());
 
         // 8. play all notes from set for user
-        // TODO
-
-        List<Note> notes = new ArrayList<Note>();
-        String approach = "";
-
-        try {
-            // select random scale set from database for this emotion
-            KeySignature ks = new KeySignature();
-            KeySignaturesDataSource ksds = new KeySignaturesDataSource(this);
-            ks = ksds.getRandomKeySignature();
-            Log.d("MYLOG", "ks: " + ks.toString());
-
-            if (ks.getId() > 0) {
-                // Using Learned Data Approach
-                approach = "Learned Data";
-
-                notesToInsert.clear();
-
-                knds = new KeyNotesDataSource(this);
-                List<KeyNote> keyNotes = knds.getKeyNotesByKeySignature(ks.getId());
-
-                int randomNoteIndex = 0;
-                int randomNote = 0;
-
-                for (int i = 0; i < 3; i++) {
-                    randomNoteIndex = new Random().nextInt(((keyNotes.size() - 1) - 0));
-                    randomNote = keyNotes.get(randomNoteIndex).getNotevalue();
-
-                    Note note = new Note();
-                    note.setNotevalue(Integer.valueOf((randomNote)));
-                    note.setLength(1.0f);
-                    note.setVelocity(100);
-                    note.setPosition(i + 1);
-
-                    notesToInsert.add(note);
-                }
-            } else {
-                // if no sets exist in database, get a randomly-generated set
-                approach = "Random";
-                // 60..71 (C4..B4)
-                // stay within 39..50 for now (C4..B4)
-                notes = generateNotes(39, 50);
-            }
-        } catch (Exception e) {
-            Log.d("MYLOG", e.toString());
-            // Using Random Approach
-            approach = "Random";
-            // 60..71 (C4..B4)
-            // stay within 39..50 for now (C4..B4)
-            notes = generateNotes(39, 50);
+        Log.d("MYLOG", "8. play all notes from set for user");
+        for (int i = 0; i < currentKeySignatureNotes.size(); i++) {
+            Note note = new Note();
+            note.setNotevalue(currentKeySignatureNotes.get(i));
+            note.setLength(1.0f);
+            note.setVelocity(100);
+            note.setPosition(i + 1);
+            notes.add(note);
         }
-
-        notesToInsert = notes;
 
         // get default instrument for playback
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -418,7 +419,8 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
         GenerateMusicActivity generateMusic = new GenerateMusicActivity();
         generateMusic.generateMusic(notes, musicSource, defaultInstrument, playbackSpeed);
 
-        // do generated notes fit in selected key for this emotion?
+        // 9. does last generated note fit in selected key set for this emotion?
+        Log.d("MYLOG", "9. does last generated note fit in selected key set for this emotion?");
         askQuestion();
 
         TextView apprenticeGuessMethod = (TextView) findViewById(R.id.apprentice_guess_method);

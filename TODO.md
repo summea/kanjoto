@@ -5,6 +5,10 @@
 - create auto test/learn for Emotion test
 - give emotion and noteset to Apprentice and get match status
 
+- updated scale test
+- ignore duplicate notes in scale test
+- make sure scale test is updating existing and adding new notes
+
 - add greater range for "snap" feature in Logic D
 - add option to disable scorecard saving
 - think about adding support for different note speeds in Logic D

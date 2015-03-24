@@ -30,6 +30,8 @@ public class DatabaseDumperActivity extends ListActivity {
             OtashuDatabaseHelper.TABLE_EDGES,
             OtashuDatabaseHelper.TABLE_EMOTIONS,
             OtashuDatabaseHelper.TABLE_GRAPHS,
+            OtashuDatabaseHelper.TABLE_KEY_SIGNATURES,
+            OtashuDatabaseHelper.TABLE_KEY_NOTES,
             OtashuDatabaseHelper.TABLE_LABELS,
             OtashuDatabaseHelper.TABLE_NOTES,
             OtashuDatabaseHelper.TABLE_NOTESETS,
@@ -74,17 +76,25 @@ public class DatabaseDumperActivity extends ListActivity {
                         break;
                     case 6:
                         intent = new Intent(DatabaseDumperActivity.this,
-                                DatabaseDumperLabelsActivity.class);
+                                DatabaseDumperKeySignaturesActivity.class);
                         break;
                     case 7:
                         intent = new Intent(DatabaseDumperActivity.this,
-                                DatabaseDumperNotesActivity.class);
+                                DatabaseDumperKeyNotesActivity.class);
                         break;
                     case 8:
                         intent = new Intent(DatabaseDumperActivity.this,
-                                DatabaseDumperNotesetsActivity.class);
+                                DatabaseDumperLabelsActivity.class);
                         break;
                     case 9:
+                        intent = new Intent(DatabaseDumperActivity.this,
+                                DatabaseDumperNotesActivity.class);
+                        break;
+                    case 10:
+                        intent = new Intent(DatabaseDumperActivity.this,
+                                DatabaseDumperNotesetsActivity.class);
+                        break;
+                    case 11:
                         intent = new Intent(DatabaseDumperActivity.this,
                                 DatabaseDumperNotevaluesActivity.class);
                         break;
