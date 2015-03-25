@@ -56,6 +56,11 @@
             android:key="pref_scale_graph_for_apprentice"
             android:title="@string/pref_scale_graph_for_apprentice"
             android:defaultValue="3" />
+            
+        <CheckBoxPreference
+            android:key="pref_auto_save_scorecard"
+            android:title="@string/pref_auto_save_scorecard"
+            android:defaultValue="false" />
 
     </PreferenceCategory>
 

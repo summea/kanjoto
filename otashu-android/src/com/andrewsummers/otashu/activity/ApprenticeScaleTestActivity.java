@@ -181,7 +181,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
     @Override
     public void onClick(View v) {
         KeyNotesDataSource knds = new KeyNotesDataSource(this);
-        
+
         switch (v.getId()) {
             case R.id.button_no:
                 Log.d("MYLOG", "10. if 'no':");
@@ -191,12 +191,13 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
 
                 if (totalGuesses > 0) {
                     guessesCorrectPercentage = ((double) guessesCorrect / (double) totalGuesses) * 100.0;
-                }                
-                
+                }
+
                 // iterate through notes shown to user
                 for (int i = 0; i < notesToInsert.size() - 1; i++) {
                     // check if note is already in table set
-                    //List<Integer> kSNotes = knds.getKeyNoteNotevaluesByKeySignature(currentKeySignatureId);
+                    // List<Integer> kSNotes =
+                    // knds.getKeyNoteNotevaluesByKeySignature(currentKeySignatureId);
                     List<KeyNote> keyNotes = knds.getKeyNotesByKeySignature(currentKeySignatureId);
                     for (KeyNote kn : keyNotes) {
                         if (kn.getNotevalue() == notesToInsert.get(i).getNotevalue()) {
@@ -209,7 +210,9 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
                                 // raise weight of note in table set
                                 kn.setWeight(kn.getWeight() + 0.1f);
                                 knds.updateKeyNote(kn);
-                                Log.d("MYLOG", "updating key note -- weight is raised to: " + kn.getWeight());
+                                Log.d("MYLOG",
+                                        "updating key note -- weight is raised to: "
+                                                + kn.getWeight());
                             }
                         }
                     }
@@ -246,11 +249,12 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
                 if (totalGuesses > 0) {
                     guessesCorrectPercentage = ((double) guessesCorrect / (double) totalGuesses) * 100.0;
                 }
-                
+
                 // iterate through notes shown to user
                 for (int i = 0; i < notesToInsert.size() - 1; i++) {
                     // check if note is already in table set
-                    //List<Integer> kSNotes = knds.getKeyNoteNotevaluesByKeySignature(currentKeySignatureId);
+                    // List<Integer> kSNotes =
+                    // knds.getKeyNoteNotevaluesByKeySignature(currentKeySignatureId);
                     List<KeyNote> keyNotes = knds.getKeyNotesByKeySignature(currentKeySignatureId);
                     boolean found = false;
                     for (KeyNote kn : keyNotes) {
@@ -261,7 +265,9 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
                                 // lower weight of note in table set
                                 kn.setWeight(kn.getWeight() - 0.1f);
                                 knds.updateKeyNote(kn);
-                                Log.d("MYLOG", "updating key note -- weight is lowered to: " + kn.getWeight());
+                                Log.d("MYLOG",
+                                        "updating key note -- weight is lowered to: "
+                                                + kn.getWeight());
                             }
                         }
                     }
@@ -348,11 +354,12 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
         List<Long> keySignatureIds = knds.keySignatureIdsThatContain(anchorNote.getNotevalue());
 
         List<Note> notes = new ArrayList<Note>();
-        //long currentKeySignature = 0;
+        // long currentKeySignature = 0;
         String approach = "";
 
         // 3. if no key signatures exist, create one and put notevalue into key signature
-        Log.d("MYLOG", "3. if no key signatures exist, create one and put notevalue into key signature");
+        Log.d("MYLOG",
+                "3. if no key signatures exist, create one and put notevalue into key signature");
         if (keySignatureIds.isEmpty()) {
             approach = "Random";
             KeySignature ks = new KeySignature();
@@ -467,48 +474,54 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
     }
 
     public void saveScore(int isCorrect, long edgeId) {
+        boolean autoSaveScorecard = sharedPref.getBoolean(
+                "pref_auto_save_scorecard", false);
 
-        // check if scorecard already exists
-        if (scorecardId <= 0) {
-            TimeZone timezone = TimeZone.getTimeZone("UTC");
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'",
-                    Locale.getDefault());
-            dateFormat.setTimeZone(timezone);
-            String takenAtISO = dateFormat.format(new Date());
+        if (autoSaveScorecard) {
+            // check if scorecard already exists
+            if (scorecardId <= 0) {
+                TimeZone timezone = TimeZone.getTimeZone("UTC");
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'",
+                        Locale.getDefault());
+                dateFormat.setTimeZone(timezone);
+                String takenAtISO = dateFormat.format(new Date());
 
-            // String takenAtISO = new Date().toString();
+                // String takenAtISO = new Date().toString();
 
-            // if scorecard doesn't yet exist, create it
-            ApprenticeScorecardsDataSource asds = new ApprenticeScorecardsDataSource(this);
-            ApprenticeScorecard aScorecard = new ApprenticeScorecard();
-            aScorecard.setTakenAt(takenAtISO);
-            aScorecard = asds.createApprenticeScorecard(aScorecard);
+                // if scorecard doesn't yet exist, create it
+                ApprenticeScorecardsDataSource asds = new ApprenticeScorecardsDataSource(this);
+                ApprenticeScorecard aScorecard = new ApprenticeScorecard();
+                aScorecard.setTakenAt(takenAtISO);
+                aScorecard = asds.createApprenticeScorecard(aScorecard);
+                asds.close();
+
+                // then get scorecard_id for the score to save
+                scorecardId = aScorecard.getId();
+            }
+
+            // also, update scorecard question totals
+            ApprenticeScorecardsDataSource ascds = new ApprenticeScorecardsDataSource(this);
+            ApprenticeScorecard scorecard = new ApprenticeScorecard();
+            scorecard = ascds.getApprenticeScorecard(scorecardId);
+            if (isCorrect == 1) {
+                scorecard.setCorrect(guessesCorrect);
+            }
+            scorecard.setTotal(totalGuesses);
+            ascds.updateApprenticeScorecard(scorecard);
+            ascds.close();
+
+            // save Apprentice's score results to database
+            ApprenticeScore aScore = new ApprenticeScore();
+            aScore.setScorecardId(scorecardId);
+            aScore.setQuestionNumber(totalGuesses);
+            aScore.setCorrect(isCorrect);
+            aScore.setEdgeId(edgeId);
+
+            ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
+            asds.createApprenticeScore(aScore);
             asds.close();
-
-            // then get scorecard_id for the score to save
-            scorecardId = aScorecard.getId();
+        } else {
+            Log.d("MYLOG", "Not saving scorecard.");
         }
-
-        // also, update scorecard question totals
-        ApprenticeScorecardsDataSource ascds = new ApprenticeScorecardsDataSource(this);
-        ApprenticeScorecard scorecard = new ApprenticeScorecard();
-        scorecard = ascds.getApprenticeScorecard(scorecardId);
-        if (isCorrect == 1) {
-            scorecard.setCorrect(guessesCorrect);
-        }
-        scorecard.setTotal(totalGuesses);
-        ascds.updateApprenticeScorecard(scorecard);
-        ascds.close();
-
-        // save Apprentice's score results to database
-        ApprenticeScore aScore = new ApprenticeScore();
-        aScore.setScorecardId(scorecardId);
-        aScore.setQuestionNumber(totalGuesses);
-        aScore.setCorrect(isCorrect);
-        aScore.setEdgeId(edgeId);
-
-        ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
-        asds.createApprenticeScore(aScore);
-        asds.close();
     }
 }

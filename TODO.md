@@ -5,12 +5,11 @@
 - create auto test/learn for Emotion test
 - give emotion and noteset to Apprentice and get match status
 
-- updated scale test
+- update scale test
 - ignore duplicate notes in scale test
 - make sure scale test is updating existing and adding new notes
 
 - add greater range for "snap" feature in Logic D
-- add option to disable scorecard saving
 - think about adding support for different note speeds in Logic D
 - connect key_signatures table data with Logic D
 - decide on an early emofing design
@@ -31,6 +30,7 @@
 
 
 ## DONE:
+- 20150324: added option to disable scorecard saving
 - 20150321: added data source for key_signatures table
 - 20150316: added key_notes database table
 - 20150316: added key_signatures database table

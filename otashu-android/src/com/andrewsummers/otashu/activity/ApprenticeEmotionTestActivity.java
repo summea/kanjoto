@@ -98,7 +98,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
         if (apprentice == null) {
             apprentice = new Apprentice(ApprenticeState.IDLE);
         }
-        
+
         buttonNo = (Button) findViewById(R.id.button_yes);
         buttonYes = (Button) findViewById(R.id.button_no);
 
@@ -364,7 +364,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                     Vertex nodeB = vds.getVertex(emotionGraphId, noteB.getNotevalue());
 
                     // If nodes don't exist, create new nodes in graph
-                    
+
                     // if nodeA doesn't exist... create new vertex
                     if (nodeA.getNode() <= 0) {
                         Vertex newNodeA = new Vertex();
@@ -373,7 +373,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                         vds.createVertex(newNodeA);
                         nodeA.setNode(noteA.getNotevalue());
                     }
-                    
+
                     // if nodeB doesn't exist... create new vertex
                     if (nodeB.getNode() <= 0) {
                         Vertex newNodeB = new Vertex();
@@ -389,7 +389,6 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
 
                     // if edge doesn't exist... create new edge between nodeA and nodeB
                     if (edge.getWeight() < 0.0f || edge.getWeight() > 1.0f) {
-                        
 
                         // If edge doesn't exist, create new edge in graph (and set weight at 0.5)
                         // [note: 0.0 = stronger edge / more likely to be chosen than a 1.0 edge]
@@ -471,7 +470,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
 
     public void apprenticeAskProcess() {
         apprentice.setState(ApprenticeState.CHOOSE_EMOTION);
-        
+
         // get random emotion
         EmotionsDataSource eds = new EmotionsDataSource(this);
         chosenEmotion = eds.getRandomEmotion();
@@ -504,9 +503,9 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
         try {
             // Using Learned Data Approach (thoughtfully-generated noteset)
             Random rnd = new Random();
-            int randomOption = rnd.nextInt((2-1) + 1) + 1;
+            int randomOption = rnd.nextInt((2 - 1) + 1) + 1;
             int randomNotevalue = rnd.nextInt((71 - 60) + 1) + 60;
-            
+
             approach = "Learned Data";
             Edge edgeOne = edds.getRandomEdge(emotionGraphId, emotionId, 0, 0, 1, 0);
             Edge edgeTwo = edds.getRandomEdge(emotionGraphId, emotionId, edgeOne.getToNodeId(), 0,
@@ -637,48 +636,54 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
     }
 
     public void saveScore(int isCorrect, long edgeId) {
+        boolean autoSaveScorecard = sharedPref.getBoolean(
+                "pref_auto_save_scorecard", false);
 
-        // check if scorecard already exists
-        if (scorecardId <= 0) {
-            TimeZone timezone = TimeZone.getTimeZone("UTC");
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'",
-                    Locale.getDefault());
-            dateFormat.setTimeZone(timezone);
-            String takenAtISO = dateFormat.format(new Date());
+        if (autoSaveScorecard) {
+            // check if scorecard already exists
+            if (scorecardId <= 0) {
+                TimeZone timezone = TimeZone.getTimeZone("UTC");
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'",
+                        Locale.getDefault());
+                dateFormat.setTimeZone(timezone);
+                String takenAtISO = dateFormat.format(new Date());
 
-            // String takenAtISO = new Date().toString();
+                // String takenAtISO = new Date().toString();
 
-            // if scorecard doesn't yet exist, create it
-            ApprenticeScorecardsDataSource asds = new ApprenticeScorecardsDataSource(this);
-            ApprenticeScorecard aScorecard = new ApprenticeScorecard();
-            aScorecard.setTakenAt(takenAtISO);
-            aScorecard = asds.createApprenticeScorecard(aScorecard);
+                // if scorecard doesn't yet exist, create it
+                ApprenticeScorecardsDataSource asds = new ApprenticeScorecardsDataSource(this);
+                ApprenticeScorecard aScorecard = new ApprenticeScorecard();
+                aScorecard.setTakenAt(takenAtISO);
+                aScorecard = asds.createApprenticeScorecard(aScorecard);
+                asds.close();
+
+                // then get scorecard_id for the score to save
+                scorecardId = aScorecard.getId();
+            }
+
+            // also, update scorecard question totals
+            ApprenticeScorecardsDataSource ascds = new ApprenticeScorecardsDataSource(this);
+            ApprenticeScorecard scorecard = new ApprenticeScorecard();
+            scorecard = ascds.getApprenticeScorecard(scorecardId);
+            if (isCorrect == 1) {
+                scorecard.setCorrect(guessesCorrect);
+            }
+            scorecard.setTotal(totalGuesses);
+            ascds.updateApprenticeScorecard(scorecard);
+            ascds.close();
+
+            // save Apprentice's score results to database
+            ApprenticeScore aScore = new ApprenticeScore();
+            aScore.setScorecardId(scorecardId);
+            aScore.setQuestionNumber(totalGuesses);
+            aScore.setCorrect(isCorrect);
+            aScore.setEdgeId(edgeId);
+
+            ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
+            asds.createApprenticeScore(aScore);
             asds.close();
-
-            // then get scorecard_id for the score to save
-            scorecardId = aScorecard.getId();
+        } else {
+            Log.d("MYLOG", "Not saving scorecard.");
         }
-
-        // also, update scorecard question totals
-        ApprenticeScorecardsDataSource ascds = new ApprenticeScorecardsDataSource(this);
-        ApprenticeScorecard scorecard = new ApprenticeScorecard();
-        scorecard = ascds.getApprenticeScorecard(scorecardId);
-        if (isCorrect == 1) {
-            scorecard.setCorrect(guessesCorrect);
-        }
-        scorecard.setTotal(totalGuesses);
-        ascds.updateApprenticeScorecard(scorecard);
-        ascds.close();
-
-        // save Apprentice's score results to database
-        ApprenticeScore aScore = new ApprenticeScore();
-        aScore.setScorecardId(scorecardId);
-        aScore.setQuestionNumber(totalGuesses);
-        aScore.setCorrect(isCorrect);
-        aScore.setEdgeId(edgeId);
-
-        ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
-        asds.createApprenticeScore(aScore);
-        asds.close();
     }
 }
