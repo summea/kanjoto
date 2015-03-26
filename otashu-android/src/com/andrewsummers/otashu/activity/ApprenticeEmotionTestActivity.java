@@ -686,4 +686,12 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
             Log.d("MYLOG", "Not saving scorecard.");
         }
     }
+
+    public boolean isAutoMode() {
+        return autoMode;
+    }
+
+    public void setAutoMode(boolean autoMode) {
+        this.autoMode = autoMode;
+    }
 }

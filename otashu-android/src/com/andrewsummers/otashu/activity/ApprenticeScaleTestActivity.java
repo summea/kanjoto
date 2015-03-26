@@ -77,8 +77,8 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
 
         // get emotion graph id for Apprentice's note relationships graph
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        scaleGraphId = Long.parseLong(sharedPref.getString(
-                "pref_scale_graph_for_apprentice", "3"));
+        setScaleGraphId(Long.parseLong(sharedPref.getString(
+                "pref_scale_graph_for_apprentice", "3")));
 
         try {
             // add listeners to buttons
@@ -194,11 +194,11 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
                 }
 
                 // iterate through notes shown to user
-                for (int i = 0; i < notesToInsert.size() - 1; i++) {
+                for (int i = 0; i < notesToInsert.size(); i++) {
                     // check if note is already in table set
-                    // List<Integer> kSNotes =
                     // knds.getKeyNoteNotevaluesByKeySignature(currentKeySignatureId);
                     List<KeyNote> keyNotes = knds.getKeyNotesByKeySignature(currentKeySignatureId);
+
                     for (KeyNote kn : keyNotes) {
                         if (kn.getNotevalue() == notesToInsert.get(i).getNotevalue()) {
                             // note found in this key signature
@@ -251,11 +251,11 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
                 }
 
                 // iterate through notes shown to user
-                for (int i = 0; i < notesToInsert.size() - 1; i++) {
+                for (int i = 0; i < notesToInsert.size(); i++) {
                     // check if note is already in table set
-                    // List<Integer> kSNotes =
                     // knds.getKeyNoteNotevaluesByKeySignature(currentKeySignatureId);
                     List<KeyNote> keyNotes = knds.getKeyNotesByKeySignature(currentKeySignatureId);
+
                     boolean found = false;
                     for (KeyNote kn : keyNotes) {
                         if (kn.getNotevalue() == notesToInsert.get(i).getNotevalue()) {
@@ -279,6 +279,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
                         newNote.setNotevalue(notesToInsert.get(i).getNotevalue());
                         newNote.setWeight(0.5f);
                         knds.createKeyNote(newNote);
+                        Log.d("MYLOG", "adding new key note: " + newNote.getNotevalue());
                     }
                 }
 
@@ -397,10 +398,27 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
 
         // 6. choose an extra note
         Log.d("MYLOG", "6. choose an extra note");
-        // random approach
-        Note extraNote = getRandomNote(39, 50);
-        notesToInsert.clear();
-        notesToInsert.add(extraNote);
+
+        boolean foundExistingNote = false;
+
+        // avoid duplicate notes in key signature list
+        Note extraNote = new Note();
+        for (int i = 0; i < 3; i++) {
+            Log.d("MYLOG", "attempting to avoid duplicate notes in key signature list");
+            // random approach
+            extraNote = getRandomNote(39, 50);
+
+            for (int notevalue : currentKeySignatureNotes) {
+                if (notevalue == extraNote.getNotevalue()) {
+                    foundExistingNote = true;
+                }
+            }
+
+            if (!foundExistingNote) {
+                notesToInsert.clear();
+                notesToInsert.add(extraNote);
+            }
+        }
 
         // 7. add extra note to key signature notes list
         Log.d("MYLOG", "7. add extra note to key signature notes list");
@@ -523,5 +541,13 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
         } else {
             Log.d("MYLOG", "Not saving scorecard.");
         }
+    }
+
+    public long getScaleGraphId() {
+        return scaleGraphId;
+    }
+
+    public void setScaleGraphId(long scaleGraphId) {
+        this.scaleGraphId = scaleGraphId;
     }
 }
