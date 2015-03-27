@@ -2,8 +2,11 @@
 package com.andrewsummers.otashu.data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import com.andrewsummers.otashu.model.KeyNote;
@@ -289,7 +292,7 @@ public class KeyNotesDataSource {
 
         return keyNotes;
     }
-    
+
     public List<Integer> getKeyNoteNotevaluesByKeySignature(long keySignatureId) {
         List<Integer> keyNotes = new ArrayList<Integer>();
 
@@ -365,5 +368,60 @@ public class KeyNotesDataSource {
         }
 
         return keySignatureIds;
+    }
+
+    public long getKeySignatureByNotes(List<Integer> notevaluesInKeySignature) {
+        long keySignatureId = 1;
+        // List<Long> foundKeySignatureIds = new ArrayList<Long>();
+        HashMap<Long, Integer> foundKeySignatureIds = new HashMap<Long, Integer>();
+
+        // loop through each notevalue from input
+        // and check to see if we've found a key signature from database
+        for (int i = 0; i < notevaluesInKeySignature.size(); i++) {
+            String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + ", "
+                    + OtashuDatabaseHelper.COLUMN_KEY_SIGNATURE_ID + " FROM "
+                    + OtashuDatabaseHelper.TABLE_KEY_NOTES
+                    + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "="
+                    + notevaluesInKeySignature.get(i);
+
+            // create database handle
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+            // select all keyNotes from database
+            Cursor cursor = db.rawQuery(query, null);
+
+            if (cursor.moveToFirst()) {
+                do {
+                    // add keyNote to keyNotes list
+                    long knid = cursor.getLong(1);
+                    // check if key already exists
+                    if (foundKeySignatureIds.containsKey(knid)) {
+                        int value = foundKeySignatureIds.get(knid);
+                        value++;
+                        foundKeySignatureIds.put(knid, value);
+                    } else {
+                        // add new key
+                        foundKeySignatureIds.put(knid, 1);
+                    }
+                } while (cursor.moveToNext());
+            }
+        }
+
+        boolean foundBestMatch = false;
+
+        if (foundKeySignatureIds.size() > 0) {
+            for (int i = 4; i > 0; i--) {
+                Iterator<?> itr = foundKeySignatureIds.entrySet().iterator();
+                while (itr.hasNext() && !foundBestMatch) {
+                    Map.Entry<Long, Integer> kvpair = (Map.Entry<Long, Integer>) itr.next();
+                    if (kvpair.getValue() == i) {
+                        foundBestMatch = true;
+                        keySignatureId = kvpair.getKey();
+                    }
+                }
+            }
+        }
+
+        return keySignatureId;
     }
 }

@@ -17,10 +17,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.andrewsummers.otashu.data.EdgesDataSource;
+import com.andrewsummers.otashu.data.KeyNotesDataSource;
 import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.data.NotesetsDataSource;
 import com.andrewsummers.otashu.data.NotevaluesDataSource;
 import com.andrewsummers.otashu.model.Edge;
+import com.andrewsummers.otashu.model.KeyNote;
 import com.andrewsummers.otashu.model.Label;
 import com.andrewsummers.otashu.model.Note;
 import com.andrewsummers.otashu.model.Notevalue;
@@ -69,6 +71,8 @@ public class GenerateMusicActivity extends Activity {
     private SparseArray<List<Integer>> musicalKeys = new SparseArray<List<Integer>>();
     private SparseArray<float[]> noteColorTable = new SparseArray<float[]>();
     private int currentKeySignatureKey = 1;
+    private long currentKeySignatureId = 1;
+    private List<Integer> currentKeySignatureNotes = new ArrayList<Integer>();
 
     // TODO: make this more dynamic
     private static SparseArray<String> noteMap;
@@ -168,8 +172,27 @@ public class GenerateMusicActivity extends Activity {
 
         // determine key signature from first four notes
         List<Note> firstNoteset = notes.subList(0, 3);
-        determineKeySignature(firstNoteset);
-
+        currentKeySignatureId = determineKeySignature(firstNoteset);
+        
+        KeyNotesDataSource knds = new KeyNotesDataSource(this);
+        
+        // get all notes in current key signature
+        List<KeyNote> keyNotesInKeySignature = knds.getKeyNotesByKeySignature(currentKeySignatureId);
+        
+        /*
+        if (keyNotesInKeySignature.isEmpty()) {
+            firstNoteset = notes.subList(4, 7);
+            currentKeySignatureId = determineKeySignature(firstNoteset);
+            keyNotesInKeySignature = knds.getKeyNotesByKeySignature(currentKeySignatureId);
+        }
+        */
+        
+        for (KeyNote kn : keyNotesInKeySignature) {
+            currentKeySignatureNotes.add(kn.getNotevalue());
+        }
+        
+        Log.d("MYLOG", "notes in current key signature: " + currentKeySignatureNotes.toString());
+        
         final List<Note> finalNotes = notes;
 
         StringBuilder notesText = new StringBuilder();
@@ -790,6 +813,48 @@ public class GenerateMusicActivity extends Activity {
                     note.setNotevalue(edges.get(j).getFromNodeId());
 
                     // "snap to" current key signature (if necessary)
+                    //int key = keySignatures.keyAt(currentKeySignatureKey);
+                    
+                    if (!currentKeySignatureNotes.contains(note.getNotevalue())) {
+                        if (currentKeySignatureNotes.size() > 1) {
+                            boolean foundNeighboringNote = false;
+                            // check if there are any neighboring notes above for this key signature
+                            for (int k = 0; k < 15; k++) {
+                                if (currentKeySignatureNotes.contains(note.getNotevalue() + k)) {
+                                    foundNeighboringNote = true;
+                                    note.setNotevalue(note.getNotevalue() + k);
+                                }
+                                
+                                if (foundNeighboringNote) break;
+                            }
+                            // check if there are any neighboring notes below for this key signature
+                            if (!foundNeighboringNote) {
+                                for (int k = 0; k < 15; k++) {
+                                    if (currentKeySignatureNotes.contains(note.getNotevalue() - k)) {
+                                        foundNeighboringNote = true;
+                                        note.setNotevalue(note.getNotevalue() + k);
+                                    }
+                                    
+                                    if (foundNeighboringNote) break;
+                                }
+                            }
+                            if (!foundNeighboringNote) {
+                                // just pick a default key signature note...
+                                if (!currentKeySignatureNotes.isEmpty()) {
+                                    note.setNotevalue(currentKeySignatureNotes.get(0));
+                                }
+                            }
+                        } else {
+                            // just pick the only key signature note available...
+                            if (!currentKeySignatureNotes.isEmpty()) {
+                                note.setNotevalue(currentKeySignatureNotes.get(0));
+                            }
+                        }
+                        Log.d("MYLOG", ">> snapping to key signature!");
+                    }
+
+                    /*
+                    // "snap to" current key signature (if necessary)
                     int key = keySignatures.keyAt(currentKeySignatureKey);
                     if (!keySignatures.get(key).contains(note.getNotevalue())) {
                         // round down (might be more natural to cut)
@@ -800,12 +865,15 @@ public class GenerateMusicActivity extends Activity {
                         }
                         Log.d("MYLOG", ">> snapping to key signature!");
                     }
+                    */
 
+                    Log.d("MYLOG", "adding note to notes: " + note.getNotesetId());
                     notes.add(note);
                 }
 
                 // add last edge
                 Note note = new Note();
+                
                 // "snap to" current key signature (if necessary)
                 int key = keySignatures.keyAt(currentKeySignatureKey);
                 if (!keySignatures.get(key).contains(note.getNotevalue())) {
@@ -881,6 +949,7 @@ public class GenerateMusicActivity extends Activity {
         return mainJsonObj.toString();
     }
 
+    /*
     public int determineKeySignature(List<Note> notes) {
         int keySignature = 1;
         currentKeySignatureKey = 1;
@@ -921,5 +990,22 @@ public class GenerateMusicActivity extends Activity {
         Log.d("MYLOG", "> found key signature? " + foundKeySignature + " key: " + keySignature);
 
         return keySignature;
+    }
+    */
+    
+    public long determineKeySignature(List<Note> notes) {
+        List<Integer> notevaluesInKeySignature = new ArrayList<Integer>();
+        for (Note note : notes) {
+            notevaluesInKeySignature.add(note.getNotevalue());
+        }
+        
+        Log.d("MYLOG", "looking for key signature for: " + notevaluesInKeySignature);
+        
+        KeyNotesDataSource knds = new KeyNotesDataSource(this);
+        long keySignatureId = knds.getKeySignatureByNotes(notevaluesInKeySignature);
+        
+        Log.d("MYLOG", "found key signature id: " + keySignatureId);
+        
+        return keySignatureId;
     }
 }

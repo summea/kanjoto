@@ -154,15 +154,17 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
     public void askQuestion() {
         TextView apprenticeText = (TextView) findViewById(R.id.apprentice_text);
 
+        /*
         String notes = "";
         NotevaluesDataSource nvds = new NotevaluesDataSource(this);
         for (int i = 0; i < notesToInsert.size(); i++) {
             Notevalue note = nvds.getNotevalueByNoteValue(notesToInsert.get(i).getNotevalue());
             notes += note.getNotelabel() + " ";
         }
+        */
 
-        apprenticeText.setText("Are these notes part of the same scale for "
-                + chosenEmotion.getName() + "? (" + notes + ")");
+        apprenticeText.setText("Do these notes fit for a "
+                + chosenEmotion.getName() + " mood?");
     }
 
     public void playMusic(File musicSource) {

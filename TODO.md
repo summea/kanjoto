@@ -5,6 +5,9 @@
 - create auto test/learn for Emotion test
 - give emotion and noteset to Apprentice and get match status
 
+- make sure "snap" feature is working as intended...
+
+- break out general database into Apprentice-specific database
 - add greater range for "snap" feature in Logic D
 - think about adding support for different note speeds in Logic D
 - connect key_signatures table data with Logic D
