@@ -122,6 +122,9 @@ public class MainActivity extends Activity implements OnClickListener {
             case R.id.view_emotion_fingerprints:
                 intent = new Intent(this, ViewAllEmotionFingerprintsActivity.class);
                 break;
+            case R.id.get_emotion_from_noteset:
+                intent = new Intent(this, GetEmotionFromNotesetActivity.class);
+                break;
         }
 
         startActivity(intent);

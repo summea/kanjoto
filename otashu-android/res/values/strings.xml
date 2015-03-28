@@ -23,6 +23,7 @@
     <string name="button_create_emotion">New Emotion</string>
     <string name="button_create_noteset">New Noteset</string>    
     <string name="button_generate">Generate</string>
+    <string name="button_get_emotion">Get Emotion</string>
     <string name="button_get_remote_noteset">get remote noteset</string>
     <string name="button_go">Go</string>
     <string name="button_no">No</string>
@@ -62,6 +63,8 @@
     <string name="emotion_name_label">Name</string>
     <string name="emotion_saved">emotion saved</string>
     <string name="generate_music_placeholder">Playing music...</string>
+    <string name="get_emotion_from_noteset">Get Emotion from Noteset</string>
+    <string name="get_emotion_from_noteset_title">Get Emotion from Noteset</string>
     <string name="graph_deleted">graph deleted</string>
     <string name="graph_detail_name_label">Name</string>
     <string name="graph_name">Name</string>
@@ -127,7 +130,8 @@
     <string name="spinner_note4_label">Note 4</string>
     <string name="spinner_notelabel_label">Note Label</string>
     <string name="spinner_notevalue_label">Note</string>
-    <string name="spinner_notevalue">Note</string>
+    <string name="spinner_notevalues_label">Notes</string>
+    <string name="spinner_notevalue">Note</string>    
     <string name="spinner_velocity_label">Velocity</string>
     <string name="toggle_enabled_label">Enabled</string>
     <string name="toggle_enabled_off">Off</string>

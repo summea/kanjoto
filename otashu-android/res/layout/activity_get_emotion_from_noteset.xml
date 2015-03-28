@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp" >
+
+    <TextView
+        android:id="@+id/get_emotion_from_noteset_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/get_emotion_from_noteset_title"
+        android:textSize="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp" />
+    
+    <TextView
+        android:id="@+id/spinner_notevalue_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="@string/spinner_notevalues_label" />
+        
+    <Spinner
+        android:id="@+id/spinner_note1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+        
+    <Spinner
+        android:id="@+id/spinner_note2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+        
+    <Spinner
+        android:id="@+id/spinner_note3"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+        
+    <Spinner
+        android:id="@+id/spinner_note4"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+    
+    <Button
+        android:id="@+id/button_play_noteset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_play_noteset"
+        android:padding="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/button_play_alternate_selector" />
+    
+    <Button
+        android:id="@+id/button_get_emotion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_get_emotion"
+        android:padding="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/button_play_selector" />
+
+</LinearLayout>
