@@ -170,29 +170,6 @@ public class GenerateMusicActivity extends Activity {
                 logicA();
         }
 
-        // determine key signature from first four notes
-        List<Note> firstNoteset = notes.subList(0, 3);
-        currentKeySignatureId = determineKeySignature(firstNoteset);
-        
-        KeyNotesDataSource knds = new KeyNotesDataSource(this);
-        
-        // get all notes in current key signature
-        List<KeyNote> keyNotesInKeySignature = knds.getKeyNotesByKeySignature(currentKeySignatureId);
-        
-        /*
-        if (keyNotesInKeySignature.isEmpty()) {
-            firstNoteset = notes.subList(4, 7);
-            currentKeySignatureId = determineKeySignature(firstNoteset);
-            keyNotesInKeySignature = knds.getKeyNotesByKeySignature(currentKeySignatureId);
-        }
-        */
-        
-        for (KeyNote kn : keyNotesInKeySignature) {
-            currentKeySignatureNotes.add(kn.getNotevalue());
-        }
-        
-        Log.d("MYLOG", "notes in current key signature: " + currentKeySignatureNotes.toString());
-        
         final List<Note> finalNotes = notes;
 
         StringBuilder notesText = new StringBuilder();
@@ -777,8 +754,10 @@ public class GenerateMusicActivity extends Activity {
         int nextNodeTo = 0;
         int improvisationLevel = 0;
 
-        for (int i = 0; i < 16; i++) {
+        // determine key signature from first four notes
+        // TODO: connect this to actual first notes, if possible...
 
+        for (int i = 0; i < 4; i++) {
             try {
                 List<Edge> edges = new ArrayList<Edge>();
 
@@ -812,9 +791,82 @@ public class GenerateMusicActivity extends Activity {
                     Note note = new Note();
                     note.setNotevalue(edges.get(j).getFromNodeId());
 
+                    Log.d("MYLOG", "adding note to notes: " + note.getNotevalue());
+                    notes.add(note);
+                }
+
+                // add last edge
+                Note note = new Note();
+                note.setNotevalue(edges.get(edges.size() - 1).getToNodeId());
+                notes.add(note);
+            } catch (Exception e) {
+                Log.d("MYLOG", e.getStackTrace().toString());
+            }
+        }
+
+        List<Note> firstNoteset = notes.subList(0, 3);
+        currentKeySignatureId = determineKeySignature(firstNoteset);
+
+        KeyNotesDataSource knds = new KeyNotesDataSource(this);
+
+        // get all notes in current key signature
+        List<KeyNote> keyNotesInKeySignature = knds
+                .getKeyNotesByKeySignature(currentKeySignatureId);
+
+        if (keyNotesInKeySignature.isEmpty()) {
+            currentKeySignatureId = 4; // TODO: make dynamic
+            keyNotesInKeySignature = knds.getKeyNotesByKeySignature(currentKeySignatureId);
+        }
+
+        for (KeyNote kn : keyNotesInKeySignature) {
+            currentKeySignatureNotes.add(kn.getNotevalue());
+        }
+
+        Log.d("MYLOG", "notes in current key signature (id #" + currentKeySignatureId + "): "
+                + currentKeySignatureNotes.toString());
+
+        for (int i = 0; i < 16; i++) {
+            try {
+                List<Edge> edges = new ArrayList<Edge>();
+
+                // 1. Get selected emotion (selectedEmotionId)
+                // get Emotion graph id
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                long graphId = Long.parseLong(sharedPref.getString(
+                        "pref_emotion_graph_for_apprentice", "1"));
+
+                // 2. Gather a strong (low-weight) noteset from Emotions graph using selected
+                // emotion
+                // TODO: don't always use the strongest noteset path each time
+                EdgesDataSource eds = new EdgesDataSource(this);
+                if (nextNodeTo != 0) {
+                    Log.d("MYLOG", "using nextNodeTo: " + nextNodeTo);
+                    Random random = new Random();
+                    int randomNumber = random.nextInt(3) + 1;
+                    if (randomNumber == 1) {
+                        edges = eds.getStrongPath(graphId, selectedEmotionId, 0, nextNodeTo,
+                                improvisationLevel);
+                    } else {
+                        edges = eds.getStrongPath(graphId, selectedEmotionId, 0, nextNodeTo, 0);
+                    }
+                } else {
+                    Log.d("MYLOG", "not using nextNodeTo...");
+                    edges = eds.getStrongPath(graphId, selectedEmotionId, 0, 0, improvisationLevel);
+                }
+
+                // add edge results to notes list
+                for (int j = 0; j < edges.size(); j++) {
+                    Note note = new Note();
+                    note.setNotevalue(edges.get(j).getFromNodeId());
+
+                    int originalNotevalue = note.getNotevalue();
+
+                    Log.d("MYLOG",
+                            "> current key signature notes: " + currentKeySignatureNotes.toString());
+
                     // "snap to" current key signature (if necessary)
-                    //int key = keySignatures.keyAt(currentKeySignatureKey);
-                    
+                    // int key = keySignatures.keyAt(currentKeySignatureKey);
+
                     if (!currentKeySignatureNotes.contains(note.getNotevalue())) {
                         if (currentKeySignatureNotes.size() > 1) {
                             boolean foundNeighboringNote = false;
@@ -824,8 +876,9 @@ public class GenerateMusicActivity extends Activity {
                                     foundNeighboringNote = true;
                                     note.setNotevalue(note.getNotevalue() + k);
                                 }
-                                
-                                if (foundNeighboringNote) break;
+
+                                if (foundNeighboringNote)
+                                    break;
                             }
                             // check if there are any neighboring notes below for this key signature
                             if (!foundNeighboringNote) {
@@ -834,8 +887,9 @@ public class GenerateMusicActivity extends Activity {
                                         foundNeighboringNote = true;
                                         note.setNotevalue(note.getNotevalue() + k);
                                     }
-                                    
-                                    if (foundNeighboringNote) break;
+
+                                    if (foundNeighboringNote)
+                                        break;
                                 }
                             }
                             if (!foundNeighboringNote) {
@@ -850,41 +904,28 @@ public class GenerateMusicActivity extends Activity {
                                 note.setNotevalue(currentKeySignatureNotes.get(0));
                             }
                         }
-                        Log.d("MYLOG", ">> snapping to key signature!");
+                        Log.d("MYLOG", ">> snapping to key signature! was: " + originalNotevalue
+                                + " now: " + note.getNotevalue());
                     }
 
-                    /*
-                    // "snap to" current key signature (if necessary)
-                    int key = keySignatures.keyAt(currentKeySignatureKey);
-                    if (!keySignatures.get(key).contains(note.getNotevalue())) {
-                        // round down (might be more natural to cut)
-                        if (keySignatures.get(key).contains(note.getNotevalue() - 1)) {
-                            note.setNotevalue(note.getNotevalue() - 1);
-                        } else if (keySignatures.get(key).contains(note.getNotevalue() - 2)) {
-                            note.setNotevalue(note.getNotevalue() - 2);
-                        }
-                        Log.d("MYLOG", ">> snapping to key signature!");
-                    }
-                    */
-
-                    Log.d("MYLOG", "adding note to notes: " + note.getNotesetId());
+                    Log.d("MYLOG", "adding note to notes: " + note.getNotevalue());
                     notes.add(note);
                 }
 
                 // add last edge
                 Note note = new Note();
-                
-                // "snap to" current key signature (if necessary)
-                int key = keySignatures.keyAt(currentKeySignatureKey);
-                if (!keySignatures.get(key).contains(note.getNotevalue())) {
-                    // round down (might be more natural to cut)
-                    if (keySignatures.get(key).contains(note.getNotevalue() - 1)) {
-                        note.setNotevalue(note.getNotevalue() - 1);
-                    } else if (keySignatures.get(key).contains(note.getNotevalue() - 2)) {
-                        note.setNotevalue(note.getNotevalue() - 2);
-                    }
-                    Log.d("MYLOG", ">> snapping to key signature!");
-                }
+
+                /*
+                 * // "snap to" current key signature (if necessary) int key =
+                 * keySignatures.keyAt(currentKeySignatureKey); if
+                 * (!keySignatures.get(key).contains(note.getNotevalue())) { // round down (might be
+                 * more natural to cut) if (keySignatures.get(key).contains(note.getNotevalue() -
+                 * 1)) { note.setNotevalue(note.getNotevalue() - 1); } else if
+                 * (keySignatures.get(key).contains(note.getNotevalue() - 2)) {
+                 * note.setNotevalue(note.getNotevalue() - 2); } Log.d("MYLOG",
+                 * ">> snapping to key signature!"); }
+                 */
+
                 note.setNotevalue(edges.get(edges.size() - 1).getToNodeId());
                 notes.add(note);
 
@@ -950,62 +991,35 @@ public class GenerateMusicActivity extends Activity {
     }
 
     /*
-    public int determineKeySignature(List<Note> notes) {
-        int keySignature = 1;
-        currentKeySignatureKey = 1;
-        boolean foundKeySignature = false;
-        int key = 1;
-        int totalFoundNotes = 0;
-        int notesNeededToDecideKey = 3;
+     * public int determineKeySignature(List<Note> notes) { int keySignature = 1;
+     * currentKeySignatureKey = 1; boolean foundKeySignature = false; int key = 1; int
+     * totalFoundNotes = 0; int notesNeededToDecideKey = 3; // loop through all key signatures while
+     * ((notesNeededToDecideKey > 0) && !foundKeySignature) { for (int i = 0; i <
+     * keySignatures.size(); i++) { // loop through each of the given notes // checking to see if
+     * enough of the given notes match a key signature // if totalFoundNotes is 3 out of 4 notes
+     * total, we've found a key signature for (Note note : notes) { key = keySignatures.keyAt(i); if
+     * (keySignatures.get(key).contains(note.getNotevalue())) { Log.d("MYLOG", "found note: " +
+     * note.getNotevalue() + " in key set: " + keySignatures.get(key).toString());
+     * totalFoundNotes++; } else { foundKeySignature = false; } } if (totalFoundNotes >=
+     * notesNeededToDecideKey) { foundKeySignature = true; keySignature = currentKeySignatureKey;
+     * break; } currentKeySignatureKey++; notesNeededToDecideKey--; totalFoundNotes = 0; } }
+     * Log.d("MYLOG", "> found key signature? " + foundKeySignature + " key: " + keySignature);
+     * return keySignature; }
+     */
 
-        // loop through all key signatures
-        while ((notesNeededToDecideKey > 0) && !foundKeySignature) {
-            for (int i = 0; i < keySignatures.size(); i++) {
-                // loop through each of the given notes
-                // checking to see if enough of the given notes match a key signature
-                // if totalFoundNotes is 3 out of 4 notes total, we've found a key signature
-                for (Note note : notes) {
-                    key = keySignatures.keyAt(i);
-                    if (keySignatures.get(key).contains(note.getNotevalue())) {
-                        Log.d("MYLOG", "found note: " + note.getNotevalue() + " in key set: "
-                                + keySignatures.get(key).toString());
-                        totalFoundNotes++;
-                    } else {
-                        foundKeySignature = false;
-                    }
-                }
-
-                if (totalFoundNotes >= notesNeededToDecideKey) {
-                    foundKeySignature = true;
-                    keySignature = currentKeySignatureKey;
-                    break;
-                }
-
-                currentKeySignatureKey++;
-                notesNeededToDecideKey--;
-                totalFoundNotes = 0;
-            }
-        }
-
-        Log.d("MYLOG", "> found key signature? " + foundKeySignature + " key: " + keySignature);
-
-        return keySignature;
-    }
-    */
-    
     public long determineKeySignature(List<Note> notes) {
         List<Integer> notevaluesInKeySignature = new ArrayList<Integer>();
         for (Note note : notes) {
             notevaluesInKeySignature.add(note.getNotevalue());
         }
-        
+
         Log.d("MYLOG", "looking for key signature for: " + notevaluesInKeySignature);
-        
+
         KeyNotesDataSource knds = new KeyNotesDataSource(this);
         long keySignatureId = knds.getKeySignatureByNotes(notevaluesInKeySignature);
-        
+
         Log.d("MYLOG", "found key signature id: " + keySignatureId);
-        
+
         return keySignatureId;
     }
 }
