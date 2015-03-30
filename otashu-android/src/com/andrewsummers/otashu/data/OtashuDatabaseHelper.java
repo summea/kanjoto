@@ -11,7 +11,7 @@ import android.util.Log;
  * application database.
  */
 public class OtashuDatabaseHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 42;
+    private static final int DATABASE_VERSION = 43;
     private static final String DATABASE_NAME = "otashu_collection.db";
 
     public static final String COLUMN_ID = "_id";
@@ -65,6 +65,8 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_KEY_NOTES = "key_notes";
     public static final String COLUMN_KEY_SIGNATURE_ID = "key_signature_id";
+    
+    public static final String TABLE_APPRENTICES = "apprentices";    
 
     private static final String CREATE_TABLE_NOTESETS = "CREATE TABLE " + TABLE_NOTESETS
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
@@ -145,6 +147,11 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_KEY_SIGNATURE_ID + " integer,"
             + COLUMN_NOTEVALUE + " integer,"
             + COLUMN_WEIGHT + " real);";
+    
+    private static final String CREATE_TABLE_APPRENTICES = "CREATE TABLE "
+            + TABLE_APPRENTICES
+            + " (" + COLUMN_ID + " integer primary key autoincrement,"
+            + COLUMN_NAME + " text);";
 
     /**
      * NotesetCollectionOpenHelper constructor.
@@ -175,6 +182,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_APPRENTICE_SCORES);
         db.execSQL(CREATE_TABLE_KEY_SIGNATURES);
         db.execSQL(CREATE_TABLE_KEY_NOTES);
+        db.execSQL(CREATE_TABLE_APPRENTICES);
     }
 
     /**
@@ -225,5 +233,8 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         // 42 (change required for emotion graph id)
         // db.execSQL("UPDATE " + TABLE_VERTICES + " SET " + COLUMN_GRAPH_ID + "=1");
         // db.execSQL("UPDATE " + TABLE_EDGES + " SET " + COLUMN_GRAPH_ID + "=1");
+        
+        // 43
+        db.execSQL(CREATE_TABLE_APPRENTICES);
     }
 }

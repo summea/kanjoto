@@ -1,10 +1,15 @@
 ## DATABASE:
 
+#### apprentices
+- id
+- name  
+  
 #### apprentice_scorecards
 - id
 - taken_at
 - total
 - correct
+- apprentice_id
 
 #### apprentice_scores
 - id
@@ -13,6 +18,7 @@
 - correct
 - edge_id
 - graph_id
+- apprentice_id
 
 #### bookmarks
 - id
@@ -27,11 +33,13 @@
 - to_node_id
 - weight
 - position
+- apprentice_id
 
 #### emotions
 - id
 - name
 - label_id
+- apprentice_id ?
 
 #### graphs
 - id
@@ -64,13 +72,16 @@
 #### key_signatures
 - id
 - emotion_id
+- apprentice_id
 
 #### key_notes
 - id
 - key_signature_id
 - notevalue
+- apprentice_id
 
 #### vertices
 - id
 - graph_id
 - node
+- apprentice_id

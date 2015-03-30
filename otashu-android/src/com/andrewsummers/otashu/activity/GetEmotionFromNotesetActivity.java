@@ -6,16 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.andrewsummers.otashu.R;
-import com.andrewsummers.otashu.data.EmotionsDataSource;
-import com.andrewsummers.otashu.data.NotesDataSource;
-import com.andrewsummers.otashu.data.NotesetsDataSource;
-import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.Note;
-import com.andrewsummers.otashu.model.Noteset;
-import com.andrewsummers.otashu.model.NotesetAndRelated;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -29,10 +22,10 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 public class GetEmotionFromNotesetActivity extends Activity implements OnClickListener {
-    private Noteset newlyInsertedNoteset;
+    private List<Note> notes = null;
+    private Button buttonPlayNoteset = null;
     private Button buttonGetEmotion = null;
     private File path = Environment.getExternalStorageDirectory();
     private String externalDirectory = path.toString() + "/otashu/";
@@ -50,15 +43,6 @@ public class GetEmotionFromNotesetActivity extends Activity implements OnClickLi
 
         // get specific layout for content view
         setContentView(R.layout.activity_get_emotion_from_noteset);
-
-        // open data source handle
-        EmotionsDataSource eds = new EmotionsDataSource(this);
-        eds.open();
-
-        List<Emotion> allEmotions = new ArrayList<Emotion>();
-        allEmotions = eds.getAllEmotions();
-
-        eds.close();
 
         // locate next spinner in layout
         Spinner spinner = (Spinner) findViewById(R.id.spinner_emotion);
@@ -81,6 +65,9 @@ public class GetEmotionFromNotesetActivity extends Activity implements OnClickLi
 
         try {
             // add listeners to buttons
+            buttonPlayNoteset = (Button) findViewById(R.id.button_play_noteset);
+            buttonPlayNoteset.setOnClickListener(this);
+
             buttonGetEmotion = (Button) findViewById(R.id.button_get_emotion);
             buttonGetEmotion.setOnClickListener(this);
         } catch (Exception e) {
@@ -105,83 +92,11 @@ public class GetEmotionFromNotesetActivity extends Activity implements OnClickLi
                 R.id.spinner_note4
         };
 
+        Spinner spinner;
+
         switch (v.getId()) {
-            case R.id.button_save:
-                // gather noteset data from form
-                Spinner spinner;
-
-                Noteset notesetToInsert = new Noteset();
-                List<Note> notesToInsert = new ArrayList<Note>();
-
-                // get select emotion's id
-
-                EmotionsDataSource eds = new EmotionsDataSource(this);
-                eds.open();
-
-                List<Integer> allEmotionIds = new ArrayList<Integer>();
-                allEmotionIds = eds.getAllEmotionIds();
-                eds.close();
-
-                Spinner emotionSpinner = (Spinner) findViewById(R.id.spinner_emotion);
-                int selectedEmotionValue = 0;
-
-                // for times when emotion is not selected
-                try {
-                    selectedEmotionValue = allEmotionIds.get(emotionSpinner
-                            .getSelectedItemPosition());
-                } catch (Exception e) {
-                    Log.d("MYLOG", e.getStackTrace().toString());
-                }
-
-                eds.close();
-
-                notesetToInsert.setEmotion(selectedEmotionValue);
-                notesetToInsert.setEnabled(1);
-
-                for (int i = 0; i < spinnerIds.length; i++) {
-                    spinner = (Spinner) findViewById(spinnerIds[i]);
-
-                    Note noteToInsert = new Note();
-                    noteToInsert.setNotevalue(Integer.parseInt(noteValuesArray[spinner
-                            .getSelectedItemPosition()]));
-                    noteToInsert.setPosition(i + 1); // positions 1, 2, 3, 4, etc.
-
-                    notesToInsert.add(noteToInsert);
-                }
-
-                // check if noteset already exists, first
-                NotesetAndRelated notesetAndRelated = new NotesetAndRelated();
-                notesetAndRelated.setNoteset(notesetToInsert);
-                notesetAndRelated.setNotes(notesToInsert);
-                boolean notesetExists = doesNotesetExist(notesetAndRelated);
-
-                if (!notesetExists) {
-                    // first insert new noteset (parent of all related notes)
-                    saveNoteset(v, notesetToInsert);
-
-                    // then save individual notes
-                    for (Note note : notesetAndRelated.getNotes()) {
-                        note.setNotesetId(newlyInsertedNoteset.getId());
-                        saveNote(v, note);
-                    }
-
-                    // close activity
-                    finish();
-                } else {
-                    Context context = getApplicationContext();
-                    int duration = Toast.LENGTH_SHORT;
-
-                    Toast toast = Toast.makeText(context,
-                            context.getResources().getString(R.string.noteset_exists),
-                            duration);
-                    toast.show();
-                }
-
-                break;
-
             case R.id.button_play_noteset:
-
-                List<Note> notes = new ArrayList<Note>();
+                notes = new ArrayList<Note>();
 
                 for (int i = 0; i < spinnerIds.length; i++) {
                     spinner = (Spinner) findViewById(spinnerIds[i]);
@@ -215,14 +130,12 @@ public class GetEmotionFromNotesetActivity extends Activity implements OnClickLi
                 });
 
                 break;
+            case R.id.button_get_emotion:
+                // try to find an emotion match for given noteset
+                Log.d("MYLOG", "looking for emotion match...");
+                // TODO
+                break;
         }
-    }
-
-    private boolean doesNotesetExist(NotesetAndRelated notesetAndRelated) {
-        boolean notesetExists = true;
-        NotesDataSource nds = new NotesDataSource(this);
-        notesetExists = nds.doesNotesetExist(notesetAndRelated);
-        return notesetExists;
     }
 
     /**
@@ -239,43 +152,6 @@ public class GetEmotionFromNotesetActivity extends Activity implements OnClickLi
     @Override
     protected void onPause() {
         super.onPause();
-    }
-
-    /**
-     * Save noteset data.
-     * 
-     * @param v Incoming view.
-     * @param data Incoming string of data to be saved.
-     */
-    private void saveNoteset(View v, Noteset noteset) {
-        // save noteset in database
-        NotesetsDataSource nds = new NotesetsDataSource(this);
-        newlyInsertedNoteset = nds.createNoteset(noteset);
-        nds.close();
-
-        Context context = getApplicationContext();
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(context,
-                context.getResources().getString(R.string.noteset_saved),
-                duration);
-        toast.show();
-    }
-
-    private void saveNote(View v, Note note) {
-
-        // save noteset in database
-        NotesDataSource nds = new NotesDataSource(this);
-        nds.createNote(note);
-        nds.close();
-
-        Context context = getApplicationContext();
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(context,
-                context.getResources().getString(R.string.noteset_saved),
-                duration);
-        toast.show();
     }
 
     public void playMusic(File musicSource) {

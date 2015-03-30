@@ -22,4 +22,4 @@
     - is this an easy way to share?
       - would have to maintain an Apprentice table with matching ids
       - would have to import SQL
-    
+    - how to keep track of duplicate ids when importing an apprentice? (mapping)

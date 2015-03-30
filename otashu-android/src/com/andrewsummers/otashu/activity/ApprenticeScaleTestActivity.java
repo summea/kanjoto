@@ -18,14 +18,12 @@ import com.andrewsummers.otashu.data.ApprenticeScoresDataSource;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.KeyNotesDataSource;
 import com.andrewsummers.otashu.data.KeySignaturesDataSource;
-import com.andrewsummers.otashu.data.NotevaluesDataSource;
 import com.andrewsummers.otashu.model.ApprenticeScore;
 import com.andrewsummers.otashu.model.ApprenticeScorecard;
 import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.KeyNote;
 import com.andrewsummers.otashu.model.KeySignature;
 import com.andrewsummers.otashu.model.Note;
-import com.andrewsummers.otashu.model.Notevalue;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
