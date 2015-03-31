@@ -186,6 +186,40 @@ public class EdgesDataSource {
         return edges;
     }
 
+    public List<Edge> getAllEdges(long graphId, int position) {
+        List<Edge> edges = new ArrayList<Edge>();
+
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES + " WHERE "
+                + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId + " AND "
+                + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position;
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notes from database
+        Cursor cursor = db.rawQuery(query, null);
+
+        Edge edge = null;
+        if (cursor.moveToFirst()) {
+            do {
+                // create note objects based on note data from database
+                edge = new Edge();
+                edge.setId(cursor.getLong(0));
+                edge.setGraphId(cursor.getLong(1));
+                edge.setEmotionId(cursor.getLong(2));
+                edge.setFromNodeId(cursor.getInt(3));
+                edge.setToNodeId(cursor.getInt(4));
+                edge.setWeight(cursor.getFloat(5));
+                edge.setPosition(cursor.getInt(6));
+
+                // add note string to list of strings
+                edges.add(edge);
+            } while (cursor.moveToNext());
+        }
+
+        return edges;
+    }
+
     /**
      * Get all edges from database table.
      * 
@@ -780,4 +814,44 @@ public class EdgesDataSource {
         return results;
     }
 
+    public long getEmotionFromNotes(long graphId, List<Integer> notes) {
+        long emotionId = 0;
+
+        // select an edge position
+        int position = 1;
+
+        List<Edge> p1Edges = getAllEdges(graphId, position);
+
+        position = 2;
+        List<Edge> p2Edges = getAllEdges(graphId, position);
+
+        position = 3;
+        List<Edge> p3Edges = getAllEdges(graphId, position);
+
+        // loop through all position 1-2 edges
+        for (Edge edge1 : p1Edges) {
+            // loop through all position 2-3 edges and compare with first
+            for (Edge edge2 : p2Edges) {
+                if (edge1.getToNodeId() != edge2.getFromNodeId()) {
+                    break;
+                }
+                // loop through all position 3-4 edges and compare with first
+                for (Edge edge3 : p3Edges) {
+                    if (edge2.getToNodeId() != edge3.getFromNodeId()) {
+                        break;
+                    } else {
+                        // complete path found!
+                        List<Edge> foundEdgePath = new ArrayList<Edge>();
+                        foundEdgePath.add(edge1);
+                        foundEdgePath.add(edge2);
+                        foundEdgePath.add(edge3);
+
+                        Log.d("MYLOG", "> complete path found! " + foundEdgePath.toString());
+                    }
+                }
+            }
+        }
+
+        return emotionId;
+    }
 }

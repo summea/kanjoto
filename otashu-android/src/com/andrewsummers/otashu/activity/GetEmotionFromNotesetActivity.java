@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.andrewsummers.otashu.R;
+import com.andrewsummers.otashu.data.EdgesDataSource;
 import com.andrewsummers.otashu.model.Note;
 
 import android.app.Activity;
@@ -24,6 +25,8 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 public class GetEmotionFromNotesetActivity extends Activity implements OnClickListener {
+    private long emotionGraphId;
+    private SharedPreferences sharedPref;
     private List<Note> notes = null;
     private Button buttonPlayNoteset = null;
     private Button buttonGetEmotion = null;
@@ -43,6 +46,10 @@ public class GetEmotionFromNotesetActivity extends Activity implements OnClickLi
 
         // get specific layout for content view
         setContentView(R.layout.activity_get_emotion_from_noteset);
+
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        emotionGraphId = Long.parseLong(sharedPref.getString(
+                "pref_emotion_graph_for_apprentice", "1"));
 
         // locate next spinner in layout
         Spinner spinner = (Spinner) findViewById(R.id.spinner_emotion);
@@ -134,6 +141,20 @@ public class GetEmotionFromNotesetActivity extends Activity implements OnClickLi
                 // try to find an emotion match for given noteset
                 Log.d("MYLOG", "looking for emotion match...");
                 // TODO
+                long foundEmotionId = 0;
+
+                List<Integer> notevalues = new ArrayList<Integer>();
+                for (Note note : notes) {
+                    notevalues.add(note.getNotevalue());
+                }
+
+                // check emotion graph edges for a match
+                EdgesDataSource eds = new EdgesDataSource(this);
+                foundEmotionId = eds.getEmotionFromNotes(emotionGraphId, notevalues);
+
+                // check user's notesets for a match
+                // TODO
+
                 break;
         }
     }
