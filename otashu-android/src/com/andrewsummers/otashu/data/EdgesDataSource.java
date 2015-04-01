@@ -2,6 +2,7 @@
 package com.andrewsummers.otashu.data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -814,12 +815,13 @@ public class EdgesDataSource {
         return results;
     }
 
-    public long getEmotionFromNotes(long graphId, List<Integer> notes) {
+    public HashMap getEmotionFromNotes(long graphId, List<Integer> notes) {
+        HashMap<String,String> result = new HashMap<String,String>();
         long emotionId = 0;
+        float certainty = 0.0f;
 
         // select an edge position
         int position = 1;
-
         List<Edge> p1Edges = getAllEdges(graphId, position);
 
         position = 2;
@@ -828,30 +830,82 @@ public class EdgesDataSource {
         position = 3;
         List<Edge> p3Edges = getAllEdges(graphId, position);
 
+        int i = 0;
         // loop through all position 1-2 edges
         for (Edge edge1 : p1Edges) {
-            // loop through all position 2-3 edges and compare with first
-            for (Edge edge2 : p2Edges) {
-                if (edge1.getToNodeId() != edge2.getFromNodeId()) {
-                    break;
-                }
-                // loop through all position 3-4 edges and compare with first
-                for (Edge edge3 : p3Edges) {
-                    if (edge2.getToNodeId() != edge3.getFromNodeId()) {
-                        break;
-                    } else {
-                        // complete path found!
-                        List<Edge> foundEdgePath = new ArrayList<Edge>();
-                        foundEdgePath.add(edge1);
-                        foundEdgePath.add(edge2);
-                        foundEdgePath.add(edge3);
+            Log.d("MYLOG", "note1: " + notes.get(i) + " p1: " + edge1.getFromNodeId());
+            if (notes.get(i) == edge1.getFromNodeId()) {
 
-                        Log.d("MYLOG", "> complete path found! " + foundEdgePath.toString());
+                if (certainty < 25.0) {
+                    emotionId = edge1.getEmotionId();
+                    certainty = 25.0f;
+                }
+
+                // loop through all position 2-3 edges and compare with first
+                for (Edge edge2 : p2Edges) {
+                    Log.d("MYLOG", "note2: " + notes.get(i + 1) + " p2: " + edge2.getFromNodeId());
+                    if (notes.get(i + 1) == edge2.getFromNodeId()) {
+
+                        if (certainty < 50.0) {
+                            if (edge1.getEmotionId() == edge2.getEmotionId()) {
+                                emotionId = edge2.getEmotionId();
+                            } else {
+                                emotionId = edge1.getEmotionId();
+                            }
+                            certainty = 50.0f;
+                        }
+
+                        if (edge1.getToNodeId() != edge2.getFromNodeId()) {
+                            break;
+                        }
+                        // loop through all position 3-4 edges and compare with first
+                        for (Edge edge3 : p3Edges) {
+                            Log.d("MYLOG",
+                                    "note3: " + notes.get(i + 2) + " p3: " + edge3.getFromNodeId());
+                            if (notes.get(i + 2) == edge3.getFromNodeId()) {
+
+                                if (certainty < 75.0) {
+                                    if (edge2.getEmotionId() == edge3.getEmotionId()) {
+                                        emotionId = edge3.getEmotionId();
+                                    } else {
+                                        emotionId = edge2.getEmotionId();
+                                    }
+                                    certainty = 75.0f;
+                                }
+
+                                if (edge2.getToNodeId() != edge3.getFromNodeId()) {
+                                    break;
+                                } else {
+                                    if (notes.get(i + 3) == edge3.getToNodeId()) {
+                                        // complete path found!
+                                        List<Edge> foundEdgePath = new ArrayList<Edge>();
+                                        foundEdgePath.add(edge1);
+                                        foundEdgePath.add(edge2);
+                                        foundEdgePath.add(edge3);
+
+                                        emotionId = edge3.getEmotionId();
+                                        certainty = 100.0f;
+
+                                        Log.d("MYLOG",
+                                                "> complete path found! "
+                                                        + foundEdgePath.toString());
+                                        Log.d("MYLOG", ">> found emotion id: " + emotionId);
+                                        Log.d("MYLOG", ">> certainty: " + certainty);
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
 
-        return emotionId;
+        Log.d("MYLOG", ">> found emotion id: " + emotionId);
+        Log.d("MYLOG", ">> certainty: " + certainty);
+
+        result.put("emotionId", String.valueOf(emotionId));
+        result.put("certainty", String.valueOf(certainty));
+        
+        return result;
     }
 }

@@ -3,10 +3,12 @@ package com.andrewsummers.otashu.activity;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.EdgesDataSource;
+import com.andrewsummers.otashu.data.NotesDataSource;
 import com.andrewsummers.otashu.model.Note;
 
 import android.app.Activity;
@@ -100,21 +102,21 @@ public class GetEmotionFromNotesetActivity extends Activity implements OnClickLi
         };
 
         Spinner spinner;
+        
+        notes = new ArrayList<Note>();
+
+        for (int i = 0; i < spinnerIds.length; i++) {
+            spinner = (Spinner) findViewById(spinnerIds[i]);
+
+            Note note = new Note();
+            note.setNotevalue(Integer.parseInt(noteValuesArray[spinner
+                    .getSelectedItemPosition()]));
+
+            notes.add(note);
+        }
 
         switch (v.getId()) {
             case R.id.button_play_noteset:
-                notes = new ArrayList<Note>();
-
-                for (int i = 0; i < spinnerIds.length; i++) {
-                    spinner = (Spinner) findViewById(spinnerIds[i]);
-
-                    Note note = new Note();
-                    note.setNotevalue(Integer.parseInt(noteValuesArray[spinner
-                            .getSelectedItemPosition()]));
-
-                    notes.add(note);
-                }
-
                 // get default instrument for playback
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
                 String defaultInstrument = sharedPref.getString("pref_default_instrument", "");
@@ -140,7 +142,7 @@ public class GetEmotionFromNotesetActivity extends Activity implements OnClickLi
             case R.id.button_get_emotion:
                 // try to find an emotion match for given noteset
                 Log.d("MYLOG", "looking for emotion match...");
-                // TODO
+
                 long foundEmotionId = 0;
 
                 List<Integer> notevalues = new ArrayList<Integer>();
@@ -150,11 +152,30 @@ public class GetEmotionFromNotesetActivity extends Activity implements OnClickLi
 
                 // check emotion graph edges for a match
                 EdgesDataSource eds = new EdgesDataSource(this);
-                foundEmotionId = eds.getEmotionFromNotes(emotionGraphId, notevalues);
+                HashMap<String,String> result = eds.getEmotionFromNotes(emotionGraphId, notevalues);
 
-                // check user's notesets for a match
-                // TODO
-
+                String method = "Graph Approach";
+                long emotionId = Long.parseLong(result.get("emotionId"));
+                float certainty = Float.parseFloat(result.get("certainty"));
+                
+                if ((certainty <= 50.0) || (emotionId <= 0)) {
+                    // check user's notesets for a match
+                    // TODO
+                    
+                    NotesDataSource nds = new NotesDataSource(this);
+                    result = nds.getEmotionFromNotes(notevalues);
+                
+                    float notesetApproachCertainty = Float.parseFloat(result.get("certainty"));
+                    
+                    if (notesetApproachCertainty > 50.0) {
+                        method = "Noteset Approach";
+                        emotionId = Long.parseLong(result.get("emotionId"));
+                        certainty = Float.parseFloat(result.get("certainty"));
+                    }
+                }
+                
+                Log.d("MYLOG", "> final match result... method: " + method + " emotionId: " + emotionId + " certainty: " + certainty);
+                
                 break;
         }
     }

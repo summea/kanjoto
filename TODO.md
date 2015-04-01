@@ -3,7 +3,6 @@
 ## TODO:
 - create emotion fingerprint
 - create auto test/learn for Emotion test
-- give emotion and noteset to Apprentice and get match status
 
 - make sure "snap" feature is working as intended...
 
@@ -29,6 +28,7 @@
 
 
 ## DONE:
+- 20150331: added "give noteset to Apprentice and get closest emotion match" feature
 - 20150324: updated scale test
 - 20150324: added "ignore duplicate notes in scale test" feature
 - 20150324: added option to disable scorecard saving

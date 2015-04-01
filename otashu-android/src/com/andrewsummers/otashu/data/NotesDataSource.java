@@ -2,11 +2,13 @@
 package com.andrewsummers.otashu.data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.andrewsummers.otashu.model.Edge;
 import com.andrewsummers.otashu.model.Note;
 import com.andrewsummers.otashu.model.NotesetAndRelated;
 
@@ -21,6 +23,7 @@ import android.util.SparseArray;
 public class NotesDataSource {
     private SQLiteDatabase database;
     private OtashuDatabaseHelper dbHelper;
+    private Context mContext;
 
     // database table columns
     private String[] allColumns = {
@@ -39,6 +42,7 @@ public class NotesDataSource {
      */
     public NotesDataSource(Context context) {
         dbHelper = new OtashuDatabaseHelper(context);
+        mContext = context;
     }
 
     /**
@@ -145,6 +149,38 @@ public class NotesDataSource {
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES + " WHERE "
                 + OtashuDatabaseHelper.COLUMN_NOTESET_ID + "=" + notesetId;
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notes from database
+        Cursor cursor = db.rawQuery(query, null);
+
+        Note note = null;
+        if (cursor.moveToFirst()) {
+            do {
+                // create note objects based on note data from database
+                note = new Note();
+                note.setId(Integer.parseInt(cursor.getString(0)));
+                note.setNotesetId(cursor.getLong(1));
+                note.setNotevalue(cursor.getInt(2));
+                note.setVelocity(cursor.getInt(3));
+                note.setLength(cursor.getFloat(4));
+                note.setPosition(cursor.getInt(5));
+
+                // add note string to list of strings
+                notes.add(note);
+            } while (cursor.moveToNext());
+        }
+
+        return notes;
+    }
+    
+    public List<Note> getAllNotes(int position) {
+        List<Note> notes = new ArrayList<Note>();
+
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES + " WHERE "
+                + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -342,5 +378,102 @@ public class NotesDataSource {
                 + "=" + note.getId(), null);
 
         return note;
+    }
+    
+    public HashMap<String,String> getEmotionFromNotes(List<Integer> notes) {
+        HashMap<String,String> result = new HashMap<String,String>();
+        long emotionId = 0;
+        long notesetId = 0;
+        float certainty = 0.0f;
+
+        // select an edge position
+        int position = 1;
+        List<Note> p1Notes = getAllNotes(position);
+
+        position = 2;
+        List<Note> p2Notes = getAllNotes(position);
+
+        position = 3;
+        List<Note> p3Notes = getAllNotes(position);
+        
+        position = 4;
+        List<Note> p4Notes = getAllNotes(position);
+
+        int i = 0;
+        // loop through all position 1-2 notes
+        for (Note note1 : p1Notes) {
+            Log.d("MYLOG", "note1: " + notes.get(i) + " p1: " + note1.getNotevalue());
+            if (notes.get(i) == note1.getNotevalue()) {
+
+                if (certainty < 25.0) {
+                    notesetId = note1.getNotesetId();
+                    certainty = 25.0f;
+                }
+
+                // loop through all position 2-3 notes and compare with first
+                for (Note note2 : p2Notes) {
+                    Log.d("MYLOG", "note2: " + notes.get(i + 1) + " p2: " + note2.getNotevalue());
+                    if (notes.get(i + 1) == note2.getNotevalue()) {
+
+                        if (certainty < 50.0) {
+                            if (note1.getNotesetId() == note2.getNotesetId()) {
+                                notesetId = note2.getNotesetId();
+                            } else {
+                                notesetId = note1.getNotesetId();
+                            }
+                            certainty = 50.0f;
+                        }
+
+                        if (note1.getNotesetId() != note2.getNotesetId()) {
+                            break;
+                        }
+                        // loop through all position 3-4 notes and compare with first
+                        for (Note note3 : p3Notes) {
+                            Log.d("MYLOG",
+                                    "note3: " + notes.get(i + 2) + " p3: " + note3.getNotevalue());
+                            if (notes.get(i + 2) == note3.getNotevalue()) {
+
+                                if (certainty < 75.0) {
+                                    if (note2.getNotesetId() == note3.getNotesetId()) {
+                                        notesetId = note3.getNotesetId();
+                                    } else {
+                                        notesetId = note2.getNotesetId();
+                                    }
+                                    certainty = 75.0f;
+                                }
+
+                                if (note2.getNotesetId() != note3.getNotesetId()) {
+                                    break;
+                                }
+                                
+                                // loop through all position 3-4 notes and compare with first
+                                for (Note note4 : p4Notes) {
+                                    if (notes.get(i + 3) == note4.getNotevalue()) {
+                                        // complete noteset found!
+                                        notesetId = note4.getNotesetId();
+                                        certainty = 100.0f;
+
+                                        Log.d("MYLOG", "> complete noteset found! " + notes.toString());
+                                        Log.d("MYLOG", ">> found emotion id: " + emotionId);
+                                        Log.d("MYLOG", ">> certainty: " + certainty);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        NotesetsDataSource nsds = new NotesetsDataSource(mContext);
+        emotionId = nsds.getNoteset(notesetId).getEmotion();
+        
+        Log.d("MYLOG", ">> found emotion id: " + emotionId);
+        Log.d("MYLOG", ">> certainty: " + certainty);
+
+        result.put("emotionId", String.valueOf(emotionId));
+        result.put("certainty", String.valueOf(certainty));
+        
+        return result;
     }
 }
