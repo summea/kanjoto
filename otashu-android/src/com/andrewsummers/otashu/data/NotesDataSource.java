@@ -8,7 +8,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import com.andrewsummers.otashu.model.Edge;
 import com.andrewsummers.otashu.model.Note;
 import com.andrewsummers.otashu.model.NotesetAndRelated;
 

@@ -63,6 +63,7 @@ import android.util.SparseArray;
 public class GenerateMusicActivity extends Activity {
     private GLSurfaceView mGLView;
     long selectedEmotionId = 1;
+    String selectedEmotionName = "";
     int selectedLogicId = 1;
     int selectedInstrumentId = -1;
     int playbackSpeed = 120;
@@ -147,6 +148,11 @@ public class GenerateMusicActivity extends Activity {
         selectedEmotionId = bundle.getInt("emotion_id");
         selectedLogicId = bundle.getInt("logic_id");
         selectedInstrumentId = bundle.getInt("instrument_id");
+
+        EmotionsDataSource emds = new EmotionsDataSource(this);
+        Emotion currentEmotion = emds.getEmotion(selectedEmotionId);
+        selectedEmotionName = currentEmotion.getName();
+        emds.close();
 
         List<Note> notes = new ArrayList<Note>();
 
@@ -385,6 +391,7 @@ public class GenerateMusicActivity extends Activity {
             Log.d("MYLOG", e.getStackTrace().toString());
         }
 
+        Log.d("MYLOG", "checking....... " + selectedEmotionId + " notes: " + notes.toString());
         serializeBookmarkData(selectedEmotionId, notes);
     }
 
@@ -1006,9 +1013,7 @@ public class GenerateMusicActivity extends Activity {
         JSONArray jsonArr = new JSONArray();
 
         try {
-            EmotionsDataSource eds = new EmotionsDataSource(this);
-            Emotion currentEmotion = eds.getEmotion(emotionId);
-            mainJsonObj.put("emotion", currentEmotion.getName());
+            mainJsonObj.put("emotion", selectedEmotionName);
 
             // add each note into JSON object
             for (Note note : notes) {

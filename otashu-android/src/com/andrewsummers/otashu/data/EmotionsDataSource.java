@@ -259,6 +259,8 @@ public class EmotionsDataSource {
                 emotion.setLabelId(cursor.getLong(2));
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return emotion;
     }
