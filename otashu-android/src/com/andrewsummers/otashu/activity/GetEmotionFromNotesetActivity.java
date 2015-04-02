@@ -102,7 +102,7 @@ public class GetEmotionFromNotesetActivity extends Activity implements OnClickLi
         };
 
         Spinner spinner;
-        
+
         notes = new ArrayList<Note>();
 
         for (int i = 0; i < spinnerIds.length; i++) {
@@ -152,30 +152,32 @@ public class GetEmotionFromNotesetActivity extends Activity implements OnClickLi
 
                 // check emotion graph edges for a match
                 EdgesDataSource eds = new EdgesDataSource(this);
-                HashMap<String,String> result = eds.getEmotionFromNotes(emotionGraphId, notevalues);
+                HashMap<String, String> result = eds
+                        .getEmotionFromNotes(emotionGraphId, notevalues);
 
                 String method = "Graph Approach";
                 long emotionId = Long.parseLong(result.get("emotionId"));
                 float certainty = Float.parseFloat(result.get("certainty"));
-                
+
                 if ((certainty <= 50.0) || (emotionId <= 0)) {
                     // check user's notesets for a match
                     // TODO
-                    
+
                     NotesDataSource nds = new NotesDataSource(this);
                     result = nds.getEmotionFromNotes(notevalues);
-                
+
                     float notesetApproachCertainty = Float.parseFloat(result.get("certainty"));
-                    
+
                     if (notesetApproachCertainty > 50.0) {
                         method = "Noteset Approach";
                         emotionId = Long.parseLong(result.get("emotionId"));
                         certainty = Float.parseFloat(result.get("certainty"));
                     }
                 }
-                
-                Log.d("MYLOG", "> final match result... method: " + method + " emotionId: " + emotionId + " certainty: " + certainty);
-                
+
+                Log.d("MYLOG", "> final match result... method: " + method + " emotionId: "
+                        + emotionId + " certainty: " + certainty);
+
                 break;
         }
     }

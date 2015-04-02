@@ -1,15 +1,12 @@
 # otashu
 
 ## TODO:
+- apprentice personalities
 - create emotion fingerprint
 - create auto test/learn for Emotion test
 
-- make sure "snap" feature is working as intended...
-
 - break out general database into Apprentice-specific database
-- add greater range for "snap" feature in Logic D
 - think about adding support for different note speeds in Logic D
-- connect key_signatures table data with Logic D
 - decide on an early emofing design
 - add support for non-complete emofing path finding
 - connect label_id to background color in "list all scorecards" activity
@@ -28,6 +25,8 @@
 
 
 ## DONE:
+- 20150401: added greater range for "snap" feature in Logic D
+- 20150401: connected key_signatures table data with Logic D
 - 20150331: added "give noteset to Apprentice and get closest emotion match" feature
 - 20150324: updated scale test
 - 20150324: added "ignore duplicate notes in scale test" feature

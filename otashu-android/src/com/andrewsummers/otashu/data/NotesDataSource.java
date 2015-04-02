@@ -175,7 +175,7 @@ public class NotesDataSource {
 
         return notes;
     }
-    
+
     public List<Note> getAllNotes(int position) {
         List<Note> notes = new ArrayList<Note>();
 
@@ -265,7 +265,7 @@ public class NotesDataSource {
 
         Set<Long> foundSet = new HashSet<Long>();
         foundSet.addAll(foundNotes.get(1));
-        
+
         for (int i = 0; i < foundNotes.size(); i++) {
             int key = foundNotes.keyAt(i);
             foundSet.retainAll(foundNotes.get(key));
@@ -379,9 +379,9 @@ public class NotesDataSource {
 
         return note;
     }
-    
-    public HashMap<String,String> getEmotionFromNotes(List<Integer> notes) {
-        HashMap<String,String> result = new HashMap<String,String>();
+
+    public HashMap<String, String> getEmotionFromNotes(List<Integer> notes) {
+        HashMap<String, String> result = new HashMap<String, String>();
         long emotionId = 0;
         long notesetId = 0;
         float certainty = 0.0f;
@@ -395,7 +395,7 @@ public class NotesDataSource {
 
         position = 3;
         List<Note> p3Notes = getAllNotes(position);
-        
+
         position = 4;
         List<Note> p4Notes = getAllNotes(position);
 
@@ -445,7 +445,7 @@ public class NotesDataSource {
                                 if (note2.getNotesetId() != note3.getNotesetId()) {
                                     break;
                                 }
-                                
+
                                 // loop through all position 3-4 notes and compare with first
                                 for (Note note4 : p4Notes) {
                                     if (notes.get(i + 3) == note4.getNotevalue()) {
@@ -453,7 +453,8 @@ public class NotesDataSource {
                                         notesetId = note4.getNotesetId();
                                         certainty = 100.0f;
 
-                                        Log.d("MYLOG", "> complete noteset found! " + notes.toString());
+                                        Log.d("MYLOG",
+                                                "> complete noteset found! " + notes.toString());
                                         Log.d("MYLOG", ">> found emotion id: " + emotionId);
                                         Log.d("MYLOG", ">> certainty: " + certainty);
                                     }
@@ -467,13 +468,13 @@ public class NotesDataSource {
 
         NotesetsDataSource nsds = new NotesetsDataSource(mContext);
         emotionId = nsds.getNoteset(notesetId).getEmotion();
-        
+
         Log.d("MYLOG", ">> found emotion id: " + emotionId);
         Log.d("MYLOG", ">> certainty: " + certainty);
 
         result.put("emotionId", String.valueOf(emotionId));
         result.put("certainty", String.valueOf(certainty));
-        
+
         return result;
     }
 }

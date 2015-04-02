@@ -231,7 +231,7 @@ public class NotesetsDataSource {
      * 
      * @return List of noteset bundles.
      */
-    public SparseArray<List<Note>> getAllNotesetBundles(int emotion_id) {
+    public SparseArray<List<Note>> getAllNotesetBundles(long emotion_id) {
     // public HashMap<Integer, List<Note>> getAllNotesetBundles(int emotion_id) {
         //HashMap<Integer, List<Note>> notesetBundles = new HashMap<Integer, List<Note>>();
         SparseArray<List<Note>> notesetBundles = new SparseArray<List<Note>>();

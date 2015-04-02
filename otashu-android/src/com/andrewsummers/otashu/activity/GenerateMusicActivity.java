@@ -17,11 +17,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.andrewsummers.otashu.data.EdgesDataSource;
+import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.KeyNotesDataSource;
 import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.data.NotesetsDataSource;
 import com.andrewsummers.otashu.data.NotevaluesDataSource;
 import com.andrewsummers.otashu.model.Edge;
+import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.KeyNote;
 import com.andrewsummers.otashu.model.Label;
 import com.andrewsummers.otashu.model.Note;
@@ -60,7 +62,7 @@ import android.util.SparseArray;
  */
 public class GenerateMusicActivity extends Activity {
     private GLSurfaceView mGLView;
-    int selectedEmotionId = 1;
+    long selectedEmotionId = 1;
     int selectedLogicId = 1;
     int selectedInstrumentId = -1;
     int playbackSpeed = 120;
@@ -238,7 +240,8 @@ public class GenerateMusicActivity extends Activity {
             public void onCompletion(MediaPlayer aMediaPlayer) {
                 // fill return intent with values we are passing to parent activity
                 Intent output = new Intent();
-                output.putExtra("serialized_notes", serializeNotes(finalNotes));
+                output.putExtra("serialized_notes",
+                        serializeBookmarkData(selectedEmotionId, finalNotes));
 
                 // sending back data to parent activity (the activity that originally launched this
                 // activity)
@@ -382,7 +385,7 @@ public class GenerateMusicActivity extends Activity {
             Log.d("MYLOG", e.getStackTrace().toString());
         }
 
-        serializeNotes(notes);
+        serializeBookmarkData(selectedEmotionId, notes);
     }
 
     public void playMusic(File musicSource) {
@@ -807,6 +810,8 @@ public class GenerateMusicActivity extends Activity {
         List<Note> firstNoteset = notes.subList(0, 3);
         currentKeySignatureId = determineKeySignature(firstNoteset);
 
+        notes.clear();
+
         KeyNotesDataSource knds = new KeyNotesDataSource(this);
 
         // get all notes in current key signature
@@ -914,19 +919,50 @@ public class GenerateMusicActivity extends Activity {
 
                 // add last edge
                 Note note = new Note();
-
-                /*
-                 * // "snap to" current key signature (if necessary) int key =
-                 * keySignatures.keyAt(currentKeySignatureKey); if
-                 * (!keySignatures.get(key).contains(note.getNotevalue())) { // round down (might be
-                 * more natural to cut) if (keySignatures.get(key).contains(note.getNotevalue() -
-                 * 1)) { note.setNotevalue(note.getNotevalue() - 1); } else if
-                 * (keySignatures.get(key).contains(note.getNotevalue() - 2)) {
-                 * note.setNotevalue(note.getNotevalue() - 2); } Log.d("MYLOG",
-                 * ">> snapping to key signature!"); }
-                 */
-
                 note.setNotevalue(edges.get(edges.size() - 1).getToNodeId());
+                int originalNotevalue = note.getNotevalue();
+
+                if (!currentKeySignatureNotes.contains(note.getNotevalue())) {
+                    if (currentKeySignatureNotes.size() > 1) {
+                        boolean foundNeighboringNote = false;
+                        // check if there are any neighboring notes above for this key signature
+                        for (int k = 0; k < 15; k++) {
+                            if (currentKeySignatureNotes.contains(note.getNotevalue() + k)) {
+                                foundNeighboringNote = true;
+                                note.setNotevalue(note.getNotevalue() + k);
+                            }
+
+                            if (foundNeighboringNote)
+                                break;
+                        }
+                        // check if there are any neighboring notes below for this key signature
+                        if (!foundNeighboringNote) {
+                            for (int k = 0; k < 15; k++) {
+                                if (currentKeySignatureNotes.contains(note.getNotevalue() - k)) {
+                                    foundNeighboringNote = true;
+                                    note.setNotevalue(note.getNotevalue() + k);
+                                }
+
+                                if (foundNeighboringNote)
+                                    break;
+                            }
+                        }
+                        if (!foundNeighboringNote) {
+                            // just pick a default key signature note...
+                            if (!currentKeySignatureNotes.isEmpty()) {
+                                note.setNotevalue(currentKeySignatureNotes.get(0));
+                            }
+                        }
+                    } else {
+                        // just pick the only key signature note available...
+                        if (!currentKeySignatureNotes.isEmpty()) {
+                            note.setNotevalue(currentKeySignatureNotes.get(0));
+                        }
+                    }
+                    Log.d("MYLOG", ">> snapping to key signature! was: " + originalNotevalue
+                            + " now: " + note.getNotevalue());
+                }
+
                 notes.add(note);
 
                 // 3. Get a strong Transition graph edge for current noteset's tail
@@ -965,11 +1001,15 @@ public class GenerateMusicActivity extends Activity {
         return notes;
     }
 
-    public String serializeNotes(List<Note> notes) {
+    public String serializeBookmarkData(long emotionId, List<Note> notes) {
         JSONObject mainJsonObj = new JSONObject();
         JSONArray jsonArr = new JSONArray();
 
         try {
+            EmotionsDataSource eds = new EmotionsDataSource(this);
+            Emotion currentEmotion = eds.getEmotion(emotionId);
+            mainJsonObj.put("emotion", currentEmotion.getName());
+
             // add each note into JSON object
             for (Note note : notes) {
                 JSONObject jsonObj = new JSONObject();
@@ -989,23 +1029,6 @@ public class GenerateMusicActivity extends Activity {
         // Log.d("MYLOG", mainJsonObj.toString());
         return mainJsonObj.toString();
     }
-
-    /*
-     * public int determineKeySignature(List<Note> notes) { int keySignature = 1;
-     * currentKeySignatureKey = 1; boolean foundKeySignature = false; int key = 1; int
-     * totalFoundNotes = 0; int notesNeededToDecideKey = 3; // loop through all key signatures while
-     * ((notesNeededToDecideKey > 0) && !foundKeySignature) { for (int i = 0; i <
-     * keySignatures.size(); i++) { // loop through each of the given notes // checking to see if
-     * enough of the given notes match a key signature // if totalFoundNotes is 3 out of 4 notes
-     * total, we've found a key signature for (Note note : notes) { key = keySignatures.keyAt(i); if
-     * (keySignatures.get(key).contains(note.getNotevalue())) { Log.d("MYLOG", "found note: " +
-     * note.getNotevalue() + " in key set: " + keySignatures.get(key).toString());
-     * totalFoundNotes++; } else { foundKeySignature = false; } } if (totalFoundNotes >=
-     * notesNeededToDecideKey) { foundKeySignature = true; keySignature = currentKeySignatureKey;
-     * break; } currentKeySignatureKey++; notesNeededToDecideKey--; totalFoundNotes = 0; } }
-     * Log.d("MYLOG", "> found key signature? " + foundKeySignature + " key: " + keySignature);
-     * return keySignature; }
-     */
 
     public long determineKeySignature(List<Note> notes) {
         List<Integer> notevaluesInKeySignature = new ArrayList<Integer>();

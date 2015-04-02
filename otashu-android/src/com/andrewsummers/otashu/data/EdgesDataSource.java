@@ -816,7 +816,7 @@ public class EdgesDataSource {
     }
 
     public HashMap getEmotionFromNotes(long graphId, List<Integer> notes) {
-        HashMap<String,String> result = new HashMap<String,String>();
+        HashMap<String, String> result = new HashMap<String, String>();
         long emotionId = 0;
         float certainty = 0.0f;
 
@@ -905,7 +905,7 @@ public class EdgesDataSource {
 
         result.put("emotionId", String.valueOf(emotionId));
         result.put("certainty", String.valueOf(certainty));
-        
+
         return result;
     }
 }
