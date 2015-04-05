@@ -1,7 +1,6 @@
 
 package com.andrewsummers.otashu.activity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.andrewsummers.otashu.data.EdgesDataSource;
@@ -37,13 +36,6 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // get specific layout for content view
-        // setContentView(R.layout.activity_view_emotion_fingerprint_detail);
-
-        drawView = new DrawView(this);
-        drawView.setBackgroundColor(Color.BLACK);
-        setContentView(drawView);
-
         // 1. Choose an emotion
         emotionId = (int) getIntent().getExtras().getLong("list_id");
 
@@ -53,19 +45,32 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
                 "pref_emotion_graph_for_apprentice", "1"));
 
         // 2. Gather all found paths
-        List<Integer> foundPathNotes = gatherEmotionPaths(0.5f);
+        // List<Integer> foundPathNotes = gatherEmotionPaths(0.5f);
+        SparseArray<SparseArray<Integer>> emofingData = gatherEmotionPaths(0.5f);
 
-        // 6. Loop through all found paths
-        // TODO: add logic
+        Log.d("MYLOG", ">> found paths: " + emofingData);
 
         // 7. Plot root number reductions (the emofing)
-        // TODO: add logic
+        drawView = new DrawView(this, emofingData);
+        drawView.setBackgroundColor(Color.BLACK);
+        setContentView(drawView);
 
     }
 
-    public List<Integer> gatherEmotionPaths(float maxWeight) {
-        // SparseArray<List<Note>> foundPaths = new SparseArray<List<Note>>();
-        List<Integer> foundPaths = new ArrayList<Integer>();
+    public SparseArray<SparseArray<Integer>> gatherEmotionPaths(float maxWeight) {
+        SparseArray<SparseArray<Integer>> foundPaths = new SparseArray<SparseArray<Integer>>();
+        // List<Integer> foundPaths = new ArrayList<Integer>();
+
+        // initialize
+        for (int i = 1; i <= 4; i++) {
+            SparseArray<Integer> values = new SparseArray<Integer>();
+            for (int j = 1; j <= 12; j++) {
+                values.put(j, 0);
+            }
+            foundPaths.put(i, values);
+        }
+
+        Log.d("MYLOG", ">> init found paths: " + foundPaths);
 
         // 3. Look for all possible Emotion Graph paths that are stronger (lower than) X weight
         EdgesDataSource eds = new EdgesDataSource(this);
@@ -109,11 +114,25 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
                         rootNumbersMapCreated = true;
                     }
 
+                    Log.d("MYLOG", "current edge: " + edge.toString());
+
+                    SparseArray<Integer> values = foundPaths.get(edge.getPosition());
+                    int newValue = values.get(rootNumbersMap.get(edge.getFromNodeId())) + 1;
+                    Log.d("MYLOG", "new value: " + newValue);
+                    values.put(rootNumbersMap.get(edge.getFromNodeId()), newValue);
+
                     // add found mapped notevalues to our result
-                    foundPaths.add(rootNumbersMap.get(edge.getFromNodeId()));
+                    foundPaths.put(edge.getPosition(), values);
 
                     if (edge.getPosition() == 3) {
-                        foundPaths.add(rootNumbersMap.get(edge.getToNodeId()));
+                        values = foundPaths.get(edge.getPosition() + 1);
+                        Log.d("MYLOG", "to node: " + edge.getToNodeId());
+                        newValue = values.get(rootNumbersMap.get(edge.getToNodeId())) + 1;
+                        Log.d("MYLOG", "new value: " + newValue);
+                        values.put(rootNumbersMap.get(edge.getToNodeId()), newValue);
+
+                        // add found mapped notevalues to our result
+                        foundPaths.put(edge.getPosition() + 1, values);
                     }
                 }
             }
