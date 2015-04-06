@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.SparseArray;
+import android.util.SparseIntArray;
 
 /**
  * View details of a particular Emotion Fingerprint.
@@ -46,7 +47,7 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
 
         // 2. Gather all found paths
         // List<Integer> foundPathNotes = gatherEmotionPaths(0.5f);
-        SparseArray<SparseArray<Integer>> emofingData = gatherEmotionPaths(0.5f);
+        SparseArray<SparseIntArray> emofingData = gatherEmotionPaths(0.5f);
 
         Log.d("MYLOG", ">> found paths: " + emofingData);
 
@@ -54,16 +55,14 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
         drawView = new DrawView(this, emofingData);
         drawView.setBackgroundColor(Color.BLACK);
         setContentView(drawView);
-
     }
 
-    public SparseArray<SparseArray<Integer>> gatherEmotionPaths(float maxWeight) {
-        SparseArray<SparseArray<Integer>> foundPaths = new SparseArray<SparseArray<Integer>>();
-        // List<Integer> foundPaths = new ArrayList<Integer>();
+    public SparseArray<SparseIntArray> gatherEmotionPaths(float maxWeight) {
+        SparseArray<SparseIntArray> foundPaths = new SparseArray<SparseIntArray>();
 
         // initialize
         for (int i = 1; i <= 4; i++) {
-            SparseArray<Integer> values = new SparseArray<Integer>();
+            SparseIntArray values = new SparseIntArray();
             for (int j = 1; j <= 12; j++) {
                 values.put(j, 0);
             }
@@ -116,7 +115,7 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
 
                     Log.d("MYLOG", "current edge: " + edge.toString());
 
-                    SparseArray<Integer> values = foundPaths.get(edge.getPosition());
+                    SparseIntArray values = foundPaths.get(edge.getPosition());
                     int newValue = values.get(rootNumbersMap.get(edge.getFromNodeId())) + 1;
                     Log.d("MYLOG", "new value: " + newValue);
                     values.put(rootNumbersMap.get(edge.getFromNodeId()), newValue);
