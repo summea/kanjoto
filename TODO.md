@@ -2,12 +2,10 @@
 
 ## TODO:
 - apprentice personalities
-- create emotion fingerprint
 - create auto test/learn for Emotion test
 
 - break out general database into Apprentice-specific database
 - think about adding support for different note speeds in Logic D
-- decide on an early emofing design
 - add support for non-complete emofing path finding
 - connect label_id to background color in "list all scorecards" activity
 - connect label_id to background color in "view graph detail" activity
@@ -25,6 +23,8 @@
 
 
 ## DONE:
+- 20150406: created emotion fingerprint
+- 20150403: decided on an early emofing design
 - 20150401: added greater range for "snap" feature in Logic D
 - 20150401: connected key_signatures table data with Logic D
 - 20150331: added "give noteset to Apprentice and get closest emotion match" feature
