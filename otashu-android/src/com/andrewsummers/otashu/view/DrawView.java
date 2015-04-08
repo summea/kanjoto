@@ -46,22 +46,16 @@ public class DrawView extends View {
 
     @Override
     public void onDraw(Canvas canvas) {
-
-        Log.d("MYLOG", "emofing received: " + mEmofing.toString());
-        Log.d("MYLOG", "emofing size: " + mEmofing.size());
-
         paint.setStrokeWidth(5.0f);
         // 6. Loop through all found paths
-
         for (int i = 1; i <= mEmofing.size(); i++) {
             for (int j = 1; j <= 12; j++) {
                 // 7. Plot root number reductions (the emofing)
-                // TODO: make emofing out of boxes
-                // TODO: add colors
                 Random random = new Random();
                 int color = random.nextInt(255 - 0 + 1) + 0;
                 paint.setColor(Color.parseColor(colors.get(j)));
                 int value = mEmofing.get(i).get(j);
+                // use alpha to display strength of a particular box in emofing
                 switch (value) {
                     case 1:
                         paint.setAlpha(51);
@@ -79,7 +73,7 @@ public class DrawView extends View {
                         paint.setAlpha(255);
                         break;
                     default:
-                        paint.setAlpha(15);
+                        paint.setAlpha(25);
                 }
                 canvas.drawRect((j - 1) * 40, (i - 1) * 40, ((j - 1) * 40) + 40,
                         ((i - 1) * 40) + 40, paint);
