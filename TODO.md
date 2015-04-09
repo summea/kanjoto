@@ -2,8 +2,9 @@
 
 ## TODO:
 - apprentice personalities
-- create auto test/learn for Emotion test
+- play mode
 
+- create auto test/learn for Emotion test
 - break out general database into Apprentice-specific database
 - think about adding support for different note speeds in Logic D
 - add support for non-complete emofing path finding

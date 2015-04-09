@@ -42,7 +42,7 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
         Button buttonApprenticeEmotionTest = (Button) findViewById(R.id.button_apprentice_emotion_test);
         Button buttonApprenticeTransitionTest = (Button) findViewById(R.id.button_apprentice_transition_test);
         Button buttonApprenticeScaleTest = (Button) findViewById(R.id.button_apprentice_scale_test);
-        
+
         apprenticeText.setText("Take a test?");
 
         try {

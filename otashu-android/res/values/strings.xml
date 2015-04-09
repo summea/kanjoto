@@ -83,6 +83,7 @@
     <string name="menu_button_create_label">New</string>
     <string name="menu_button_create_noteset">New</string>
     <string name="menu_button_create_notevalue">New</string>
+    <string name="menu_button_create_notevalue_label">Note</string>
     <string name="menu_button_database_dumper">Database Dumper</string>
     <string name="menu_button_emotion_fingerprints">Emotion Fingerprints</string>
     <string name="menu_button_export_database">Export Database</string>
