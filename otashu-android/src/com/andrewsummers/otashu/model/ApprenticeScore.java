@@ -10,6 +10,7 @@ public class ApprenticeScore {
     private int questionNumber;
     private int correct;
     private long edgeId;
+    private long apprenticeId;
 
     /**
      * getId gets ApprenticeScore id
@@ -99,6 +100,24 @@ public class ApprenticeScore {
      */
     public void setEdgeId(long edgeId) {
         this.edgeId = edgeId;
+    }
+
+    /**
+     * getApprenticeId gets Apprentice id
+     * 
+     * @return <code>long</code> id value
+     */
+    public long getApprenticeId() {
+        return apprenticeId;
+    }
+
+    /**
+     * setApprenticeId sets Apprentice id
+     * 
+     * @param apprenticeId New apprenticeId value.
+     */
+    public void setApprenticeId(long apprenticeId) {
+        this.apprenticeId = apprenticeId;
     }
 
     /**

@@ -21,7 +21,8 @@ public class KeySignaturesDataSource {
     // database table columns
     private String[] allColumns = {
             OtashuDatabaseHelper.COLUMN_ID,
-            OtashuDatabaseHelper.COLUMN_EMOTION_ID
+            OtashuDatabaseHelper.COLUMN_EMOTION_ID,
+            OtashuDatabaseHelper.COLUMN_APPRENTICE_ID,
     };
 
     /**
@@ -58,6 +59,8 @@ public class KeySignaturesDataSource {
     public KeySignature createKeySignature(KeySignature keySignature) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_EMOTION_ID, keySignature.getEmotionId());
+        contentValues
+                .put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID, keySignature.getApprenticeId());
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -117,6 +120,7 @@ public class KeySignaturesDataSource {
                 keySignature = new KeySignature();
                 keySignature.setId(cursor.getLong(0));
                 keySignature.setEmotionId(cursor.getLong(1));
+                keySignature.setApprenticeId(cursor.getLong(2));
 
                 // add note string to list of strings
                 keySignatures.add(keySignature);
@@ -159,6 +163,7 @@ public class KeySignaturesDataSource {
         KeySignature keySignature = new KeySignature();
         keySignature.setId(cursor.getLong(0));
         keySignature.setEmotionId(cursor.getLong(1));
+        keySignature.setApprenticeId(cursor.getLong(2));
         return keySignature;
     }
 
@@ -185,6 +190,7 @@ public class KeySignaturesDataSource {
                 keySignature = new KeySignature();
                 keySignature.setId(cursor.getLong(0));
                 keySignature.setEmotionId(cursor.getLong(1));
+                keySignature.setApprenticeId(cursor.getLong(2));
 
                 // add keySignature string to list of strings
                 keySignatures.add(keySignature.toString());
@@ -218,6 +224,7 @@ public class KeySignaturesDataSource {
                 keySignature = new KeySignature();
                 keySignature.setId(cursor.getLong(0));
                 keySignature.setEmotionId(cursor.getLong(1));
+                keySignature.setApprenticeId(cursor.getLong(2));
 
                 // add keySignature to keySignatures list
                 keySignatures.add(keySignature.getId());
@@ -245,6 +252,7 @@ public class KeySignaturesDataSource {
                 keySignature = new KeySignature();
                 keySignature.setId(cursor.getLong(0));
                 keySignature.setEmotionId(cursor.getLong(1));
+                keySignature.setApprenticeId(cursor.getLong(2));
             } while (cursor.moveToNext());
         }
 
@@ -259,6 +267,8 @@ public class KeySignaturesDataSource {
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, keySignature.getId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_EMOTION_ID, keySignature.getEmotionId());
+        contentValues
+                .put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID, keySignature.getApprenticeId());
 
         db.update(OtashuDatabaseHelper.TABLE_KEY_SIGNATURES, contentValues,
                 OtashuDatabaseHelper.COLUMN_ID + "=" + keySignature.getId(), null);

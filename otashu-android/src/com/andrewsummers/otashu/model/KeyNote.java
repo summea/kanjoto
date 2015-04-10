@@ -9,6 +9,7 @@ public class KeyNote {
     private long keySignatureId;
     private int notevalue;
     private float weight;
+    private long apprenticeId;
 
     /**
      * getId gets KeyNote id
@@ -80,6 +81,24 @@ public class KeyNote {
      */
     public void setWeight(float weight) {
         this.weight = weight;
+    }
+
+    /**
+     * getApprenticeId gets Apprentice id
+     * 
+     * @return <code>long</code> id value
+     */
+    public long getApprenticeId() {
+        return apprenticeId;
+    }
+
+    /**
+     * setApprenticeId sets Apprentice id
+     * 
+     * @param apprenticeId New apprenticeId value.
+     */
+    public void setApprenticeId(long apprenticeId) {
+        this.apprenticeId = apprenticeId;
     }
 
     /**

@@ -29,13 +29,13 @@ public class DatabaseDumperEmotionsActivity extends Activity {
 
         debugText.setText(debugText.getText().toString() + "Table: Emotions\n"
                 + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NAME + "|"
-                + OtashuDatabaseHelper.COLUMN_LABEL_ID + "\n");
+                + OtashuDatabaseHelper.COLUMN_LABEL_ID + "|" + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "\n");
 
         for (Emotion emotion : allEmotions) {
 
             String newText = debugText.getText().toString();
             newText += emotion.getId() + "|" + emotion.getName() + "|" + emotion.getLabelId()
-                    + "\n";
+                    + "|" + emotion.getApprenticeId() + "\n";
 
             debugText.setText(newText);
         }

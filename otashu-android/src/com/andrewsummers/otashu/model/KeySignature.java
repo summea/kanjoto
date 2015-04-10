@@ -7,6 +7,7 @@ package com.andrewsummers.otashu.model;
 public class KeySignature {
     private long id;
     private long emotionId;
+    private long apprenticeId;
 
     /**
      * getId gets KeySignature id
@@ -42,6 +43,24 @@ public class KeySignature {
      */
     public void setEmotionId(long emotionId) {
         this.emotionId = emotionId;
+    }
+
+    /**
+     * getApprenticeId gets Apprentice id
+     * 
+     * @return <code>long</code> id value
+     */
+    public long getApprenticeId() {
+        return apprenticeId;
+    }
+
+    /**
+     * setApprenticeId sets Apprentice id
+     * 
+     * @param apprenticeId New apprenticeId value.
+     */
+    public void setApprenticeId(long apprenticeId) {
+        this.apprenticeId = apprenticeId;
     }
 
     /**

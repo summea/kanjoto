@@ -84,4 +84,3 @@
 - id
 - graph_id
 - node
-- apprentice_id

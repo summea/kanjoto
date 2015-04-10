@@ -34,6 +34,7 @@ public class EdgesDataSource {
             OtashuDatabaseHelper.COLUMN_TO_NODE_ID,
             OtashuDatabaseHelper.COLUMN_WEIGHT,
             OtashuDatabaseHelper.COLUMN_POSITION,
+            OtashuDatabaseHelper.COLUMN_APPRENTICE_ID,
     };
 
     /**
@@ -75,6 +76,7 @@ public class EdgesDataSource {
         contentValues.put(OtashuDatabaseHelper.COLUMN_TO_NODE_ID, edge.getToNodeId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_WEIGHT, edge.getWeight());
         contentValues.put(OtashuDatabaseHelper.COLUMN_POSITION, edge.getPosition());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID, edge.getApprenticeId());
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -137,6 +139,7 @@ public class EdgesDataSource {
                 edge.setToNodeId(cursor.getInt(4));
                 edge.setWeight(cursor.getFloat(5));
                 edge.setPosition(cursor.getInt(6));
+                edge.setApprenticeId(cursor.getLong(7));
 
                 // add note string to list of strings
                 edges.add(edge);
@@ -178,6 +181,7 @@ public class EdgesDataSource {
                 edge.setToNodeId(cursor.getInt(4));
                 edge.setWeight(cursor.getFloat(5));
                 edge.setPosition(cursor.getInt(6));
+                edge.setApprenticeId(cursor.getLong(7));
 
                 // add note string to list of strings
                 edges.add(edge);
@@ -212,6 +216,7 @@ public class EdgesDataSource {
                 edge.setToNodeId(cursor.getInt(4));
                 edge.setWeight(cursor.getFloat(5));
                 edge.setPosition(cursor.getInt(6));
+                edge.setApprenticeId(cursor.getLong(7));
 
                 // add note string to list of strings
                 edges.add(edge);
@@ -258,6 +263,7 @@ public class EdgesDataSource {
                 edge.setToNodeId(cursor.getInt(4));
                 edge.setWeight(cursor.getFloat(5));
                 edge.setPosition(cursor.getInt(6));
+                edge.setApprenticeId(cursor.getLong(7));
 
                 // add note string to list of strings
                 edges.add(edge);
@@ -343,6 +349,7 @@ public class EdgesDataSource {
                     edge.setToNodeId(cursor.getInt(4));
                     edge.setWeight(cursor.getFloat(5));
                     edge.setPosition(cursor.getInt(6));
+                    edge.setApprenticeId(cursor.getLong(7));
 
                     // add note string to list of strings
                     edges.add(edge);
@@ -368,6 +375,7 @@ public class EdgesDataSource {
                     edge.setToNodeId(cursor.getInt(4));
                     edge.setWeight(cursor.getFloat(5));
                     edge.setPosition(cursor.getInt(6));
+                    edge.setApprenticeId(cursor.getLong(7));
 
                     // add note string to list of strings
                     edges.add(edge);
@@ -416,6 +424,7 @@ public class EdgesDataSource {
         edge.setToNodeId(cursor.getInt(4));
         edge.setWeight(cursor.getFloat(5));
         edge.setPosition(cursor.getInt(6));
+        edge.setApprenticeId(cursor.getLong(7));
         return edge;
     }
 
@@ -447,6 +456,7 @@ public class EdgesDataSource {
                 edge.setToNodeId(cursor.getInt(4));
                 edge.setWeight(cursor.getFloat(5));
                 edge.setPosition(cursor.getInt(6));
+                edge.setApprenticeId(cursor.getLong(7));
 
                 // add edge string to list of strings
                 edges.add(edge.toString());
@@ -511,6 +521,7 @@ public class EdgesDataSource {
                 edge.setToNodeId(cursor.getInt(4));
                 edge.setWeight(cursor.getFloat(5));
                 edge.setPosition(cursor.getInt(6));
+                edge.setApprenticeId(cursor.getLong(7));
             } while (cursor.moveToNext());
         }
 
@@ -543,6 +554,7 @@ public class EdgesDataSource {
                 edge.setToNodeId(cursor.getInt(4));
                 edge.setWeight(cursor.getFloat(5));
                 edge.setPosition(cursor.getInt(6));
+                edge.setApprenticeId(cursor.getLong(7));
             } while (cursor.moveToNext());
         }
 
@@ -576,6 +588,7 @@ public class EdgesDataSource {
                 edge.setToNodeId(cursor.getInt(4));
                 edge.setWeight(cursor.getFloat(5));
                 edge.setPosition(cursor.getInt(6));
+                edge.setApprenticeId(cursor.getLong(7));
             } while (cursor.moveToNext());
         }
 
@@ -595,6 +608,7 @@ public class EdgesDataSource {
         contentValues.put(OtashuDatabaseHelper.COLUMN_TO_NODE_ID, edge.getToNodeId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_WEIGHT, edge.getWeight());
         contentValues.put(OtashuDatabaseHelper.COLUMN_POSITION, edge.getPosition());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID, edge.getApprenticeId());
 
         db.update(OtashuDatabaseHelper.TABLE_EDGES, contentValues, OtashuDatabaseHelper.COLUMN_ID
                 + "=" + edge.getId(), null);
@@ -744,6 +758,7 @@ public class EdgesDataSource {
                 edge.setToNodeId(cursor.getInt(4));
                 edge.setWeight(cursor.getFloat(5));
                 edge.setPosition(cursor.getInt(6));
+                edge.setApprenticeId(cursor.getLong(7));
                 result = edge;
             } while (cursor.moveToNext());
         }

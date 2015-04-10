@@ -8,6 +8,7 @@ public class ApprenticeScorecard {
     private String takenAt;
     private int total;
     private int correct;
+    private long apprenticeId;
 
     /**
      * getId gets ApprenticeScorecard id
@@ -88,6 +89,24 @@ public class ApprenticeScorecard {
      */
     public void setCorrect(int correct) {
         this.correct = correct;
+    }
+
+    /**
+     * getApprenticeId gets Apprentice id
+     * 
+     * @return <code>long</code> id value
+     */
+    public long getApprenticeId() {
+        return apprenticeId;
+    }
+
+    /**
+     * setApprenticeId sets Apprentice id
+     * 
+     * @param apprenticeId New apprenticeId value.
+     */
+    public void setApprenticeId(long apprenticeId) {
+        this.apprenticeId = apprenticeId;
     }
 
     /**

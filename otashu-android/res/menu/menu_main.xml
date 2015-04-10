@@ -36,4 +36,7 @@
     <item
         android:id="@+id/get_emotion_from_noteset"
         android:title="@string/get_emotion_from_noteset" />
+    <item
+        android:id="@+id/view_apprentices"
+        android:title="@string/view_apprentices" />
 </menu>

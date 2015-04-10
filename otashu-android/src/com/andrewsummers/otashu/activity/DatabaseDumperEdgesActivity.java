@@ -35,7 +35,8 @@ public class DatabaseDumperEdgesActivity extends Activity {
                         + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "|"
                         + OtashuDatabaseHelper.COLUMN_TO_NODE_ID + "|"
                         + OtashuDatabaseHelper.COLUMN_WEIGHT + "|"
-                        + OtashuDatabaseHelper.COLUMN_POSITION + "\n");
+                        + OtashuDatabaseHelper.COLUMN_POSITION + "|"
+                        + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "\n");
 
         for (Edge edge : allEdges) {
 
@@ -46,7 +47,8 @@ public class DatabaseDumperEdgesActivity extends Activity {
                     + edge.getFromNodeId() + "|"
                     + edge.getToNodeId() + "|"
                     + edge.getWeight() + "|"
-                    + edge.getPosition() + "\n";
+                    + edge.getPosition()
+                    + edge.getApprenticeId() + "\n";
 
             debugText.setText(newText);
         }

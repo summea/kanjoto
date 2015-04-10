@@ -30,13 +30,15 @@ public class DatabaseDumperKeySignaturesActivity extends Activity {
         debugText
                 .setText(debugText.getText().toString() + "Table: Key Signatures\n"
                         + OtashuDatabaseHelper.COLUMN_ID + "|"
-                        + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "\n");
+                        + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "|"
+                        + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "\n");
 
         for (KeySignature keySignature : allKeySignatures) {
 
             String newText = debugText.getText().toString();
             newText += keySignature.getId() + "|"
-                    + keySignature.getEmotionId() + "\n";
+                    + keySignature.getEmotionId()
+                    + keySignature.getApprenticeId() + "\n";
 
             debugText.setText(newText);
         }

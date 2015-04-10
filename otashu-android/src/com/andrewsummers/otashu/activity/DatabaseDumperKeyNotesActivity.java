@@ -32,7 +32,8 @@ public class DatabaseDumperKeyNotesActivity extends Activity {
                         + OtashuDatabaseHelper.COLUMN_ID + "|"
                         + OtashuDatabaseHelper.COLUMN_KEY_SIGNATURE_ID + "|"
                         + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "|"
-                        + OtashuDatabaseHelper.COLUMN_WEIGHT + "\n");
+                        + OtashuDatabaseHelper.COLUMN_WEIGHT + "|"
+                        + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "\n");
 
         for (KeyNote keyNote : allKeyNotes) {
 
@@ -40,7 +41,8 @@ public class DatabaseDumperKeyNotesActivity extends Activity {
             newText += keyNote.getId() + "|"
                     + keyNote.getKeySignatureId() + "|"
                     + keyNote.getNotevalue() + "|"
-                    + keyNote.getWeight() + "\n";
+                    + keyNote.getWeight()
+                    + keyNote.getApprenticeId() + "\n";
 
             debugText.setText(newText);
         }

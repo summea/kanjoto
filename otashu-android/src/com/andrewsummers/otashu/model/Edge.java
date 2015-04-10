@@ -12,6 +12,7 @@ public class Edge {
     private int toNodeId;
     private float weight;
     private int position;
+    private long apprenticeId;
 
     /**
      * getId gets Edge id
@@ -137,6 +138,24 @@ public class Edge {
      */
     public void setPosition(int position) {
         this.position = position;
+    }
+
+    /**
+     * getApprenticeId gets Apprentice id
+     * 
+     * @return <code>long</code> id value
+     */
+    public long getApprenticeId() {
+        return apprenticeId;
+    }
+
+    /**
+     * setApprenticeId sets Apprentice id
+     * 
+     * @param apprenticeId New apprenticeId value.
+     */
+    public void setApprenticeId(long apprenticeId) {
+        this.apprenticeId = apprenticeId;
     }
 
     /**

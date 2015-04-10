@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">otashu</string>
-    <string name="apprentice_guess_method_label">Guess Method:</string>    
+    <string name="apprentice_deleted">apprentice deleted</string>
+    <string name="apprentice_detail_name_label">Name</string>
+    <string name="apprentice_guess_method_label">Guess Method:</string>
+    <string name="apprentice_name">Name</string>
+    <string name="apprentice_saved">apprentice saved</string>    
     <string name="apprentice_scorecard_deleted">Scorecard deleted</string>
     <string name="apprentice_scorecard_detail_taken_at_label">Taken At</string>
     <string name="apprentice_text">Apprentice Text</string>
@@ -42,6 +46,7 @@
     <string name="context_menu_edit">Edit</string>
     <string name="context_menu_play">Play</string>
     <string name="context_menu_view">View</string>
+    <string name="create_apprentice_title">Create Apprentice</string>
     <string name="create_emotion_title">Create Emotion</string>
     <string name="create_graph_title">Create Graph</string>
     <string name="create_label_title">Create Label</string>
@@ -50,6 +55,7 @@
     <string name="create_notevalue">Create Notevalue</string>
     <string name="dialog_confirm_delete_message">Are you sure you want to delete this?</string>
     <string name="dialog_confirm_delete_title">Delete</string>
+    <string name="edit_apprentice_title">Edit Apprentice</string>
     <string name="edit_bookmark_title">Edit Bookmark</string>
     <string name="edit_emotion_title">Edit Emotion</string>
     <string name="edit_graph_title">Edit Graph</string>
@@ -78,6 +84,7 @@
     <string name="list_header_title">List Title</string>
     <string name="menu_button_apprentice_strongest_paths">Apprentice Strongest Paths</string>
     <string name="menu_button_bookmarks">Bookmarks</string>
+    <string name="menu_button_create_apprentice">New</string>
     <string name="menu_button_create_emotion">New</string>
     <string name="menu_button_create_graph">New</string>
     <string name="menu_button_create_label">New</string>
@@ -138,6 +145,7 @@
     <string name="toggle_enabled_off">Off</string>
     <string name="toggle_enabled_on">On</string>
     <string name="top_apprentice_strongest_paths_list_header">Apprentice\'s Strongest Paths</string>
+    <string name="view_all_apprentices_list_header">All Apprentices</string>
     <string name="view_all_apprentice_scorecards_list_header">All Apprentice Scorecards</string>
     <string name="view_all_bookmarks_list_header">All Bookmarks</string>
     <string name="view_all_emotion_fingerprints_list_header">All Emotion Fingerprints</string>
@@ -147,7 +155,9 @@
     <string name="view_all_notesets_list_header">All Notesets</string>
     <string name="view_all_notevalues_list_header">All Notevalues</string>
     <string name="view_all_notesets_title">View All Notesets</string>
+    <string name="view_apprentice_detail_title">Apprentice Details</string>
     <string name="view_apprentice_scorecard_detail_title">Scorecard Details</string>
+    <string name="view_apprentices">Apprentices</string>
     <string name="view_bookmark_detail_title">Bookmark Details</string>
     <string name="view_emotion_detail_title">Emotion Details</string>
     <string name="view_graph_detail_title">Graph Details</string>

@@ -27,6 +27,7 @@ public class KeyNotesDataSource {
             OtashuDatabaseHelper.COLUMN_KEY_SIGNATURE_ID,
             OtashuDatabaseHelper.COLUMN_NOTEVALUE,
             OtashuDatabaseHelper.COLUMN_WEIGHT,
+            OtashuDatabaseHelper.COLUMN_APPRENTICE_ID,
     };
 
     /**
@@ -66,6 +67,7 @@ public class KeyNotesDataSource {
                 .put(OtashuDatabaseHelper.COLUMN_KEY_SIGNATURE_ID, keyNote.getKeySignatureId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_NOTEVALUE, keyNote.getNotevalue());
         contentValues.put(OtashuDatabaseHelper.COLUMN_WEIGHT, keyNote.getWeight());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID, keyNote.getApprenticeId());
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -127,6 +129,7 @@ public class KeyNotesDataSource {
                 keyNote.setKeySignatureId(cursor.getLong(1));
                 keyNote.setNotevalue(cursor.getInt(2));
                 keyNote.setWeight(cursor.getFloat(3));
+                keyNote.setApprenticeId(cursor.getLong(4));
 
                 // add note string to list of strings
                 keyNotes.add(keyNote);
@@ -171,6 +174,7 @@ public class KeyNotesDataSource {
         keyNote.setKeySignatureId(cursor.getLong(1));
         keyNote.setNotevalue(cursor.getInt(2));
         keyNote.setWeight(cursor.getFloat(3));
+        keyNote.setApprenticeId(cursor.getLong(4));
         return keyNote;
     }
 
@@ -199,6 +203,7 @@ public class KeyNotesDataSource {
                 keyNote.setKeySignatureId(cursor.getLong(1));
                 keyNote.setNotevalue(cursor.getInt(2));
                 keyNote.setWeight(cursor.getFloat(3));
+                keyNote.setApprenticeId(cursor.getLong(4));
 
                 // add keyNote string to list of strings
                 keyNotes.add(keyNote.toString());
@@ -260,6 +265,7 @@ public class KeyNotesDataSource {
                 keyNote.setKeySignatureId(cursor.getLong(1));
                 keyNote.setNotevalue(cursor.getInt(2));
                 keyNote.setWeight(cursor.getFloat(3));
+                keyNote.setApprenticeId(cursor.getLong(4));
             } while (cursor.moveToNext());
         }
 
@@ -286,6 +292,7 @@ public class KeyNotesDataSource {
                 keyNote.setKeySignatureId(cursor.getLong(1));
                 keyNote.setNotevalue(cursor.getInt(2));
                 keyNote.setWeight(cursor.getFloat(3));
+                keyNote.setApprenticeId(cursor.getLong(4));
                 keyNotes.add(keyNote);
             } while (cursor.moveToNext());
         }
@@ -325,6 +332,7 @@ public class KeyNotesDataSource {
                 .put(OtashuDatabaseHelper.COLUMN_KEY_SIGNATURE_ID, keyNote.getKeySignatureId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_NOTEVALUE, keyNote.getNotevalue());
         contentValues.put(OtashuDatabaseHelper.COLUMN_WEIGHT, keyNote.getWeight());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID, keyNote.getApprenticeId());
 
         db.update(OtashuDatabaseHelper.TABLE_KEY_NOTES, contentValues,
                 OtashuDatabaseHelper.COLUMN_ID + "=" + keyNote.getId(), null);

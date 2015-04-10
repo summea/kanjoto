@@ -4,6 +4,7 @@
 - apprentice personalities
 - play mode
 
+- make sure vertices are generated at start of program (if not already existing)
 - create auto test/learn for Emotion test
 - break out general database into Apprentice-specific database
 - think about adding support for different note speeds in Logic D
@@ -24,6 +25,16 @@
 
 
 ## DONE:
+- 20150409: added view apprentice detail activity
+- 20150409: added edit apprentice activity
+- 20150409: added create apprentice activity
+- 20150409: added list all apprentices activity
+- 20150409: added apprentice_id to key_notes
+- 20150409: added apprentice_id to key_signatures
+- 20150409: added apprentice_id to emotions
+- 20150409: added apprentice_id to edges
+- 20150409: added apprentice_id to apprentice_scores
+- 20150409: added apprentice_id to apprentice_scorecards
 - 20150406: created emotion fingerprint
 - 20150403: decided on an early emofing design
 - 20150401: added greater range for "snap" feature in Logic D

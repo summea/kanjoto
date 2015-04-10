@@ -22,7 +22,8 @@ public class EmotionsDataSource {
     private String[] allColumns = {
             OtashuDatabaseHelper.COLUMN_ID,
             OtashuDatabaseHelper.COLUMN_NAME,
-            OtashuDatabaseHelper.COLUMN_LABEL_ID
+            OtashuDatabaseHelper.COLUMN_LABEL_ID,
+            OtashuDatabaseHelper.COLUMN_APPRENTICE_ID,
     };
 
     /**
@@ -60,6 +61,7 @@ public class EmotionsDataSource {
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, emotion.getName());
         contentValues.put(OtashuDatabaseHelper.COLUMN_LABEL_ID, emotion.getLabelId());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID, emotion.getApprenticeId());
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -118,6 +120,7 @@ public class EmotionsDataSource {
                 emotion.setId(cursor.getLong(0));
                 emotion.setName(cursor.getString(1));
                 emotion.setLabelId(cursor.getLong(2));
+                emotion.setApprenticeId(cursor.getLong(3));
 
                 // add note string to list of strings
                 emotions.add(emotion);
@@ -170,6 +173,7 @@ public class EmotionsDataSource {
         emotion.setId(cursor.getLong(0));
         emotion.setName(cursor.getString(1));
         emotion.setLabelId(cursor.getLong(2));
+        emotion.setApprenticeId(cursor.getLong(3));
         return emotion;
     }
 
@@ -197,6 +201,7 @@ public class EmotionsDataSource {
                 emotion.setId(cursor.getLong(0));
                 emotion.setName(cursor.getString(1));
                 emotion.setLabelId(cursor.getLong(2));
+                emotion.setApprenticeId(cursor.getLong(3));
 
                 // add emotion string to list of strings
                 emotions.add(emotion.toString());
@@ -257,9 +262,10 @@ public class EmotionsDataSource {
                 emotion.setId(cursor.getLong(0));
                 emotion.setName(cursor.getString(1));
                 emotion.setLabelId(cursor.getLong(2));
+                emotion.setApprenticeId(cursor.getLong(3));
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return emotion;
@@ -274,6 +280,7 @@ public class EmotionsDataSource {
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, emotion.getId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, emotion.getName());
         contentValues.put(OtashuDatabaseHelper.COLUMN_LABEL_ID, emotion.getLabelId());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID, emotion.getApprenticeId());
 
         db.update(OtashuDatabaseHelper.TABLE_EMOTIONS, contentValues,
                 OtashuDatabaseHelper.COLUMN_ID + "=" + emotion.getId(), null);
