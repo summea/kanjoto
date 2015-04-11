@@ -9,7 +9,9 @@ import com.andrewsummers.otashu.data.ApprenticeScoresDataSource;
 import com.andrewsummers.otashu.model.ApprenticeScorecard;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.widget.TextView;
 
 /**
@@ -23,8 +25,9 @@ import android.widget.TextView;
  * </p>
  */
 public class ViewApprenticeScorecardDetailActivity extends Activity {
-
     private int apprenticeScorecardId = 0;
+    private SharedPreferences sharedPref;
+    private long apprenticeId = 0;
 
     /**
      * onCreate override used to get details view.
@@ -38,11 +41,15 @@ public class ViewApprenticeScorecardDetailActivity extends Activity {
         // get specific layout for content view
         setContentView(R.layout.activity_view_apprentice_scorecard_detail);
 
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        apprenticeId = Long.parseLong(sharedPref.getString(
+                "pref_selected_apprentice", "1"));
+
         apprenticeScorecardId = (int) getIntent().getExtras().getLong("list_id");
 
         ApprenticeScorecard apprenticeScorecard = new ApprenticeScorecard();
         ApprenticeScorecardsDataSource asc = new ApprenticeScorecardsDataSource(this);
-        apprenticeScorecard = asc.getApprenticeScorecard(apprenticeScorecardId);
+        apprenticeScorecard = asc.getApprenticeScorecard(apprenticeId, apprenticeScorecardId);
         asc.close();
 
         // fill in form data
@@ -51,8 +58,9 @@ public class ViewApprenticeScorecardDetailActivity extends Activity {
 
         // get number of correct answers
         ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
-        int total = asds.getApprenticeScoresCount(apprenticeScorecard.getId());
-        int totalCorrect = asds.getCorrectApprenticeScoresCount(apprenticeScorecard.getId());
+        int total = asds.getApprenticeScoresCount(apprenticeId, apprenticeScorecard.getId());
+        int totalCorrect = asds.getCorrectApprenticeScoresCount(apprenticeId,
+                apprenticeScorecard.getId());
         asds.close();
 
         double guessesCorrectPercentage = 0.0d;

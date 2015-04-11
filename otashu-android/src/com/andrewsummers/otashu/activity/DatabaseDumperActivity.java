@@ -24,6 +24,7 @@ import android.widget.AdapterView.OnItemClickListener;
 public class DatabaseDumperActivity extends ListActivity {
 
     static final String[] database_tables = new String[] {
+            OtashuDatabaseHelper.TABLE_APPRENTICES,
             OtashuDatabaseHelper.TABLE_APPRENTICE_SCORECARDS,
             OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES,
             OtashuDatabaseHelper.TABLE_BOOKMARKS,
@@ -52,49 +53,53 @@ public class DatabaseDumperActivity extends ListActivity {
                 switch (position) {
                     case 0:
                         intent = new Intent(DatabaseDumperActivity.this,
-                                DatabaseDumperApprenticeScorecardsActivity.class);
+                                DatabaseDumperApprenticesActivity.class);
                         break;
                     case 1:
                         intent = new Intent(DatabaseDumperActivity.this,
-                                DatabaseDumperApprenticeScoresActivity.class);
+                                DatabaseDumperApprenticeScorecardsActivity.class);
                         break;
                     case 2:
                         intent = new Intent(DatabaseDumperActivity.this,
-                                DatabaseDumperBookmarksActivity.class);
+                                DatabaseDumperApprenticeScoresActivity.class);
                         break;
                     case 3:
                         intent = new Intent(DatabaseDumperActivity.this,
-                                DatabaseDumperEdgesActivity.class);
+                                DatabaseDumperBookmarksActivity.class);
                         break;
                     case 4:
                         intent = new Intent(DatabaseDumperActivity.this,
-                                DatabaseDumperEmotionsActivity.class);
+                                DatabaseDumperEdgesActivity.class);
                         break;
                     case 5:
                         intent = new Intent(DatabaseDumperActivity.this,
-                                DatabaseDumperGraphsActivity.class);
+                                DatabaseDumperEmotionsActivity.class);
                         break;
                     case 6:
                         intent = new Intent(DatabaseDumperActivity.this,
-                                DatabaseDumperKeySignaturesActivity.class);
+                                DatabaseDumperGraphsActivity.class);
                         break;
                     case 7:
                         intent = new Intent(DatabaseDumperActivity.this,
-                                DatabaseDumperKeyNotesActivity.class);
+                                DatabaseDumperKeySignaturesActivity.class);
                         break;
                     case 8:
                         intent = new Intent(DatabaseDumperActivity.this,
-                                DatabaseDumperLabelsActivity.class);
+                                DatabaseDumperKeyNotesActivity.class);
                         break;
                     case 9:
                         intent = new Intent(DatabaseDumperActivity.this,
-                                DatabaseDumperNotesActivity.class);
+                                DatabaseDumperLabelsActivity.class);
                         break;
                     case 10:
                         intent = new Intent(DatabaseDumperActivity.this,
-                                DatabaseDumperNotesetsActivity.class);
+                                DatabaseDumperNotesActivity.class);
                         break;
                     case 11:
+                        intent = new Intent(DatabaseDumperActivity.this,
+                                DatabaseDumperNotesetsActivity.class);
+                        break;
+                    case 12:
                         intent = new Intent(DatabaseDumperActivity.this,
                                 DatabaseDumperNotevaluesActivity.class);
                         break;

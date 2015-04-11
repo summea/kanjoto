@@ -68,6 +68,7 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
     private double guessesCorrectPercentage = 0.0;
     private int totalGuesses = 0;
     private long scorecardId = 0;
+    private long apprenticeId = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,6 +84,8 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         transitionGraphId = Long.parseLong(sharedPref.getString(
                 "pref_transition_graph_for_apprentice", "2"));
+        apprenticeId = Long.parseLong(sharedPref.getString(
+                "pref_selected_apprentice", "1"));
 
         try {
             // add listeners to buttons
@@ -253,6 +256,7 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                     newEdge.setToNodeId(nodeB.getNode());
                     newEdge.setWeight(0.5f);
                     newEdge.setPosition(1);
+                    newEdge.setApprenticeId(apprenticeId);
                     newEdge = edds.createEdge(newEdge);
                     edgeId = newEdge.getId();
                 } else {
@@ -349,6 +353,7 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                     newEdge.setWeight(0.5f);
                     newEdge.setPosition(1);
                     newEdge = edds.createEdge(newEdge);
+                    newEdge.setApprenticeId(apprenticeId);
                     edgeId = newEdge.getId();
                 } else {
                     // edge exists between nodeA and nodeB, just update weight
@@ -434,7 +439,8 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
             int randomNotevalue = rnd.nextInt((71 - 60) + 1) + 60;
 
             approach = "Learned Data";
-            Edge foundEdge = edds.getRandomEdge(transitionGraphId, emotionId, 0, 0, 1, 0);
+            Edge foundEdge = edds.getRandomEdge(apprenticeId, transitionGraphId, emotionId, 0, 0,
+                    1, 0);
             if (randomOption == 1) {
                 approach = "Learned Data +";
                 foundEdge.setToNodeId(randomNotevalue);
@@ -546,6 +552,7 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                 ApprenticeScorecardsDataSource asds = new ApprenticeScorecardsDataSource(this);
                 ApprenticeScorecard aScorecard = new ApprenticeScorecard();
                 aScorecard.setTakenAt(takenAtISO);
+                aScorecard.setApprenticeId(apprenticeId);
                 aScorecard = asds.createApprenticeScorecard(aScorecard);
                 asds.close();
 
@@ -556,7 +563,7 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
             // also, update scorecard question totals
             ApprenticeScorecardsDataSource ascds = new ApprenticeScorecardsDataSource(this);
             ApprenticeScorecard scorecard = new ApprenticeScorecard();
-            scorecard = ascds.getApprenticeScorecard(scorecardId);
+            scorecard = ascds.getApprenticeScorecard(apprenticeId, scorecardId);
             if (isCorrect == 1) {
                 scorecard.setCorrect(guessesCorrect);
             }
@@ -570,6 +577,7 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
             aScore.setQuestionNumber(totalGuesses);
             aScore.setCorrect(isCorrect);
             aScore.setEdgeId(edgeId);
+            aScore.setApprenticeId(apprenticeId);
 
             ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
             asds.createApprenticeScore(aScore);

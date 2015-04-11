@@ -27,6 +27,7 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
     private SharedPreferences sharedPref;
     private long graphId;
     DrawView drawView;
+    private long apprenticeId = 0;
 
     /**
      * onCreate override used to get details view.
@@ -44,6 +45,8 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         graphId = Long.parseLong(sharedPref.getString(
                 "pref_emotion_graph_for_apprentice", "1"));
+        apprenticeId = Long.parseLong(sharedPref.getString(
+                "pref_selected_apprentice", "1"));
 
         // 2. Gather all found paths
         // List<Integer> foundPathNotes = gatherEmotionPaths(0.5f);
@@ -73,7 +76,8 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
 
         // 3. Look for all possible Emotion Graph paths that are stronger (lower than) X weight
         EdgesDataSource eds = new EdgesDataSource(this);
-        SparseArray<List<Edge>> foundEdges = eds.getPathsForEmotion(graphId, emotionId, 0.5f);
+        SparseArray<List<Edge>> foundEdges = eds.getPathsForEmotion(apprenticeId, graphId,
+                emotionId, 0.5f);
 
         // 5. Store noteset path root number reductions into data structure
         SparseArray<Integer> rootNumbersMap = new SparseArray<Integer>();

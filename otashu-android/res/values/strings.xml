@@ -125,6 +125,7 @@
     <string name="pref_import_database_location">Import Database from Location</string>
     <string name="pref_screen_alarm">Alarm</string>
     <string name="pref_scale_graph_for_apprentice">Scale Graph Id for Apprentice</string>
+    <string name="pref_selected_apprentice">Selected Apprentice</string>
     <string name="pref_transition_graph_for_apprentice">Transition Graph Id for Apprentice</string>
     <string name="remote_noteset">getting remote noteset...</string>
     <string name="spinner_emotion_label_label">Label</string>
@@ -155,9 +156,9 @@
     <string name="view_all_notesets_list_header">All Notesets</string>
     <string name="view_all_notevalues_list_header">All Notevalues</string>
     <string name="view_all_notesets_title">View All Notesets</string>
-    <string name="view_apprentice_detail_title">Apprentice Details</string>
-    <string name="view_apprentice_scorecard_detail_title">Scorecard Details</string>
     <string name="view_apprentices">Apprentices</string>
+    <string name="view_apprentice_detail_title">Apprentice Details</string>
+    <string name="view_apprentice_scorecard_detail_title">Scorecard Details</string>    
     <string name="view_bookmark_detail_title">Bookmark Details</string>
     <string name="view_emotion_detail_title">Emotion Details</string>
     <string name="view_graph_detail_title">Graph Details</string>

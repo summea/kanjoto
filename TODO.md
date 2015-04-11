@@ -4,7 +4,7 @@
 - apprentice personalities
 - play mode
 
-- make sure vertices are generated at start of program (if not already existing)
+- make sure vertices are generated at start of program (if not already existing... these are same for all apprentices)
 - create auto test/learn for Emotion test
 - break out general database into Apprentice-specific database
 - think about adding support for different note speeds in Logic D
@@ -25,6 +25,11 @@
 
 
 ## DONE:
+- 20150410: connected apprentice_id to scorecards
+- 20150410: connected apprentice_id to scores
+- 20150410: connected up apprentice_id-related sections of the EdgesDataSource 
+- 20150410: current apprentice preference setting
+- 20150409: added data dumper for apprentices table
 - 20150409: added view apprentice detail activity
 - 20150409: added edit apprentice activity
 - 20150409: added create apprentice activity

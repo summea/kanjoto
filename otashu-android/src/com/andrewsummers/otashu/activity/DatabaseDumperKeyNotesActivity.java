@@ -41,7 +41,7 @@ public class DatabaseDumperKeyNotesActivity extends Activity {
             newText += keyNote.getId() + "|"
                     + keyNote.getKeySignatureId() + "|"
                     + keyNote.getNotevalue() + "|"
-                    + keyNote.getWeight()
+                    + keyNote.getWeight() + "|"
                     + keyNote.getApprenticeId() + "\n";
 
             debugText.setText(newText);

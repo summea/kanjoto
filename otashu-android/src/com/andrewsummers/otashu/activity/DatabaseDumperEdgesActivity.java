@@ -4,7 +4,9 @@ package com.andrewsummers.otashu.activity;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.widget.TextView;
 
 import com.andrewsummers.otashu.R;
@@ -13,6 +15,8 @@ import com.andrewsummers.otashu.data.OtashuDatabaseHelper;
 import com.andrewsummers.otashu.model.Edge;
 
 public class DatabaseDumperEdgesActivity extends Activity {
+    private SharedPreferences sharedPref;
+    private long apprenticeId = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -21,8 +25,12 @@ public class DatabaseDumperEdgesActivity extends Activity {
         // get specific layout for content view
         setContentView(R.layout.activity_database_dumper);
 
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        apprenticeId = Long.parseLong(sharedPref.getString(
+                "pref_selected_apprentice", "1"));
+
         EdgesDataSource edds = new EdgesDataSource(this);
-        List<Edge> allEdges = edds.getAllEdges();
+        List<Edge> allEdges = edds.getAllEdges(apprenticeId);
         edds.close();
 
         TextView debugText = (TextView) findViewById(R.id.debug_text);
@@ -47,7 +55,7 @@ public class DatabaseDumperEdgesActivity extends Activity {
                     + edge.getFromNodeId() + "|"
                     + edge.getToNodeId() + "|"
                     + edge.getWeight() + "|"
-                    + edge.getPosition()
+                    + edge.getPosition() + "|"
                     + edge.getApprenticeId() + "\n";
 
             debugText.setText(newText);

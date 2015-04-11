@@ -111,10 +111,11 @@ public class ApprenticeScoresDataSource {
      * 
      * @return List of ApprenticeScores.
      */
-    public List<ApprenticeScore> getAllApprenticeScores() {
+    public List<ApprenticeScore> getAllApprenticeScores(long apprenticeId) {
         List<ApprenticeScore> apprenticeScores = new ArrayList<ApprenticeScore>();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -147,11 +148,12 @@ public class ApprenticeScoresDataSource {
      * 
      * @return List of ApprenticeScores.
      */
-    public List<ApprenticeScore> getAllApprenticeScores(long scorecardId) {
+    public List<ApprenticeScore> getAllApprenticeScores(long apprenticeId, long scorecardId) {
         List<ApprenticeScore> apprenticeScores = new ArrayList<ApprenticeScore>();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_SCORECARD_ID + "=" + scorecardId;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
+                + " AND " + OtashuDatabaseHelper.COLUMN_SCORECARD_ID + "=" + scorecardId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -184,12 +186,17 @@ public class ApprenticeScoresDataSource {
      * 
      * @return List of ApprenticeScores ids.
      */
-    public List<Integer> getAllApprenticeScoreIds() {
+    public List<Integer> getAllApprenticeScoreIds(long apprenticeId) {
         List<Integer> apprenticeScore_ids = new ArrayList<Integer>();
 
-        Cursor cursor = database.query(
-                OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES, allColumns, null,
-                null, null, null, null);
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notes from database
+        Cursor cursor = db.rawQuery(query, null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -224,10 +231,11 @@ public class ApprenticeScoresDataSource {
      * 
      * @return List of ApprenticeScore preview strings.
      */
-    public List<String> getAllApprenticeScoreListPreviews() {
+    public List<String> getAllApprenticeScoreListPreviews(long apprenticeId) {
         List<String> apprenticeScores = new LinkedList<String>();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -260,11 +268,12 @@ public class ApprenticeScoresDataSource {
      * 
      * @return List of ApprenticeScore ids.
      */
-    public List<Long> getAllApprenticeScoreListDBTableIds() {
+    public List<Long> getAllApprenticeScoreListDBTableIds(long apprenticeId) {
         List<Long> apprenticeScores = new LinkedList<Long>();
 
         String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
-                + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES;
+                + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -287,11 +296,12 @@ public class ApprenticeScoresDataSource {
         return apprenticeScores;
     }
 
-    public ApprenticeScore getApprenticeScore(long apprenticeScoreId) {
+    public ApprenticeScore getApprenticeScore(long apprenticeId, long apprenticeScoreId) {
         ApprenticeScore apprenticeScore = new ApprenticeScore();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_ID + "=" + apprenticeScoreId;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
+                + " AND " + OtashuDatabaseHelper.COLUMN_ID + "=" + apprenticeScoreId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -337,11 +347,11 @@ public class ApprenticeScoresDataSource {
         return apprenticeScore;
     }
 
-    public ApprenticeScore getRandomApprenticeScore() {
+    public ApprenticeScore getRandomApprenticeScore(long apprenticeId) {
         ApprenticeScore apprenticeScore = new ApprenticeScore();
 
         // get all apprenticeScores first
-        List<ApprenticeScore> allApprenticeScores = getAllApprenticeScores();
+        List<ApprenticeScore> allApprenticeScores = getAllApprenticeScores(apprenticeId);
 
         // choose random apprenticeScore
         int chosenIndex = new Random().nextInt(allApprenticeScores.size());
@@ -356,11 +366,12 @@ public class ApprenticeScoresDataSource {
      * 
      * @return int of total number correct
      */
-    public int getCorrectApprenticeScoresCount(long scorecardId) {
+    public int getCorrectApprenticeScoresCount(long apprenticeId, long scorecardId) {
         int totalCorrect = 0;
 
         String query = "SELECT COUNT(*) FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_SCORECARD_ID + "=" + scorecardId
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
+                + " AND " + OtashuDatabaseHelper.COLUMN_SCORECARD_ID + "=" + scorecardId
                 + " AND " + OtashuDatabaseHelper.COLUMN_CORRECT + "=1"
                 + " GROUP BY " + OtashuDatabaseHelper.COLUMN_QUESTION_NUMBER;
 
@@ -378,11 +389,12 @@ public class ApprenticeScoresDataSource {
      * 
      * @return int of total number correct
      */
-    public int getApprenticeScoresCount(long scorecardId) {
+    public int getApprenticeScoresCount(long apprenticeId, long scorecardId) {
         int total = 0;
 
         String query = "SELECT COUNT(*) FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_SCORECARD_ID + "=" + scorecardId
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
+                + " AND " + OtashuDatabaseHelper.COLUMN_SCORECARD_ID + "=" + scorecardId
                 + " GROUP BY " + OtashuDatabaseHelper.COLUMN_QUESTION_NUMBER;
 
         Log.d("MYLOG", query);

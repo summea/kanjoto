@@ -11,7 +11,7 @@ import android.util.Log;
  * application database.
  */
 public class OtashuDatabaseHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 45;
+    private static final int DATABASE_VERSION = 46;
     private static final String DATABASE_NAME = "otashu_collection.db";
 
     public static final String COLUMN_ID = "_id";
@@ -203,61 +203,5 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.d("MYLOG", ">>> new database version: " + newVersion);
         Log.d("MYLOG", "updating database...");
-
-        // v32
-        // db.execSQL("DROP TABLE " + TABLE_APPRENTICE_SCORECARDS);
-        // db.execSQL("DROP TABLE " + TABLE_APPRENTICE_SCORES);
-        // db.execSQL(CREATE_TABLE_APPRENTICE_SCORECARDS);
-        // db.execSQL(CREATE_TABLE_APPRENTICE_SCORES);
-
-        // v33 (change required for emotion graph id)
-        // db.execSQL("UPDATE " + TABLE_VERTICES + " SET " + COLUMN_GRAPH_ID + "=1");
-        // db.execSQL("UPDATE " + TABLE_EDGES + " SET " + COLUMN_GRAPH_ID + "=1");
-
-        // v34
-        // db.execSQL("DROP TABLE " + TABLE_GRAPHS);
-        // db.execSQL(CREATE_TABLE_GRAPHS);
-
-        // v36
-        // db.execSQL("DELETE FROM " + TABLE_EDGES + " WHERE " + COLUMN_GRAPH_ID + "=2");
-
-        // v38
-        // db.execSQL("DELETE FROM " + TABLE_EDGES + " WHERE " + COLUMN_GRAPH_ID + "=3");
-
-        // 39
-        // db.execSQL(CREATE_TABLE_KEY_SIGNATURES);
-        // db.execSQL(CREATE_TABLE_KEY_NOTES);
-
-        // 40
-        // db.execSQL("DROP TABLE " + TABLE_KEY_NOTES);
-        // db.execSQL(CREATE_TABLE_KEY_NOTES);
-        // db.execSQL("DELETE FROM " + TABLE_EDGES + " WHERE " + COLUMN_GRAPH_ID + "=3");
-
-        // 41
-        // db.execSQL(CREATE_TABLE_KEY_SIGNATURES);
-        // db.execSQL(CREATE_TABLE_KEY_NOTES);
-
-        // 42 (change required for emotion graph id)
-        // db.execSQL("UPDATE " + TABLE_VERTICES + " SET " + COLUMN_GRAPH_ID + "=1");
-        // db.execSQL("UPDATE " + TABLE_EDGES + " SET " + COLUMN_GRAPH_ID + "=1");
-
-        // 44
-        // db.execSQL(CREATE_TABLE_APPRENTICES);
-
-        // 45
-        db.execSQL("DROP TABLE " + TABLE_APPRENTICES);
-        db.execSQL(CREATE_TABLE_APPRENTICES);
-        db.execSQL("ALTER TABLE " + TABLE_APPRENTICE_SCORECARDS + " ADD COLUMN "
-                + COLUMN_APPRENTICE_ID + " integer;");
-        db.execSQL("ALTER TABLE " + TABLE_APPRENTICE_SCORES + " ADD COLUMN " + COLUMN_APPRENTICE_ID
-                + " integer;");
-        db.execSQL("ALTER TABLE " + TABLE_EDGES + " ADD COLUMN " + COLUMN_APPRENTICE_ID
-                + " integer;");
-        db.execSQL("ALTER TABLE " + TABLE_EMOTIONS + " ADD COLUMN " + COLUMN_APPRENTICE_ID
-                + " integer;");
-        db.execSQL("ALTER TABLE " + TABLE_KEY_SIGNATURES + " ADD COLUMN " + COLUMN_APPRENTICE_ID
-                + " integer;");
-        db.execSQL("ALTER TABLE " + TABLE_KEY_NOTES + " ADD COLUMN " + COLUMN_APPRENTICE_ID
-                + " integer;");
     }
 }

@@ -106,10 +106,11 @@ public class ApprenticeScorecardsDataSource {
      * 
      * @return List of ApprenticeScorecards.
      */
-    public List<ApprenticeScorecard> getAllApprenticeScorecards(String orderBy) {
+    public List<ApprenticeScorecard> getAllApprenticeScorecards(long apprenticeId, String orderBy) {
         List<ApprenticeScorecard> apprenticeScorecards = new ArrayList<ApprenticeScorecard>();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORECARDS;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORECARDS
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
         if (orderBy != null && !orderBy.isEmpty()) {
             query += " ORDER BY " + orderBy + " ASC";
         }
@@ -146,12 +147,17 @@ public class ApprenticeScorecardsDataSource {
      * 
      * @return List of ApprenticeScorecards ids.
      */
-    public List<Integer> getAllApprenticeScorecardIds() {
+    public List<Integer> getAllApprenticeScorecardIds(long apprenticeId) {
         List<Integer> apprenticeScorecard_ids = new ArrayList<Integer>();
 
-        Cursor cursor = database.query(
-                OtashuDatabaseHelper.TABLE_APPRENTICE_SCORECARDS, allColumns, null,
-                null, null, null, null);
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORECARDS
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notes from database
+        Cursor cursor = db.rawQuery(query, null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -185,10 +191,11 @@ public class ApprenticeScorecardsDataSource {
      * 
      * @return List of ApprenticeScorecard preview strings.
      */
-    public List<String> getAllApprenticeScorecardListPreviews() {
+    public List<String> getAllApprenticeScorecardListPreviews(long apprenticeId) {
         List<String> apprenticeScorecards = new LinkedList<String>();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORECARDS;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORECARDS
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -221,11 +228,12 @@ public class ApprenticeScorecardsDataSource {
      * 
      * @return List of ApprenticeScorecard ids.
      */
-    public List<Long> getAllApprenticeScorecardListDBTableIds() {
+    public List<Long> getAllApprenticeScorecardListDBTableIds(long apprenticeId) {
         List<Long> apprenticeScorecards = new LinkedList<Long>();
 
         String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
-                + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORECARDS;
+                + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORECARDS
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -253,11 +261,12 @@ public class ApprenticeScorecardsDataSource {
         return apprenticeScorecards;
     }
 
-    public ApprenticeScorecard getApprenticeScorecard(long apprenticeScorecardId) {
+    public ApprenticeScorecard getApprenticeScorecard(long apprenticeId, long apprenticeScorecardId) {
         ApprenticeScorecard apprenticeScorecard = new ApprenticeScorecard();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORECARDS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + apprenticeScorecardId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
+                + " AND " + OtashuDatabaseHelper.COLUMN_ID + "=" + apprenticeScorecardId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();

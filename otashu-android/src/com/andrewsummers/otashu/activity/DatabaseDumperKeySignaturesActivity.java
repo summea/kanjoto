@@ -37,7 +37,7 @@ public class DatabaseDumperKeySignaturesActivity extends Activity {
 
             String newText = debugText.getText().toString();
             newText += keySignature.getId() + "|"
-                    + keySignature.getEmotionId()
+                    + keySignature.getEmotionId() + "|"
                     + keySignature.getApprenticeId() + "\n";
 
             debugText.setText(newText);

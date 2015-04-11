@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -14,6 +16,8 @@ import com.andrewsummers.otashu.data.EdgesDataSource;
 import com.andrewsummers.otashu.model.Edge;
 
 public class ViewApprenticeStrongestPathsActivity extends Activity {
+    private SharedPreferences sharedPref;
+    private long apprenticeId = 0;
 
     /**
      * onCreate override that provides emotion-choose view to user.
@@ -26,6 +30,10 @@ public class ViewApprenticeStrongestPathsActivity extends Activity {
 
         // get specific layout for content view
         setContentView(R.layout.activity_view_apprentice_strongest_paths);
+
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        apprenticeId = Long.parseLong(sharedPref.getString(
+                "pref_selected_apprentice", "1"));
 
         TextView pathText = (TextView) findViewById(R.id.path_text);
         pathText.setText("Strongest Path\n");
@@ -46,17 +54,20 @@ public class ViewApprenticeStrongestPathsActivity extends Activity {
 
         // select all position one edges for given emotion with given threshold (e.g. all rows that
         // have a weight less than 0.5)
-        List<Edge> p1Edges = eds.getAllEdges(graphId, emotionId, weightLimit, position);
+        List<Edge> p1Edges = eds.getAllEdges(apprenticeId, graphId, emotionId, weightLimit,
+                position);
 
         position = 2;
         // select all position two edges for given emotion with given threshold (e.g. all rows that
         // have a weight less than 0.5)
-        List<Edge> p2Edges = eds.getAllEdges(graphId, emotionId, weightLimit, position);
+        List<Edge> p2Edges = eds.getAllEdges(apprenticeId, graphId, emotionId, weightLimit,
+                position);
 
         position = 3;
         // select all position three edges for given emotion with given threshold (e.g. all rows
         // that have a weight less than 0.5)
-        List<Edge> p3Edges = eds.getAllEdges(graphId, emotionId, weightLimit, position);
+        List<Edge> p3Edges = eds.getAllEdges(apprenticeId, graphId, emotionId, weightLimit,
+                position);
 
         List<Edge> bestMatch = new ArrayList<Edge>();
         boolean edge1To2Match = false;

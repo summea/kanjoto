@@ -87,6 +87,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
     private long scorecardId = 0;
     private boolean autoMode = false;
     private Apprentice apprentice;
+    private long apprenticeId = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -106,6 +107,8 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         emotionGraphId = Long.parseLong(sharedPref.getString(
                 "pref_emotion_graph_for_apprentice", "1"));
+        apprenticeId = Long.parseLong(sharedPref.getString(
+                "pref_selected_apprentice", "1"));
 
         try {
             // add listeners to buttons
@@ -507,8 +510,9 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
             int randomNotevalue = rnd.nextInt((71 - 60) + 1) + 60;
 
             approach = "Learned Data";
-            Edge edgeOne = edds.getRandomEdge(emotionGraphId, emotionId, 0, 0, 1, 0);
-            Edge edgeTwo = edds.getRandomEdge(emotionGraphId, emotionId, edgeOne.getToNodeId(), 0,
+            Edge edgeOne = edds.getRandomEdge(apprenticeId, emotionGraphId, emotionId, 0, 0, 1, 0);
+            Edge edgeTwo = edds.getRandomEdge(apprenticeId, emotionGraphId, emotionId,
+                    edgeOne.getToNodeId(), 0,
                     2, 3);
             Edge edgeThree = new Edge();
             if (randomOption == 1) {
@@ -516,7 +520,8 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                 edgeThree.setFromNodeId(edgeTwo.getToNodeId());
                 edgeThree.setToNodeId(randomNotevalue);
             } else {
-                edgeThree = edds.getRandomEdge(emotionGraphId, emotionId, edgeTwo.getToNodeId(),
+                edgeThree = edds.getRandomEdge(apprenticeId, emotionGraphId, emotionId,
+                        edgeTwo.getToNodeId(),
                         0, 3, 3);
             }
 
@@ -664,7 +669,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
             // also, update scorecard question totals
             ApprenticeScorecardsDataSource ascds = new ApprenticeScorecardsDataSource(this);
             ApprenticeScorecard scorecard = new ApprenticeScorecard();
-            scorecard = ascds.getApprenticeScorecard(scorecardId);
+            scorecard = ascds.getApprenticeScorecard(apprenticeId, scorecardId);
             if (isCorrect == 1) {
                 scorecard.setCorrect(guessesCorrect);
             }

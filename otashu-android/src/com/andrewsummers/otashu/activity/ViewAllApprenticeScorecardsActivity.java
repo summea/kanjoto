@@ -15,7 +15,9 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -40,6 +42,8 @@ public class ViewAllApprenticeScorecardsActivity extends ListActivity {
     private ListView listView = null;
     private int selectedPositionInList = 0;
     private ApprenticeScorecardAdapter adapter = null;
+    private SharedPreferences sharedPref;
+    private long apprenticeId = 0;
 
     /**
      * onCreate override used to gather and display a list of all apprenticeScorecards saved in
@@ -53,6 +57,10 @@ public class ViewAllApprenticeScorecardsActivity extends ListActivity {
 
         // initialize ListView
         listView = getListView();
+
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        apprenticeId = Long.parseLong(sharedPref.getString(
+                "pref_selected_apprentice", "1"));
 
         // set title for list activity
         ViewGroup listHeader = (ViewGroup) getLayoutInflater().inflate(R.layout.list_header,
@@ -68,7 +76,7 @@ public class ViewAllApprenticeScorecardsActivity extends ListActivity {
         List<ApprenticeScorecard> allApprenticeScorecards = new LinkedList<ApprenticeScorecard>();
         ApprenticeScorecardsDataSource lds = new ApprenticeScorecardsDataSource(this);
         allApprenticeScorecards = lds
-                .getAllApprenticeScorecards(OtashuDatabaseHelper.COLUMN_TAKEN_AT);
+                .getAllApprenticeScorecards(apprenticeId, OtashuDatabaseHelper.COLUMN_TAKEN_AT);
         lds.close();
 
         // pass list data to adapter
@@ -184,7 +192,7 @@ public class ViewAllApprenticeScorecardsActivity extends ListActivity {
         ApprenticeScorecardsDataSource lds = new ApprenticeScorecardsDataSource(this);
 
         // get string version of returned apprenticeScorecard list
-        allApprenticeScorecardsData = lds.getAllApprenticeScorecardListDBTableIds();
+        allApprenticeScorecardsData = lds.getAllApprenticeScorecardListDBTableIds(apprenticeId);
         lds.close();
 
         // prevent crashes due to lack of database data
@@ -196,7 +204,8 @@ public class ViewAllApprenticeScorecardsActivity extends ListActivity {
                 .toArray(new Long[allApprenticeScorecardsData.size()]);
 
         ApprenticeScorecard apprenticeScorecard = lds
-                .getApprenticeScorecard(allApprenticeScorecards[(int) apprenticeScorecardId]);
+                .getApprenticeScorecard(apprenticeId,
+                        allApprenticeScorecards[(int) apprenticeScorecardId]);
 
         lds.close();
 

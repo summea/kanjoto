@@ -76,6 +76,8 @@ public class GenerateMusicActivity extends Activity {
     private int currentKeySignatureKey = 1;
     private long currentKeySignatureId = 1;
     private List<Integer> currentKeySignatureNotes = new ArrayList<Integer>();
+    private SharedPreferences sharedPref;
+    private long apprenticeId = 0;
 
     // TODO: make this more dynamic
     private static SparseArray<String> noteMap;
@@ -148,6 +150,10 @@ public class GenerateMusicActivity extends Activity {
         selectedEmotionId = bundle.getInt("emotion_id");
         selectedLogicId = bundle.getInt("logic_id");
         selectedInstrumentId = bundle.getInt("instrument_id");
+
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        apprenticeId = Long.parseLong(sharedPref.getString(
+                "pref_selected_apprentice", "1"));
 
         EmotionsDataSource emds = new EmotionsDataSource(this);
         Emotion currentEmotion = emds.getEmotion(selectedEmotionId);
@@ -697,14 +703,17 @@ public class GenerateMusicActivity extends Activity {
                 Random random = new Random();
                 int randomNumber = random.nextInt(3) + 1;
                 if (randomNumber == 1) {
-                    edges = eds.getStrongPath(graphId, selectedEmotionId, 0, nextNodeTo,
+                    edges = eds.getStrongPath(apprenticeId, graphId, selectedEmotionId, 0,
+                            nextNodeTo,
                             improvisationLevel);
                 } else {
-                    edges = eds.getStrongPath(graphId, selectedEmotionId, 0, nextNodeTo, 0);
+                    edges = eds.getStrongPath(apprenticeId, graphId, selectedEmotionId, 0,
+                            nextNodeTo, 0);
                 }
             } else {
                 Log.d("MYLOG", "not using nextNodeTo...");
-                edges = eds.getStrongPath(graphId, selectedEmotionId, 0, 0, improvisationLevel);
+                edges = eds.getStrongPath(apprenticeId, graphId, selectedEmotionId, 0, 0,
+                        improvisationLevel);
             }
 
             // add edge results to notes list
@@ -723,7 +732,7 @@ public class GenerateMusicActivity extends Activity {
                     "pref_transition_graph_for_apprentice", "2"));
 
             Log.d("MYLOG", "> current edges: " + edges.toString());
-            Edge edge = eds.getStrongTransitionPath(graphId, selectedEmotionId,
+            Edge edge = eds.getStrongTransitionPath(apprenticeId, graphId, selectedEmotionId,
                     edges.get(edges.size() - 1).getToNodeId());
 
             // 4. Check if there is any strong noteset with a head beginning with previously found
@@ -786,14 +795,17 @@ public class GenerateMusicActivity extends Activity {
                     Random random = new Random();
                     int randomNumber = random.nextInt(3) + 1;
                     if (randomNumber == 1) {
-                        edges = eds.getStrongPath(graphId, selectedEmotionId, 0, nextNodeTo,
+                        edges = eds.getStrongPath(apprenticeId, graphId, selectedEmotionId, 0,
+                                nextNodeTo,
                                 improvisationLevel);
                     } else {
-                        edges = eds.getStrongPath(graphId, selectedEmotionId, 0, nextNodeTo, 0);
+                        edges = eds.getStrongPath(apprenticeId, graphId, selectedEmotionId, 0,
+                                nextNodeTo, 0);
                     }
                 } else {
                     Log.d("MYLOG", "not using nextNodeTo...");
-                    edges = eds.getStrongPath(graphId, selectedEmotionId, 0, 0, improvisationLevel);
+                    edges = eds.getStrongPath(apprenticeId, graphId, selectedEmotionId, 0, 0,
+                            improvisationLevel);
                 }
 
                 // add edge results to notes list
@@ -856,14 +868,17 @@ public class GenerateMusicActivity extends Activity {
                     Random random = new Random();
                     int randomNumber = random.nextInt(3) + 1;
                     if (randomNumber == 1) {
-                        edges = eds.getStrongPath(graphId, selectedEmotionId, 0, nextNodeTo,
+                        edges = eds.getStrongPath(apprenticeId, graphId, selectedEmotionId, 0,
+                                nextNodeTo,
                                 improvisationLevel);
                     } else {
-                        edges = eds.getStrongPath(graphId, selectedEmotionId, 0, nextNodeTo, 0);
+                        edges = eds.getStrongPath(apprenticeId, graphId, selectedEmotionId, 0,
+                                nextNodeTo, 0);
                     }
                 } else {
                     Log.d("MYLOG", "not using nextNodeTo...");
-                    edges = eds.getStrongPath(graphId, selectedEmotionId, 0, 0, improvisationLevel);
+                    edges = eds.getStrongPath(apprenticeId, graphId, selectedEmotionId, 0, 0,
+                            improvisationLevel);
                 }
 
                 // add edge results to notes list
@@ -977,7 +992,7 @@ public class GenerateMusicActivity extends Activity {
                         "pref_transition_graph_for_apprentice", "2"));
 
                 Log.d("MYLOG", "> current edges: " + edges.toString());
-                Edge edge = eds.getStrongTransitionPath(graphId, selectedEmotionId,
+                Edge edge = eds.getStrongTransitionPath(apprenticeId, graphId, selectedEmotionId,
                         edges.get(edges.size() - 1).getToNodeId());
 
                 // 4. Check if there is any strong noteset with a head beginning with previously

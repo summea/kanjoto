@@ -116,10 +116,11 @@ public class EdgesDataSource {
      * 
      * @return List of Edges.
      */
-    public List<Edge> getAllEdges() {
+    public List<Edge> getAllEdges(long apprenticeId) {
         List<Edge> edges = new ArrayList<Edge>();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -156,12 +157,13 @@ public class EdgesDataSource {
      * @param emotionId
      * @return List of Edges.
      */
-    public List<Edge> getAllEdges(long graphId, long emotionId) {
+    public List<Edge> getAllEdges(long apprenticeId, long graphId, long emotionId) {
         List<Edge> edges = new ArrayList<Edge>();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId + " AND "
-                + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
+                + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
+                + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -191,12 +193,13 @@ public class EdgesDataSource {
         return edges;
     }
 
-    public List<Edge> getAllEdges(long graphId, int position) {
+    public List<Edge> getAllEdges(long apprenticeId, long graphId, int position) {
         List<Edge> edges = new ArrayList<Edge>();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId + " AND "
-                + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
+                + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
+                + " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -235,14 +238,16 @@ public class EdgesDataSource {
      * @param position
      * @return List of Edges.
      */
-    public List<Edge> getAllEdges(long graphId, long emotionId, float weightLimit, int position) {
+    public List<Edge> getAllEdges(long apprenticeId, long graphId, long emotionId,
+            float weightLimit, int position) {
         List<Edge> edges = new ArrayList<Edge>();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId + " AND "
-                + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId + " AND "
-                + OtashuDatabaseHelper.COLUMN_WEIGHT + "<" + weightLimit + " AND "
-                + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
+                + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
+                + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId
+                + " AND " + OtashuDatabaseHelper.COLUMN_WEIGHT + "<" + weightLimit
+                + " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position
                 + " ORDER BY " + OtashuDatabaseHelper.COLUMN_WEIGHT + " ASC";
 
         // create database handle
@@ -282,7 +287,8 @@ public class EdgesDataSource {
      * @param toNodeId
      * @return List of Edges.
      */
-    public List<Edge> getAllEdges(long graphId, long emotionId, int fromNodeId, int toNodeId,
+    public List<Edge> getAllEdges(long apprenticeId, long graphId, long emotionId, int fromNodeId,
+            int toNodeId,
             int position, int mode) {
 
         if (mode < 0) {
@@ -294,38 +300,48 @@ public class EdgesDataSource {
         String query = "";
         switch (mode) {
             case 0:
-                query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES + " WHERE "
-                        + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId + " AND "
-                        + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId + " AND "
-                        + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position;
+                query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
+                        + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "="
+                        + apprenticeId
+                        + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
+                        + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId
+                        + " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position;
                 break;
             case 1:
-                query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES + " WHERE "
-                        + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId + " AND "
-                        + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId + " AND "
-                        + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=" + fromNodeId + " AND "
-                        + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position;
+                query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
+                        + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "="
+                        + apprenticeId
+                        + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
+                        + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId
+                        + " AND " + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=" + fromNodeId
+                        + " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position;
                 break;
             case 2:
-                query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES + " WHERE "
-                        + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId + " AND "
-                        + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId + " AND "
-                        + OtashuDatabaseHelper.COLUMN_TO_NODE_ID + "=" + toNodeId + " AND "
-                        + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position;
+                query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
+                        + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "="
+                        + apprenticeId
+                        + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
+                        + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId
+                        + " AND " + OtashuDatabaseHelper.COLUMN_TO_NODE_ID + "=" + toNodeId
+                        + " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position;
                 break;
             case 3:
-                query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES + " WHERE "
-                        + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId + " AND "
-                        + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId + " AND "
-                        + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=" + toNodeId + " AND "
-                        + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position;
+                query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
+                        + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "="
+                        + apprenticeId
+                        + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
+                        + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId
+                        + " AND " + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=" + toNodeId
+                        + " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position;
                 break;
             case 4:
-                query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES + " WHERE "
-                        + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId + " AND "
-                        + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId + " AND "
-                        + OtashuDatabaseHelper.COLUMN_TO_NODE_ID + "=" + fromNodeId + " AND "
-                        + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position;
+                query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
+                        + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "="
+                        + apprenticeId
+                        + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
+                        + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId
+                        + " AND " + OtashuDatabaseHelper.COLUMN_TO_NODE_ID + "=" + fromNodeId
+                        + " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position;
                 break;
         }
 
@@ -356,10 +372,11 @@ public class EdgesDataSource {
                 } while (cursor.moveToNext());
             }
         } else {
-            query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES + " WHERE "
-                    + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId + " AND "
-                    + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId + " AND "
-                    + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position;
+            query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
+                    + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
+                    + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
+                    + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId
+                    + " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position;
 
             cursor = db.rawQuery(query, null);
 
@@ -391,12 +408,19 @@ public class EdgesDataSource {
      * 
      * @return List of Edges ids.
      */
-    public List<Integer> getAllEdgeIds() {
+    public List<Integer> getAllEdgeIds(long apprenticeId, long graphId) {
         List<Integer> edge_ids = new ArrayList<Integer>();
 
-        Cursor cursor = database.query(
-                OtashuDatabaseHelper.TABLE_EDGES, allColumns, null,
-                null, null, null, null);
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
+                + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
+                + " ORDER BY " + OtashuDatabaseHelper.COLUMN_WEIGHT + " ASC";
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notes from database
+        Cursor cursor = db.rawQuery(query, null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -433,10 +457,11 @@ public class EdgesDataSource {
      * 
      * @return List of Edge preview strings.
      */
-    public List<String> getAllEdgeListPreviews() {
+    public List<String> getAllEdgeListPreviews(long apprenticeId) {
         List<String> edges = new LinkedList<String>();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -471,11 +496,12 @@ public class EdgesDataSource {
      * 
      * @return List of Edge ids.
      */
-    public List<Long> getAllEdgeListDBTableIds() {
+    public List<Long> getAllEdgeListDBTableIds(long apprenticeId) {
         List<Long> edges = new LinkedList<Long>();
 
         String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
-                + OtashuDatabaseHelper.TABLE_EDGES;
+                + OtashuDatabaseHelper.TABLE_EDGES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -498,11 +524,12 @@ public class EdgesDataSource {
         return edges;
     }
 
-    public Edge getEdge(long edgeId) {
+    public Edge getEdge(long apprenticeId, long edgeId) {
         Edge edge = new Edge();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_ID + "=" + edgeId;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
+                + " AND " + OtashuDatabaseHelper.COLUMN_ID + "=" + edgeId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -528,14 +555,15 @@ public class EdgesDataSource {
         return edge;
     }
 
-    public Edge getEdge(long graphId, int fromNodeId, int toNodeId) {
+    public Edge getEdge(long apprenticeId, long graphId, int fromNodeId, int toNodeId) {
         Edge edge = new Edge();
         edge.setWeight(-1.0f);
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId + " AND "
-                + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=" + fromNodeId + " AND "
-                + OtashuDatabaseHelper.COLUMN_TO_NODE_ID + "=" + toNodeId;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
+                + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
+                + " AND " + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=" + fromNodeId
+                + " AND " + OtashuDatabaseHelper.COLUMN_TO_NODE_ID + "=" + toNodeId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -561,15 +589,17 @@ public class EdgesDataSource {
         return edge;
     }
 
-    public Edge getEdge(long graphId, long emotionId, int fromNodeId, int toNodeId) {
+    public Edge getEdge(long apprenticeId, long graphId, long emotionId, int fromNodeId,
+            int toNodeId) {
         Edge edge = new Edge();
         edge.setWeight(-1.0f);
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId + " AND "
-                + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId + " AND "
-                + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=" + fromNodeId + " AND "
-                + OtashuDatabaseHelper.COLUMN_TO_NODE_ID + "=" + toNodeId;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
+                + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
+                + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId
+                + " AND " + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=" + fromNodeId
+                + " AND " + OtashuDatabaseHelper.COLUMN_TO_NODE_ID + "=" + toNodeId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -616,11 +646,11 @@ public class EdgesDataSource {
         return edge;
     }
 
-    public Edge getRandomEdge() {
+    public Edge getRandomEdge(long apprenticeId) {
         Edge edge = new Edge();
 
         // get all edges first
-        List<Edge> allEdges = getAllEdges();
+        List<Edge> allEdges = getAllEdges(apprenticeId);
 
         // choose random edge
         int chosenIndex = new Random().nextInt(allEdges.size());
@@ -630,10 +660,12 @@ public class EdgesDataSource {
         return edge;
     }
 
-    public Edge getRandomEdge(long graphId, long emotionId, int fromNodeId, int toNodeId,
+    public Edge getRandomEdge(long apprenticeId, long graphId, long emotionId, int fromNodeId,
+            int toNodeId,
             int position, int mode) {
         // get all edges first
-        List<Edge> allEdges = getAllEdges(graphId, emotionId, fromNodeId, toNodeId, position, mode);
+        List<Edge> allEdges = getAllEdges(apprenticeId, graphId, emotionId, fromNodeId, toNodeId,
+                position, mode);
 
         // Process:
         // 1. Grab two random, node-related edges
@@ -659,16 +691,18 @@ public class EdgesDataSource {
         }
     }
 
-    public List<Edge> getStrongPath(long graphId, long emotionId, int position, int fromNode,
+    public List<Edge> getStrongPath(long apprenticeId, long graphId, long emotionId, int position,
+            int fromNode,
             int improvisationLevel) {
         List<Edge> results = new ArrayList<Edge>();
 
         int lastToNotevalue = 0;
         for (int i = 0; i < 3; i++) {
             // get lowest first edge
-            String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES + " WHERE "
-                    + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId + " AND "
-                    + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId;
+            String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
+                    + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
+                    + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
+                    + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId;
             if (fromNode > 0) {
                 query += " AND " + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=" + fromNode;
             }
@@ -717,6 +751,7 @@ public class EdgesDataSource {
                     }
                     edge.setWeight(cursor.getFloat(5));
                     edge.setPosition(cursor.getInt(6));
+                    edge.setApprenticeId(cursor.getLong(7));
                     results.add(edge);
                     lastToNotevalue = edge.getToNodeId();
                 }
@@ -729,14 +764,16 @@ public class EdgesDataSource {
         return results;
     }
 
-    public Edge getStrongTransitionPath(long graphId, long emotionId, int fromNodeId) {
+    public Edge getStrongTransitionPath(long apprenticeId, long graphId, long emotionId,
+            int fromNodeId) {
         Edge result = new Edge();
 
         // get lowest first edge
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId + " AND "
-                + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId + " AND "
-                + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=" + fromNodeId
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
+                + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
+                + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId
+                + " AND " + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=" + fromNodeId
                 + " ORDER BY " + OtashuDatabaseHelper.COLUMN_WEIGHT + " ASC LIMIT 1";
 
         Log.d("MYLOG", "query: " + query);
@@ -767,7 +804,8 @@ public class EdgesDataSource {
         return result;
     }
 
-    public SparseArray<List<Edge>> getPathsForEmotion(long graphId, long emotionId,
+    public SparseArray<List<Edge>> getPathsForEmotion(long apprenticeId, long graphId,
+            long emotionId,
             float weightLimit) {
         SparseArray<List<Edge>> results = new SparseArray<List<Edge>>();
 
@@ -786,17 +824,17 @@ public class EdgesDataSource {
 
         // select all position one edges for given emotion with given threshold (e.g. all rows that
         // have a weight less than x)
-        List<Edge> p1Edges = getAllEdges(graphId, emotionId, weightLimit, position);
+        List<Edge> p1Edges = getAllEdges(apprenticeId, graphId, emotionId, weightLimit, position);
 
         position = 2;
         // select all position two edges for given emotion with given threshold (e.g. all rows that
         // have a weight less than x)
-        List<Edge> p2Edges = getAllEdges(graphId, emotionId, weightLimit, position);
+        List<Edge> p2Edges = getAllEdges(apprenticeId, graphId, emotionId, weightLimit, position);
 
         position = 3;
         // select all position three edges for given emotion with given threshold (e.g. all rows
         // that have a weight less than x)
-        List<Edge> p3Edges = getAllEdges(graphId, emotionId, weightLimit, position);
+        List<Edge> p3Edges = getAllEdges(apprenticeId, graphId, emotionId, weightLimit, position);
 
         int key = 1;
 
@@ -830,20 +868,20 @@ public class EdgesDataSource {
         return results;
     }
 
-    public HashMap getEmotionFromNotes(long graphId, List<Integer> notes) {
+    public HashMap getEmotionFromNotes(long apprenticeId, long graphId, List<Integer> notes) {
         HashMap<String, String> result = new HashMap<String, String>();
         long emotionId = 0;
         float certainty = 0.0f;
 
         // select an edge position
         int position = 1;
-        List<Edge> p1Edges = getAllEdges(graphId, position);
+        List<Edge> p1Edges = getAllEdges(apprenticeId, graphId, position);
 
         position = 2;
-        List<Edge> p2Edges = getAllEdges(graphId, position);
+        List<Edge> p2Edges = getAllEdges(apprenticeId, graphId, position);
 
         position = 3;
-        List<Edge> p3Edges = getAllEdges(graphId, position);
+        List<Edge> p3Edges = getAllEdges(apprenticeId, graphId, position);
 
         int i = 0;
         // loop through all position 1-2 edges

@@ -61,6 +61,11 @@
             android:key="pref_auto_save_scorecard"
             android:title="@string/pref_auto_save_scorecard"
             android:defaultValue="false" />
+            
+        <EditTextPreference
+            android:key="pref_selected_apprentice"
+            android:title="@string/pref_selected_apprentice"
+            android:defaultValue="" />
 
     </PreferenceCategory>
 

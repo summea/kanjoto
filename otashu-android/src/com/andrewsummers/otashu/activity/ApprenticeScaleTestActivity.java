@@ -62,6 +62,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
     private int totalGuesses = 0;
     private long scorecardId = 0;
     private long currentKeySignatureId = 0;
+    private long apprenticeId = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,8 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         setScaleGraphId(Long.parseLong(sharedPref.getString(
                 "pref_scale_graph_for_apprentice", "3")));
+        apprenticeId = Long.parseLong(sharedPref.getString(
+                "pref_selected_apprentice", "1"));
 
         try {
             // add listeners to buttons
@@ -151,13 +154,6 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
 
     public void askQuestion() {
         TextView apprenticeText = (TextView) findViewById(R.id.apprentice_text);
-
-        /*
-         * String notes = ""; NotevaluesDataSource nvds = new NotevaluesDataSource(this); for (int i
-         * = 0; i < notesToInsert.size(); i++) { Notevalue note =
-         * nvds.getNotevalueByNoteValue(notesToInsert.get(i).getNotevalue()); notes +=
-         * note.getNotelabel() + " "; }
-         */
 
         apprenticeText.setText("Do these notes fit for a "
                 + chosenEmotion.getName() + " mood?");
@@ -518,7 +514,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
             // also, update scorecard question totals
             ApprenticeScorecardsDataSource ascds = new ApprenticeScorecardsDataSource(this);
             ApprenticeScorecard scorecard = new ApprenticeScorecard();
-            scorecard = ascds.getApprenticeScorecard(scorecardId);
+            scorecard = ascds.getApprenticeScorecard(apprenticeId, scorecardId);
             if (isCorrect == 1) {
                 scorecard.setCorrect(guessesCorrect);
             }
