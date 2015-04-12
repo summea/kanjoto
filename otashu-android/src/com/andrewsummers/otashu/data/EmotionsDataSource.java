@@ -101,10 +101,11 @@ public class EmotionsDataSource {
      * 
      * @return List of Emotions.
      */
-    public List<Emotion> getAllEmotions() {
+    public List<Emotion> getAllEmotions(long apprenticeId) {
         List<Emotion> emotions = new ArrayList<Emotion>();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EMOTIONS;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EMOTIONS
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -135,11 +136,12 @@ public class EmotionsDataSource {
      * 
      * @return List of Emotions ids.
      */
-    public List<Integer> getAllEmotionIds() {
+    public List<Integer> getAllEmotionIds(long apprenticeId) {
         List<Integer> emotion_ids = new ArrayList<Integer>();
 
         String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
-                + OtashuDatabaseHelper.TABLE_EMOTIONS;
+                + OtashuDatabaseHelper.TABLE_EMOTIONS
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -182,10 +184,11 @@ public class EmotionsDataSource {
      * 
      * @return List of Emotion preview strings.
      */
-    public List<String> getAllEmotionListPreviews() {
+    public List<String> getAllEmotionListPreviews(long apprenticeId) {
         List<String> emotions = new LinkedList<String>();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EMOTIONS;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EMOTIONS
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -216,11 +219,12 @@ public class EmotionsDataSource {
      * 
      * @return List of Emotion ids.
      */
-    public List<Long> getAllEmotionListDBTableIds() {
+    public List<Long> getAllEmotionListDBTableIds(long apprenticeId) {
         List<Long> emotions = new LinkedList<Long>();
 
         String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
-                + OtashuDatabaseHelper.TABLE_EMOTIONS;
+                + OtashuDatabaseHelper.TABLE_EMOTIONS
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -243,11 +247,12 @@ public class EmotionsDataSource {
         return emotions;
     }
 
-    public Emotion getEmotion(long emotionId) {
+    public Emotion getEmotion(long apprenticeId, long emotionId) {
         Emotion emotion = new Emotion();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EMOTIONS + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_ID + "=" + emotionId;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EMOTIONS
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
+                + " AND " + OtashuDatabaseHelper.COLUMN_ID + "=" + emotionId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -288,11 +293,11 @@ public class EmotionsDataSource {
         return emotion;
     }
 
-    public Emotion getRandomEmotion() {
+    public Emotion getRandomEmotion(long apprenticeId) {
         Emotion emotion = new Emotion();
 
         // get all emotions first
-        List<Emotion> allEmotions = getAllEmotions();
+        List<Emotion> allEmotions = getAllEmotions(apprenticeId);
 
         // choose random emotion
         int chosenIndex = new Random().nextInt(allEmotions.size());

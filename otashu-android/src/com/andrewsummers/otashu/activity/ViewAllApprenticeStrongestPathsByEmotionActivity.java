@@ -17,7 +17,9 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -44,6 +46,8 @@ public class ViewAllApprenticeStrongestPathsByEmotionActivity extends ListActivi
     private ListView listView = null;
     private int selectedPositionInList = 0;
     private EmotionAdapter adapter = null;
+    private SharedPreferences sharedPref;
+    private long apprenticeId = 0;
 
     /**
      * onCreate override used to gather and display a list of all emotions saved in database.
@@ -53,6 +57,10 @@ public class ViewAllApprenticeStrongestPathsByEmotionActivity extends ListActivi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        apprenticeId = Long.parseLong(sharedPref.getString(
+                "pref_selected_apprentice", "1"));
 
         // initialize ListView
         listView = getListView();
@@ -74,7 +82,7 @@ public class ViewAllApprenticeStrongestPathsByEmotionActivity extends ListActivi
         EmotionsDataSource eds = new EmotionsDataSource(this);
         LabelsDataSource lds = new LabelsDataSource(this);
 
-        allEmotions = eds.getAllEmotions();
+        allEmotions = eds.getAllEmotions(apprenticeId);
 
         for (Emotion emotion : allEmotions) {
             relatedLabel = lds.getLabel(emotion.getLabelId());
@@ -202,7 +210,7 @@ public class ViewAllApprenticeStrongestPathsByEmotionActivity extends ListActivi
         EmotionsDataSource eds = new EmotionsDataSource(this);
 
         // get string version of returned emotion list
-        allEmotionsData = eds.getAllEmotionListDBTableIds();
+        allEmotionsData = eds.getAllEmotionListDBTableIds(apprenticeId);
         eds.close();
 
         // prevent crashes due to lack of database data
@@ -212,7 +220,7 @@ public class ViewAllApprenticeStrongestPathsByEmotionActivity extends ListActivi
         Long[] allEmotions = allEmotionsData
                 .toArray(new Long[allEmotionsData.size()]);
 
-        Emotion emotion = eds.getEmotion(allEmotions[(int) emotionId]);
+        Emotion emotion = eds.getEmotion(apprenticeId, allEmotions[(int) emotionId]);
 
         eds.close();
 

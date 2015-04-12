@@ -25,6 +25,7 @@
 
 
 ## DONE:
+- 20150411: connected apprentice_id to emotions
 - 20150410: connected apprentice_id to scorecards
 - 20150410: connected apprentice_id to scores
 - 20150410: connected up apprentice_id-related sections of the EdgesDataSource 

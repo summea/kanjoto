@@ -156,7 +156,7 @@ public class GenerateMusicActivity extends Activity {
                 "pref_selected_apprentice", "1"));
 
         EmotionsDataSource emds = new EmotionsDataSource(this);
-        Emotion currentEmotion = emds.getEmotion(selectedEmotionId);
+        Emotion currentEmotion = emds.getEmotion(apprenticeId, selectedEmotionId);
         selectedEmotionName = currentEmotion.getName();
         emds.close();
 

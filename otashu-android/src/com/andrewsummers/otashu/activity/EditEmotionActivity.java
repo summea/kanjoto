@@ -12,7 +12,9 @@ import com.andrewsummers.otashu.model.Label;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -32,7 +34,9 @@ import android.widget.Toast;
  */
 public class EditEmotionActivity extends Activity implements OnClickListener {
     private Button buttonSave = null;
-    private Emotion editEmotion;    // keep track of which Emotion is currently being edited
+    private Emotion editEmotion; // keep track of which Emotion is currently being edited
+    private SharedPreferences sharedPref;
+    private long apprenticeId = 0;
 
     /**
      * onCreate override that provides emotion creation view to user .
@@ -46,15 +50,19 @@ public class EditEmotionActivity extends Activity implements OnClickListener {
         // get specific layout for content view
         setContentView(R.layout.activity_edit_emotion);
 
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        apprenticeId = Long.parseLong(sharedPref.getString(
+                "pref_selected_apprentice", "1"));
+
         // add listeners to buttons
         buttonSave = (Button) findViewById(R.id.button_save);
         buttonSave.setOnClickListener(this);
 
         int emotionId = (int) getIntent().getExtras().getLong("list_id");
-        
+
         // open data source handle
-        EmotionsDataSource eds = new EmotionsDataSource(this);        
-        editEmotion = eds.getEmotion(emotionId);
+        EmotionsDataSource eds = new EmotionsDataSource(this);
+        editEmotion = eds.getEmotion(apprenticeId, emotionId);
         eds.close();
 
         // fill in existing form data
@@ -104,7 +112,8 @@ public class EditEmotionActivity extends Activity implements OnClickListener {
                 Emotion emotionToUpdate = new Emotion();
                 emotionToUpdate.setId(editEmotion.getId());
 
-                String emotionName = ((EditText) findViewById(R.id.edittext_emotion_name)).getText()
+                String emotionName = ((EditText) findViewById(R.id.edittext_emotion_name))
+                        .getText()
                         .toString();
                 Spinner emotionLabel = (Spinner) findViewById(R.id.spinner_emotion_label);
 

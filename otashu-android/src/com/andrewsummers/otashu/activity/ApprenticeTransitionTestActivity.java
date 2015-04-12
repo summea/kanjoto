@@ -417,7 +417,7 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
     public void apprenticeAskProcess() {
         // get random emotion
         EmotionsDataSource eds = new EmotionsDataSource(this);
-        chosenEmotion = eds.getRandomEmotion();
+        chosenEmotion = eds.getRandomEmotion(apprenticeId);
         eds.close();
 
         emotionId = chosenEmotion.getId();

@@ -8,8 +8,10 @@ import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.Label;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.widget.TextView;
 
 /**
@@ -21,7 +23,9 @@ import android.widget.TextView;
  */
 public class ViewEmotionDetailActivity extends Activity {
     private int emotionId = 0;
-
+    private SharedPreferences sharedPref;
+    private long apprenticeId = 0;
+    
     /**
      * onCreate override used to get details view.
      * 
@@ -34,11 +38,15 @@ public class ViewEmotionDetailActivity extends Activity {
         // get specific layout for content view
         setContentView(R.layout.activity_view_emotion_detail);
 
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        apprenticeId = Long.parseLong(sharedPref.getString(
+                "pref_selected_apprentice", "1"));
+        
         emotionId = (int) getIntent().getExtras().getLong("list_id");
 
         EmotionsDataSource eds = new EmotionsDataSource(this);
         Emotion emotion = new Emotion();
-        emotion = eds.getEmotion(emotionId);
+        emotion = eds.getEmotion(apprenticeId, emotionId);
         eds.close();
 
         LabelsDataSource lds = new LabelsDataSource(this);

@@ -21,7 +21,9 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -55,6 +57,8 @@ public class ViewAllNotesetsActivity extends ListActivity {
     private int totalNotesetsAvailable = 0;
     private int limit = 15;
     private Boolean doneLoading = false;
+    private SharedPreferences sharedPref;
+    private long apprenticeId = 0;
 
     /**
      * onCreate override used to gather and display a list of all notesets saved in database.
@@ -64,6 +68,10 @@ public class ViewAllNotesetsActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        apprenticeId = Long.parseLong(sharedPref.getString(
+                "pref_selected_apprentice", "1"));
 
         // initialize ListView
         listView = getListView();
@@ -100,7 +108,7 @@ public class ViewAllNotesetsActivity extends ListActivity {
 
             for (Noteset noteset : allNotesets) {
                 relatedNotes = nds.getAllNotes(noteset.getId());
-                relatedEmotion = eds.getEmotion(noteset.getEmotion());
+                relatedEmotion = eds.getEmotion(apprenticeId, noteset.getEmotion());
                 relatedLabel = lds.getLabel(relatedEmotion.getLabelId());
                 NotesetAndRelated notesetAndRelated = new NotesetAndRelated();
                 notesetAndRelated.setEmotion(relatedEmotion);
@@ -190,7 +198,7 @@ public class ViewAllNotesetsActivity extends ListActivity {
 
             for (Noteset noteset : allNotesets) {
                 relatedNotes = nds.getAllNotes(noteset.getId());
-                relatedEmotion = eds.getEmotion(noteset.getEmotion());
+                relatedEmotion = eds.getEmotion(apprenticeId, noteset.getEmotion());
                 relatedLabel = lds.getLabel(relatedEmotion.getLabelId());
                 NotesetAndRelated notesetAndRelated = new NotesetAndRelated();
                 notesetAndRelated.setEmotion(relatedEmotion);

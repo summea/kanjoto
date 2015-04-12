@@ -47,6 +47,8 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
     private String externalDirectory = path.toString() + "/otashu/";
     private File musicSource = new File(externalDirectory + "otashu_preview.mid");
     private static MediaPlayer mediaPlayer;
+    private SharedPreferences sharedPref;
+    private long apprenticeId = 0;
 
     /**
      * onCreate override that provides noteset creation view to user .
@@ -60,6 +62,10 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
         // get specific layout for content view
         setContentView(R.layout.activity_create_noteset);
 
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        apprenticeId = Long.parseLong(sharedPref.getString(
+                "pref_selected_apprentice", "1"));
+
         // add listeners to buttons
         buttonSave = (Button) findViewById(R.id.button_save);
         buttonSave.setOnClickListener(this);
@@ -69,7 +75,7 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
         eds.open();
 
         List<Emotion> allEmotions = new ArrayList<Emotion>();
-        allEmotions = eds.getAllEmotions();
+        allEmotions = eds.getAllEmotions(apprenticeId);
 
         eds.close();
 
@@ -190,7 +196,7 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
                 eds.open();
 
                 List<Integer> allEmotionIds = new ArrayList<Integer>();
-                allEmotionIds = eds.getAllEmotionIds();
+                allEmotionIds = eds.getAllEmotionIds(apprenticeId);
                 eds.close();
 
                 Spinner emotionSpinner = (Spinner) findViewById(R.id.spinner_emotion);

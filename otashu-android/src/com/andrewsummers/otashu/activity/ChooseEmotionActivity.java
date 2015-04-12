@@ -43,10 +43,11 @@ import android.widget.Toast;
  * </p>
  */
 public class ChooseEmotionActivity extends Activity implements OnClickListener {
-
     private Button buttonGo = null;
     private Button buttonBookmark = null;
     private String lastSerializedNotes = "";
+    private SharedPreferences sharedPref;
+    private long apprenticeId = 0;
 
     /**
      * onCreate override that provides emotion-choose view to user.
@@ -60,6 +61,10 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
         // get specific layout for content view
         setContentView(R.layout.activity_choose_emotion);
 
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        apprenticeId = Long.parseLong(sharedPref.getString(
+                "pref_selected_apprentice", "1"));
+
         // add listeners to buttons
         buttonBookmark = (Button) findViewById(R.id.button_bookmark);
         buttonBookmark.setOnClickListener(this);
@@ -70,7 +75,7 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
         // get all emotions for spinner
         EmotionsDataSource eds = new EmotionsDataSource(this);
         List<Emotion> allEmotions = new ArrayList<Emotion>();
-        allEmotions = eds.getAllEmotions();
+        allEmotions = eds.getAllEmotions(apprenticeId);
         eds.close();
 
         // locate next spinner in layout
@@ -145,7 +150,7 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
                 // get all emotions for spinner list
                 List<Integer> allEmotionIds = new ArrayList<Integer>();
                 EmotionsDataSource eds = new EmotionsDataSource(this);
-                allEmotionIds = eds.getAllEmotionIds();
+                allEmotionIds = eds.getAllEmotionIds(apprenticeId);
 
                 // set selected emotion in spinner
                 Spinner emotionSpinner = (Spinner) findViewById(R.id.spinner_emotion);

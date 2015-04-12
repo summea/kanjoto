@@ -298,7 +298,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         EmotionsDataSource eds = new EmotionsDataSource(this);
 
         // get string version of returned emotion list
-        allEmotionsData = eds.getAllEmotionListDBTableIds();
+        allEmotionsData = eds.getAllEmotionListDBTableIds(apprenticeId);
         eds.close();
 
         // prevent crashes due to lack of database data
@@ -308,7 +308,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         Long[] allEmotions = allEmotionsData
                 .toArray(new Long[allEmotionsData.size()]);
 
-        Emotion emotion = eds.getEmotion(allEmotions[(int) emotionId]);
+        Emotion emotion = eds.getEmotion(apprenticeId, allEmotions[(int) emotionId]);
         eds.close();
 
         return emotion;
