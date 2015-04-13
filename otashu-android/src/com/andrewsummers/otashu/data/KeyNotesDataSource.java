@@ -109,10 +109,11 @@ public class KeyNotesDataSource {
      * 
      * @return List of KeyNotes.
      */
-    public List<KeyNote> getAllKeyNotes() {
+    public List<KeyNote> getAllKeyNotes(long apprenticeId) {
         List<KeyNote> keyNotes = new ArrayList<KeyNote>();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_NOTES;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_NOTES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -144,12 +145,17 @@ public class KeyNotesDataSource {
      * 
      * @return List of KeyNotes ids.
      */
-    public List<Integer> getAllKeyNoteIds() {
+    public List<Integer> getAllKeyNoteIds(long apprenticeId) {
         List<Integer> keyNote_ids = new ArrayList<Integer>();
 
-        Cursor cursor = database.query(
-                OtashuDatabaseHelper.TABLE_KEY_NOTES, allColumns, null,
-                null, null, null, null);
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_NOTES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notes from database
+        Cursor cursor = db.rawQuery(query, null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -183,10 +189,11 @@ public class KeyNotesDataSource {
      * 
      * @return List of KeyNote preview strings.
      */
-    public List<String> getAllKeyNoteListPreviews() {
+    public List<String> getAllKeyNoteListPreviews(long apprenticeId) {
         List<String> keyNotes = new LinkedList<String>();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_NOTES;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_NOTES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -218,11 +225,12 @@ public class KeyNotesDataSource {
      * 
      * @return List of KeyNote ids.
      */
-    public List<Long> getAllKeyNoteListDBTableIds() {
+    public List<Long> getAllKeyNoteListDBTableIds(long apprenticeId) {
         List<Long> keyNotes = new LinkedList<Long>();
 
         String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
-                + OtashuDatabaseHelper.TABLE_KEY_NOTES;
+                + OtashuDatabaseHelper.TABLE_KEY_NOTES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -245,11 +253,12 @@ public class KeyNotesDataSource {
         return keyNotes;
     }
 
-    public KeyNote getKeyNote(long keyNoteId) {
+    public KeyNote getKeyNote(long apprenticeId, long keyNoteId) {
         KeyNote keyNote = new KeyNote();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_NOTES + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_ID + "=" + keyNoteId;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_NOTES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
+                + " AND " + OtashuDatabaseHelper.COLUMN_ID + "=" + keyNoteId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -272,11 +281,12 @@ public class KeyNotesDataSource {
         return keyNote;
     }
 
-    public List<KeyNote> getKeyNotesByKeySignature(long keySignatureId) {
+    public List<KeyNote> getKeyNotesByKeySignature(long apprenticeId, long keySignatureId) {
         List<KeyNote> keyNotes = new ArrayList<KeyNote>();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_NOTES + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_KEY_SIGNATURE_ID + "=" + keySignatureId;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_NOTES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
+                + " AND " + OtashuDatabaseHelper.COLUMN_KEY_SIGNATURE_ID + "=" + keySignatureId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -300,11 +310,12 @@ public class KeyNotesDataSource {
         return keyNotes;
     }
 
-    public List<Integer> getKeyNoteNotevaluesByKeySignature(long keySignatureId) {
+    public List<Integer> getKeyNoteNotevaluesByKeySignature(long apprenticeId, long keySignatureId) {
         List<Integer> keyNotes = new ArrayList<Integer>();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_NOTES + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_KEY_SIGNATURE_ID + "=" + keySignatureId;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_NOTES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
+                + " AND " + OtashuDatabaseHelper.COLUMN_KEY_SIGNATURE_ID + "=" + keySignatureId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -340,11 +351,11 @@ public class KeyNotesDataSource {
         return keyNote;
     }
 
-    public KeyNote getRandomKeyNote() {
+    public KeyNote getRandomKeyNote(long apprenticeId) {
         KeyNote keyNote = new KeyNote();
 
         // get all keyNotes first
-        List<KeyNote> allKeyNotes = getAllKeyNotes();
+        List<KeyNote> allKeyNotes = getAllKeyNotes(apprenticeId);
 
         if (allKeyNotes.size() > 0) {
             // choose random keyNote
@@ -355,12 +366,13 @@ public class KeyNotesDataSource {
         return keyNote;
     }
 
-    public List<Long> keySignatureIdsThatContain(int notevalue) {
+    public List<Long> keySignatureIdsThatContain(long apprenticeId, int notevalue) {
         List<Long> keySignatureIds = new ArrayList<Long>();
 
         String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
                 + OtashuDatabaseHelper.TABLE_KEY_NOTES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "=" + notevalue;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
+                + " AND " + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "=" + notevalue;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -378,7 +390,7 @@ public class KeyNotesDataSource {
         return keySignatureIds;
     }
 
-    public long getKeySignatureByNotes(List<Integer> notevaluesInKeySignature) {
+    public long getKeySignatureByNotes(long apprenticeId, List<Integer> notevaluesInKeySignature) {
         long keySignatureId = 1;
         // List<Long> foundKeySignatureIds = new ArrayList<Long>();
         HashMap<Long, Integer> foundKeySignatureIds = new HashMap<Long, Integer>();
@@ -389,7 +401,8 @@ public class KeyNotesDataSource {
             String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + ", "
                     + OtashuDatabaseHelper.COLUMN_KEY_SIGNATURE_ID + " FROM "
                     + OtashuDatabaseHelper.TABLE_KEY_NOTES
-                    + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "="
+                    + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
+                    + " AND " + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "="
                     + notevaluesInKeySignature.get(i);
 
             // create database handle

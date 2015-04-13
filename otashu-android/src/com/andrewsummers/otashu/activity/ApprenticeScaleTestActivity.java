@@ -191,7 +191,8 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
                 for (int i = 0; i < notesToInsert.size(); i++) {
                     // check if note is already in table set
                     // knds.getKeyNoteNotevaluesByKeySignature(currentKeySignatureId);
-                    List<KeyNote> keyNotes = knds.getKeyNotesByKeySignature(currentKeySignatureId);
+                    List<KeyNote> keyNotes = knds.getKeyNotesByKeySignature(apprenticeId,
+                            currentKeySignatureId);
 
                     for (KeyNote kn : keyNotes) {
                         if (kn.getNotevalue() == notesToInsert.get(i).getNotevalue()) {
@@ -248,7 +249,8 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
                 for (int i = 0; i < notesToInsert.size(); i++) {
                     // check if note is already in table set
                     // knds.getKeyNoteNotevaluesByKeySignature(currentKeySignatureId);
-                    List<KeyNote> keyNotes = knds.getKeyNotesByKeySignature(currentKeySignatureId);
+                    List<KeyNote> keyNotes = knds.getKeyNotesByKeySignature(apprenticeId,
+                            currentKeySignatureId);
 
                     boolean found = false;
                     for (KeyNote kn : keyNotes) {
@@ -272,6 +274,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
                         newNote.setKeySignatureId(currentKeySignatureId);
                         newNote.setNotevalue(notesToInsert.get(i).getNotevalue());
                         newNote.setWeight(0.5f);
+                        newNote.setApprenticeId(apprenticeId);
                         knds.createKeyNote(newNote);
                         Log.d("MYLOG", "adding new key note: " + newNote.getNotevalue());
                     }
@@ -346,7 +349,8 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
         // 2. check to see if a key signature contains notevalue
         Log.d("MYLOG", "2. check to see if a key signature contains notevalue");
         KeyNotesDataSource knds = new KeyNotesDataSource(this);
-        List<Long> keySignatureIds = knds.keySignatureIdsThatContain(anchorNote.getNotevalue());
+        List<Long> keySignatureIds = knds.keySignatureIdsThatContain(apprenticeId,
+                anchorNote.getNotevalue());
 
         List<Note> notes = new ArrayList<Note>();
         // long currentKeySignature = 0;
@@ -365,6 +369,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
             kn.setKeySignatureId(ks.getId());
             kn.setNotevalue(anchorNote.getNotevalue());
             kn.setWeight(0.5f);
+            kn.setApprenticeId(apprenticeId);
             knds.createKeyNote(kn);
             currentKeySignatureId = ks.getId();
         } else {
@@ -381,7 +386,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
         // 4. select all notes from selected key signature
         Log.d("MYLOG", "4. select all notes from selected key signature");
         List<Integer> currentKeySignatureNotes = knds
-                .getKeyNoteNotevaluesByKeySignature(currentKeySignatureId);
+                .getKeyNoteNotevaluesByKeySignature(apprenticeId, currentKeySignatureId);
 
         // 5. sort notes in list
         Log.d("MYLOG", "5. sort notes in list");
@@ -504,6 +509,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
                 ApprenticeScorecardsDataSource asds = new ApprenticeScorecardsDataSource(this);
                 ApprenticeScorecard aScorecard = new ApprenticeScorecard();
                 aScorecard.setTakenAt(takenAtISO);
+                aScorecard.setApprenticeId(apprenticeId);
                 aScorecard = asds.createApprenticeScorecard(aScorecard);
                 asds.close();
 
@@ -528,6 +534,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
             aScore.setQuestionNumber(totalGuesses);
             aScore.setCorrect(isCorrect);
             aScore.setEdgeId(edgeId);
+            aScore.setApprenticeId(apprenticeId);
 
             ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
             asds.createApprenticeScore(aScore);

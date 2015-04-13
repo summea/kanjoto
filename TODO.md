@@ -25,7 +25,13 @@
 
 
 ## DONE:
+- 20150412: connected apprentice_id to transition test
+- 20150412: connected apprentice_id to scale test
+- 20150412: connected apprentice_id to emotion test
+- 20150412: connected apprentice_id to key_notes
+- 20150412: connected apprentice_id to key_signatures
 - 20150411: connected apprentice_id to emotions
+- 20150411: connected apprentice_id to edges
 - 20150410: connected apprentice_id to scorecards
 - 20150410: connected apprentice_id to scores
 - 20150410: connected up apprentice_id-related sections of the EdgesDataSource 

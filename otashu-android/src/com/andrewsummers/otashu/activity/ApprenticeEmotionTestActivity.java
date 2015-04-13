@@ -256,6 +256,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                         newEdge.setToNodeId(nodeB.getNode());
                         newEdge.setWeight(0.5f);
                         newEdge.setPosition(i + 1);
+                        newEdge.setApprenticeId(apprenticeId);
                         newEdge = edds.createEdge(newEdge);
                         edgeId = newEdge.getId();
                     } else {
@@ -402,6 +403,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                         newEdge.setToNodeId(nodeB.getNode());
                         newEdge.setWeight(0.5f);
                         newEdge.setPosition(i + 1);
+                        newEdge.setApprenticeId(apprenticeId);
                         newEdge = edds.createEdge(newEdge);
                         edgeId = newEdge.getId();
                     } else {
@@ -659,6 +661,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                 ApprenticeScorecardsDataSource asds = new ApprenticeScorecardsDataSource(this);
                 ApprenticeScorecard aScorecard = new ApprenticeScorecard();
                 aScorecard.setTakenAt(takenAtISO);
+                aScorecard.setApprenticeId(apprenticeId);
                 aScorecard = asds.createApprenticeScorecard(aScorecard);
                 asds.close();
 
@@ -683,6 +686,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
             aScore.setQuestionNumber(totalGuesses);
             aScore.setCorrect(isCorrect);
             aScore.setEdgeId(edgeId);
+            aScore.setApprenticeId(apprenticeId);
 
             ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
             asds.createApprenticeScore(aScore);

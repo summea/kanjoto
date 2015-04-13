@@ -102,10 +102,11 @@ public class KeySignaturesDataSource {
      * 
      * @return List of KeySignatures.
      */
-    public List<KeySignature> getAllKeySignatures() {
+    public List<KeySignature> getAllKeySignatures(long apprenticeId) {
         List<KeySignature> keySignatures = new ArrayList<KeySignature>();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_SIGNATURES;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_SIGNATURES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -135,12 +136,17 @@ public class KeySignaturesDataSource {
      * 
      * @return List of KeySignatures ids.
      */
-    public List<Integer> getAllKeySignatureIds() {
+    public List<Integer> getAllKeySignatureIds(long apprenticeId) {
         List<Integer> keySignature_ids = new ArrayList<Integer>();
 
-        Cursor cursor = database.query(
-                OtashuDatabaseHelper.TABLE_KEY_SIGNATURES, allColumns, null,
-                null, null, null, null);
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_SIGNATURES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notes from database
+        Cursor cursor = db.rawQuery(query, null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -172,10 +178,11 @@ public class KeySignaturesDataSource {
      * 
      * @return List of KeySignature preview strings.
      */
-    public List<String> getAllKeySignatureListPreviews() {
+    public List<String> getAllKeySignatureListPreviews(long apprenticeId) {
         List<String> keySignatures = new LinkedList<String>();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_SIGNATURES;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_SIGNATURES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -205,11 +212,12 @@ public class KeySignaturesDataSource {
      * 
      * @return List of KeySignature ids.
      */
-    public List<Long> getAllKeySignatureListDBTableIds() {
+    public List<Long> getAllKeySignatureListDBTableIds(long apprenticeId) {
         List<Long> keySignatures = new LinkedList<Long>();
 
         String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
-                + OtashuDatabaseHelper.TABLE_KEY_SIGNATURES;
+                + OtashuDatabaseHelper.TABLE_KEY_SIGNATURES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -234,11 +242,12 @@ public class KeySignaturesDataSource {
         return keySignatures;
     }
 
-    public KeySignature getKeySignature(long keySignatureId) {
+    public KeySignature getKeySignature(long apprenticeId, long keySignatureId) {
         KeySignature keySignature = new KeySignature();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_SIGNATURES + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_ID + "=" + keySignatureId;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_SIGNATURES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
+                + " AND " + OtashuDatabaseHelper.COLUMN_ID + "=" + keySignatureId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -276,11 +285,11 @@ public class KeySignaturesDataSource {
         return keySignature;
     }
 
-    public KeySignature getRandomKeySignature() {
+    public KeySignature getRandomKeySignature(long apprenticeId) {
         KeySignature keySignature = new KeySignature();
 
         // get all keySignatures first
-        List<KeySignature> allKeySignatures = getAllKeySignatures();
+        List<KeySignature> allKeySignatures = getAllKeySignatures(apprenticeId);
 
         if (allKeySignatures.size() > 0) {
             // choose random keySignature

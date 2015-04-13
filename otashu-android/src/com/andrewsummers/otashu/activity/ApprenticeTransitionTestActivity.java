@@ -352,8 +352,8 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                     newEdge.setToNodeId(nodeB.getNode());
                     newEdge.setWeight(0.5f);
                     newEdge.setPosition(1);
-                    newEdge = edds.createEdge(newEdge);
                     newEdge.setApprenticeId(apprenticeId);
+                    newEdge = edds.createEdge(newEdge);
                     edgeId = newEdge.getId();
                 } else {
                     // edge exists between nodeA and nodeB, just update weight
