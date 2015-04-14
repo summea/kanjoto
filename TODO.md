@@ -5,6 +5,7 @@
 - play mode
 
 - make sure vertices are generated at start of program (if not already existing... these are same for all apprentices)
+- make sure vertices are shared for all apprentices and users
 - create auto test/learn for Emotion test
 - break out general database into Apprentice-specific database
 - think about adding support for different note speeds in Logic D

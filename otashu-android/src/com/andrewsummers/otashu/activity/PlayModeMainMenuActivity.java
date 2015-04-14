@@ -3,6 +3,7 @@ package com.andrewsummers.otashu.activity;
 
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.adapter.ImageAdapter;
+import com.andrewsummers.otashu.adapter.PlayModeMenuImageAdapter;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,11 +18,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
-/**
- * MainActivity is the first screen that appears for the Otashu program. This main screen acts as a
- * menu to various areas of the program.
- */
-public class MainActivity extends Activity implements OnClickListener {
+public class PlayModeMainMenuActivity extends Activity implements OnClickListener {
 
     /**
      * onCreate override that provides menu buttons on menu view.
@@ -36,10 +33,10 @@ public class MainActivity extends Activity implements OnClickListener {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         // get specific layout for content view
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_play_mode_main_menu);
 
         GridView gridView = (GridView) findViewById(R.id.gridview);
-        gridView.setAdapter(new ImageAdapter(this));
+        gridView.setAdapter(new PlayModeMenuImageAdapter(this));
 
         gridView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -47,10 +44,16 @@ public class MainActivity extends Activity implements OnClickListener {
 
                 switch (position) {
                     case 0:
-                        intent = new Intent(MainActivity.this, DataModeMainMenuActivity.class);
+                        intent = new Intent(PlayModeMainMenuActivity.this, ViewAllNotesetsActivity.class);
                         break;
                     case 1:
-                        intent = new Intent(MainActivity.this, PlayModeMainMenuActivity.class);
+                        intent = new Intent(PlayModeMainMenuActivity.this, ChooseEmotionActivity.class);
+                        break;
+                    case 2:
+                        intent = new Intent(PlayModeMainMenuActivity.this, ViewAllEmotionsActivity.class);
+                        break;
+                    case 3:
+                        intent = new Intent(PlayModeMainMenuActivity.this, ApprenticeActivity.class);
                         break;
                 }
 

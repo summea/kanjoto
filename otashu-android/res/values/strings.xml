@@ -53,6 +53,7 @@
     <string name="create_noteset_title">Create Noteset</string>
     <string name="create_notevalue_title">Create Notevalue</string>
     <string name="create_notevalue">Create Notevalue</string>
+    <string name="data_mode_menu_title">Data Mode</string>
     <string name="dialog_confirm_delete_message">Are you sure you want to delete this?</string>
     <string name="dialog_confirm_delete_title">Delete</string>
     <string name="edit_apprentice_title">Edit Apprentice</string>
@@ -82,6 +83,7 @@
     <string name="label_name">Name</string>
     <string name="label_saved">label saved</string>
     <string name="list_header_title">List Title</string>
+    <string name="main_menu_title">otashu</string>
     <string name="menu_button_apprentice_strongest_paths">Apprentice Strongest Paths</string>
     <string name="menu_button_bookmarks">Bookmarks</string>
     <string name="menu_button_create_apprentice">New</string>
@@ -114,6 +116,7 @@
     <string name="notevalue_detail_notevalue_label">Notevalue</string>
     <string name="notevalue_label">Note Label</string>
     <string name="notevalue_saved">notevalue label saved</string>
+    <string name="play_mode_menu_title">Play Mode</string>
     <string name="pref_alarm_enabled">Alarm Enabled</string>
     <string name="pref_alarm_time_picker">Choose Time</string>
     <string name="pref_apprentice_auto_add_noteset">Can Apprentice auto-populate noteset collection with generated noteset?</string>
