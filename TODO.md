@@ -26,6 +26,7 @@
 
 
 ## DONE:
+- 20150414: added main menu for data/play modes
 - 20150412: connected apprentice_id to transition test
 - 20150412: connected apprentice_id to scale test
 - 20150412: connected apprentice_id to emotion test

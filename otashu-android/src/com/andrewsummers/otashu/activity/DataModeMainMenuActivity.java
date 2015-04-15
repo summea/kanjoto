@@ -3,7 +3,6 @@ package com.andrewsummers.otashu.activity;
 
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.adapter.DataModeMenuImageAdapter;
-import com.andrewsummers.otashu.adapter.ImageAdapter;
 
 import android.app.Activity;
 import android.content.Intent;

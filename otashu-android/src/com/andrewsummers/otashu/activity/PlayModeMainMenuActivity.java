@@ -2,7 +2,6 @@
 package com.andrewsummers.otashu.activity;
 
 import com.andrewsummers.otashu.R;
-import com.andrewsummers.otashu.adapter.ImageAdapter;
 import com.andrewsummers.otashu.adapter.PlayModeMenuImageAdapter;
 
 import android.app.Activity;

@@ -8,7 +8,6 @@
 package com.andrewsummers.otashu.adapter;
 
 import com.andrewsummers.otashu.R;
-import com.andrewsummers.otashu.R.drawable;
 
 import android.content.Context;
 import android.view.View;

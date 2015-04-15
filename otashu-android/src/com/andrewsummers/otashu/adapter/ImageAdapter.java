@@ -8,7 +8,6 @@
 package com.andrewsummers.otashu.adapter;
 
 import com.andrewsummers.otashu.R;
-import com.andrewsummers.otashu.R.drawable;
 
 import android.content.Context;
 import android.view.View;
@@ -54,7 +53,7 @@ public class ImageAdapter extends BaseAdapter {
 
     // references to our images
     private Integer[] mThumbIds = {
-            R.drawable.notesets_list,
-            R.drawable.generate,
+            R.drawable.data_mode,
+            R.drawable.play_mode,
     };
 }
