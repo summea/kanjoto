@@ -23,6 +23,7 @@
     <string name="button_apprentice_transition_test">Transition</string>
     <string name="button_bookmark">Bookmark</string>
     <string name="button_cancel">Cancel</string>
+    <string name="button_choose">Choose</string>
     <string name="button_choose_emotion">Choose Emotion</string>
     <string name="button_create_emotion">New Emotion</string>
     <string name="button_create_noteset">New Noteset</string>    
@@ -41,6 +42,7 @@
     <string name="button_view_all_notesets">View All Notesets</string>
     <string name="button_view_sequence">view sequence</string>
     <string name="button_yes">Yes</string>
+    <string name="choose_apprentice_title">Choose Apprentice</string>
     <string name="choose_emotion_title">Choose Emotion</string>
     <string name="context_menu_delete">Delete</string>
     <string name="context_menu_edit">Edit</string>
@@ -131,6 +133,7 @@
     <string name="pref_selected_apprentice">Selected Apprentice</string>
     <string name="pref_transition_graph_for_apprentice">Transition Graph Id for Apprentice</string>
     <string name="remote_noteset">getting remote noteset...</string>
+    <string name="spinner_apprentice_label">Apprentice</string>
     <string name="spinner_emotion_label_label">Label</string>
     <string name="spinner_emotion_label">Emotion</string>
     <string name="spinner_instrument_label">Instrument</string>
