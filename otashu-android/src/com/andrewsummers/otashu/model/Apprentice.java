@@ -70,4 +70,14 @@ public class Apprentice {
     public void setState(int state) {
         this.state = state;
     }
+    
+    /**
+     * toString override to return Apprentice name.
+     * 
+     * @return <code>String</code> of Apprentice name.
+     */
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }

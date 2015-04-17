@@ -1,3 +1,4 @@
+
 package com.andrewsummers.otashu.data;
 
 import java.util.ArrayList;
@@ -129,11 +130,17 @@ public class ApprenticesDataSource {
      * @return List of Apprentices ids.
      */
     public List<Integer> getAllApprenticeIds() {
+        // TODO: check/fix this later
         List<Integer> apprentice_ids = new ArrayList<Integer>();
 
-        Cursor cursor = database.query(
-                OtashuDatabaseHelper.TABLE_APPRENTICES, allColumns, null,
-                null, null, null, null);
+        String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
+                + OtashuDatabaseHelper.TABLE_APPRENTICES;
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notes from database
+        Cursor cursor = db.rawQuery(query, null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -256,8 +263,9 @@ public class ApprenticesDataSource {
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, apprentice.getId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, apprentice.getName());
 
-        db.update(OtashuDatabaseHelper.TABLE_APPRENTICES, contentValues, OtashuDatabaseHelper.COLUMN_ID
-                + "=" + apprentice.getId(), null);
+        db.update(OtashuDatabaseHelper.TABLE_APPRENTICES, contentValues,
+                OtashuDatabaseHelper.COLUMN_ID
+                        + "=" + apprentice.getId(), null);
 
         return apprentice;
     }

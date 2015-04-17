@@ -16,6 +16,33 @@
         android:layout_marginBottom="20dp" />
 
     <TextView
+        android:id="@+id/apprentice_name_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/apprentice_name_label"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp" />
+        
+    <TextView
+        android:id="@+id/apprentice_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/apprentice_name"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp" />
+        
+    <Button
+        android:id="@+id/button_choose_apprentice"
+        android:text="@string/button_choose_apprentice"
+        android:padding="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_selector" />
+
+    <TextView
         android:id="@+id/apprentice_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

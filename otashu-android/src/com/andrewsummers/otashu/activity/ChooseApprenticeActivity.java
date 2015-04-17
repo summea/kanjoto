@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,9 +29,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 public class ChooseApprenticeActivity extends Activity implements OnClickListener {
-    private Button buttonGo = null;
-    private Button buttonBookmark = null;
-    private String lastSerializedNotes = "";
+    private Button buttonChoose = null;
     private SharedPreferences sharedPref;
     private long apprenticeId = 0;
 
@@ -51,11 +50,8 @@ public class ChooseApprenticeActivity extends Activity implements OnClickListene
                 "pref_selected_apprentice", "1"));
 
         // add listeners to buttons
-        buttonBookmark = (Button) findViewById(R.id.button_bookmark);
-        buttonBookmark.setOnClickListener(this);
-
-        buttonGo = (Button) findViewById(R.id.button_go);
-        buttonGo.setOnClickListener(this);
+        buttonChoose = (Button) findViewById(R.id.button_choose);
+        buttonChoose.setOnClickListener(this);
 
         // get all apprentices for spinner
         ApprenticesDataSource ads = new ApprenticesDataSource(this);
@@ -83,7 +79,7 @@ public class ChooseApprenticeActivity extends Activity implements OnClickListene
         Intent intent = null;
 
         switch (v.getId()) {
-            case R.id.button_go:
+            case R.id.button_choose:
                 // get all apprentices for spinner list
                 List<Integer> allApprenticeIds = new ArrayList<Integer>();
                 ApprenticesDataSource ads = new ApprenticesDataSource(this);
@@ -91,46 +87,21 @@ public class ChooseApprenticeActivity extends Activity implements OnClickListene
 
                 // set selected apprentice in spinner
                 Spinner apprenticeSpinner = (Spinner) findViewById(R.id.spinner_apprentice);
-                int selectedApprenticeValue = allApprenticeIds.get(apprenticeSpinner
+                long selectedApprenticeId = allApprenticeIds.get(apprenticeSpinner
                         .getSelectedItemPosition());
                 ads.close();
 
+                // save selected apprentice to preferences
+                if (selectedApprenticeId > 0) {
+                    SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
+                    editor.putString("pref_selected_apprentice",
+                            Long.toString(selectedApprenticeId));
+                    editor.apply();
+                }
+
+                finish();
                 break;
         }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // if we have a successful result returned from our child activity
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                // save last generated note sequence for saving bookmark (if necessary)
-                lastSerializedNotes = data.getStringExtra("serialized_notes");
-            }
-        }
-    }
-
-    public int save_bookmark() {
-        Bookmark bookmark = new Bookmark();
-        bookmark.setName("Untitled");
-        bookmark.setSerializedValue(lastSerializedNotes);
-        saveBookmark(bookmark);
-        return 0;
-    }
-
-    private void saveBookmark(Bookmark bookmark) {
-        // save bookmark in database
-        BookmarksDataSource bds = new BookmarksDataSource(this);
-        bds.createBookmark(bookmark);
-        bds.close();
-
-        Context context = getApplicationContext();
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(context,
-                context.getResources().getString(R.string.bookmark_saved),
-                duration);
-        toast.show();
     }
 
     @Override

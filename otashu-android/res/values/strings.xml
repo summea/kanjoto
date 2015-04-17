@@ -4,6 +4,7 @@
     <string name="apprentice_detail_name_label">Name</string>
     <string name="apprentice_guess_method_label">Guess Method:</string>
     <string name="apprentice_name">Name</string>
+    <string name="apprentice_name_label">Name</string>
     <string name="apprentice_saved">apprentice saved</string>    
     <string name="apprentice_scorecard_deleted">Scorecard deleted</string>
     <string name="apprentice_scorecard_detail_taken_at_label">Taken At</string>
@@ -24,6 +25,7 @@
     <string name="button_bookmark">Bookmark</string>
     <string name="button_cancel">Cancel</string>
     <string name="button_choose">Choose</string>
+    <string name="button_choose_apprentice">Choose Apprentice</string>
     <string name="button_choose_emotion">Choose Emotion</string>
     <string name="button_create_emotion">New Emotion</string>
     <string name="button_create_noteset">New Noteset</string>    

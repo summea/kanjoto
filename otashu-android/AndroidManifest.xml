@@ -86,6 +86,7 @@
         <activity android:name="com.andrewsummers.otashu.activity.EditApprenticeActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.DataModeMainMenuActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.PlayModeMainMenuActivity" />
+        <activity android:name="com.andrewsummers.otashu.activity.ChooseApprenticeActivity" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
