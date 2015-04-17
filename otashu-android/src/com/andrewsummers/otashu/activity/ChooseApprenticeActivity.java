@@ -2,32 +2,30 @@
 package com.andrewsummers.otashu.activity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.andrewsummers.otashu.R;
-import com.andrewsummers.otashu.data.BookmarksDataSource;
 import com.andrewsummers.otashu.data.ApprenticesDataSource;
-import com.andrewsummers.otashu.model.Bookmark;
 import com.andrewsummers.otashu.model.Apprentice;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
 
+/**
+ * The ChooseApprenticeActivity class provides a form to get User input as to which Apprentice to
+ * use for various Apprentice-related areas of the application (e.g. apprentice tests). Choosing an
+ * Apprentice also determines what data to use for apprentice scorecards, apprentice scores, edges,
+ * emotions, key signatures, and key notes.
+ */
 public class ChooseApprenticeActivity extends Activity implements OnClickListener {
     private Button buttonChoose = null;
     private SharedPreferences sharedPref;
