@@ -11,7 +11,7 @@ import android.util.Log;
  * application database.
  */
 public class OtashuDatabaseHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 46;
+    private static final int DATABASE_VERSION = 47;
     private static final String DATABASE_NAME = "otashu_collection.db";
 
     public static final String COLUMN_ID = "_id";
@@ -68,6 +68,9 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_APPRENTICES = "apprentices";
     public static final String COLUMN_APPRENTICE_ID = "apprentice_id";
+    public static final String COLUMN_LEARNING_STYLE_ID = "learning_style_id";
+    
+    public static final String TABLE_LEARNING_STYLES = "learning_styles";
 
     private static final String CREATE_TABLE_NOTESETS = "CREATE TABLE " + TABLE_NOTESETS
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
@@ -158,8 +161,14 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_APPRENTICES = "CREATE TABLE "
             + TABLE_APPRENTICES
             + " (" + COLUMN_ID + " integer primary key autoincrement,"
-            + COLUMN_NAME + " text);";
+            + COLUMN_NAME + " text,"
+            + COLUMN_LEARNING_STYLE_ID + " integer);";
 
+    private static final String CREATE_TABLE_LEARNING_STYLES = "CREATE TABLE "
+            + TABLE_LEARNING_STYLES
+            + " (" + COLUMN_ID + " integer primary key autoincrement,"
+            + COLUMN_NAME + " text);";
+            
     /**
      * NotesetCollectionOpenHelper constructor.
      * 
@@ -190,6 +199,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_KEY_SIGNATURES);
         db.execSQL(CREATE_TABLE_KEY_NOTES);
         db.execSQL(CREATE_TABLE_APPRENTICES);
+        db.execSQL(CREATE_TABLE_LEARNING_STYLES);
     }
 
     /**
@@ -203,5 +213,10 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.d("MYLOG", ">>> new database version: " + newVersion);
         Log.d("MYLOG", "updating database...");
+
+        // 47
+        db.execSQL("ALTER TABLE " + TABLE_APPRENTICES + " ADD COLUMN " + COLUMN_LEARNING_STYLE_ID
+                + " integer;");
+        db.execSQL(CREATE_TABLE_LEARNING_STYLES);
     }
 }

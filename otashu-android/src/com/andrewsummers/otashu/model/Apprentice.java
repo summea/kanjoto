@@ -8,6 +8,7 @@ public class Apprentice {
     private long id;
     private String name;
     private int state;
+    private long learningStyleId;
 
     public Apprentice() {
     }
@@ -69,6 +70,24 @@ public class Apprentice {
      */
     public void setState(int state) {
         this.state = state;
+    }
+    
+    /**
+     * getLearningStyleId gets Apprentice's learningStyleId
+     * 
+     * @return <code>long</code> learningStyleId value
+     */
+    public long getLearningStyleId() {
+        return learningStyleId;
+    }
+
+    /**
+     * setLearningStyleId sets Apprentice's learningStyleId
+     * 
+     * @param learningStyleId New learningStyleId value.
+     */
+    public void setLearningStyleId(long learningStyleId) {
+        this.learningStyleId = learningStyleId;
     }
     
     /**

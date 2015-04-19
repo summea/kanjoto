@@ -54,6 +54,7 @@
     <string name="create_emotion_title">Create Emotion</string>
     <string name="create_graph_title">Create Graph</string>
     <string name="create_label_title">Create Label</string>
+    <string name="create_learning_style_title">Create Learning Style</string>
     <string name="create_noteset_title">Create Noteset</string>
     <string name="create_notevalue_title">Create Notevalue</string>
     <string name="create_notevalue">Create Notevalue</string>
@@ -65,6 +66,7 @@
     <string name="edit_emotion_title">Edit Emotion</string>
     <string name="edit_graph_title">Edit Graph</string>
     <string name="edit_label_title">Edit Label</string>
+    <string name="edit_learning_style_title">Edit Learning Style</string>
     <string name="edit_noteset_title">Edit Noteset</string>
     <string name="edit_notevalue_title">Edit Notevalue</string>
     <string name="emotion_deleted">emotion deleted</string>
@@ -86,6 +88,10 @@
     <string name="label_detail_name_label">Name</string>
     <string name="label_name">Name</string>
     <string name="label_saved">label saved</string>
+    <string name="learning_style_deleted">learning style deleted</string>
+    <string name="learning_style_detail_name_label">Name</string>
+    <string name="learning_style_name">Name</string>
+    <string name="learning_style_saved">learning style saved</string>
     <string name="list_header_title">List Title</string>
     <string name="main_menu_title">otashu</string>
     <string name="menu_button_apprentice_strongest_paths">Apprentice Strongest Paths</string>
@@ -94,6 +100,7 @@
     <string name="menu_button_create_emotion">New</string>
     <string name="menu_button_create_graph">New</string>
     <string name="menu_button_create_label">New</string>
+    <string name="menu_button_create_learning_style">New</string>
     <string name="menu_button_create_noteset">New</string>
     <string name="menu_button_create_notevalue">New</string>
     <string name="menu_button_create_notevalue_label">Note</string>
@@ -161,6 +168,7 @@
     <string name="view_all_emotions_list_header">All Emotions</string>
     <string name="view_all_graphs_list_header">All Graphs</string>
     <string name="view_all_labels_list_header">All Labels</string>
+    <string name="view_all_learning_styles_list_header">All Learning Styles</string>
     <string name="view_all_notesets_list_header">All Notesets</string>
     <string name="view_all_notevalues_list_header">All Notevalues</string>
     <string name="view_all_notesets_title">View All Notesets</string>
@@ -171,6 +179,7 @@
     <string name="view_emotion_detail_title">Emotion Details</string>
     <string name="view_graph_detail_title">Graph Details</string>
     <string name="view_label_detail_title">Label Details</string>
+    <string name="view_learning_style_detail_title">Learning Style Details</string>
     <string name="view_noteset_detail_title">Noteset Details</string>
     <string name="view_notevalue_detail_title">Notevalue Details</string>
     <string name="view_notevalues">Notevalues</string>

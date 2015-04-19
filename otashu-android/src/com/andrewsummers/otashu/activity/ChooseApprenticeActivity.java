@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -74,27 +75,19 @@ public class ChooseApprenticeActivity extends Activity implements OnClickListene
 
     @Override
     public void onClick(View v) {
-        Intent intent = null;
-
         switch (v.getId()) {
             case R.id.button_choose:
-                // get all apprentices for spinner list
-                List<Integer> allApprenticeIds = new ArrayList<Integer>();
-                ApprenticesDataSource ads = new ApprenticesDataSource(this);
-                allApprenticeIds = ads.getAllApprenticeIds();
-
-                // set selected apprentice in spinner
+                // get selected apprentice from spinner
                 Spinner apprenticeSpinner = (Spinner) findViewById(R.id.spinner_apprentice);
-                long selectedApprenticeId = allApprenticeIds.get(apprenticeSpinner
-                        .getSelectedItemPosition());
-                ads.close();
+                Apprentice selectedApprentice = (Apprentice) apprenticeSpinner.getSelectedItem();
 
                 // save selected apprentice to preferences
-                if (selectedApprenticeId > 0) {
-                    SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
+                if (selectedApprentice.getId() > 0) {
+                    SharedPreferences.Editor editor = sharedPref.edit();
                     editor.putString("pref_selected_apprentice",
-                            Long.toString(selectedApprenticeId));
+                            Long.toString(selectedApprentice.getId()));
                     editor.apply();
+                    setResult(RESULT_OK, null);
                 }
 
                 finish();

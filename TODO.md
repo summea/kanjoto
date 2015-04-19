@@ -26,6 +26,7 @@
 
 
 ## DONE:
+- 20150418: added "select current apprentice" feature
 - 20150414: added main menu for data/play modes
 - 20150412: connected apprentice_id to transition test
 - 20150412: connected apprentice_id to scale test

@@ -22,6 +22,7 @@ public class ApprenticesDataSource {
     private String[] allColumns = {
             OtashuDatabaseHelper.COLUMN_ID,
             OtashuDatabaseHelper.COLUMN_NAME,
+            OtashuDatabaseHelper.COLUMN_LEARNING_STYLE_ID,
     };
 
     /**
@@ -58,6 +59,8 @@ public class ApprenticesDataSource {
     public Apprentice createApprentice(Apprentice apprentice) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, apprentice.getName());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_LEARNING_STYLE_ID,
+                apprentice.getLearningStyleId());
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -115,6 +118,7 @@ public class ApprenticesDataSource {
                 apprentice = new Apprentice();
                 apprentice.setId(cursor.getLong(0));
                 apprentice.setName(cursor.getString(1));
+                apprentice.setLearningStyleId(cursor.getLong(2));
 
                 // add note string to list of strings
                 apprentices.add(apprentice);
@@ -129,9 +133,8 @@ public class ApprenticesDataSource {
      * 
      * @return List of Apprentices ids.
      */
-    public List<Integer> getAllApprenticeIds() {
-        // TODO: check/fix this later
-        List<Integer> apprentice_ids = new ArrayList<Integer>();
+    public List<Long> getAllApprenticeIds() {
+        List<Long> apprentice_ids = new ArrayList<Long>();
 
         String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
                 + OtashuDatabaseHelper.TABLE_APPRENTICES;
@@ -144,8 +147,7 @@ public class ApprenticesDataSource {
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            Apprentice apprentice = cursorToApprentice(cursor);
-            apprentice_ids.add((int) apprentice.getId());
+            apprentice_ids.add(cursor.getLong(0));
             cursor.moveToNext();
         }
 
@@ -163,6 +165,7 @@ public class ApprenticesDataSource {
         Apprentice apprentice = new Apprentice();
         apprentice.setId(cursor.getLong(0));
         apprentice.setName(cursor.getString(1));
+        apprentice.setLearningStyleId(cursor.getLong(2));
         return apprentice;
     }
 
@@ -189,6 +192,7 @@ public class ApprenticesDataSource {
                 apprentice = new Apprentice();
                 apprentice.setId(cursor.getLong(0));
                 apprentice.setName(cursor.getString(1));
+                apprentice.setLearningStyleId(cursor.getLong(2));
 
                 // add apprentice string to list of strings
                 apprentices.add(apprentice.toString());
@@ -248,6 +252,7 @@ public class ApprenticesDataSource {
                 apprentice = new Apprentice();
                 apprentice.setId(cursor.getLong(0));
                 apprentice.setName(cursor.getString(1));
+                apprentice.setLearningStyleId(cursor.getLong(2));
             } while (cursor.moveToNext());
         }
 
@@ -262,6 +267,8 @@ public class ApprenticesDataSource {
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, apprentice.getId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, apprentice.getName());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_LEARNING_STYLE_ID,
+                apprentice.getLearningStyleId());
 
         db.update(OtashuDatabaseHelper.TABLE_APPRENTICES, contentValues,
                 OtashuDatabaseHelper.COLUMN_ID

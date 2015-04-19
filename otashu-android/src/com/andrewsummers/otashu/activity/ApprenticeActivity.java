@@ -90,7 +90,17 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                 break;
         }
         if (intent != null) {
-            startActivity(intent);
+            startActivityForResult(intent, 1);
+        }
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            Intent refresh = new Intent(this, ApprenticeActivity.class);
+            startActivity(refresh);
+            this.finish();
         }
     }
 }
