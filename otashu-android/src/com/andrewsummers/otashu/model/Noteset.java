@@ -9,6 +9,7 @@ public class Noteset {
     private String name;
     private int emotion_id;
     private int enabled;
+    private long apprenticeId;
 
     /**
      * getId gets Noteset id
@@ -80,6 +81,24 @@ public class Noteset {
      */
     public void setEnabled(int enabled) {
         this.enabled = enabled;
+    }
+    
+    /**
+     * getApprenticeId gets Apprentice id
+     * 
+     * @return <code>long</code> id value
+     */
+    public long getApprenticeId() {
+        return apprenticeId;
+    }
+
+    /**
+     * setApprenticeId sets Apprentice id
+     * 
+     * @param apprenticeId New apprenticeId value.
+     */
+    public void setApprenticeId(long apprenticeId) {
+        this.apprenticeId = apprenticeId;
     }
 
     /**

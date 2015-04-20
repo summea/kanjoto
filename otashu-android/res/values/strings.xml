@@ -179,6 +179,7 @@
     <string name="view_emotion_detail_title">Emotion Details</string>
     <string name="view_graph_detail_title">Graph Details</string>
     <string name="view_label_detail_title">Label Details</string>
+    <string name="view_learning_styles">Learning Styles</string>
     <string name="view_learning_style_detail_title">Learning Style Details</string>
     <string name="view_noteset_detail_title">Noteset Details</string>
     <string name="view_notevalue_detail_title">Notevalue Details</string>

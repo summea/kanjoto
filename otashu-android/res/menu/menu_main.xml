@@ -39,4 +39,7 @@
     <item
         android:id="@+id/view_apprentices"
         android:title="@string/view_apprentices" />
+    <item
+        android:id="@+id/view_learning_styles"
+        android:title="@string/view_learning_styles" />
 </menu>

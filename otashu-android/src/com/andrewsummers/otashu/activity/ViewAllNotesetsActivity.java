@@ -84,7 +84,7 @@ public class ViewAllNotesetsActivity extends ListActivity {
         listView.addHeaderView(listHeader, "", false);
 
         NotesetsDataSource nds = new NotesetsDataSource(this);
-        totalNotesetsAvailable = nds.getCount();
+        totalNotesetsAvailable = nds.getCount(apprenticeId);
         nds.close();
 
         fillList();
@@ -101,10 +101,10 @@ public class ViewAllNotesetsActivity extends ListActivity {
         NotesetsDataSource nsds = new NotesetsDataSource(this);
         NotesDataSource nds = new NotesDataSource(this);
 
-        totalNotesetsAvailable = nsds.getCount();
+        totalNotesetsAvailable = nsds.getCount(apprenticeId);
 
         if (currentOffset <= totalNotesetsAvailable && !doneLoading) {
-            allNotesets = nsds.getAllNotesets(limit, currentOffset);
+            allNotesets = nsds.getAllNotesets(apprenticeId, limit, currentOffset);
 
             for (Noteset noteset : allNotesets) {
                 relatedNotes = nds.getAllNotes(noteset.getId());
@@ -191,10 +191,10 @@ public class ViewAllNotesetsActivity extends ListActivity {
         NotesetsDataSource nsds = new NotesetsDataSource(this);
         NotesDataSource nds = new NotesDataSource(this);
 
-        totalNotesetsAvailable = nsds.getCount();
+        totalNotesetsAvailable = nsds.getCount(apprenticeId);
 
         if (currentOffset <= totalNotesetsAvailable) {
-            allNotesets = nsds.getAllNotesets(limit, currentOffset);
+            allNotesets = nsds.getAllNotesets(apprenticeId, limit, currentOffset);
 
             for (Noteset noteset : allNotesets) {
                 relatedNotes = nds.getAllNotes(noteset.getId());

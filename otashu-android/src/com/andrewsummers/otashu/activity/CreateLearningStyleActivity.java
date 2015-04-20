@@ -15,11 +15,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 /**
- * CreateLearningStyleActivity is an Activity which provides users the ability to create new learningStyles.
+ * CreateLearningStyleActivity is an Activity which provides users the ability to create new
+ * learningStyles.
  * <p>
- * This activity provides a form for creating a new LearningStyle. LearningStyles are used for a variety of
- * different purposes, for example: assigning colors to notes for lists and visual playback, and
- * providing background colors for emotions.
+ * This activity provides a form for creating a new LearningStyle. LearningStyles are used for a
+ * variety of different purposes, for example: assigning colors to notes for lists and visual
+ * playback, and providing background colors for emotions.
  * </p>
  */
 public class CreateLearningStyleActivity extends Activity implements OnClickListener {
@@ -55,7 +56,8 @@ public class CreateLearningStyleActivity extends Activity implements OnClickList
                 // gather learningStyle data from form
                 LearningStyle learningStyleToInsert = new LearningStyle();
 
-                String learningStyleName = ((EditText) findViewById(R.id.edittext_learning_style_name)).getText()
+                String learningStyleName = ((EditText) findViewById(R.id.edittext_learning_style_name))
+                        .getText()
                         .toString();
 
                 learningStyleToInsert.setName(learningStyleName.toString());

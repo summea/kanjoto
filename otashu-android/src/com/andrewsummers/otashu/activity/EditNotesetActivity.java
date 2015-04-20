@@ -105,7 +105,7 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
 
         // get data for noteset that is being edited
         HashMap<String, List<Object>> editingNoteset = new HashMap<String, List<Object>>();
-        editingNoteset = nds.getNotesetBundleDetail(noteset.getId());
+        editingNoteset = nds.getNotesetBundleDetail(apprenticeId, noteset.getId());
 
         List<Object> notesets = editingNoteset.get("noteset");
         noteset = (Noteset) notesets.get(0);
@@ -139,7 +139,7 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
         // apply this adapter to the spinner
         spinner.setAdapter(emotionsAdapter);
 
-        // spinner.setSelection(noteset.getEmotion());
+        // set current selection for spinner
         for (int i = 0; i < allEmotions.size(); i++) {
             if (allEmotions.get(i).getId() == noteset.getEmotion()) {
                 spinner.setSelection(i);
@@ -293,6 +293,7 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
                 notesetToUpdate.setId(editNoteset.getId());
                 notesetToUpdate.setEmotion(allEmotionIds.get((int) emotionSpinner
                         .getSelectedItemId()));
+                notesetToUpdate.setApprenticeId(apprenticeId);
 
                 for (int i = 0; i < spinnerIds.length; i++) {
                     Spinner spinner = (Spinner) findViewById(spinnerIds[i]);

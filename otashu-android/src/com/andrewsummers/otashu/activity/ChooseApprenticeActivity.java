@@ -71,6 +71,14 @@ public class ChooseApprenticeActivity extends Activity implements OnClickListene
 
         // apply this adapter to the spinner
         spinner.setAdapter(apprenticesAdapter);
+
+        // set current selection for spinner
+        for (int i = 0; i < allApprentices.size(); i++) {
+            if (allApprentices.get(i).getId() == apprenticeId) {
+                spinner.setSelection(i);
+                break;
+            }
+        }
     }
 
     @Override

@@ -214,6 +214,7 @@ public class CreateNotesetActivity extends Activity implements OnClickListener {
 
                 notesetToInsert.setEmotion(selectedEmotionValue);
                 notesetToInsert.setEnabled(1);
+                notesetToInsert.setApprenticeId(apprenticeId);
 
                 for (int i = 0; i < spinnerIds.length; i++) {
                     spinner = (Spinner) findViewById(spinnerIds[i]);

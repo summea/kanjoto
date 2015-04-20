@@ -26,6 +26,8 @@
 
 
 ## DONE:
+- 20150419: added "keep current apprentice selected in ChooseApprenticeActivity screen" feature
+- 20150419: connected apprentice_id to notesets 
 - 20150418: added "select current apprentice" feature
 - 20150414: added main menu for data/play modes
 - 20150412: connected apprentice_id to transition test

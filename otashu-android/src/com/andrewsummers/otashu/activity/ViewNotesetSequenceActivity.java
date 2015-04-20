@@ -26,6 +26,8 @@ public class ViewNotesetSequenceActivity extends FragmentActivity {
     private static final int NUM_PAGES = 4;
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
+    private SharedPreferences sharedPref;
+    private long apprenticeId = 0;
 
     /**
      * onCreate override used to gather data and display using a view pager and a pager adapter.
@@ -38,12 +40,16 @@ public class ViewNotesetSequenceActivity extends FragmentActivity {
 
         // get specific layout for content view
         setContentView(R.layout.activity_view_noteset_sequence);
+        
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        apprenticeId = Long.parseLong(sharedPref.getString(
+                "pref_selected_apprentice", "1"));
 
         try {
             NotesetsDataSource nds = new NotesetsDataSource(this);
 
             // get string version of returned noteset list
-            List<String> allNotesetsData = nds.getAllNotesetListPreviews();
+            List<String> allNotesetsData = nds.getAllNotesetListPreviews(apprenticeId);
             nds.close();
 
             // prevent crashes due to lack of database data

@@ -217,7 +217,8 @@ public class ViewAllLearningStylesActivity extends ListActivity {
         Long[] allLearningStyles = allLearningStylesData
                 .toArray(new Long[allLearningStylesData.size()]);
 
-        LearningStyle learningStyle = lsds.getLearningStyle(allLearningStyles[(int) learningStyleId]);
+        LearningStyle learningStyle = lsds
+                .getLearningStyle(allLearningStyles[(int) learningStyleId]);
         lsds.close();
 
         return learningStyle;

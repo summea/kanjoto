@@ -18,8 +18,10 @@ import com.andrewsummers.otashu.model.Noteset;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -32,11 +34,17 @@ import android.widget.Toast;
  * </p>
  */
 public class ExportDatabaseActivity extends Activity {
-
+    private SharedPreferences sharedPref;
+    private long apprenticeId = 0;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        apprenticeId = Long.parseLong(sharedPref.getString(
+                "pref_selected_apprentice", "1"));
+        
         // make sure destination directory exists
         File path = Environment.getExternalStorageDirectory();
         String newDirectory = path.toString() + "/otashu/";
@@ -65,7 +73,7 @@ public class ExportDatabaseActivity extends Activity {
             // export JSON test
             // get all notesets from database
             NotesetsDataSource nsds = new NotesetsDataSource(this);
-            List<Noteset> allNotesets = nsds.getAllNotesets();
+            List<Noteset> allNotesets = nsds.getAllNotesets(apprenticeId);
             nsds.close();
 
             JSONObject mainJsonObj = new JSONObject();

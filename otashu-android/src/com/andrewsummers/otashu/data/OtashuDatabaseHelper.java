@@ -11,7 +11,7 @@ import android.util.Log;
  * application database.
  */
 public class OtashuDatabaseHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 47;
+    private static final int DATABASE_VERSION = 52;
     private static final String DATABASE_NAME = "otashu_collection.db";
 
     public static final String COLUMN_ID = "_id";
@@ -69,13 +69,15 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_APPRENTICES = "apprentices";
     public static final String COLUMN_APPRENTICE_ID = "apprentice_id";
     public static final String COLUMN_LEARNING_STYLE_ID = "learning_style_id";
-    
+
     public static final String TABLE_LEARNING_STYLES = "learning_styles";
 
     private static final String CREATE_TABLE_NOTESETS = "CREATE TABLE " + TABLE_NOTESETS
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
             + COLUMN_NAME + " text,"
-            + COLUMN_ENABLED + " integer);";
+            + COLUMN_EMOTION_ID + " integer,"
+            + COLUMN_ENABLED + " integer,"
+            + COLUMN_APPRENTICE_ID + " integer);";
 
     private static final String CREATE_TABLE_NOTES = "CREATE TABLE " + TABLE_NOTES
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
@@ -168,7 +170,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
             + TABLE_LEARNING_STYLES
             + " (" + COLUMN_ID + " integer primary key autoincrement,"
             + COLUMN_NAME + " text);";
-            
+
     /**
      * NotesetCollectionOpenHelper constructor.
      * 
@@ -215,8 +217,13 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         Log.d("MYLOG", "updating database...");
 
         // 47
-        db.execSQL("ALTER TABLE " + TABLE_APPRENTICES + " ADD COLUMN " + COLUMN_LEARNING_STYLE_ID
-                + " integer;");
-        db.execSQL(CREATE_TABLE_LEARNING_STYLES);
+        // db.execSQL("ALTER TABLE " + TABLE_APPRENTICES + " ADD COLUMN " + COLUMN_LEARNING_STYLE_ID
+        // + " integer;");
+        // db.execSQL(CREATE_TABLE_LEARNING_STYLES);
+        // db.execSQL("ALTER TABLE " + TABLE_NOTEVALUES + " DROP COLUMN " + COLUMN_APPRENTICE_ID);
+        // 52
+        // db.execSQL("ALTER TABLE " + TABLE_NOTESETS + " ADD COLUMN " + COLUMN_APPRENTICE_ID
+        // + " integer;");
+        //db.execSQL("UPDATE " + TABLE_NOTESETS + " SET " + COLUMN_APPRENTICE_ID + "=1");
     }
 }
