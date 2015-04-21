@@ -28,12 +28,14 @@ public class DatabaseDumperApprenticesActivity extends Activity {
         TextView debugText = (TextView) findViewById(R.id.debug_text);
 
         debugText.setText(debugText.getText().toString() + "Table: Apprentices\n"
-                + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NAME + "\n");
+                + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_NAME + "|"
+                + OtashuDatabaseHelper.COLUMN_LEARNING_STYLE_ID + "\n");
 
         for (Apprentice apprentice : allApprentices) {
 
             String newText = debugText.getText().toString();
-            newText += apprentice.getId() + "|" + apprentice.getName() + "\n";
+            newText += apprentice.getId() + "|" + apprentice.getName() + "|"
+                    + apprentice.getLearningStyleId() + "\n";
 
             debugText.setText(newText);
         }

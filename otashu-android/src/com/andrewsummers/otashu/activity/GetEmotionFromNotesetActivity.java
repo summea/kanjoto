@@ -8,10 +8,13 @@ import java.util.List;
 
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.EdgesDataSource;
+import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.NotesDataSource;
+import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.Note;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -25,6 +28,7 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 public class GetEmotionFromNotesetActivity extends Activity implements OnClickListener {
     private long emotionGraphId;
@@ -157,6 +161,7 @@ public class GetEmotionFromNotesetActivity extends Activity implements OnClickLi
                 EdgesDataSource eds = new EdgesDataSource(this);
                 HashMap<String, String> result = eds
                         .getEmotionFromNotes(apprenticeId, emotionGraphId, notevalues);
+                eds.close();
 
                 String method = "Graph Approach";
                 long emotionId = Long.parseLong(result.get("emotionId"));
@@ -178,8 +183,21 @@ public class GetEmotionFromNotesetActivity extends Activity implements OnClickLi
                     }
                 }
 
-                Log.d("MYLOG", "> final match result... method: " + method + " emotionId: "
-                        + emotionId + " certainty: " + certainty);
+                EmotionsDataSource emds = new EmotionsDataSource(this);
+                Emotion emotion = emds.getEmotion(apprenticeId, emotionId);
+                eds.close();
+
+                Log.d("MYLOG", "> final match result... method: " + method + " emotion: "
+                        + emotion.getName() + " certainty: " + certainty);
+
+                Context context = getApplicationContext();
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, "match result... method: " + method
+                        + " emotion: "
+                        + emotion.getName() + " certainty: " + certainty,
+                        duration);
+                toast.show();
 
                 break;
         }

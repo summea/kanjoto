@@ -26,6 +26,8 @@
 
 
 ## DONE:
+- 20150420: added "show result from GetEmotionFromNotesetActivity" feature
+- 20150420: added "choose apprentice learning style" feature
 - 20150419: added "keep current apprentice selected in ChooseApprenticeActivity screen" feature
 - 20150419: connected apprentice_id to notesets 
 - 20150418: added "select current apprentice" feature

@@ -3,7 +3,9 @@ package com.andrewsummers.otashu.activity;
 
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.ApprenticesDataSource;
+import com.andrewsummers.otashu.data.LearningStylesDataSource;
 import com.andrewsummers.otashu.model.Apprentice;
+import com.andrewsummers.otashu.model.LearningStyle;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -40,5 +42,11 @@ public class ViewApprenticeDetailActivity extends Activity {
         // fill in form data
         TextView apprenticeName = (TextView) findViewById(R.id.apprentice_name_value);
         apprenticeName.setText(apprentice.getName());
+
+        LearningStylesDataSource lsds = new LearningStylesDataSource(this);
+        LearningStyle learningStyle = lsds.getLearningStyle(apprentice.getLearningStyleId());
+
+        TextView apprenticeLearningStyle = (TextView) findViewById(R.id.apprentice_learning_style_value);
+        apprenticeLearningStyle.setText(learningStyle.getName());
     }
 }

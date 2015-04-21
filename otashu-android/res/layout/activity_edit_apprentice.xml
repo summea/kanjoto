@@ -27,6 +27,18 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp" />
 
+    <TextView
+        android:id="@+id/spinner_apprentice_learning_style_label"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/spinner_apprentice_learning_style_label" />
+
+    <Spinner
+        android:id="@+id/spinner_apprentice_learning_style"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp" />
+
     <Button
         android:id="@+id/button_save"
         android:layout_width="match_parent"

@@ -43,13 +43,16 @@ public class DataModeMainMenuActivity extends Activity implements OnClickListene
 
                 switch (position) {
                     case 0:
-                        intent = new Intent(DataModeMainMenuActivity.this, ViewAllNotesetsActivity.class);
+                        intent = new Intent(DataModeMainMenuActivity.this,
+                                ViewAllNotesetsActivity.class);
                         break;
                     case 1:
-                        intent = new Intent(DataModeMainMenuActivity.this, ChooseEmotionActivity.class);
+                        intent = new Intent(DataModeMainMenuActivity.this,
+                                ChooseEmotionActivity.class);
                         break;
                     case 2:
-                        intent = new Intent(DataModeMainMenuActivity.this, ViewAllEmotionsActivity.class);
+                        intent = new Intent(DataModeMainMenuActivity.this,
+                                ViewAllEmotionsActivity.class);
                         break;
                     case 3:
                         intent = new Intent(DataModeMainMenuActivity.this, ApprenticeActivity.class);
@@ -123,6 +126,9 @@ public class DataModeMainMenuActivity extends Activity implements OnClickListene
                 break;
             case R.id.view_apprentices:
                 intent = new Intent(this, ViewAllApprenticesActivity.class);
+                break;
+            case R.id.view_learning_styles:
+                intent = new Intent(this, ViewAllLearningStylesActivity.class);
                 break;
         }
 

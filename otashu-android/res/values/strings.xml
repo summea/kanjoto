@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">otashu</string>
     <string name="apprentice_deleted">apprentice deleted</string>
+    <string name="apprentice_detail_learning_style_label">Learning Style</string>
     <string name="apprentice_detail_name_label">Name</string>
     <string name="apprentice_guess_method_label">Guess Method:</string>
+    <string name="spinner_apprentice_learning_style_label">Learning Style</string>
     <string name="apprentice_name">Name</string>
     <string name="apprentice_name_label">Name</string>
     <string name="apprentice_saved">apprentice saved</string>    
