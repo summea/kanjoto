@@ -158,6 +158,8 @@ public class GenerateMusicActivity extends Activity {
         apprenticeId = Long.parseLong(sharedPref.getString(
                 "pref_selected_apprentice", "1"));
 
+        Log.d("MYLOG", "> selected emotion id: " + selectedEmotionId);
+
         ApprenticesDataSource ads = new ApprenticesDataSource(this);
         apprentice = ads.getApprentice(apprenticeId);
         ads.close();
@@ -203,6 +205,8 @@ public class GenerateMusicActivity extends Activity {
                 }
                 break;
         }
+
+        Log.d("MYLOG", "> chosen logic type id: " + logicType);
 
         switch (logicType) {
             case 1:
@@ -323,7 +327,7 @@ public class GenerateMusicActivity extends Activity {
         emptyNoteList.add(emptyNote);
 
         NotesetsDataSource nds = new NotesetsDataSource(this);
-        allNotesetBundles = nds.getAllNotesetBundles(selectedEmotionId);
+        allNotesetBundles = nds.getAllNotesetBundles(apprenticeId, selectedEmotionId);
         nds.close();
 
         // prevent crashes due to lack of database data

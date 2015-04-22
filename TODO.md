@@ -23,6 +23,7 @@
 
 
 ## DONE:
+- 20150422: fixed "gather all emotions" bug after recent apprentice updates
 - 20150421: added Apprentice personalities (learning styles)
 - 20150421: added "completed scale" achievement
 - 20150421: connected apprentice learning style to generate music activity
