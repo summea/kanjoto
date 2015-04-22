@@ -19,22 +19,8 @@ import android.widget.TextView;
 /**
  * The ApprenticeActivity class provides tests for the Apprentice with test results noted as judged
  * by the User.
- * <p>
- * In this activity, the Apprentice chooses a random emotion and chooses notesets (either randomly
- * or using previously-learned data) and presents the noteset-emotion combination to the User to
- * check for accuracy. If the noteset-emotion combination is correct (or passing), the Apprentice
- * will go and save this noteset-emotion combination information in a database graph table. This
- * noteset-emotion combination is also saved in the User's noteset collection (if enabled in the
- * program settings).
- * </p>
- * <p>
- * If the Apprentice incorrectly chooses a noteset-emotion combination (as determined by the User),
- * the noteset-emotion combination information is noted by raising the related path edge weights in
- * the database graph table. Also, the incorrect noteset-emotion combination is not saved in the
- * User's noteset collection.
- * </p>
  */
-public class ApprenticeActivity extends Activity implements OnClickListener {
+public class ApprenticeTrainingActivity extends Activity implements OnClickListener {
     private SharedPreferences sharedPref;
     private long apprenticeId = 0;
 
@@ -43,7 +29,7 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
 
         // get specific layout for content view
-        setContentView(R.layout.activity_apprentice);
+        setContentView(R.layout.activity_apprentice_training);
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         apprenticeId = Long.parseLong(sharedPref.getString(
@@ -51,7 +37,6 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
 
         TextView apprenticeName = (TextView) findViewById(R.id.apprentice_name);
         TextView apprenticeText = (TextView) findViewById(R.id.apprentice_text);
-        Button buttonChooseApprentice = (Button) findViewById(R.id.button_choose_apprentice);
         Button buttonApprenticeEmotionTest = (Button) findViewById(R.id.button_apprentice_emotion_test);
         Button buttonApprenticeTransitionTest = (Button) findViewById(R.id.button_apprentice_transition_test);
         Button buttonApprenticeScaleTest = (Button) findViewById(R.id.button_apprentice_scale_test);
@@ -63,7 +48,6 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
 
         try {
             // add listeners to buttons
-            buttonChooseApprentice.setOnClickListener(this);
             buttonApprenticeEmotionTest.setOnClickListener(this);
             buttonApprenticeTransitionTest.setOnClickListener(this);
             buttonApprenticeScaleTest.setOnClickListener(this);
@@ -76,9 +60,6 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
     public void onClick(View v) {
         Intent intent = null;
         switch (v.getId()) {
-            case R.id.button_choose_apprentice:
-                intent = new Intent(this, ChooseApprenticeActivity.class);
-                break;
             case R.id.button_apprentice_emotion_test:
                 intent = new Intent(this, ApprenticeEmotionTestActivity.class);
                 break;

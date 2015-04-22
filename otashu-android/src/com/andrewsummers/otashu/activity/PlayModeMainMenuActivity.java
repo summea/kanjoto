@@ -6,6 +6,7 @@ import com.andrewsummers.otashu.adapter.PlayModeMenuImageAdapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
@@ -18,6 +19,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
 public class PlayModeMainMenuActivity extends Activity implements OnClickListener {
+    private SharedPreferences sharedPref;
+    private int programMode;
 
     /**
      * onCreate override that provides menu buttons on menu view.
@@ -34,6 +37,13 @@ public class PlayModeMainMenuActivity extends Activity implements OnClickListene
         // get specific layout for content view
         setContentView(R.layout.activity_play_mode_main_menu);
 
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // save selected program mode to preferences
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("pref_program_mode", "2");
+        editor.apply();
+
         GridView gridView = (GridView) findViewById(R.id.gridview);
         gridView.setAdapter(new PlayModeMenuImageAdapter(this));
 
@@ -44,18 +54,19 @@ public class PlayModeMainMenuActivity extends Activity implements OnClickListene
                 switch (position) {
                     case 0:
                         intent = new Intent(PlayModeMainMenuActivity.this,
-                                ViewAllNotesetsActivity.class);
+                                ApprenticeActivity.class);
                         break;
                     case 1:
                         intent = new Intent(PlayModeMainMenuActivity.this,
-                                ChooseEmotionActivity.class);
+                                ApprenticeTrainingActivity.class);
                         break;
                     case 2:
                         intent = new Intent(PlayModeMainMenuActivity.this,
                                 ViewAllEmotionsActivity.class);
                         break;
                     case 3:
-                        intent = new Intent(PlayModeMainMenuActivity.this, ApprenticeActivity.class);
+                        intent = new Intent(PlayModeMainMenuActivity.this,
+                                ChooseEmotionActivity.class);
                         break;
                 }
 

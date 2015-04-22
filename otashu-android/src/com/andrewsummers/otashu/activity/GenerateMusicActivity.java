@@ -16,12 +16,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.andrewsummers.otashu.data.ApprenticesDataSource;
 import com.andrewsummers.otashu.data.EdgesDataSource;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.KeyNotesDataSource;
 import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.data.NotesetsDataSource;
 import com.andrewsummers.otashu.data.NotevaluesDataSource;
+import com.andrewsummers.otashu.model.Apprentice;
 import com.andrewsummers.otashu.model.Edge;
 import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.KeyNote;
@@ -78,6 +80,7 @@ public class GenerateMusicActivity extends Activity {
     private List<Integer> currentKeySignatureNotes = new ArrayList<Integer>();
     private SharedPreferences sharedPref;
     private long apprenticeId = 0;
+    private Apprentice apprentice;
 
     // TODO: make this more dynamic
     private static SparseArray<String> noteMap;
@@ -155,6 +158,10 @@ public class GenerateMusicActivity extends Activity {
         apprenticeId = Long.parseLong(sharedPref.getString(
                 "pref_selected_apprentice", "1"));
 
+        ApprenticesDataSource ads = new ApprenticesDataSource(this);
+        apprentice = ads.getApprentice(apprenticeId);
+        ads.close();
+
         EmotionsDataSource emds = new EmotionsDataSource(this);
         Emotion currentEmotion = emds.getEmotion(apprenticeId, selectedEmotionId);
         selectedEmotionName = currentEmotion.getName();
@@ -166,8 +173,38 @@ public class GenerateMusicActivity extends Activity {
         Random randomLogic = new Random();
         int logicType = randomLogic.nextInt(5) + 1;
 
-        // switch (logicType) {
-        switch (selectedLogicId) {
+        switch ((int) apprentice.getLearningStyleId()) {
+            case 1:
+                // A Type
+                logicType = randomLogic.nextInt((8 - 1) + 1) + 1;
+                if (logicType > 4) {
+                    logicType = 1;
+                }
+                break;
+            case 2:
+                // B Type
+                logicType = randomLogic.nextInt((8 - 1) + 1) + 1;
+                if (logicType > 4) {
+                    logicType = 2;
+                }
+                break;
+            case 3:
+                // C Type
+                logicType = randomLogic.nextInt((8 - 1) + 1) + 1;
+                if (logicType > 4) {
+                    logicType = 3;
+                }
+                break;
+            case 4:
+                // D Type
+                logicType = randomLogic.nextInt((8 - 1) + 1) + 1;
+                if (logicType > 4) {
+                    logicType = 4;
+                }
+                break;
+        }
+
+        switch (logicType) {
             case 1:
                 notes = logicA();
                 break;

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp" >
+
+    <TextView
+        android:id="@+id/apprentice_training_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/apprentice_training_title"
+        android:textSize="30sp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp" />
+
+    <TextView
+        android:id="@+id/apprentice_name_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/apprentice_name_label"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp" />
+        
+    <TextView
+        android:id="@+id/apprentice_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/apprentice_name"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp" />
+
+    <TextView
+        android:id="@+id/apprentice_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/apprentice_text"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp" />
+
+        
+        <Button
+            android:id="@+id/button_apprentice_emotion_test"
+            android:text="@string/button_apprentice_emotion_test"
+            android:padding="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_selector" />
+        
+        <Button
+            android:id="@+id/button_apprentice_scale_test"
+            android:text="@string/button_apprentice_scale_test"
+            android:padding="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_selector" />
+            
+        <Button
+            android:id="@+id/button_apprentice_transition_test"
+            android:text="@string/button_apprentice_transition_test"
+            android:padding="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_selector" />
+
+</LinearLayout>

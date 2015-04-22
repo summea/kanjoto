@@ -88,6 +88,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
     private boolean autoMode = false;
     private Apprentice apprentice;
     private long apprenticeId = 0;
+    private int programMode;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,6 +106,8 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
 
         // get emotion graph id for Apprentice's note relationships graph
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        programMode = Integer.parseInt(sharedPref.getString(
+                "pref_program_mode", "1"));
         emotionGraphId = Long.parseLong(sharedPref.getString(
                 "pref_emotion_graph_for_apprentice", "1"));
         apprenticeId = Long.parseLong(sharedPref.getString(

@@ -1,9 +1,6 @@
 # otashu
 
 ## TODO:
-- apprentice personalities
-- play mode
-
 - make sure vertices are generated at start of program (if not already existing... these are same for all apprentices)
 - make sure vertices are shared for all apprentices and users
 - create auto test/learn for Emotion test
@@ -26,6 +23,10 @@
 
 
 ## DONE:
+- 20150421: added Apprentice personalities (learning styles)
+- 20150421: added "completed scale" achievement
+- 20150421: connected apprentice learning style to generate music activity
+- 20150421: added achievements table
 - 20150420: added "show result from GetEmotionFromNotesetActivity" feature
 - 20150420: added "choose apprentice learning style" feature
 - 20150419: added "keep current apprentice selected in ChooseApprenticeActivity screen" feature

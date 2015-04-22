@@ -91,6 +91,8 @@
         <activity android:name="com.andrewsummers.otashu.activity.ViewLearningStyleDetailActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.CreateLearningStyleActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.EditLearningStyleActivity" />
+        <activity android:name="com.andrewsummers.otashu.activity.ApprenticeTrainingActivity" />
+        <activity android:name="com.andrewsummers.otashu.activity.DatabaseDumperLearningStylesActivity" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

@@ -69,6 +69,7 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
     private int totalGuesses = 0;
     private long scorecardId = 0;
     private long apprenticeId = 0;
+    private int programMode;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,6 +83,8 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
 
         // get emotion graph id for Apprentice's note relationships graph
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        programMode = Integer.parseInt(sharedPref.getString(
+                "pref_program_mode", "1"));
         transitionGraphId = Long.parseLong(sharedPref.getString(
                 "pref_transition_graph_for_apprentice", "2"));
         apprenticeId = Long.parseLong(sharedPref.getString(

@@ -13,11 +13,13 @@ import java.util.Random;
 import java.util.TimeZone;
 
 import com.andrewsummers.otashu.R;
+import com.andrewsummers.otashu.data.AchievementsDataSource;
 import com.andrewsummers.otashu.data.ApprenticeScorecardsDataSource;
 import com.andrewsummers.otashu.data.ApprenticeScoresDataSource;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.KeyNotesDataSource;
 import com.andrewsummers.otashu.data.KeySignaturesDataSource;
+import com.andrewsummers.otashu.model.Achievement;
 import com.andrewsummers.otashu.model.ApprenticeScore;
 import com.andrewsummers.otashu.model.ApprenticeScorecard;
 import com.andrewsummers.otashu.model.Emotion;
@@ -26,6 +28,7 @@ import com.andrewsummers.otashu.model.KeySignature;
 import com.andrewsummers.otashu.model.Note;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -38,6 +41,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * The ApprenticeEmotionTestActivity class provides a specific test for the Apprentice with test
@@ -63,6 +67,8 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
     private long scorecardId = 0;
     private long currentKeySignatureId = 0;
     private long apprenticeId = 0;
+    private int programMode;
+    private int notesToCompleteScale = 7;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,6 +82,8 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
 
         // get emotion graph id for Apprentice's note relationships graph
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        programMode = Integer.parseInt(sharedPref.getString(
+                "pref_program_mode", "1"));
         setScaleGraphId(Long.parseLong(sharedPref.getString(
                 "pref_scale_graph_for_apprentice", "3")));
         apprenticeId = Long.parseLong(sharedPref.getString(
@@ -277,6 +285,50 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
                         newNote.setApprenticeId(apprenticeId);
                         knds.createKeyNote(newNote);
                         Log.d("MYLOG", "adding new key note: " + newNote.getNotevalue());
+                    }
+                }
+
+                // check if achievement was earned in play mode
+                if (programMode == 2) {
+                    List<KeyNote> keyNotes = knds.getKeyNotesByKeySignature(apprenticeId,
+                            currentKeySignatureId);
+
+                    if (keyNotes.size() >= notesToCompleteScale) {
+                        String key = String.valueOf(currentKeySignatureId);
+                        // check if achievement key for this already exists
+                        AchievementsDataSource ads = new AchievementsDataSource(this);
+                        Achievement achievement = ads.getAchievementByKey(apprenticeId, key);
+
+                        if (achievement.getId() > 0) {
+                            // pass
+                        } else {
+                            TimeZone timezone = TimeZone.getTimeZone("UTC");
+                            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'",
+                                    Locale.getDefault());
+                            dateFormat.setTimeZone(timezone);
+                            String earnedOnISO = dateFormat.format(new Date());
+
+                            // save achievement if this is a new key
+                            achievement = new Achievement();
+                            achievement.setName("completed scale");
+                            achievement.setApprenticeId(apprenticeId);
+                            achievement.setEarnedOn(earnedOnISO);
+                            achievement.setKey(key);
+
+                            ads.createAchievement(achievement);
+
+                            Context context = getApplicationContext();
+                            int duration = Toast.LENGTH_SHORT;
+
+                            Toast toast = Toast.makeText(
+                                    context,
+                                    context.getResources().getString(
+                                            R.string.achievement_completed_scale),
+                                    duration);
+                            toast.show();
+                        }
+
+                        ads.close();
                     }
                 }
 

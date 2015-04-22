@@ -1,4 +1,5 @@
 <resources>
+    <string name="achievement_completed_scale">Scale Completed!</string>
     <string name="app_name">otashu</string>
     <string name="apprentice_deleted">apprentice deleted</string>
     <string name="apprentice_detail_learning_style_label">Learning Style</string>
@@ -7,13 +8,14 @@
     <string name="spinner_apprentice_learning_style_label">Learning Style</string>
     <string name="apprentice_name">Name</string>
     <string name="apprentice_name_label">Name</string>
-    <string name="apprentice_saved">apprentice saved</string>    
+    <string name="apprentice_saved">apprentice saved</string>
     <string name="apprentice_scorecard_deleted">Scorecard deleted</string>
     <string name="apprentice_scorecard_detail_taken_at_label">Taken At</string>
     <string name="apprentice_text">Apprentice Text</string>
     <string name="apprentice_title">Apprentice</string>
     <string name="apprentice_top_scores_title">Apprentice Top Scores</string>
     <string name="apprentice_total_guesses_label">Guesses Correct:</string>
+    <string name="apprentice_training_title">Training</string>
     <string name="bookmark_deleted">bookmark deleted</string>
     <string name="bookmark_detail_name_label">Name</string>
     <string name="bookmark_detail_serialized_value_label">Serialized Value</string>
