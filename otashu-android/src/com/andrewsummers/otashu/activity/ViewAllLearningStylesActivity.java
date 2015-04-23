@@ -1,32 +1,20 @@
 
 package com.andrewsummers.otashu.activity;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.adapter.LearningStyleAdapter;
 import com.andrewsummers.otashu.data.LearningStylesDataSource;
 import com.andrewsummers.otashu.model.LearningStyle;
-import com.andrewsummers.otashu.model.Note;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;

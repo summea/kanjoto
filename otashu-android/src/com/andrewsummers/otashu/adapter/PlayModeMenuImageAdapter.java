@@ -53,9 +53,9 @@ public class PlayModeMenuImageAdapter extends BaseAdapter {
 
     // references to our images
     private Integer[] mThumbIds = {
-            R.drawable.apprentice,
-            R.drawable.notesets_list,
-            R.drawable.emotions,
-            R.drawable.generate,
+            R.drawable.apprentice_alt,
+            R.drawable.train_alt,
+            R.drawable.emotions_alt,
+            R.drawable.generate_alt,
     };
 }

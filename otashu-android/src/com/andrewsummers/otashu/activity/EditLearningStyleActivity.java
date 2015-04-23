@@ -12,21 +12,21 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /**
  * EditLearningStyleActivity is an Activity which provides users the ability to edit learningStyles.
  * <p>
- * This activity provides a form for editing existing LearningStyles. LearningStyle to edit is selected either
- * via the "view all learningStyles" activity or by the related "edit" context menu. The edit form fills
- * in data found (from the database) for specified LearningStyle to edit and (if successful) any saved
- * updates will then be saved in the database.
+ * This activity provides a form for editing existing LearningStyles. LearningStyle to edit is
+ * selected either via the "view all learningStyles" activity or by the related "edit" context menu.
+ * The edit form fills in data found (from the database) for specified LearningStyle to edit and (if
+ * successful) any saved updates will then be saved in the database.
  * </p>
  */
 public class EditLearningStyleActivity extends Activity implements OnClickListener {
     private Button buttonSave = null;
-    private LearningStyle editLearningStyle;  // keep track of which LearningStyle is currently being edited
+    private LearningStyle editLearningStyle; // keep track of which LearningStyle is currently being
+                                             // edited
 
     /**
      * onCreate override that provides learningStyle creation view to user .
