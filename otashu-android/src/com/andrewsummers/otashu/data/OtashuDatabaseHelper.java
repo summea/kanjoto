@@ -11,7 +11,7 @@ import android.util.Log;
  * application database.
  */
 public class OtashuDatabaseHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 53;
+    private static final int DATABASE_VERSION = 54;
     private static final String DATABASE_NAME = "otashu_collection.db";
 
     public static final String COLUMN_ID = "_id";
@@ -239,6 +239,11 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         //db.execSQL("UPDATE " + TABLE_NOTESETS + " SET " + COLUMN_APPRENTICE_ID + "=1");
         
         // 53
-        db.execSQL(CREATE_TABLE_ACHIEVEMENTS);
+        // db.execSQL(CREATE_TABLE_ACHIEVEMENTS);
+        
+        // 54
+        // db.execSQL("UPDATE " + TABLE_ACHIEVEMENTS + " SET " + COLUMN_NAME + "='completed_scale' WHERE " + COLUMN_ID + "=1");
+        // db.execSQL("UPDATE " + TABLE_ACHIEVEMENTS + " SET " + COLUMN_NAME + "='found_strong_path' WHERE " + COLUMN_ID + "=2");
+        // db.execSQL("UPDATE " + TABLE_ACHIEVEMENTS + " SET " + COLUMN_NAME + "='found_strong_transition' WHERE " + COLUMN_ID + "=3");
     }
 }

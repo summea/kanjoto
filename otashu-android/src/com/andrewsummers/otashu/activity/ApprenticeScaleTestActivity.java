@@ -310,7 +310,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
 
                             // save achievement if this is a new key
                             achievement = new Achievement();
-                            achievement.setName("completed scale");
+                            achievement.setName("completed_scale");
                             achievement.setApprenticeId(apprenticeId);
                             achievement.setEarnedOn(earnedOnISO);
                             achievement.setKey(key);

@@ -23,6 +23,9 @@
 
 
 ## DONE:
+- 20150423: added "show achievements on play mode Apprentice screen" feature
+- 20150423: added "found a strong path" achievement
+- 20150423: added "found strong transition" achievement
 - 20150422: fixed "gather all emotions" bug after recent apprentice updates
 - 20150421: added Apprentice personalities (learning styles)
 - 20150421: added "completed scale" achievement

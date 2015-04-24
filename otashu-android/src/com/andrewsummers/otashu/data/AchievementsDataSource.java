@@ -13,6 +13,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class AchievementsDataSource {
     private SQLiteDatabase database;
@@ -285,15 +286,22 @@ public class AchievementsDataSource {
     public Achievement getAchievementByKey(long apprenticeId, String key) {
         Achievement achievement = new Achievement();
 
+        /*
+         * String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_ACHIEVEMENTS + " WHERE " +
+         * OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId + " AND " +
+         * OtashuDatabaseHelper.COLUMN_KEY + "=" + key;
+         */
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_ACHIEVEMENTS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
-                + " AND " + OtashuDatabaseHelper.COLUMN_KEY + "=" + key;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?"
+                + " AND " + OtashuDatabaseHelper.COLUMN_KEY + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all achievements from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(apprenticeId), key
+        });
 
         if (cursor.moveToFirst()) {
             do {
@@ -310,6 +318,31 @@ public class AchievementsDataSource {
         db.close();
 
         return achievement;
+    }
+
+    public int getAchievementCount(long apprenticeId, String achievementName) {
+        int result = 0;
+
+        String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
+                + OtashuDatabaseHelper.TABLE_ACHIEVEMENTS
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?"
+                + " AND " + OtashuDatabaseHelper.COLUMN_NAME + "=?";
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all achievements from database
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(apprenticeId), achievementName
+        });
+
+        if (cursor.moveToFirst()) {
+            result = cursor.getCount();
+        }
+
+        db.close();
+
+        return result;
     }
 
     public Achievement updateAchievement(Achievement achievement) {

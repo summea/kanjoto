@@ -2,6 +2,7 @@
 package com.andrewsummers.otashu.activity;
 
 import com.andrewsummers.otashu.R;
+import com.andrewsummers.otashu.data.AchievementsDataSource;
 import com.andrewsummers.otashu.data.ApprenticesDataSource;
 import com.andrewsummers.otashu.model.Apprentice;
 
@@ -19,22 +20,8 @@ import android.widget.TextView;
 /**
  * The ApprenticeActivity class provides tests for the Apprentice with test results noted as judged
  * by the User.
- * <p>
- * In this activity, the Apprentice chooses a random emotion and chooses notesets (either randomly
- * or using previously-learned data) and presents the noteset-emotion combination to the User to
- * check for accuracy. If the noteset-emotion combination is correct (or passing), the Apprentice
- * will go and save this noteset-emotion combination information in a database graph table. This
- * noteset-emotion combination is also saved in the User's noteset collection (if enabled in the
- * program settings).
- * </p>
- * <p>
- * If the Apprentice incorrectly chooses a noteset-emotion combination (as determined by the User),
- * the noteset-emotion combination information is noted by raising the related path edge weights in
- * the database graph table. Also, the incorrect noteset-emotion combination is not saved in the
- * User's noteset collection.
- * </p>
  */
-public class ApprenticeActivity extends Activity implements OnClickListener {
+public class PlayModeApprenticeActivity extends Activity implements OnClickListener {
     private SharedPreferences sharedPref;
     private long apprenticeId = 0;
     private int programMode;
@@ -44,7 +31,7 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
 
         // get specific layout for content view
-        setContentView(R.layout.activity_apprentice);
+        setContentView(R.layout.activity_apprentice_detail);
         
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         programMode = Integer.parseInt(sharedPref.getString(
@@ -53,23 +40,28 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
                 "pref_selected_apprentice", "1"));
 
         TextView apprenticeName = (TextView) findViewById(R.id.apprentice_name);
-        TextView apprenticeText = (TextView) findViewById(R.id.apprentice_text);
         Button buttonChooseApprentice = (Button) findViewById(R.id.button_choose_apprentice);
-        Button buttonApprenticeEmotionTest = (Button) findViewById(R.id.button_apprentice_emotion_test);
-        Button buttonApprenticeTransitionTest = (Button) findViewById(R.id.button_apprentice_transition_test);
-        Button buttonApprenticeScaleTest = (Button) findViewById(R.id.button_apprentice_scale_test);
+        TextView apprenticeAchievement1 = (TextView) findViewById(R.id.apprentice_achievement_1);
+        TextView apprenticeAchievement2 = (TextView) findViewById(R.id.apprentice_achievement_2);
+        TextView apprenticeAchievement3 = (TextView) findViewById(R.id.apprentice_achievement_3);
 
         ApprenticesDataSource ads = new ApprenticesDataSource(this);
         Apprentice apprentice = ads.getApprentice(apprenticeId);
         apprenticeName.setText(apprentice.getName());
-        apprenticeText.setText("Take a test?");
+        
+        AchievementsDataSource acds = new AchievementsDataSource(this);
+        int achievementEmotionCount = acds.getAchievementCount(apprenticeId, "found_strong_path");
+        int achievementScaleCount = acds.getAchievementCount(apprenticeId, "completed_scale");
+        int achievementTransitionCount = acds.getAchievementCount(apprenticeId, "found_strong_transition");
+        acds.close();
+        
+        apprenticeAchievement1.setText("Emotion: " + achievementEmotionCount);
+        apprenticeAchievement2.setText("Scale: " + achievementScaleCount);
+        apprenticeAchievement3.setText("Transition: " + achievementTransitionCount);
 
         try {
             // add listeners to buttons
             buttonChooseApprentice.setOnClickListener(this);
-            buttonApprenticeEmotionTest.setOnClickListener(this);
-            buttonApprenticeTransitionTest.setOnClickListener(this);
-            buttonApprenticeScaleTest.setOnClickListener(this);
         } catch (Exception e) {
             Log.d("MYLOG", e.getStackTrace().toString());
         }
@@ -82,15 +74,6 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
             case R.id.button_choose_apprentice:
                 intent = new Intent(this, ChooseApprenticeActivity.class);
                 break;
-            case R.id.button_apprentice_emotion_test:
-                intent = new Intent(this, ApprenticeEmotionTestActivity.class);
-                break;
-            case R.id.button_apprentice_transition_test:
-                intent = new Intent(this, ApprenticeTransitionTestActivity.class);
-                break;
-            case R.id.button_apprentice_scale_test:
-                intent = new Intent(this, ApprenticeScaleTestActivity.class);
-                break;
         }
         if (intent != null) {
             startActivityForResult(intent, 1);
@@ -101,7 +84,7 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            Intent refresh = new Intent(this, ApprenticeActivity.class);
+            Intent refresh = new Intent(this, PlayModeApprenticeActivity.class);
             startActivity(refresh);
             this.finish();
         }

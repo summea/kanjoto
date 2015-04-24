@@ -1,6 +1,10 @@
 <resources>
     <string name="achievement_completed_scale">Scale Completed!</string>
+    <string name="achievement_found_strong_path">Found Strong Path</string>
+    <string name="achievement_found_strong_transition">Found Strong Transition</string>
     <string name="app_name">otashu</string>
+    <string name="apprentice_achievements_placeholder">...</string>
+    <string name="apprentice_achievements_title">Achievements</string>
     <string name="apprentice_deleted">apprentice deleted</string>
     <string name="apprentice_detail_learning_style_label">Learning Style</string>
     <string name="apprentice_detail_name_label">Name</string>

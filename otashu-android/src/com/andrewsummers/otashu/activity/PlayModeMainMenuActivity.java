@@ -54,7 +54,7 @@ public class PlayModeMainMenuActivity extends Activity implements OnClickListene
                 switch (position) {
                     case 0:
                         intent = new Intent(PlayModeMainMenuActivity.this,
-                                ApprenticeActivity.class);
+                                PlayModeApprenticeActivity.class);
                         break;
                     case 1:
                         intent = new Intent(PlayModeMainMenuActivity.this,

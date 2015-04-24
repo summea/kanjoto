@@ -13,6 +13,7 @@ import java.util.Random;
 import java.util.TimeZone;
 
 import com.andrewsummers.otashu.R;
+import com.andrewsummers.otashu.data.AchievementsDataSource;
 import com.andrewsummers.otashu.data.ApprenticeScorecardsDataSource;
 import com.andrewsummers.otashu.data.ApprenticeScoresDataSource;
 import com.andrewsummers.otashu.data.EdgesDataSource;
@@ -20,12 +21,14 @@ import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.NotesDataSource;
 import com.andrewsummers.otashu.data.NotesetsDataSource;
 import com.andrewsummers.otashu.data.VerticesDataSource;
+import com.andrewsummers.otashu.model.Achievement;
 import com.andrewsummers.otashu.model.Apprentice;
 import com.andrewsummers.otashu.model.ApprenticeScore;
 import com.andrewsummers.otashu.model.ApprenticeScorecard;
 import com.andrewsummers.otashu.model.ApprenticeState;
 import com.andrewsummers.otashu.model.Edge;
 import com.andrewsummers.otashu.model.Emotion;
+import com.andrewsummers.otashu.model.KeyNote;
 import com.andrewsummers.otashu.model.Note;
 import com.andrewsummers.otashu.model.Noteset;
 import com.andrewsummers.otashu.model.NotesetAndRelated;
@@ -89,6 +92,8 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
     private Apprentice apprentice;
     private long apprenticeId = 0;
     private int programMode;
+    private List<Edge> currentEdges = new ArrayList<Edge>();
+    private float strongPathLevel = 0.4f;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -409,6 +414,8 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                         newEdge.setApprenticeId(apprenticeId);
                         newEdge = edds.createEdge(newEdge);
                         edgeId = newEdge.getId();
+
+                        currentEdges.add(newEdge);
                     } else {
                         // edge exists between nodeA and nodeB, just update weight
 
@@ -422,10 +429,75 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                             edds.updateEdge(edge);
                             edgeId = edge.getId();
                         }
+
+                        currentEdges.add(edge);
                     }
 
                     // save score
                     saveScore(1, edgeId);
+                }
+
+                // check if achievement was earned in play mode
+                if (programMode == 2) {
+
+                    Log.d("MYLOG", "current edges: " + currentEdges.toString());
+
+                    // check if this is a strong noteset
+                    String currentEdgesKey = "";
+                    boolean strongPathFound = true;
+                    for (int i = 0; i < currentEdges.size(); i++) {
+                        if (i == (currentEdges.size() - 1)) {
+                            currentEdgesKey += currentEdges.get(i).getFromNodeId() + "_";
+                            currentEdgesKey += currentEdges.get(i).getToNodeId();
+                        } else {
+                            currentEdgesKey += currentEdges.get(i).getFromNodeId() + "_";
+                        }
+
+                        if (currentEdges.get(i).getWeight() > strongPathLevel) {
+                            strongPathFound = false;
+                        }
+                    }
+
+                    Log.d("MYLOG", "strong path found? " + strongPathFound);
+                    Log.d("MYLOG", "current edges key: " + currentEdgesKey);
+
+                    if (strongPathFound) {
+                        String key = String.valueOf(currentEdgesKey);
+                        // check if achievement key for this already exists
+                        AchievementsDataSource ads = new AchievementsDataSource(this);
+                        Achievement achievement = ads.getAchievementByKey(apprenticeId, key);
+
+                        if (achievement.getId() > 0) {
+                            // pass
+                        } else {
+                            TimeZone timezone = TimeZone.getTimeZone("UTC");
+                            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'",
+                                    Locale.getDefault());
+                            dateFormat.setTimeZone(timezone);
+                            String earnedOnISO = dateFormat.format(new Date());
+
+                            // save achievement if this is a new key
+                            achievement = new Achievement();
+                            achievement.setName("found_strong_path");
+                            achievement.setApprenticeId(apprenticeId);
+                            achievement.setEarnedOn(earnedOnISO);
+                            achievement.setKey(key);
+
+                            ads.createAchievement(achievement);
+
+                            Context context = getApplicationContext();
+                            int duration = Toast.LENGTH_SHORT;
+
+                            Toast toast = Toast.makeText(
+                                    context,
+                                    context.getResources().getString(
+                                            R.string.achievement_found_strong_path),
+                                    duration);
+                            toast.show();
+                        }
+
+                        ads.close();
+                    }
                 }
 
                 // try another noteset
