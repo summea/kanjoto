@@ -1,17 +1,25 @@
 
 package com.andrewsummers.otashu.activity;
 
+import java.io.File;
+
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.Label;
+import com.andrewsummers.otashu.task.UploadFileTask;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
 
 /**
@@ -21,11 +29,16 @@ import android.widget.TextView;
  * that can be assigned to a Noteset either by the User or by the Apprentice.
  * </p>
  */
-public class ViewEmotionDetailActivity extends Activity {
+public class ViewEmotionDetailActivity extends Activity implements OnClickListener {
     private int emotionId = 0;
+    private Button buttonSendEmofing = null;
     private SharedPreferences sharedPref;
     private long apprenticeId = 0;
-    
+    File path = Environment.getExternalStorageDirectory();
+    String externalDirectory = path.toString() + "/otashu/";
+    String fullPathString = externalDirectory + "emofing.png";
+    File bitmapSource = new File(externalDirectory + "emofing.png");
+
     /**
      * onCreate override used to get details view.
      * 
@@ -41,7 +54,7 @@ public class ViewEmotionDetailActivity extends Activity {
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         apprenticeId = Long.parseLong(sharedPref.getString(
                 "pref_selected_apprentice", "1"));
-        
+
         emotionId = (int) getIntent().getExtras().getLong("list_id");
 
         EmotionsDataSource eds = new EmotionsDataSource(this);
@@ -57,12 +70,33 @@ public class ViewEmotionDetailActivity extends Activity {
         TextView emotionName = (TextView) findViewById(R.id.emotion_detail_name_value);
         emotionName.setText(emotion.getName());
 
+        buttonSendEmofing = (Button) findViewById(R.id.button_send_emofing);
+
         TextView emotionLabel = (TextView) findViewById(R.id.emotion_detail_label_value);
         emotionLabel.setText(lds.getLabel(emotion.getLabelId()).getName());
 
         // get label background color, if available
         if (label.getColor() != null) {
             emotionLabel.setBackgroundColor(Color.parseColor(label.getColor()));
+        }
+
+        try {
+            // add listeners to buttons
+            buttonSendEmofing.setOnClickListener(this);
+        } catch (Exception e) {
+            Log.d("MYLOG", e.getStackTrace().toString());
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.button_send_emofing:
+                // disable button to avoid multiple sends for same emotion
+                buttonSendEmofing = (Button) findViewById(R.id.button_send_emofing);
+                buttonSendEmofing.setClickable(false);
+
+                new UploadFileTask().execute(fullPathString);
         }
     }
 }

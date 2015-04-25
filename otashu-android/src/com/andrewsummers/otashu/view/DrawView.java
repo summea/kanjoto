@@ -1,12 +1,18 @@
 
 package com.andrewsummers.otashu.view;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Random;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Bitmap.Config;
+import android.os.Environment;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.view.View;
@@ -18,9 +24,17 @@ import android.view.View;
  * </p>
  */
 public class DrawView extends View {
-    Paint paint = new Paint();
+    Paint mPaint;
     SparseArray<SparseIntArray> mEmofing = new SparseArray<SparseIntArray>();
     SparseArray<String> colors = new SparseArray<String>();
+    File path = Environment.getExternalStorageDirectory();
+    String externalDirectory = path.toString() + "/otashu/";
+    File bitmapSource = new File(externalDirectory + "emofing.png");
+    int bitmap_width = 12;
+    int bitmap_height = 4;
+    private Bitmap mBitmap;
+    private Canvas mCanvas;
+    private Paint mBitmapPaint;
 
     public DrawView(Context context) {
         super(context);
@@ -28,7 +42,18 @@ public class DrawView extends View {
 
     public DrawView(Context context, SparseArray<SparseIntArray> emofing) {
         super(context);
+
+        mBitmapPaint = new Paint(Paint.DITHER_FLAG);
+        // mCanvas = new Canvas(mBitmap);
         mEmofing = emofing;
+        mPaint = new Paint();
+        mPaint.setDither(true);
+        mPaint.setStrokeWidth(5.0f);
+
+        mBitmap = Bitmap.createBitmap(bitmap_width, bitmap_height, Config.ARGB_8888);
+        // canvas.setBitmap(mBitmap);
+        mCanvas = new Canvas(mBitmap);
+
         colors.put(1, "#ff4d4d");
         colors.put(2, "#ff9933");
         colors.put(3, "#ffff66");
@@ -45,38 +70,60 @@ public class DrawView extends View {
 
     @Override
     public void onDraw(Canvas canvas) {
-        paint.setStrokeWidth(5.0f);
         // 6. Loop through all found paths
         for (int i = 1; i <= mEmofing.size(); i++) {
             for (int j = 1; j <= 12; j++) {
                 // 7. Plot root number reductions (the emofing)
                 Random random = new Random();
                 int color = random.nextInt(255 - 0 + 1) + 0;
-                paint.setColor(Color.parseColor(colors.get(j)));
+                mPaint.setColor(Color.parseColor(colors.get(j)));
                 int value = mEmofing.get(i).get(j);
                 // use alpha to display strength of a particular box in emofing
                 switch (value) {
                     case 1:
-                        paint.setAlpha(51);
+                        mPaint.setAlpha(51);
                         break;
                     case 2:
-                        paint.setAlpha(102);
+                        mPaint.setAlpha(102);
                         break;
                     case 3:
-                        paint.setAlpha(153);
+                        mPaint.setAlpha(153);
                         break;
                     case 4:
-                        paint.setAlpha(204);
+                        mPaint.setAlpha(204);
                         break;
                     case 5:
-                        paint.setAlpha(255);
+                        mPaint.setAlpha(255);
                         break;
                     default:
-                        paint.setAlpha(25);
+                        mPaint.setAlpha(0);
                 }
+
                 canvas.drawRect((j - 1) * 40, (i - 1) * 40, ((j - 1) * 40) + 40,
-                        ((i - 1) * 40) + 40, paint);
+                        ((i - 1) * 40) + 40, mPaint);
+
+                if (value <= 0) {
+                    mPaint.setColor(Color.BLACK);
+                }
+
+                mCanvas.drawRect((j - 1) * 1, (i - 1) * 1, ((j - 1) * 1) + 1,
+                        ((i - 1) * 1) + 1, mPaint);
+
+                canvas.drawBitmap(mBitmap, 0, 0, mPaint);
+                // canvas.drawBitmap(mBitmap, 0, 0, mPaint);
+
             }
+        }
+
+        // mCanvas = new Canvas(mBitmap);
+        try {
+            FileOutputStream fout = new FileOutputStream(bitmapSource);
+            mBitmap.compress(Bitmap.CompressFormat.PNG, 100, fout);
+            fout.flush();
+            fout.close();
+            Log.d("MYLOG", "> saved bitmap...");
+        } catch (Exception e) {
+            Log.d("MYLOG", e.getStackTrace().toString());
         }
     }
 }

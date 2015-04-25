@@ -1,6 +1,8 @@
 
 package com.andrewsummers.otashu.activity;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 
 import com.andrewsummers.otashu.data.EdgesDataSource;
@@ -9,8 +11,10 @@ import com.andrewsummers.otashu.view.DrawView;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.SparseArray;
@@ -28,6 +32,9 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
     private long graphId;
     DrawView drawView;
     private long apprenticeId = 0;
+    File path = Environment.getExternalStorageDirectory();
+    String externalDirectory = path.toString() + "/otashu/";
+    File bitmapSource = new File(externalDirectory + "emofing.png");
 
     /**
      * onCreate override used to get details view.
