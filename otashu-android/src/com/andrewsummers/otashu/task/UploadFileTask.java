@@ -3,6 +3,8 @@ package com.andrewsummers.otashu.task;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import org.apache.http.HttpResponse;
@@ -23,26 +25,37 @@ import android.util.Log;
 public class UploadFileTask extends AsyncTask<String, Void, Integer> {
     File path = Environment.getExternalStorageDirectory();
     String externalDirectory = path.toString() + "/otashu/";
-    File bitmapSource = new File(externalDirectory + "emofing.png");
 
+    // params[0] is server URL
+    // params[1] is file to upload
+    // params[2] is file type
     @Override
-    protected Integer doInBackground(String... urls) {
-        if (urls.length > 0) {
-            ByteArrayOutputStream bout = new ByteArrayOutputStream();
-            Bitmap bitmap = BitmapFactory.decodeFile(urls[0]);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, bout);
-            byte[] byte_array = bout.toByteArray();
-            String image = Base64.encodeToString(byte_array, Base64.DEFAULT);
-
-            ArrayList<NameValuePair> form = new ArrayList<NameValuePair>();
-            form.add(new BasicNameValuePair("image", image));
-            Log.d("MYLOG", image);
-
+    protected Integer doInBackground(String... params) {
+        if (params.length > 0) {
             try {
-                String serverUrl = "";
+                String serverUrl = params[0];
                 HttpClient httpClient = new DefaultHttpClient();
                 HttpPost httpPost = new HttpPost(serverUrl);
+
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                if (params[2] == "image") {
+                    Bitmap bitmap = BitmapFactory.decodeFile(params[1]);
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
+                } else {
+                    File fileUpload = new File(params[1]);
+                    InputStream is = new FileInputStream(fileUpload);
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+                    while ((bytesRead = is.read(buffer)) != -1) {
+                        bos.write(buffer, 0, bytesRead);
+                    }
+                }
+                byte[] byte_array = bos.toByteArray();
+                String file = Base64.encodeToString(byte_array, Base64.DEFAULT);
+                ArrayList<NameValuePair> form = new ArrayList<NameValuePair>();
+                form.add(new BasicNameValuePair("file", file));
                 httpPost.setEntity(new UrlEncodedFormEntity(form));
+
                 HttpResponse response = httpClient.execute(httpPost);
 
             } catch (Exception e) {

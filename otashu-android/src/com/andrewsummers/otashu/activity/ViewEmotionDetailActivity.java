@@ -34,10 +34,11 @@ public class ViewEmotionDetailActivity extends Activity implements OnClickListen
     private Button buttonSendEmofing = null;
     private SharedPreferences sharedPref;
     private long apprenticeId = 0;
-    File path = Environment.getExternalStorageDirectory();
-    String externalDirectory = path.toString() + "/otashu/";
-    String fullPathString = externalDirectory + "emofing.png";
-    File bitmapSource = new File(externalDirectory + "emofing.png");
+    private String emofingUploadUrl;
+    private File path = Environment.getExternalStorageDirectory();
+    private String externalDirectory = path.toString() + "/otashu/";
+    private String fullPathString = externalDirectory + "emofing.png";
+    private File bitmapSource = new File(externalDirectory + "emofing.png");
 
     /**
      * onCreate override used to get details view.
@@ -54,6 +55,7 @@ public class ViewEmotionDetailActivity extends Activity implements OnClickListen
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         apprenticeId = Long.parseLong(sharedPref.getString(
                 "pref_selected_apprentice", "1"));
+        emofingUploadUrl = sharedPref.getString("pref_emofing_upload_url", "");
 
         emotionId = (int) getIntent().getExtras().getLong("list_id");
 
@@ -96,7 +98,7 @@ public class ViewEmotionDetailActivity extends Activity implements OnClickListen
                 buttonSendEmofing = (Button) findViewById(R.id.button_send_emofing);
                 buttonSendEmofing.setClickable(false);
 
-                new UploadFileTask().execute(fullPathString);
+                new UploadFileTask().execute(emofingUploadUrl, fullPathString, "image");
         }
     }
 }

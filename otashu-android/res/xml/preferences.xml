@@ -66,6 +66,16 @@
             android:key="pref_selected_apprentice"
             android:title="@string/pref_selected_apprentice"
             android:defaultValue="" />
+            
+        <EditTextPreference
+            android:key="pref_apprentice_upload_url"
+            android:title="@string/pref_apprentice_upload_url"
+            android:defaultValue="" />
+            
+        <EditTextPreference
+            android:key="pref_emofing_upload_url"
+            android:title="@string/pref_emofing_upload_url"
+            android:defaultValue="" />
 
     </PreferenceCategory>
 

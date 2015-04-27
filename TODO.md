@@ -23,6 +23,7 @@
 
 
 ## DONE:
+- 20150426: added preference setting for emofing server URL
 - 20150423: added "show achievements on play mode Apprentice screen" feature
 - 20150423: added "found a strong path" achievement
 - 20150423: added "found strong transition" achievement
