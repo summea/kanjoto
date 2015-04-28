@@ -23,6 +23,9 @@
 
 
 ## DONE:
+- 20150427: added "send emofing to server" feature
+- 20150427: fixed sad emofing not generating 
+- 20150427: added rest of midi instruments for playback 
 - 20150426: added preference setting for emofing server URL
 - 20150423: added "show achievements on play mode Apprentice screen" feature
 - 20150423: added "found a strong path" achievement

@@ -80,6 +80,7 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
         }
 
         Log.d("MYLOG", ">> init found paths: " + foundPaths);
+        Log.d("MYLOG", "args: " + apprenticeId + " " + graphId + " " + emotionId);
 
         // 3. Look for all possible Emotion Graph paths that are stronger (lower than) X weight
         EdgesDataSource eds = new EdgesDataSource(this);

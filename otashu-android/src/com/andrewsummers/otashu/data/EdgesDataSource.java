@@ -847,9 +847,7 @@ public class EdgesDataSource {
                 }
                 // loop through all position 3-4 edges and compare with first
                 for (Edge edge3 : p3Edges) {
-                    if (edge2.getToNodeId() != edge3.getFromNodeId()) {
-                        break;
-                    } else {
+                    if (edge2.getToNodeId() == edge3.getFromNodeId()) {
                         // complete path found!
                         List<Edge> foundEdgePath = new ArrayList<Edge>();
                         foundEdgePath.add(edge1);
