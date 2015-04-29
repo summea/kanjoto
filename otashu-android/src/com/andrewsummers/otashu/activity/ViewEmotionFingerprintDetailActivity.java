@@ -3,16 +3,31 @@ package com.andrewsummers.otashu.activity;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.andrewsummers.otashu.data.EdgesDataSource;
 import com.andrewsummers.otashu.model.Edge;
+import com.andrewsummers.otashu.model.Note;
 import com.andrewsummers.otashu.view.DrawView;
+import com.leff.midi.MidiFile;
+import com.leff.midi.MidiTrack;
+import com.leff.midi.event.NoteOff;
+import com.leff.midi.event.NoteOn;
+import com.leff.midi.event.ProgramChange;
+import com.leff.midi.event.meta.Tempo;
+import com.leff.midi.event.meta.TimeSignature;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -27,7 +42,7 @@ import android.util.SparseIntArray;
  * </p>
  */
 public class ViewEmotionFingerprintDetailActivity extends Activity {
-    private int emotionId = 0;
+    private long emotionId = 0;
     private SharedPreferences sharedPref;
     private long graphId;
     DrawView drawView;
@@ -35,6 +50,11 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
     File path = Environment.getExternalStorageDirectory();
     String externalDirectory = path.toString() + "/otashu/";
     File bitmapSource = new File(externalDirectory + "emofing.png");
+    private int sendEmofing = 0;
+    int selectedInstrumentId = -1;
+    int playbackSpeed = 120;
+    File musicSource = new File(externalDirectory + "emofing.mid");
+    private static MediaPlayer mediaPlayer;
 
     /**
      * onCreate override used to get details view.
@@ -46,7 +66,13 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         // 1. Choose an emotion
-        emotionId = (int) getIntent().getExtras().getLong("list_id");
+        long intentEmotionId = getIntent().getIntExtra("emotion_id", 0);
+        if (intentEmotionId > 0) {
+            emotionId = intentEmotionId;
+        } else {
+            emotionId = getIntent().getExtras().getLong("list_id");
+        }
+        Log.d("MYLOG", "emotionId: " + emotionId);
 
         // get emotion graph id for Apprentice's note relationships graph
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -54,6 +80,8 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
                 "pref_emotion_graph_for_apprentice", "1"));
         apprenticeId = Long.parseLong(sharedPref.getString(
                 "pref_selected_apprentice", "1"));
+
+        sendEmofing = getIntent().getIntExtra("send_emofing", 0);
 
         // 2. Gather all found paths
         // List<Integer> foundPathNotes = gatherEmotionPaths(0.5f);
@@ -65,6 +93,86 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
         drawView = new DrawView(this, emofingData);
         drawView.setBackgroundColor(Color.BLACK);
         setContentView(drawView);
+
+        if (sendEmofing != 1) {
+            // get default instrument for playback
+            String defaultInstrument = sharedPref.getString("pref_default_instrument", "");
+            playbackSpeed = Integer.valueOf(sharedPref.getString("pref_default_playback_speed",
+                    "120"));
+
+            List<Note> notes = new ArrayList<Note>();
+            Log.d("MYLOG", "emofingData: " + emofingData.toString());
+
+            for (int i = 1; i <= emofingData.size(); i++) {
+                for (int j = 1; j <= 12; j++) {
+                    int notevalue = 0;
+                    if (emofingData.get(i).get(j) > 0) {
+                        switch (j) {
+                            case 1:
+                                notevalue = 60;
+                                break;
+                            case 2:
+                                notevalue = 61;
+                                break;
+                            case 3:
+                                notevalue = 62;
+                                break;
+                            case 4:
+                                notevalue = 63;
+                                break;
+                            case 5:
+                                notevalue = 64;
+                                break;
+                            case 6:
+                                notevalue = 65;
+                                break;
+                            case 7:
+                                notevalue = 66;
+                                break;
+                            case 8:
+                                notevalue = 67;
+                                break;
+                            case 9:
+                                notevalue = 68;
+                                break;
+                            case 10:
+                                notevalue = 69;
+                                break;
+                            case 11:
+                                notevalue = 70;
+                                break;
+                            case 12:
+                                notevalue = 71;
+                                break;
+                        }
+
+                        Note note = new Note();
+                        note.setNotevalue(notevalue);
+
+                        notes.add(note);
+                    }
+                }
+            }
+
+            Log.d("MYLOG", "emofing notes: " + notes.toString());
+
+            generateMusic(notes, musicSource, defaultInstrument, playbackSpeed);
+
+            playMusic(musicSource);
+        }
+
+        // close activity because if we are sending emofing after this
+        if (sendEmofing == 1) {
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+
+                @Override
+                public void run() {
+                    finish();
+                }
+
+            }, 5000);
+        }
     }
 
     public SparseArray<SparseIntArray> gatherEmotionPaths(float maxWeight) {
@@ -154,4 +262,116 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
         }
         return foundPaths;
     }
+
+    /**
+     * Generate music and write results to a MIDI file.
+     * 
+     * @param notes List<Note> of notes to write to file.
+     * @param musicSource File location of musicSource file for writing.
+     * @param defaultInstrument
+     */
+    public void generateMusic(List<Note> notes, File musicSource, String defaultInstrument,
+            int playbackSpeed) {
+        MidiTrack tempoTrack = new MidiTrack();
+        MidiTrack noteTrack = new MidiTrack();
+
+        TimeSignature ts = new TimeSignature();
+        ts.setTimeSignature(4, 4, TimeSignature.DEFAULT_METER, TimeSignature.DEFAULT_DIVISION);
+
+        Tempo t = new Tempo();
+        t.setBpm(playbackSpeed);
+
+        if ((selectedInstrumentId < 0) && (defaultInstrument != null)) {
+            try {
+                selectedInstrumentId = Integer.valueOf(defaultInstrument);
+            } catch (Exception e) {
+                Log.d("MYLOG", e.getStackTrace().toString());
+                // set default to 1 (piano) if no default preference found
+                selectedInstrumentId = 1;
+            }
+        }
+
+        // set instrument type
+        ProgramChange pc = new ProgramChange(0, 0, selectedInstrumentId);
+
+        tempoTrack.insertEvent(ts);
+        tempoTrack.insertEvent(t);
+        tempoTrack.insertEvent(pc);
+
+        int currentTotalNoteLength = 960;
+
+        for (int i = 0; i < notes.size(); i++) {
+            int channel = 0;
+            int pitch = notes.get(i).getNotevalue();
+            int velocity = 100;
+            int length = 960;
+            float fLength = 960.0f;
+
+            fLength = notes.get(i).getLength();
+            if (notes.get(i).getVelocity() > 0)
+                velocity = notes.get(i).getVelocity();
+
+            if (fLength > 0.0)
+                fLength = (960 * notes.get(i).getLength());
+            else
+                fLength = 960;
+
+            length = (int) fLength;
+
+            NoteOn on = new NoteOn(i * currentTotalNoteLength, channel, pitch, velocity);
+            NoteOff off = new NoteOff(i * currentTotalNoteLength + length, channel, pitch, 0);
+
+            noteTrack.insertEvent(on);
+            noteTrack.insertEvent(off);
+
+            noteTrack.insertNote(channel, pitch, velocity, i * currentTotalNoteLength, length);
+
+            if (length > 0) {
+                currentTotalNoteLength = 960; // TODO: make this match note length (better) somehow
+            } else {
+                currentTotalNoteLength = 960;
+            }
+        }
+
+        ArrayList<MidiTrack> tracks = new ArrayList<MidiTrack>();
+        tracks.add(tempoTrack);
+        tracks.add(noteTrack);
+
+        MidiFile midi = new MidiFile(MidiFile.DEFAULT_RESOLUTION, tracks);
+
+        try {
+            midi.writeToFile(musicSource);
+        } catch (IOException e) {
+            Log.d("MYLOG", e.getStackTrace().toString());
+        }
+    }
+
+    public void playMusic(File musicSource) {
+        // get media player ready
+        if (mediaPlayer == null) {
+            mediaPlayer = MediaPlayer.create(this, Uri.fromFile(musicSource));
+        } else {
+            mediaPlayer.release();
+            mediaPlayer = MediaPlayer.create(this, Uri.fromFile(musicSource));
+        }
+
+        // play music
+        mediaPlayer.start();
+    }
+
+    /**
+     * onBackPressed override used to stop playing music when done with activity
+     */
+    @Override
+    public void onBackPressed() {
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) {
+                // stop playing music
+                mediaPlayer.stop();
+            }
+            mediaPlayer.release();
+        }
+        super.onBackPressed();
+    }
+
 }

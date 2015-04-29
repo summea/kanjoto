@@ -49,9 +49,11 @@
     <string name="button_save">Save</string>
     <string name="button_send_apprentice">Send Apprentice</string>
     <string name="button_send_emofing">Send Emofing</string>
+    <string name="button_send_music">Send Music</string>
     <string name="button_settings">Settings</string>
     <string name="button_view_all_emotions">View All Emotions</string>
     <string name="button_view_all_notesets">View All Notesets</string>
+    <string name="button_view_emofing">View Emofing</string>
     <string name="button_view_sequence">view sequence</string>
     <string name="button_yes">Yes</string>
     <string name="choose_apprentice_title">Choose Apprentice</string>
@@ -149,6 +151,7 @@
     <string name="pref_emotion_graph_for_apprentice">Emotion Graph Id for Apprentice</string>
     <string name="pref_general_category">General</string>
     <string name="pref_import_database_location">Import Database from Location</string>
+    <string name="pref_music_upload_url">Music Upload URL</string>
     <string name="pref_screen_alarm">Alarm</string>
     <string name="pref_scale_graph_for_apprentice">Scale Graph Id for Apprentice</string>
     <string name="pref_selected_apprentice">Selected Apprentice</string>

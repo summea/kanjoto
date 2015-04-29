@@ -11,6 +11,7 @@ import com.andrewsummers.otashu.model.Label;
 import com.andrewsummers.otashu.task.UploadFileTask;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import android.widget.TextView;
 public class ViewEmotionDetailActivity extends Activity implements OnClickListener {
     private int emotionId = 0;
     private Button buttonSendEmofing = null;
+    private Button buttonViewEmofing = null;
     private SharedPreferences sharedPref;
     private long apprenticeId = 0;
     private String emofingUploadUrl;
@@ -73,6 +75,7 @@ public class ViewEmotionDetailActivity extends Activity implements OnClickListen
         emotionName.setText(emotion.getName());
 
         buttonSendEmofing = (Button) findViewById(R.id.button_send_emofing);
+        buttonViewEmofing = (Button) findViewById(R.id.button_view_emofing);
 
         TextView emotionLabel = (TextView) findViewById(R.id.emotion_detail_label_value);
         emotionLabel.setText(lds.getLabel(emotion.getLabelId()).getName());
@@ -85,6 +88,7 @@ public class ViewEmotionDetailActivity extends Activity implements OnClickListen
         try {
             // add listeners to buttons
             buttonSendEmofing.setOnClickListener(this);
+            buttonViewEmofing.setOnClickListener(this);
         } catch (Exception e) {
             Log.d("MYLOG", e.getStackTrace().toString());
         }
@@ -92,13 +96,32 @@ public class ViewEmotionDetailActivity extends Activity implements OnClickListen
 
     @Override
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()) {
             case R.id.button_send_emofing:
                 // disable button to avoid multiple sends for same emotion
                 buttonSendEmofing = (Button) findViewById(R.id.button_send_emofing);
                 buttonSendEmofing.setClickable(false);
 
+                // generate emofing first
+                intent = new Intent(this, ViewEmotionFingerprintDetailActivity.class);
+                intent.putExtra("emotion_id", emotionId);
+                intent.putExtra("send_emofing", 1);
+                if (intent != null) {
+                    startActivity(intent);
+                }
+
+                // then send emofing to server
                 new UploadFileTask().execute(emofingUploadUrl, fullPathString, "image");
+                break;
+            case R.id.button_view_emofing:
+                // generate emofing
+                intent = new Intent(this, ViewEmotionFingerprintDetailActivity.class);
+                intent.putExtra("emotion_id", emotionId);
+                if (intent != null) {
+                    startActivity(intent);
+                }
+                break;
         }
     }
 }

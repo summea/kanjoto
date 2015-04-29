@@ -1,6 +1,7 @@
 
 package com.andrewsummers.otashu.activity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,12 +11,14 @@ import com.andrewsummers.otashu.data.BookmarksDataSource;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.model.Bookmark;
 import com.andrewsummers.otashu.model.Emotion;
+import com.andrewsummers.otashu.task.UploadFileTask;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -43,11 +46,16 @@ import android.widget.Toast;
  * </p>
  */
 public class ChooseEmotionActivity extends Activity implements OnClickListener {
-    private Button buttonGo = null;
     private Button buttonBookmark = null;
+    private Button buttonGo = null;
+    private Button buttonSendMusic = null;
     private String lastSerializedNotes = "";
     private SharedPreferences sharedPref;
     private long apprenticeId = 0;
+    private File path = Environment.getExternalStorageDirectory();
+    private String externalDirectory = path.toString() + "/otashu/";
+    private String fullPathString = externalDirectory + "otashu.mid";
+    private String musicUploadUrl;
 
     /**
      * onCreate override that provides emotion-choose view to user.
@@ -64,13 +72,17 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         apprenticeId = Long.parseLong(sharedPref.getString(
                 "pref_selected_apprentice", "1"));
+        musicUploadUrl = sharedPref.getString("pref_music_upload_url", "");
 
         // add listeners to buttons
+        buttonGo = (Button) findViewById(R.id.button_go);
+        buttonGo.setOnClickListener(this);
+
         buttonBookmark = (Button) findViewById(R.id.button_bookmark);
         buttonBookmark.setOnClickListener(this);
 
-        buttonGo = (Button) findViewById(R.id.button_go);
-        buttonGo.setOnClickListener(this);
+        buttonSendMusic = (Button) findViewById(R.id.button_send_music);
+        buttonSendMusic.setOnClickListener(this);
 
         // get all emotions for spinner
         EmotionsDataSource eds = new EmotionsDataSource(this);
@@ -172,6 +184,14 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
             case R.id.button_bookmark:
                 // save last generated note sequence as a bookmark
                 save_bookmark();
+                break;
+            case R.id.button_send_music:
+                // disable button to avoid multiple sends for same emotion
+                buttonSendMusic = (Button) findViewById(R.id.button_send_music);
+                buttonSendMusic.setClickable(false);
+
+                // then send emofing to server
+                new UploadFileTask().execute(musicUploadUrl, fullPathString, "file");
                 break;
         }
     }

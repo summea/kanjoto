@@ -6,7 +6,6 @@
 - create auto test/learn for Emotion test
 - break out general database into Apprentice-specific database
 - think about adding support for different note speeds in Logic D
-- add support for non-complete emofing path finding
 - connect label_id to background color in "list all scorecards" activity
 - connect label_id to background color in "view graph detail" activity
 - connect label_id to background color in "list all graphs" activity
@@ -18,11 +17,17 @@
 - fix horizontal animation timing for music generation activity
 - standardize strings view naming
 - noteset folders (lists by label or emotion)
-- save generated song to file
 - fix getTakenAt ISO date issue
 
 
 ## DONE:
+- 20150428: added rest of midi instruments for playback
+- 20150428: added button to view related emofing from Emotion Detail activity
+- 20150428: added "view emotion fingerprint button on emotion details page" feature
+- 20150428: added "send generated music (midi file) to server" feature
+- 20150428: added "playback emofing audio on emofing details screen" feature
+- 20150428: added "save emofing as midi file" feature
+- 20150428: added "save generated song as midi file" feature
 - 20150427: added "send emofing to server" feature
 - 20150427: fixed sad emofing not generating 
 - 20150427: added rest of midi instruments for playback 

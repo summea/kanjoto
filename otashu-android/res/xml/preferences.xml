@@ -76,6 +76,11 @@
             android:key="pref_emofing_upload_url"
             android:title="@string/pref_emofing_upload_url"
             android:defaultValue="" />
+            
+        <EditTextPreference
+            android:key="pref_music_upload_url"
+            android:title="@string/pref_music_upload_url"
+            android:defaultValue="" />
 
     </PreferenceCategory>
 

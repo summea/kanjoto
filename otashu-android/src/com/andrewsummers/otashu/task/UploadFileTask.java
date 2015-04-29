@@ -33,31 +33,37 @@ public class UploadFileTask extends AsyncTask<String, Void, Integer> {
     protected Integer doInBackground(String... params) {
         if (params.length > 0) {
             try {
-                String serverUrl = params[0];
-                HttpClient httpClient = new DefaultHttpClient();
-                HttpPost httpPost = new HttpPost(serverUrl);
+                // TODO: take out loop later... for some reason POSTs often take two tries to send
+                // emofing successfully
+                for (int i = 0; i < 2; i++) {
+                    String serverUrl = params[0];
+                    HttpClient httpClient = new DefaultHttpClient();
+                    HttpPost httpPost = new HttpPost(serverUrl);
 
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                if (params[2] == "image") {
-                    Bitmap bitmap = BitmapFactory.decodeFile(params[1]);
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
-                } else {
-                    File fileUpload = new File(params[1]);
-                    InputStream is = new FileInputStream(fileUpload);
-                    byte[] buffer = new byte[1024];
-                    int bytesRead;
-                    while ((bytesRead = is.read(buffer)) != -1) {
-                        bos.write(buffer, 0, bytesRead);
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    if (params[2] == "image") {
+                        Bitmap bitmap = BitmapFactory.decodeFile(params[1]);
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
+                    } else {
+                        File fileUpload = new File(params[1]);
+                        InputStream is = new FileInputStream(fileUpload);
+                        byte[] buffer = new byte[1024];
+                        int bytesRead;
+                        while ((bytesRead = is.read(buffer)) != -1) {
+                            bos.write(buffer, 0, bytesRead);
+                        }
+                        is.close();
                     }
+                    byte[] byte_array = bos.toByteArray();
+                    String file = Base64.encodeToString(byte_array, Base64.DEFAULT);
+                    ArrayList<NameValuePair> form = new ArrayList<NameValuePair>();
+                    form.add(new BasicNameValuePair("file", file));
+                    httpPost.setEntity(new UrlEncodedFormEntity(form));
+
+                    HttpResponse response = httpClient.execute(httpPost);
+                    Log.d("MYLOG", "> http response: " + response.getStatusLine());
+                    response.getEntity().consumeContent();
                 }
-                byte[] byte_array = bos.toByteArray();
-                String file = Base64.encodeToString(byte_array, Base64.DEFAULT);
-                ArrayList<NameValuePair> form = new ArrayList<NameValuePair>();
-                form.add(new BasicNameValuePair("file", file));
-                httpPost.setEntity(new UrlEncodedFormEntity(form));
-
-                HttpResponse response = httpClient.execute(httpPost);
-
             } catch (Exception e) {
                 Log.d("MYLOG", e.toString());
             }

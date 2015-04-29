@@ -55,5 +55,15 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/button_save_selector" />
+        
+    <Button
+        android:id="@+id/button_view_emofing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_view_emofing"
+        android:padding="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/button_play_selector" />
 
 </LinearLayout>
