@@ -34,8 +34,8 @@ public class PlayModeApprenticeActivity extends Activity implements OnClickListe
         setContentView(R.layout.activity_apprentice_detail);
         
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        programMode = Integer.parseInt(sharedPref.getString(
-                "pref_program_mode", "1"));
+        setProgramMode(Integer.parseInt(sharedPref.getString(
+                "pref_program_mode", "1")));
         apprenticeId = Long.parseLong(sharedPref.getString(
                 "pref_selected_apprentice", "1"));
 
@@ -88,5 +88,13 @@ public class PlayModeApprenticeActivity extends Activity implements OnClickListe
             startActivity(refresh);
             this.finish();
         }
+    }
+
+    public int getProgramMode() {
+        return programMode;
+    }
+
+    public void setProgramMode(int programMode) {
+        this.programMode = programMode;
     }
 }

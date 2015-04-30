@@ -47,8 +47,8 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
         setContentView(R.layout.activity_apprentice);
         
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        programMode = Integer.parseInt(sharedPref.getString(
-                "pref_program_mode", "1"));
+        setProgramMode(Integer.parseInt(sharedPref.getString(
+                "pref_program_mode", "1")));
         apprenticeId = Long.parseLong(sharedPref.getString(
                 "pref_selected_apprentice", "1"));
 
@@ -105,5 +105,13 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
             startActivity(refresh);
             this.finish();
         }
+    }
+
+    public int getProgramMode() {
+        return programMode;
+    }
+
+    public void setProgramMode(int programMode) {
+        this.programMode = programMode;
     }
 }

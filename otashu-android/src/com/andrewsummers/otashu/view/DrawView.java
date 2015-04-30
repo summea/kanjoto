@@ -3,7 +3,6 @@ package com.andrewsummers.otashu.view;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.Random;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -35,6 +34,7 @@ public class DrawView extends View {
     private Bitmap mBitmap;
     private Canvas mCanvas;
     private Paint mBitmapPaint;
+    private FileOutputStream fout;
 
     public DrawView(Context context) {
         super(context);
@@ -43,7 +43,7 @@ public class DrawView extends View {
     public DrawView(Context context, SparseArray<SparseIntArray> emofing) {
         super(context);
 
-        mBitmapPaint = new Paint(Paint.DITHER_FLAG);
+        setmBitmapPaint(new Paint(Paint.DITHER_FLAG));
         // mCanvas = new Canvas(mBitmap);
         mEmofing = emofing;
         mPaint = new Paint();
@@ -53,7 +53,13 @@ public class DrawView extends View {
         mBitmap = Bitmap.createBitmap(bitmap_width, bitmap_height, Config.ARGB_8888);
         // canvas.setBitmap(mBitmap);
         mCanvas = new Canvas(mBitmap);
-
+        
+        try {
+            fout = new FileOutputStream(bitmapSource);
+        } catch (Exception e) {
+            Log.d("MYLOG", e.getStackTrace().toString());
+        }
+        
         colors.put(1, "#ff4d4d");
         colors.put(2, "#ff9933");
         colors.put(3, "#ffff66");
@@ -74,10 +80,6 @@ public class DrawView extends View {
         for (int i = 1; i <= mEmofing.size(); i++) {
             for (int j = 1; j <= 12; j++) {
                 // 7. Plot root number reductions (the emofing)
-                Random random = new Random();
-                // int color = random.nextInt(255 - 0 + 1) + 0;
-                // mPaint.setColor(Color.parseColor(colors.get(j)));
-
                 switch (j) {
                     case 1:
                         mPaint.setColor(Color.rgb(255, 51, 102));
@@ -156,7 +158,7 @@ public class DrawView extends View {
 
         // mCanvas = new Canvas(mBitmap);
         try {
-            FileOutputStream fout = new FileOutputStream(bitmapSource);
+            //FileOutputStream fout = new FileOutputStream(bitmapSource);
             // delete old emofing if necessary
             // if (bitmapSource.exists()) {
             // bitmapSource.delete();
@@ -170,5 +172,13 @@ public class DrawView extends View {
         } catch (Exception e) {
             Log.d("MYLOG", e.getStackTrace().toString());
         }
+    }
+
+    public Paint getmBitmapPaint() {
+        return mBitmapPaint;
+    }
+
+    public void setmBitmapPaint(Paint mBitmapPaint) {
+        this.mBitmapPaint = mBitmapPaint;
     }
 }

@@ -13,7 +13,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 public class AchievementsDataSource {
     private SQLiteDatabase database;
@@ -43,7 +42,7 @@ public class AchievementsDataSource {
      * @throws SQLException
      */
     public void open() throws SQLException {
-        database = dbHelper.getWritableDatabase();
+        setDatabase(dbHelper.getWritableDatabase());
     }
 
     /**
@@ -375,5 +374,13 @@ public class AchievementsDataSource {
         achievement = allAchievements.get(chosenIndex);
 
         return achievement;
+    }
+
+    public SQLiteDatabase getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(SQLiteDatabase database) {
+        this.database = database;
     }
 }

@@ -40,7 +40,7 @@ public class KeySignaturesDataSource {
      * @throws SQLException
      */
     public void open() throws SQLException {
-        database = dbHelper.getWritableDatabase();
+        setDatabase(dbHelper.getWritableDatabase());
     }
 
     /**
@@ -298,5 +298,13 @@ public class KeySignaturesDataSource {
         }
 
         return keySignature;
+    }
+
+    public SQLiteDatabase getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(SQLiteDatabase database) {
+        this.database = database;
     }
 }

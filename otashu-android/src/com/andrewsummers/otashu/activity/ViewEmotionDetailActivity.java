@@ -124,4 +124,12 @@ public class ViewEmotionDetailActivity extends Activity implements OnClickListen
                 break;
         }
     }
+
+    public File getBitmapSource() {
+        return bitmapSource;
+    }
+
+    public void setBitmapSource(File bitmapSource) {
+        this.bitmapSource = bitmapSource;
+    }
 }

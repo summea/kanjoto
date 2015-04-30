@@ -1107,4 +1107,12 @@ public class GenerateMusicActivity extends Activity {
 
         return keySignatureId;
     }
+
+    public int getCurrentKeySignatureKey() {
+        return currentKeySignatureKey;
+    }
+
+    public void setCurrentKeySignatureKey(int currentKeySignatureKey) {
+        this.currentKeySignatureKey = currentKeySignatureKey;
+    }
 }

@@ -28,7 +28,6 @@ import com.andrewsummers.otashu.model.ApprenticeScorecard;
 import com.andrewsummers.otashu.model.ApprenticeState;
 import com.andrewsummers.otashu.model.Edge;
 import com.andrewsummers.otashu.model.Emotion;
-import com.andrewsummers.otashu.model.KeyNote;
 import com.andrewsummers.otashu.model.Note;
 import com.andrewsummers.otashu.model.Noteset;
 import com.andrewsummers.otashu.model.NotesetAndRelated;

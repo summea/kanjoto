@@ -146,4 +146,12 @@ public class PlayModeMainMenuActivity extends Activity implements OnClickListene
         startActivity(intent);
         return super.onOptionsItemSelected(item);
     }
+
+    public int getProgramMode() {
+        return programMode;
+    }
+
+    public void setProgramMode(int programMode) {
+        this.programMode = programMode;
+    }
 }

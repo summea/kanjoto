@@ -42,7 +42,7 @@ public class ApprenticeScorecardsDataSource {
      * @throws SQLException
      */
     public void open() throws SQLException {
-        database = dbHelper.getWritableDatabase();
+        setDatabase(dbHelper.getWritableDatabase());
     }
 
     /**
@@ -311,5 +311,13 @@ public class ApprenticeScorecardsDataSource {
                 OtashuDatabaseHelper.COLUMN_ID + "=" + apprenticeScorecard.getId(), null);
 
         return apprenticeScorecard;
+    }
+
+    public SQLiteDatabase getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(SQLiteDatabase database) {
+        this.database = database;
     }
 }

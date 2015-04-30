@@ -41,7 +41,7 @@ public class EmotionsDataSource {
      * @throws SQLException
      */
     public void open() throws SQLException {
-        database = dbHelper.getWritableDatabase();
+        setDatabase(dbHelper.getWritableDatabase());
     }
 
     /**
@@ -305,5 +305,13 @@ public class EmotionsDataSource {
         emotion = allEmotions.get(chosenIndex);
 
         return emotion;
+    }
+
+    public SQLiteDatabase getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(SQLiteDatabase database) {
+        this.database = database;
     }
 }

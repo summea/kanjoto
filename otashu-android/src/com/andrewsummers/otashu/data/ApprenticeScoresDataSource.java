@@ -44,7 +44,7 @@ public class ApprenticeScoresDataSource {
      * @throws SQLException
      */
     public void open() throws SQLException {
-        database = dbHelper.getWritableDatabase();
+        setDatabase(dbHelper.getWritableDatabase());
     }
 
     /**
@@ -406,5 +406,13 @@ public class ApprenticeScoresDataSource {
         total = cursor.getCount();
 
         return total;
+    }
+
+    public SQLiteDatabase getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(SQLiteDatabase database) {
+        this.database = database;
     }
 }

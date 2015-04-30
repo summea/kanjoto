@@ -52,7 +52,7 @@ public class EdgesDataSource {
      * @throws SQLException
      */
     public void open() throws SQLException {
-        database = dbHelper.getWritableDatabase();
+        setDatabase(dbHelper.getWritableDatabase());
     }
 
     /**
@@ -866,7 +866,8 @@ public class EdgesDataSource {
         return results;
     }
 
-    public HashMap getEmotionFromNotes(long apprenticeId, long graphId, List<Integer> notes) {
+    public HashMap<String, String> getEmotionFromNotes(long apprenticeId, long graphId,
+            List<Integer> notes) {
         HashMap<String, String> result = new HashMap<String, String>();
         long emotionId = 0;
         float certainty = 0.0f;
@@ -958,5 +959,13 @@ public class EdgesDataSource {
         result.put("certainty", String.valueOf(certainty));
 
         return result;
+    }
+
+    public SQLiteDatabase getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(SQLiteDatabase database) {
+        this.database = database;
     }
 }
