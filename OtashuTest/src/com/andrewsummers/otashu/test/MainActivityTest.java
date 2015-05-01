@@ -24,7 +24,7 @@ public class MainActivityTest extends ActivityUnitTestCase<MainActivity> {
     }
     
     @MediumTest
-    public void testLaunchViewAllNotesetsActivity() {
+    public void testLaunchDataModeMainMenuActivity() {
         startActivity(mLaunchIntent, null, null);
         final GridView gridview = (GridView) getActivity().findViewById(R.id.gridview);
         
@@ -38,44 +38,47 @@ public class MainActivityTest extends ActivityUnitTestCase<MainActivity> {
     }
     
     @MediumTest
-    public void testLaunchGenerateMusicActivity() {
+    public void testLaunchPlayModeMainMenuActivity() {
         startActivity(mLaunchIntent, null, null);
-        final GridView gridview = (GridView) getActivity().findViewById(R.id.gridview);
+        final GridView gridView = (GridView) getActivity().findViewById(R.id.gridview);
         
-        int gridItemTotal = gridview.getAdapter().getCount();
+        int gridItemTotal = gridView.getAdapter().getCount();
         Log.d("MYLOG", "" + gridItemTotal);
         
-        gridview.performItemClick(gridview, 1, 0);
+        gridView.performItemClick(gridView, 1, 0);
         
         final Intent launchIntent = getStartedActivityIntent();
         assertNotNull("Intent was null", launchIntent);
     }
-    
+
+    /*
     @MediumTest
-    public void testLaunchViewAllEmotionsActivity() {
+    public void testLaunchSettings() {
         startActivity(mLaunchIntent, null, null);
-        final GridView gridview = (GridView) getActivity().findViewById(R.id.gridview);
+        MainActivity mMainActivity = getActivity();
         
-        int gridItemTotal = gridview.getAdapter().getCount();
-        Log.d("MYLOG", "" + gridItemTotal);
+        // final View viewSettingsMenuItem = (View) mMainActivity.findViewById(R.id.view_settings);
         
-        gridview.performItemClick(gridview, 2, 0);
+        // Set up an ActivityMonitor
         
-        final Intent launchIntent = getStartedActivityIntent();
-        assertNotNull("Intent was null", launchIntent);
-    }
-    
-    @MediumTest
-    public void testLaunchApprenticeActivity() {
-        startActivity(mLaunchIntent, null, null);
-        final GridView gridview = (GridView) getActivity().findViewById(R.id.gridview);
+        ActivityMonitor settingsActivityMonitor = getInstrumentation().addMonitor(SettingsActivity.class.getName(), null, false);        
         
-        int gridItemTotal = gridview.getAdapter().getCount();
-        Log.d("MYLOG", "" + gridItemTotal);
+        getInstrumentation().sendKeyDownUpSync(KeyEvent.KEYCODE_MENU);
+        getInstrumentation().invokeMenuActionSync(mMainActivity, R.id.view_settings, 0);
         
-        gridview.performItemClick(gridview, 3, 0);
+        // Activity settings = getInstrumentation().waitForMonitorWithTimeout(settingsActivityMonitor, 5000);
+        // assertEquals(true, getInstrumentation().checkMonitorHit(settingsActivityMonitor, 1));
+        // settings.finish();
         
-        final Intent launchIntent = getStartedActivityIntent();
-        assertNotNull("Intent was null", launchIntent);
-    }
+        // Validate that SettingsActivity has started
+        // TouchUtils.clickView(this, viewSettingsMenuItem);
+        // SettingsActivity settingsActivity = (SettingsActivity) settingsActivityMonitor.waitForActivityWithTimeout(5000);
+        // assertNotNull("SettingsActivity is null", settingsActivity);
+        // assertEquals("Monitor for SettingsActivity has not been called", 1, settingsActivityMonitor.getHits());
+        // assertEquals("Wrong type of Activity", SettingsActivity.class, settingsActivity.getClass());
+        
+        
+        // Remove ActivityMonitor
+        // getInstrumentation().removeMonitor(settingsActivityMonitor);
+    }*/
 }
