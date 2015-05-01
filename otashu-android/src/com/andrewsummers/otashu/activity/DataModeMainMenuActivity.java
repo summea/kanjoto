@@ -21,7 +21,7 @@ import android.widget.GridView;
 public class DataModeMainMenuActivity extends Activity implements OnClickListener {
     private SharedPreferences sharedPref;
     private int programMode;
-    
+
     /**
      * onCreate override that provides menu buttons on menu view.
      * 
@@ -36,9 +36,9 @@ public class DataModeMainMenuActivity extends Activity implements OnClickListene
 
         // get specific layout for content view
         setContentView(R.layout.activity_data_mode_main_menu);
-        
+
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        
+
         // save selected program mode to preferences
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("pref_program_mode", "1");

@@ -193,7 +193,7 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
                 emotionId, 0.5f);
 
         // 5. Store noteset path root number reductions into data structure
-        SparseArray<Integer> rootNumbersMap = new SparseArray<Integer>();
+        SparseIntArray rootNumbersMap = new SparseIntArray();
         boolean rootNumbersMapCreated = false;
 
         Log.d("MYLOG", "edges: " + foundEdges.toString());

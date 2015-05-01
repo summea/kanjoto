@@ -150,7 +150,7 @@ public class GetEmotionFromNotesetActivity extends Activity implements OnClickLi
                 // try to find an emotion match for given noteset
                 Log.d("MYLOG", "looking for emotion match...");
 
-                long foundEmotionId = 0;
+                //long foundEmotionId = 0;
 
                 List<Integer> notevalues = new ArrayList<Integer>();
                 for (Note note : notes) {

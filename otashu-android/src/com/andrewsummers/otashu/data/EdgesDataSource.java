@@ -696,7 +696,7 @@ public class EdgesDataSource {
             int improvisationLevel) {
         List<Edge> results = new ArrayList<Edge>();
 
-        int lastToNotevalue = 0;
+        //int lastToNotevalue = 0;
         for (int i = 0; i < 3; i++) {
             // get lowest first edge
             String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
@@ -753,7 +753,7 @@ public class EdgesDataSource {
                     edge.setPosition(cursor.getInt(6));
                     edge.setApprenticeId(cursor.getLong(7));
                     results.add(edge);
-                    lastToNotevalue = edge.getToNodeId();
+                    //lastToNotevalue = edge.getToNodeId();
                 }
             } catch (Exception e) {
                 Log.d("MYLOG", e.getStackTrace().toString());

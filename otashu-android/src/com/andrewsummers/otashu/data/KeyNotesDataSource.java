@@ -432,9 +432,9 @@ public class KeyNotesDataSource {
 
         if (foundKeySignatureIds.size() > 0) {
             for (int i = 4; i > 0; i--) {
-                Iterator<?> itr = foundKeySignatureIds.entrySet().iterator();
+                Iterator<Map.Entry<Long, Integer>> itr = foundKeySignatureIds.entrySet().iterator();
                 while (itr.hasNext() && !foundBestMatch) {
-                    Map.Entry<Long, Integer> kvpair = (Map.Entry<Long, Integer>) itr.next();
+                    Map.Entry<Long, Integer> kvpair = itr.next();
                     if (kvpair.getValue() == i) {
                         foundBestMatch = true;
                         keySignatureId = kvpair.getKey();
