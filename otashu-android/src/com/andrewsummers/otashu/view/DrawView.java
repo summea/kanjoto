@@ -53,25 +53,12 @@ public class DrawView extends View {
         mBitmap = Bitmap.createBitmap(bitmap_width, bitmap_height, Config.ARGB_8888);
         // canvas.setBitmap(mBitmap);
         mCanvas = new Canvas(mBitmap);
-        
+
         try {
             fout = new FileOutputStream(bitmapSource);
         } catch (Exception e) {
             Log.d("MYLOG", e.getStackTrace().toString());
         }
-        
-        colors.put(1, "#ff4d4d");
-        colors.put(2, "#ff9933");
-        colors.put(3, "#ffff66");
-        colors.put(4, "#73e600");
-        colors.put(5, "#00b8b8");
-        colors.put(6, "#ff33ff");
-        colors.put(7, "#a64dff");
-        colors.put(8, "#7777ff");
-        colors.put(9, "#ffc6b3");
-        colors.put(10, "#ffecb3");
-        colors.put(11, "#ffffcc");
-        colors.put(12, "#ecffb3");
     }
 
     @Override
@@ -120,27 +107,9 @@ public class DrawView extends View {
                 }
 
                 int value = mEmofing.get(i).get(j);
-                Log.d("MYLOG", "emofing: getting value (" + i + ", " + j + "): " + value);
-                // use alpha to display strength of a particular box in emofing
-                switch (value) {
-                    case 1:
-                        // mPaint.setAlpha(51);
-                        // break;
-                    case 2:
-                        // mPaint.setAlpha(102);
-                        // break;
-                    case 3:
-                        // mPaint.setAlpha(153);
-                        // break;
-                    case 4:
-                        // mPaint.setAlpha(204);
-                        // break;
-                    case 5:
-                        // mPaint.setAlpha(255);
-                        // break;
-                    default:
-                        mPaint.setAlpha(255);
-                }
+
+                // TODO: use alpha to display strength of a particular box in emofing
+                mPaint.setAlpha(255);
 
                 if (value <= 0) {
                     mPaint.setColor(Color.BLACK);
@@ -156,15 +125,7 @@ public class DrawView extends View {
             }
         }
 
-        // mCanvas = new Canvas(mBitmap);
         try {
-            //FileOutputStream fout = new FileOutputStream(bitmapSource);
-            // delete old emofing if necessary
-            // if (bitmapSource.exists()) {
-            // bitmapSource.delete();
-            // } else {
-            // bitmapSource.createNewFile();
-            // }
             mBitmap.compress(Bitmap.CompressFormat.PNG, 100, fout);
             fout.flush();
             fout.close();

@@ -71,7 +71,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_LEARNING_STYLE_ID = "learning_style_id";
 
     public static final String TABLE_LEARNING_STYLES = "learning_styles";
-    
+
     public static final String TABLE_ACHIEVEMENTS = "achievements";
     public static final String COLUMN_EARNED_ON = "earned_on";
     public static final String COLUMN_KEY = "key";
@@ -174,7 +174,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
             + TABLE_LEARNING_STYLES
             + " (" + COLUMN_ID + " integer primary key autoincrement,"
             + COLUMN_NAME + " text);";
-    
+
     private static final String CREATE_TABLE_ACHIEVEMENTS = "CREATE TABLE " + TABLE_ACHIEVEMENTS
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
             + COLUMN_NAME + " text,"
@@ -227,23 +227,5 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.d("MYLOG", ">>> new database version: " + newVersion);
         Log.d("MYLOG", "updating database...");
-
-        // 47
-        // db.execSQL("ALTER TABLE " + TABLE_APPRENTICES + " ADD COLUMN " + COLUMN_LEARNING_STYLE_ID
-        // + " integer;");
-        // db.execSQL(CREATE_TABLE_LEARNING_STYLES);
-        // db.execSQL("ALTER TABLE " + TABLE_NOTEVALUES + " DROP COLUMN " + COLUMN_APPRENTICE_ID);
-        // 52
-        // db.execSQL("ALTER TABLE " + TABLE_NOTESETS + " ADD COLUMN " + COLUMN_APPRENTICE_ID
-        // + " integer;");
-        //db.execSQL("UPDATE " + TABLE_NOTESETS + " SET " + COLUMN_APPRENTICE_ID + "=1");
-        
-        // 53
-        // db.execSQL(CREATE_TABLE_ACHIEVEMENTS);
-        
-        // 54
-        // db.execSQL("UPDATE " + TABLE_ACHIEVEMENTS + " SET " + COLUMN_NAME + "='completed_scale' WHERE " + COLUMN_ID + "=1");
-        // db.execSQL("UPDATE " + TABLE_ACHIEVEMENTS + " SET " + COLUMN_NAME + "='found_strong_path' WHERE " + COLUMN_ID + "=2");
-        // db.execSQL("UPDATE " + TABLE_ACHIEVEMENTS + " SET " + COLUMN_NAME + "='found_strong_transition' WHERE " + COLUMN_ID + "=3");
     }
 }
