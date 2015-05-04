@@ -90,6 +90,19 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
         allEmotions = eds.getAllEmotions(apprenticeId);
         eds.close();
 
+        // make sure there's at least one emotion for the spinner list
+        if (allEmotions.isEmpty()) {
+            Context context = getApplicationContext();
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context,
+                    context.getResources().getString(R.string.need_emotions),
+                    duration);
+            toast.show();
+
+            finish();
+        }
+
         // locate next spinner in layout
         Spinner spinner = (Spinner) findViewById(R.id.spinner_emotion);
 

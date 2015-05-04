@@ -307,6 +307,26 @@ public class EmotionsDataSource {
         return emotion;
     }
 
+    /**
+     * Get count of emotions from database table.
+     * 
+     * @return <int> count of emotions
+     */
+    public int getEmotionCount(long apprenticeId) {
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EMOTIONS
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notes from database
+        Cursor cursor = db.rawQuery(query, null);
+        int count = cursor.getCount();
+        cursor.close();
+
+        return count;
+    }
+
     public SQLiteDatabase getDatabase() {
         return database;
     }

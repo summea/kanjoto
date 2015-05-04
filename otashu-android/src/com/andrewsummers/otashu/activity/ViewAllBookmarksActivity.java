@@ -49,7 +49,6 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 public class ViewAllBookmarksActivity extends ListActivity {
     private ListView listView = null;
-    private int selectedPositionInList = 0;
     private String currentBookmarkSerializedValue = "";
     private File path = Environment.getExternalStorageDirectory();
     private String externalDirectory = path.toString() + "/otashu/";
@@ -134,9 +133,6 @@ public class ViewAllBookmarksActivity extends ListActivity {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
 
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        selectedPositionInList = info.position;
-
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.context_menu_bookmark, menu);
     }
@@ -160,25 +156,23 @@ public class ViewAllBookmarksActivity extends ListActivity {
                 startActivity(intent);
                 return true;
             case R.id.context_menu_delete:
-                confirmDelete();
+                confirmDelete(info);
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
     }
 
-    public void confirmDelete() {
+    public void confirmDelete(final AdapterContextMenuInfo info) {
+        final BookmarksDataSource bds = new BookmarksDataSource(this);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.dialog_confirm_delete_message).setTitle(
                 R.string.dialog_confirm_delete_title);
         builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // user clicked ok
-                // go ahead and delete bookmark
-
+                // user clicked ok, so go ahead and delete bookmark
                 // get correct bookmark id to delete
-                Bookmark bookmarkToDelete = getBookmarkFromListPosition(selectedPositionInList);
-
+                Bookmark bookmarkToDelete = bds.getBookmark(info.id);
                 deleteBookmark(bookmarkToDelete);
 
                 Context context = getApplicationContext();
@@ -190,7 +184,7 @@ public class ViewAllBookmarksActivity extends ListActivity {
                 toast.show();
 
                 // refresh list
-                adapter.removeItem(selectedPositionInList);
+                adapter.removeItem(info.position - 1);
                 adapter.notifyDataSetChanged();
             }
         });
@@ -202,29 +196,6 @@ public class ViewAllBookmarksActivity extends ListActivity {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    public Bookmark getBookmarkFromListPosition(long rowId) {
-        long bookmarkId = rowId;
-
-        List<Long> allBookmarksData = new LinkedList<Long>();
-        BookmarksDataSource bds = new BookmarksDataSource(this);
-
-        // get string version of returned bookmark list
-        allBookmarksData = bds.getAllBookmarkListDBTableIds();
-        bds.close();
-
-        // prevent crashes due to lack of database data
-        if (allBookmarksData.isEmpty())
-            allBookmarksData.add((long) 0);
-
-        Long[] allBookmarks = allBookmarksData
-                .toArray(new Long[allBookmarksData.size()]);
-
-        Bookmark bookmark = bds.getBookmark(allBookmarks[(int) bookmarkId]);
-        bds.close();
-
-        return bookmark;
     }
 
     public void deleteBookmark(Bookmark bookmark) {

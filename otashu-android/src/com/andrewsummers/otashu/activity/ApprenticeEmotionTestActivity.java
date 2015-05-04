@@ -552,7 +552,23 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
 
         // get random emotion
         EmotionsDataSource eds = new EmotionsDataSource(this);
-        chosenEmotion = eds.getRandomEmotion(apprenticeId);
+        int emotionCount = eds.getEmotionCount(apprenticeId);
+
+        // make sure there's at least one emotion for the spinner list
+        if (emotionCount <= 0) {
+            Context context = getApplicationContext();
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context,
+                    context.getResources().getString(R.string.need_emotions),
+                    duration);
+            toast.show();
+
+            finish();
+        } else {
+            chosenEmotion = eds.getRandomEmotion(apprenticeId);
+        }
+
         eds.close();
 
         emotionId = chosenEmotion.getId();
