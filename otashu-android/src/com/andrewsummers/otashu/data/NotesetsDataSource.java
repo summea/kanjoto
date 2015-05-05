@@ -94,18 +94,16 @@ public class NotesetsDataSource {
      * @param noteset Noteset to delete.
      */
     public void deleteNoteset(Noteset noteset) {
-        long id = noteset.getId();
-
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // delete noteset
         db.delete(OtashuDatabaseHelper.TABLE_NOTESETS,
-                OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
+                OtashuDatabaseHelper.COLUMN_ID + " = " + noteset.getId(), null);
 
         // delete related notes
         db.delete(OtashuDatabaseHelper.TABLE_NOTES,
-                OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = " + id, null);
+                OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = " + noteset.getId(), null);
     }
 
     /**
