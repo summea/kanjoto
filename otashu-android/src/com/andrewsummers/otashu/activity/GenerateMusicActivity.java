@@ -327,7 +327,7 @@ public class GenerateMusicActivity extends Activity {
         emptyNoteList.add(emptyNote);
 
         NotesetsDataSource nds = new NotesetsDataSource(this);
-        allNotesetBundles = nds.getAllNotesetBundles(apprenticeId, selectedEmotionId);
+        allNotesetBundles = nds.getAllNotesetBundlesByEmotion(apprenticeId, selectedEmotionId);
         nds.close();
 
         // prevent crashes due to lack of database data

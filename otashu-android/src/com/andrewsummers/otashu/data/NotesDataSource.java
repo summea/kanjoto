@@ -97,9 +97,44 @@ public class NotesDataSource {
      * @param note Note to delete.
      */
     public void deleteNote(Note note) {
-        long id = note.getId();
-        database.delete(OtashuDatabaseHelper.TABLE_NOTESETS,
-                OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // delete noteset
+        db.delete(OtashuDatabaseHelper.TABLE_NOTES,
+                OtashuDatabaseHelper.COLUMN_ID + " = " + note.getId(), null);
+    }
+
+    /**
+     * Get note from database table.
+     * 
+     * @return Note
+     */
+    public Note getNote(long id) {
+        Note note = new Note();
+
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES + " WHERE "
+                + OtashuDatabaseHelper.COLUMN_ID + "=" + id;
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notes from database
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                // create note objects based on note data from database
+                note.setId(Integer.parseInt(cursor.getString(0)));
+                note.setNotesetId(cursor.getLong(1));
+                note.setNotevalue(cursor.getInt(2));
+                note.setVelocity(cursor.getInt(3));
+                note.setLength(cursor.getFloat(4));
+                note.setPosition(cursor.getInt(5));
+            } while (cursor.moveToNext());
+        }
+
+        return note;
     }
 
     /**

@@ -21,6 +21,7 @@
 
 
 ## DONE:
+- 20150505: added NotesetsDataSource tests
 - 20150503: fixed crash that happens when apprentice has no emotions (or data) on choose emotion activity's "Go" button
 - 20150503: fixed crash that happens when deleting bookmark
 - 20150428: added rest of midi instruments for playback

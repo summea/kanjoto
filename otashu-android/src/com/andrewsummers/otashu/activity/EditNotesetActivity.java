@@ -105,7 +105,7 @@ public class EditNotesetActivity extends Activity implements OnClickListener {
 
         // get data for noteset that is being edited
         HashMap<String, List<Object>> editingNoteset = new HashMap<String, List<Object>>();
-        editingNoteset = nds.getNotesetBundleDetail(apprenticeId, noteset.getId());
+        editingNoteset = nds.getNotesetBundleDetailById(noteset.getId());
 
         List<Object> notesets = editingNoteset.get("noteset");
         noteset = (Noteset) notesets.get(0);

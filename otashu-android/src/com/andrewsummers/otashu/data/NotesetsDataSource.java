@@ -237,9 +237,7 @@ public class NotesetsDataSource {
      * 
      * @return List of noteset bundles.
      */
-    public SparseArray<List<Note>> getAllNotesetBundles(long apprenticeId, long emotion_id) {
-        // public HashMap<Integer, List<Note>> getAllNotesetBundles(int emotion_id) {
-        // HashMap<Integer, List<Note>> notesetBundles = new HashMap<Integer, List<Note>>();
+    public SparseArray<List<Note>> getAllNotesetBundlesByEmotion(long apprenticeId, long emotion_id) {
         SparseArray<List<Note>> notesetBundles = new SparseArray<List<Note>>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS
@@ -286,12 +284,11 @@ public class NotesetsDataSource {
         return notesetBundles;
     }
 
-    public SparseArray<List<Note>> getNotesetBundle(long apprenticeId, long id) {
+    public SparseArray<List<Note>> getNotesetBundleByNotesetId(long id) {
         SparseArray<List<Note>> notesetBundle = new SparseArray<List<Note>>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
-                + " AND " + OtashuDatabaseHelper.COLUMN_ID + "=" + id;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + id;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -332,12 +329,11 @@ public class NotesetsDataSource {
         return notesetBundle;
     }
 
-    public HashMap<String, List<Object>> getNotesetBundleDetail(long apprenticeId, long id) {
+    public HashMap<String, List<Object>> getNotesetBundleDetailById(long id) {
         HashMap<String, List<Object>> notesetBundle = new HashMap<String, List<Object>>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
-                + " AND " + OtashuDatabaseHelper.COLUMN_ID + "=" + id;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + id;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -428,8 +424,6 @@ public class NotesetsDataSource {
     public List<String> getAllNotesetListPreviews(long apprenticeId) {
         List<String> notesets = new LinkedList<String>();
 
-        // String[] noteValuesArray = getResources().getStringArray(R.array.note_values_array);
-
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS
                 + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
 
@@ -487,6 +481,7 @@ public class NotesetsDataSource {
      * 
      * @return List of Noteset preview strings.
      */
+    /*
     public List<String> getAllNotesetListPreviews(long apprenticeId, String[] noteLabelsArray,
             String[] noteValuesArray) {
         List<String> notesets = new LinkedList<String>();
@@ -546,12 +541,14 @@ public class NotesetsDataSource {
 
         return notesets;
     }
+    */
 
     /**
      * Get a list of all notesets ids.
      * 
      * @return List of Noteset ids.
      */
+    /*
     public List<Long> getAllNotesetListDBTableIds(long apprenticeId) {
         List<Long> notesets = new LinkedList<Long>();
 
@@ -583,6 +580,7 @@ public class NotesetsDataSource {
 
         return notesets;
     }
+    */
 
     public Noteset getNoteset(long id) {
         Noteset noteset = new Noteset();

@@ -80,7 +80,7 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
         NotesetsDataSource nsds = new NotesetsDataSource(this);
 
         // get noteset and notes information
-        notesetBundle = nsds.getNotesetBundle(apprenticeId, notesetId);
+        notesetBundle = nsds.getNotesetBundleByNotesetId(notesetId);
         Noteset noteset = nsds.getNoteset(notesetId);
         nsds.close();
 
