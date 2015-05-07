@@ -4,7 +4,6 @@ package com.andrewsummers.otashu.data;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -178,7 +177,7 @@ public class NotesDataSource {
      * 
      * @return List of Notes.
      */
-    public List<Note> getAllNotes(long notesetId) {
+    public List<Note> getAllNotesByNotesetId(long notesetId) {
         List<Note> notes = new ArrayList<Note>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES + " WHERE "
@@ -210,7 +209,7 @@ public class NotesDataSource {
         return notes;
     }
 
-    public List<Note> getAllNotes(int position) {
+    public List<Note> getAllNotesByPosition(int position) {
         List<Note> notes = new ArrayList<Note>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES + " WHERE "
@@ -366,38 +365,19 @@ public class NotesDataSource {
      * 
      * @return List of Note preview strings.
      */
-    public List<String> getAllNoteListPreviews() {
-        List<String> notes = new LinkedList<String>();
-
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES;
-
-        // create database handle
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // select all notes from database
-        Cursor cursor = db.rawQuery(query, null);
-
-        Note note = null;
-        if (cursor.moveToFirst()) {
-            do {
-                // create note objects based on note data from database
-                note = new Note();
-                note.setId(Integer.parseInt(cursor.getString(0)));
-                note.setNotevalue(cursor.getInt(1));
-                note.setVelocity(cursor.getInt(2));
-                note.setLength(cursor.getFloat(3));
-                note.setPosition(cursor.getInt(4));
-
-                // add note string to list of strings
-                notes.add(note.toString());
-            } while (cursor.moveToNext());
-        }
-
-        return notes;
-    }
+    /*
+     * TODO: cleanup public List<String> getAllNoteListPreviews() { List<String> notes = new
+     * LinkedList<String>(); String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES; //
+     * create database handle SQLiteDatabase db = dbHelper.getWritableDatabase(); // select all
+     * notes from database Cursor cursor = db.rawQuery(query, null); Note note = null; if
+     * (cursor.moveToFirst()) { do { // create note objects based on note data from database note =
+     * new Note(); note.setId(Integer.parseInt(cursor.getString(0)));
+     * note.setNotevalue(cursor.getInt(1)); note.setVelocity(cursor.getInt(2));
+     * note.setLength(cursor.getFloat(3)); note.setPosition(cursor.getInt(4)); // add note string to
+     * list of strings notes.add(note.toString()); } while (cursor.moveToNext()); } return notes; }
+     */
 
     public Note updateNote(Note note) {
-
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -422,16 +402,16 @@ public class NotesDataSource {
 
         // select an edge position
         int position = 1;
-        List<Note> p1Notes = getAllNotes(position);
+        List<Note> p1Notes = getAllNotesByPosition(position);
 
         position = 2;
-        List<Note> p2Notes = getAllNotes(position);
+        List<Note> p2Notes = getAllNotesByPosition(position);
 
         position = 3;
-        List<Note> p3Notes = getAllNotes(position);
+        List<Note> p3Notes = getAllNotesByPosition(position);
 
         position = 4;
-        List<Note> p4Notes = getAllNotes(position);
+        List<Note> p4Notes = getAllNotesByPosition(position);
 
         int i = 0;
         // loop through all position 1-2 notes

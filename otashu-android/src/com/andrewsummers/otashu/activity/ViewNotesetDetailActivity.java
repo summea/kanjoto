@@ -85,7 +85,7 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
         nsds.close();
 
         NotesDataSource nds = new NotesDataSource(this);
-        List<Note> relatedNotes = nds.getAllNotes(noteset.getId());
+        List<Note> relatedNotes = nds.getAllNotesByNotesetId(noteset.getId());
         nds.close();
 
         EmotionsDataSource eds = new EmotionsDataSource(this);

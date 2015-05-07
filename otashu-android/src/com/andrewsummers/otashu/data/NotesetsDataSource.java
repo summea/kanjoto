@@ -482,6 +482,7 @@ public class NotesetsDataSource {
      * @return List of Noteset preview strings.
      */
     /*
+     * TODO: cleanup
     public List<String> getAllNotesetListPreviews(long apprenticeId, String[] noteLabelsArray,
             String[] noteValuesArray) {
         List<String> notesets = new LinkedList<String>();
@@ -549,6 +550,7 @@ public class NotesetsDataSource {
      * @return List of Noteset ids.
      */
     /*
+     * TODO: cleanup
     public List<Long> getAllNotesetListDBTableIds(long apprenticeId) {
         List<Long> notesets = new LinkedList<Long>();
 

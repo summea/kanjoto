@@ -107,7 +107,7 @@ public class ViewAllNotesetsActivity extends ListActivity {
             allNotesets = nsds.getAllNotesets(apprenticeId, limit, currentOffset);
 
             for (Noteset noteset : allNotesets) {
-                relatedNotes = nds.getAllNotes(noteset.getId());
+                relatedNotes = nds.getAllNotesByNotesetId(noteset.getId());
                 relatedEmotion = eds.getEmotion(apprenticeId, noteset.getEmotion());
                 relatedLabel = lds.getLabel(relatedEmotion.getLabelId());
                 NotesetAndRelated notesetAndRelated = new NotesetAndRelated();
@@ -197,7 +197,7 @@ public class ViewAllNotesetsActivity extends ListActivity {
             allNotesets = nsds.getAllNotesets(apprenticeId, limit, currentOffset);
 
             for (Noteset noteset : allNotesets) {
-                relatedNotes = nds.getAllNotes(noteset.getId());
+                relatedNotes = nds.getAllNotesByNotesetId(noteset.getId());
                 relatedEmotion = eds.getEmotion(apprenticeId, noteset.getEmotion());
                 relatedLabel = lds.getLabel(relatedEmotion.getLabelId());
                 NotesetAndRelated notesetAndRelated = new NotesetAndRelated();
