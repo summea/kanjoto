@@ -110,7 +110,7 @@ public class NotesetsDataSourceTest extends AndroidTestCase {
         assertTrue(notesetBundles.size() > 0);
     }
 
-    public void test_getAllNotesetBundlesByEmotion_paramApprenticeIdparamEmotionId()
+    public void test_getAllNotesetBundlesByEmotion_paramApprenticeId_paramEmotionId()
             throws Throwable {
         test_createNoteset();
         SparseArray<List<Note>> notesetBundles = new SparseArray<List<Note>>();
