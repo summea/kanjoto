@@ -7,7 +7,6 @@ import java.util.List;
 
 import android.test.AndroidTestCase;
 import android.test.RenamingDelegatingContext;
-import android.util.Log;
 
 import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.NotesDataSource;
@@ -57,7 +56,7 @@ public class NotesDataSourceTest extends AndroidTestCase {
         super.tearDown();
     }
 
-    public void test_createNote() throws Throwable {
+    public void test_createNote_paramNote() throws Throwable {
         Note note = new Note();
         note.setNotesetId(1);
         note.setNotevalue(60);
@@ -66,8 +65,8 @@ public class NotesDataSourceTest extends AndroidTestCase {
         assertNotNull("created note is not null", result);
     }
 
-    public void test_deleteNote() throws Throwable {
-        test_createNote();
+    public void test_deleteNote_paramNote() throws Throwable {
+        test_createNote_paramNote();
         Note note = nds.getNote(1);
         nds.deleteNote(note);
         note = new Note();
@@ -75,47 +74,42 @@ public class NotesDataSourceTest extends AndroidTestCase {
         assertTrue(note.getId() != 1);
     }
 
-    public void test_getNote() throws Throwable {
-        test_createNote();
+    public void test_getNote_paramId() throws Throwable {
+        test_createNote_paramNote();
         Note note = nds.getNote(1);
         assertNotNull("get note is not null", note);
         assertTrue(note.getNotesetId() == 1);
     }
 
     public void test_getAllNotes() throws Throwable {
-        test_createNote();
+        test_createNote_paramNote();
         List<Note> notes = new ArrayList<Note>();
         notes = nds.getAllNotes();
-        Log.d("MYLOG", "all notes: " + notes.toString());
         assertNotNull("get all notes is not null", notes);
         assertFalse(notes.isEmpty());
     }
 
     public void test_getAllNotesByNotesetId_paramNotesetId() throws Throwable {
-        test_createNote();
+        test_createNote_paramNote();
         List<Note> notes = new ArrayList<Note>();
         notes = nds.getAllNotesByNotesetId(1);
-        Log.d("MYLOG", "all notes: " + notes.toString());
         assertNotNull("get all notes by noteset id is not null", notes);
         assertFalse(notes.isEmpty());
     }
 
     public void test_getAllNotesByPosition_paramPosition() throws Throwable {
-        test_createNote();
+        test_createNote_paramNote();
         List<Note> notes = new ArrayList<Note>();
         notes = nds.getAllNotesByPosition(1);
-        Log.d("MYLOG", "all notes: " + notes.toString());
         assertNotNull("get all notes by noteset id is not null", notes);
         assertFalse(notes.isEmpty());
     }
 
     public void test_doesNotesetExist_paramNotesetAndRelatedToCheck() throws Throwable {
-        test_createNote();
+        test_createNote_paramNote();
 
         Noteset noteset = nsds.getNoteset(1);
         List<Note> notes = nds.getAllNotes();
-        Log.d("MYLOG", "> noteset: " + noteset);
-        Log.d("MYLOG", "> notes: " + notes.toString());
 
         // check if noteset already exists, first
         NotesetAndRelated notesetAndRelated = new NotesetAndRelated();
@@ -128,14 +122,13 @@ public class NotesDataSourceTest extends AndroidTestCase {
     }
 
     public void test_updateNote_paramNote() throws Throwable {
-        test_createNote();
+        test_createNote_paramNote();
         Note note = new Note();
         note = nds.getNote(1);
         note.setNotevalue(61);
         nds.updateNote(note);
         Note note2 = new Note();
         note2 = nds.getNote(1);
-        Log.d("MYLOG", "note: " + note2.toString());
         assertNotNull("update note is not null", note2);
         assertTrue(note2.getNotevalue() == 61);
     }
@@ -152,10 +145,6 @@ public class NotesDataSourceTest extends AndroidTestCase {
         }
 
         HashMap<String, String> emotion = nds.getEmotionFromNotes(notes);
-
-        Log.d("MYLOG",
-                "found emotion: " + emotion.get("emotionId") + " with certainty: "
-                        + emotion.get("certainty"));
         assertNotNull("get emotion from notes is not null", emotion);
         assertTrue(Long.valueOf(emotion.get("emotionId")) > 0);
     }

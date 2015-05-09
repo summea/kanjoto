@@ -7,7 +7,6 @@ import java.util.List;
 
 import android.test.AndroidTestCase;
 import android.test.RenamingDelegatingContext;
-import android.util.Log;
 import android.util.SparseArray;
 
 import com.andrewsummers.otashu.data.EmotionsDataSource;
@@ -60,7 +59,7 @@ public class NotesetsDataSourceTest extends AndroidTestCase {
         super.tearDown();
     }
 
-    public void test_createNoteset() throws Throwable {
+    public void test_createNoteset_paramNoteset() throws Throwable {
         Noteset noteset = new Noteset();
         noteset.setApprenticeId(1);
         noteset.setEmotion(1);
@@ -69,7 +68,7 @@ public class NotesetsDataSourceTest extends AndroidTestCase {
         assertNotNull("created noteset is not null", result);
     }
 
-    public void test_deleteNoteset() throws Throwable {
+    public void test_deleteNoteset_paramNoteset() throws Throwable {
         Noteset noteset = new Noteset();
         noteset.setId(1);
         noteset.setApprenticeId(1);
@@ -83,87 +82,78 @@ public class NotesetsDataSourceTest extends AndroidTestCase {
         assertTrue(noteset.getId() != 1);
     }
 
-    public void test_getAllNotesets() throws Throwable {
-        test_createNoteset();
+    public void test_getAllNotesets_paramApprenticeId() throws Throwable {
+        test_createNoteset_paramNoteset();
         List<Noteset> notesets = new ArrayList<Noteset>();
         notesets = nsds.getAllNotesets(1);
-        Log.d("MYLOG", "all notesets: " + notesets.toString());
         assertNotNull("get all notesets is not null", notesets);
         assertFalse(notesets.isEmpty());
     }
 
     public void test_getAllNotesetsWithLimit_paramOffset() throws Throwable {
-        test_createNoteset();
+        test_createNoteset_paramNoteset();
         List<Noteset> notesets = new ArrayList<Noteset>();
         notesets = nsds.getAllNotesets(1, 1, 0);
-        Log.d("MYLOG", "all notesets: " + notesets.toString());
         assertNotNull("get all notesets with limit is not null", notesets);
         assertFalse(notesets.isEmpty());
     }
 
     public void test_getAllNotesetBundles_paramApprenticeId() throws Throwable {
-        test_createNoteset();
+        test_createNoteset_paramNoteset();
         SparseArray<List<Note>> notesetBundles = new SparseArray<List<Note>>();
         notesetBundles = nsds.getAllNotesetBundles(1);
-        Log.d("MYLOG", "all noteset bundles: " + notesetBundles.toString());
         assertNotNull("get all noteset bundles is not null", notesetBundles);
         assertTrue(notesetBundles.size() > 0);
     }
 
     public void test_getAllNotesetBundlesByEmotion_paramApprenticeId_paramEmotionId()
             throws Throwable {
-        test_createNoteset();
+        test_createNoteset_paramNoteset();
         SparseArray<List<Note>> notesetBundles = new SparseArray<List<Note>>();
         notesetBundles = nsds.getAllNotesetBundlesByEmotion(1, 1);
-        Log.d("MYLOG", "all noteset bundles: " + notesetBundles.toString());
         assertNotNull("get all noteset bundles by emotion is not null", notesetBundles);
         assertTrue(notesetBundles.size() > 0);
     }
 
     public void test_getNotesetBundleDetailById() throws Throwable {
-        test_createNoteset();
+        test_createNoteset_paramNoteset();
         HashMap<String, List<Object>> notesetBundles = new HashMap<String, List<Object>>();
         notesetBundles = nsds.getNotesetBundleDetailById(1);
-        Log.d("MYLOG", "all notesets: " + notesetBundles.toString());
         assertNotNull("get noteset bundle detail by id is not null", notesetBundles);
         assertFalse(notesetBundles.isEmpty());
     }
 
     public void test_getAllNotesetListPreviews_paramApprenticeId() throws Throwable {
-        test_createNoteset();
+        test_createNoteset_paramNoteset();
         List<String> notesetPreviews = new ArrayList<String>();
         notesetPreviews = nsds.getAllNotesetListPreviews(1);
-        Log.d("MYLOG", "all notesets: " + notesetPreviews.toString());
         assertNotNull("get all noteset list previews is not null", notesetPreviews);
         assertFalse(notesetPreviews.isEmpty());
     }
 
     public void test_getNoteset_paramId() throws Throwable {
-        test_createNoteset();
+        test_createNoteset_paramNoteset();
         Noteset noteset = new Noteset();
         noteset = nsds.getNoteset(1);
-        Log.d("MYLOG", "noteset: " + noteset.toString());
         assertNotNull("get noteset is not null", noteset);
         assertTrue(noteset.getId() > 0);
     }
 
     public void test_updateNoteset_paramNoteset() throws Throwable {
-        test_createNoteset();
+        test_createNoteset_paramNoteset();
         Noteset noteset = new Noteset();
         noteset = nsds.getNoteset(1);
         noteset.setEmotion(2);
         nsds.updateNoteset(noteset);
         Noteset noteset2 = new Noteset();
         noteset2 = nsds.getNoteset(1);
-        Log.d("MYLOG", "noteset: " + noteset2.toString());
         assertNotNull("update noteset is not null", noteset2);
         assertTrue(noteset2.getEmotion() == 2);
     }
 
     public void test_getCount_paramApprenticeId() throws Throwable {
-        test_createNoteset();
+        test_createNoteset_paramNoteset();
         int count = nsds.getCount(1);
-        Log.d("MYLOG", "notesets count: " + count);
         assertNotNull("noteset count is not null", count);
         assertTrue(count == 1);
     }
