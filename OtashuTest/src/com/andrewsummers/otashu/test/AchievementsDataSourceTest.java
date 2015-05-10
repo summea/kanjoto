@@ -6,7 +6,6 @@ import java.util.List;
 
 import android.test.AndroidTestCase;
 import android.test.RenamingDelegatingContext;
-import android.util.Log;
 
 import com.andrewsummers.otashu.data.AchievementsDataSource;
 import com.andrewsummers.otashu.data.OtashuDatabaseHelper;
@@ -93,7 +92,6 @@ public class AchievementsDataSourceTest extends AndroidTestCase {
         ads.updateAchievement(achievement);
         Achievement achievement2 = ads.getAchievement(1);
         assertNotNull("update achievement is not null", achievement2);
-        Log.d("MYLOG", achievement2.getKey());
         assertTrue(achievement2.getKey().equals("found_strong_transition"));
     }
 }
