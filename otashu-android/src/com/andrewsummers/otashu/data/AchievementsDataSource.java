@@ -2,9 +2,7 @@
 package com.andrewsummers.otashu.data;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 import com.andrewsummers.otashu.model.Achievement;
 
@@ -88,14 +86,12 @@ public class AchievementsDataSource {
      * @param achievement Achievement to delete.
      */
     public void deleteAchievement(Achievement achievement) {
-        long id = achievement.getId();
-
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        // delete achievement
+        // delete noteset
         db.delete(OtashuDatabaseHelper.TABLE_ACHIEVEMENTS,
-                OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
+                OtashuDatabaseHelper.COLUMN_ID + " = " + achievement.getId(), null);
     }
 
     /**
@@ -135,39 +131,6 @@ public class AchievementsDataSource {
     }
 
     /**
-     * Get all achievement ids from database table.
-     * 
-     * @return List of Achievements ids.
-     */
-    public List<Integer> getAllAchievementIds(long apprenticeId) {
-        List<Integer> achievement_ids = new ArrayList<Integer>();
-
-        String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
-                + OtashuDatabaseHelper.TABLE_ACHIEVEMENTS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
-
-        // create database handle
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // select all notes from database
-        Cursor cursor = db.rawQuery(query, null);
-
-        if (cursor.moveToFirst()) {
-            do {
-                // create note objects based on note data from database
-                Achievement achievement = new Achievement();
-                achievement.setId(cursor.getLong(0));
-
-                // add note string to list of strings
-                achievement_ids.add((int) achievement.getId());
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        return achievement_ids;
-    }
-
-    /**
      * Access column data at current position of result.
      * 
      * @param cursor Current cursor location.
@@ -183,81 +146,11 @@ public class AchievementsDataSource {
         return achievement;
     }
 
-    /**
-     * getAllAchievements gets a preview list of all achievements.
-     * 
-     * @return List of Achievement preview strings.
-     */
-    public List<String> getAllAchievementListPreviews(long apprenticeId) {
-        List<String> achievements = new LinkedList<String>();
-
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_ACHIEVEMENTS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
-
-        // create database handle
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // select all achievements from database
-        Cursor cursor = db.rawQuery(query, null);
-
-        Achievement achievement = null;
-        if (cursor.moveToFirst()) {
-            do {
-                // create achievement objects based on achievement data from database
-                achievement = new Achievement();
-                achievement.setId(cursor.getLong(0));
-                achievement.setName(cursor.getString(1));
-                achievement.setApprenticeId(cursor.getLong(2));
-                achievement.setEarnedOn(cursor.getString(3));
-                achievement.setKey(cursor.getString(4));
-
-                // add achievement string to list of strings
-                achievements.add(achievement.toString());
-            } while (cursor.moveToNext());
-        }
-
-        return achievements;
-    }
-
-    /**
-     * Get a list of all achievements ids.
-     * 
-     * @return List of Achievement ids.
-     */
-    public List<Long> getAllAchievementListDBTableIds(long apprenticeId) {
-        List<Long> achievements = new LinkedList<Long>();
-
-        String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
-                + OtashuDatabaseHelper.TABLE_ACHIEVEMENTS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
-
-        // create database handle
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // select all achievements from database
-        Cursor cursor = db.rawQuery(query, null);
-
-        Achievement achievement = null;
-        if (cursor.moveToFirst()) {
-            do {
-                // create achievement objects based on achievement data from database
-                achievement = new Achievement();
-                achievement.setId(cursor.getLong(0));
-
-                // add achievement to achievements list
-                achievements.add(achievement.getId());
-            } while (cursor.moveToNext());
-        }
-
-        return achievements;
-    }
-
-    public Achievement getAchievement(long apprenticeId, long achievementId) {
+    public Achievement getAchievement(long achievementId) {
         Achievement achievement = new Achievement();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_ACHIEVEMENTS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
-                + " AND " + OtashuDatabaseHelper.COLUMN_ID + "=" + achievementId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + achievementId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -282,24 +175,18 @@ public class AchievementsDataSource {
         return achievement;
     }
 
-    public Achievement getAchievementByKey(long apprenticeId, String key) {
+    public Achievement getAchievementByKey(String key) {
         Achievement achievement = new Achievement();
 
-        /*
-         * String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_ACHIEVEMENTS + " WHERE " +
-         * OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId + " AND " +
-         * OtashuDatabaseHelper.COLUMN_KEY + "=" + key;
-         */
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_ACHIEVEMENTS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?"
-                + " AND " + OtashuDatabaseHelper.COLUMN_KEY + "=?";
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_KEY + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all achievements from database
         Cursor cursor = db.rawQuery(query, new String[] {
-                String.valueOf(apprenticeId), key
+                key
         });
 
         if (cursor.moveToFirst()) {
@@ -345,7 +232,6 @@ public class AchievementsDataSource {
     }
 
     public Achievement updateAchievement(Achievement achievement) {
-
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -358,20 +244,6 @@ public class AchievementsDataSource {
 
         db.update(OtashuDatabaseHelper.TABLE_ACHIEVEMENTS, contentValues,
                 OtashuDatabaseHelper.COLUMN_ID + "=" + achievement.getId(), null);
-
-        return achievement;
-    }
-
-    public Achievement getRandomAchievement(long apprenticeId) {
-        Achievement achievement = new Achievement();
-
-        // get all achievements first
-        List<Achievement> allAchievements = getAllAchievements(apprenticeId);
-
-        // choose random achievement
-        int chosenIndex = new Random().nextInt(allAchievements.size());
-
-        achievement = allAchievements.get(chosenIndex);
 
         return achievement;
     }

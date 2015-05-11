@@ -74,10 +74,10 @@ public class ViewAllApprenticeScorecardsActivity extends ListActivity {
 
     public void fillList() {
         List<ApprenticeScorecard> allApprenticeScorecards = new LinkedList<ApprenticeScorecard>();
-        ApprenticeScorecardsDataSource lds = new ApprenticeScorecardsDataSource(this);
-        allApprenticeScorecards = lds
+        ApprenticeScorecardsDataSource asds = new ApprenticeScorecardsDataSource(this);
+        allApprenticeScorecards = asds
                 .getAllApprenticeScorecards(apprenticeId, OtashuDatabaseHelper.COLUMN_TAKEN_AT);
-        lds.close();
+        asds.close();
 
         // pass list data to adapter
         adapter = new ApprenticeScorecardAdapter(this, allApprenticeScorecards);
@@ -141,24 +141,24 @@ public class ViewAllApprenticeScorecardsActivity extends ListActivity {
                 startActivity(intent);
                 return true;
             case R.id.context_menu_delete:
-                confirmDelete();
+                confirmDelete(info);
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
     }
 
-    public void confirmDelete() {
+    public void confirmDelete(final AdapterContextMenuInfo info) {
+        final ApprenticeScorecardsDataSource asds = new ApprenticeScorecardsDataSource(this);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.dialog_confirm_delete_message).setTitle(
                 R.string.dialog_confirm_delete_title);
         builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // user clicked ok
-                // go ahead and delete apprenticeScorecard
-
+                // user clicked ok, so go ahead and delete apprenticeScorecard
                 // get correct apprenticeScorecard id to delete
-                ApprenticeScorecard apprenticeScorecardToDelete = getApprenticeScorecardFromListPosition(selectedPositionInList);
+                ApprenticeScorecard apprenticeScorecardToDelete = asds
+                        .getApprenticeScorecard(info.id);
 
                 deleteApprenticeScorecard(apprenticeScorecardToDelete);
 
@@ -185,37 +185,25 @@ public class ViewAllApprenticeScorecardsActivity extends ListActivity {
         dialog.show();
     }
 
-    public ApprenticeScorecard getApprenticeScorecardFromListPosition(long rowId) {
-        long apprenticeScorecardId = rowId;
-
-        List<Long> allApprenticeScorecardsData = new LinkedList<Long>();
-        ApprenticeScorecardsDataSource lds = new ApprenticeScorecardsDataSource(this);
-
-        // get string version of returned apprenticeScorecard list
-        allApprenticeScorecardsData = lds.getAllApprenticeScorecardListDBTableIds(apprenticeId);
-        lds.close();
-
-        // prevent crashes due to lack of database data
-        if (allApprenticeScorecardsData.isEmpty()) {
-            allApprenticeScorecardsData.add((long) 0);
-        }
-
-        Long[] allApprenticeScorecards = allApprenticeScorecardsData
-                .toArray(new Long[allApprenticeScorecardsData.size()]);
-
-        ApprenticeScorecard apprenticeScorecard = lds
-                .getApprenticeScorecard(apprenticeId,
-                        allApprenticeScorecards[(int) apprenticeScorecardId]);
-
-        lds.close();
-
-        return apprenticeScorecard;
-    }
+    /*
+     * public ApprenticeScorecard getApprenticeScorecardFromListPosition(long rowId) { long
+     * apprenticeScorecardId = rowId; List<Long> allApprenticeScorecardsData = new
+     * LinkedList<Long>(); ApprenticeScorecardsDataSource lds = new
+     * ApprenticeScorecardsDataSource(this); // get string version of returned apprenticeScorecard
+     * list allApprenticeScorecardsData =
+     * asds.getAllApprenticeScorecardListDBTableIds(apprenticeId); asds.close(); // prevent crashes
+     * due to lack of database data if (allApprenticeScorecardsData.isEmpty()) {
+     * allApprenticeScorecardsData.add((long) 0); } Long[] allApprenticeScorecards =
+     * allApprenticeScorecardsData .toArray(new Long[allApprenticeScorecardsData.size()]);
+     * ApprenticeScorecard apprenticeScorecard = lds
+     * .getApprenticeScorecard(allApprenticeScorecards[(int) apprenticeScorecardId]); asds.close();
+     * return apprenticeScorecard; }
+     */
 
     public void deleteApprenticeScorecard(ApprenticeScorecard apprenticeScorecard) {
-        ApprenticeScorecardsDataSource lds = new ApprenticeScorecardsDataSource(this);
-        lds.deleteApprenticeScorecard(apprenticeScorecard);
-        lds.close();
+        ApprenticeScorecardsDataSource asds = new ApprenticeScorecardsDataSource(this);
+        asds.deleteApprenticeScorecard(apprenticeScorecard);
+        asds.close();
     }
 
     @Override

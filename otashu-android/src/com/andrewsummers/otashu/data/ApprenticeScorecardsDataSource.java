@@ -143,34 +143,6 @@ public class ApprenticeScorecardsDataSource {
     }
 
     /**
-     * Get all apprenticeScorecard ids from database table.
-     * 
-     * @return List of ApprenticeScorecards ids.
-     */
-    public List<Integer> getAllApprenticeScorecardIds(long apprenticeId) {
-        List<Integer> apprenticeScorecard_ids = new ArrayList<Integer>();
-
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORECARDS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
-
-        // create database handle
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // select all notes from database
-        Cursor cursor = db.rawQuery(query, null);
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            ApprenticeScorecard apprenticeScorecard = cursorToApprenticeScorecard(cursor);
-            apprenticeScorecard_ids.add((int) apprenticeScorecard.getId());
-            cursor.moveToNext();
-        }
-
-        cursor.close();
-        return apprenticeScorecard_ids;
-    }
-
-    /**
      * Access column data at current position of result.
      * 
      * @param cursor Current cursor location.
@@ -223,50 +195,11 @@ public class ApprenticeScorecardsDataSource {
         return apprenticeScorecards;
     }
 
-    /**
-     * Get a list of all apprenticeScorecards ids.
-     * 
-     * @return List of ApprenticeScorecard ids.
-     */
-    public List<Long> getAllApprenticeScorecardListDBTableIds(long apprenticeId) {
-        List<Long> apprenticeScorecards = new LinkedList<Long>();
-
-        String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
-                + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORECARDS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
-
-        // create database handle
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // select all apprenticeScorecards from database
-        Cursor cursor = db.rawQuery(query, null);
-
-        ApprenticeScorecard apprenticeScorecard = null;
-        if (cursor.moveToFirst()) {
-            do {
-                // create apprenticeScorecard objects based on apprenticeScorecard data from
-                // database
-                apprenticeScorecard = new ApprenticeScorecard();
-                apprenticeScorecard.setId(cursor.getLong(0));
-                apprenticeScorecard.setTakenAt(cursor.getString(1));
-                apprenticeScorecard.setTotal(cursor.getInt(2));
-                apprenticeScorecard.setCorrect(cursor.getInt(3));
-                apprenticeScorecard.setApprenticeId(cursor.getInt(4));
-
-                // add apprenticeScorecard to apprenticeScorecards list
-                apprenticeScorecards.add(apprenticeScorecard.getId());
-            } while (cursor.moveToNext());
-        }
-
-        return apprenticeScorecards;
-    }
-
-    public ApprenticeScorecard getApprenticeScorecard(long apprenticeId, long apprenticeScorecardId) {
+    public ApprenticeScorecard getApprenticeScorecard(long apprenticeScorecardId) {
         ApprenticeScorecard apprenticeScorecard = new ApprenticeScorecard();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORECARDS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
-                + " AND " + OtashuDatabaseHelper.COLUMN_ID + "=" + apprenticeScorecardId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + apprenticeScorecardId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -295,7 +228,6 @@ public class ApprenticeScorecardsDataSource {
     }
 
     public ApprenticeScorecard updateApprenticeScorecard(ApprenticeScorecard apprenticeScorecard) {
-
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 

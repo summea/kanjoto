@@ -49,7 +49,7 @@ public class ViewApprenticeScorecardDetailActivity extends Activity {
 
         ApprenticeScorecard apprenticeScorecard = new ApprenticeScorecard();
         ApprenticeScorecardsDataSource asc = new ApprenticeScorecardsDataSource(this);
-        apprenticeScorecard = asc.getApprenticeScorecard(apprenticeId, apprenticeScorecardId);
+        apprenticeScorecard = asc.getApprenticeScorecard(apprenticeScorecardId);
         asc.close();
 
         // fill in form data

@@ -297,7 +297,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
                         String key = String.valueOf(currentKeySignatureId);
                         // check if achievement key for this already exists
                         AchievementsDataSource ads = new AchievementsDataSource(this);
-                        Achievement achievement = ads.getAchievementByKey(apprenticeId, key);
+                        Achievement achievement = ads.getAchievementByKey(key);
 
                         if (achievement.getId() > 0) {
                             // pass
@@ -572,7 +572,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
             // also, update scorecard question totals
             ApprenticeScorecardsDataSource ascds = new ApprenticeScorecardsDataSource(this);
             ApprenticeScorecard scorecard = new ApprenticeScorecard();
-            scorecard = ascds.getApprenticeScorecard(apprenticeId, scorecardId);
+            scorecard = ascds.getApprenticeScorecard(scorecardId);
             if (isCorrect == 1) {
                 scorecard.setCorrect(guessesCorrect);
             }
