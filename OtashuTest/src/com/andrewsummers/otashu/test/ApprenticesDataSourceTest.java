@@ -36,7 +36,7 @@ public class ApprenticesDataSourceTest extends AndroidTestCase {
         apprentice.setName("test apprentice");
         apprentice.setLearningStyleId(1);
         Apprentice result = ads.createApprentice(apprentice);
-        assertNotNull("created apprentice score is not null", result);
+        assertNotNull("created apprentice is not null", result);
     }
 
     public void test_deleteApprentice_paramApprentice() throws Throwable {
@@ -45,7 +45,7 @@ public class ApprenticesDataSourceTest extends AndroidTestCase {
         apprentice.setName("test apprentice");
         apprentice.setLearningStyleId(1);
         Apprentice result = ads.createApprentice(apprentice);
-        assertNotNull("created apprentice score is not null", result);
+        assertNotNull("created apprentice is not null", result);
         ads.deleteApprentice(apprentice);
         apprentice = new Apprentice();
         apprentice = ads.getApprentice(1);
