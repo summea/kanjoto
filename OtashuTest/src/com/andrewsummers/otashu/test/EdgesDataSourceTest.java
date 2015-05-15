@@ -121,6 +121,7 @@ public class EdgesDataSourceTest extends AndroidTestCase {
 
     public void test_getRandomEdge_paramApprenticeId_paramGraphId_paramEmotionId_paramFromNodeId_paramToNodeId_paramPosition_paramMode()
             throws Throwable {
+        test_createEdge_paramEdge();
         Edge edge = eds.getRandomEdge(1, 1, 1, 61, 63, 1, 1);
         assertNotNull(
                 "get random edge (apprenticeId, graphId, emotionId, fromNodeId, toNodeId, position, mode) is not null",
@@ -129,6 +130,7 @@ public class EdgesDataSourceTest extends AndroidTestCase {
 
     public void test_getStrongPath_paramApprenticeId_paramGraphId_paramEmotionId_paramPosition_paramFromNodeId_paramImprovisationLevel()
             throws Throwable {
+        test_createEdge_paramEdge();
         List<Edge> path = eds.getStrongPath(1, 1, 1, 1, 61, 1);
         assertNotNull(
                 "get strong path (apprentice id, graph id, emotion id, position, from node id, improvisation level) is not null",
@@ -138,6 +140,7 @@ public class EdgesDataSourceTest extends AndroidTestCase {
 
     public void test_getStrongTransitionPath_paramApprenticeId_paramGraphId_paramEmotionId_paramFromNodeId()
             throws Throwable {
+        test_createEdge_paramEdge();
         Edge path = eds.getStrongTransitionPath(1, 1, 1, 61);
         assertNotNull(
                 "get strong transition path (apprenticeId, graphId, emotionId, fromNodeId) is not null",
@@ -146,6 +149,7 @@ public class EdgesDataSourceTest extends AndroidTestCase {
 
     public void test_getPathsForEmotion_paramApprenticeId_paramGraphId_paramEmotionId_paramWeightLimit()
             throws Throwable {
+        test_createEdge_paramEdge();
         SparseArray<List<Edge>> paths = eds.getPathsForEmotion(1, 1, 1, 1.0f);
         assertNotNull(
                 "get paths for emotion (apprentice id, graph id, emotion id, weight limit) is not null",
@@ -155,6 +159,7 @@ public class EdgesDataSourceTest extends AndroidTestCase {
 
     public void test_getEmotionFromNotes_paramApprenticeId_paramGraphId_paramNotes()
             throws Throwable {
+        test_createEdge_paramEdge();
         List<Integer> notes = new ArrayList<Integer>();
         notes.add(61);
         notes.add(62);

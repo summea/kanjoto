@@ -69,6 +69,7 @@ public class ApprenticesDataSourceTest extends AndroidTestCase {
     }
 
     public void test_getApprentice_paramApprenticeId() throws Throwable {
+        test_createApprentice_paramApprentice();
         Apprentice apprentice = ads.getApprentice(1);
         assertNotNull("get apprentice is not null", apprentice);
     }

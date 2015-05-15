@@ -61,6 +61,7 @@ public class BookmarksDataSourceTest extends AndroidTestCase {
     }
 
     public void test_getBookmark_paramBookmarkId() throws Throwable {
+        test_createBookmark_paramBookmark();
         Bookmark bookmark = bds.getBookmark(1);
         assertNotNull("get bookmark is not null", bookmark);
     }
