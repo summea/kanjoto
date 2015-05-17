@@ -4,7 +4,6 @@ package com.andrewsummers.otashu.data;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 import com.andrewsummers.otashu.model.Graph;
 
@@ -125,29 +124,6 @@ public class GraphsDataSource {
     }
 
     /**
-     * Get all graph ids from database table.
-     * 
-     * @return List of Graphs ids.
-     */
-    public List<Integer> getAllGraphIds() {
-        List<Integer> graph_ids = new ArrayList<Integer>();
-
-        Cursor cursor = database.query(
-                OtashuDatabaseHelper.TABLE_GRAPHS, allColumns, null,
-                null, null, null, null);
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Graph graph = cursorToGraph(cursor);
-            graph_ids.add((int) graph.getId());
-            cursor.moveToNext();
-        }
-
-        cursor.close();
-        return graph_ids;
-    }
-
-    /**
      * Access column data at current position of result.
      * 
      * @param cursor Current cursor location.
@@ -158,38 +134,6 @@ public class GraphsDataSource {
         graph.setId(cursor.getLong(0));
         graph.setName(cursor.getString(1));
         return graph;
-    }
-
-    /**
-     * getAllGraphs gets a preview list of all graphs.
-     * 
-     * @return List of Graph preview strings.
-     */
-    public List<String> getAllGraphListPreviews() {
-        List<String> graphs = new LinkedList<String>();
-
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_GRAPHS;
-
-        // create database handle
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // select all graphs from database
-        Cursor cursor = db.rawQuery(query, null);
-
-        Graph graph = null;
-        if (cursor.moveToFirst()) {
-            do {
-                // create graph objects based on graph data from database
-                graph = new Graph();
-                graph.setId(cursor.getLong(0));
-                graph.setName(cursor.getString(1));
-
-                // add graph string to list of strings
-                graphs.add(graph.toString());
-            } while (cursor.moveToNext());
-        }
-
-        return graphs;
     }
 
     /**
@@ -259,20 +203,6 @@ public class GraphsDataSource {
 
         db.update(OtashuDatabaseHelper.TABLE_GRAPHS, contentValues, OtashuDatabaseHelper.COLUMN_ID
                 + "=" + graph.getId(), null);
-
-        return graph;
-    }
-
-    public Graph getRandomGraph() {
-        Graph graph = new Graph();
-
-        // get all graphs first
-        List<Graph> allGraphs = getAllGraphs();
-
-        // choose random graph
-        int chosenIndex = new Random().nextInt(allGraphs.size());
-
-        graph = allGraphs.get(chosenIndex);
 
         return graph;
     }

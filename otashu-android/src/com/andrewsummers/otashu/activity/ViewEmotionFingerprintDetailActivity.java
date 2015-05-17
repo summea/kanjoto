@@ -90,6 +90,7 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
         drawView = new DrawView(this, emofingData);
         drawView.setBackgroundColor(Color.BLACK);
         setContentView(drawView);
+        drawView.setDrawingCacheEnabled(true);
 
         if (sendEmofing != 1) {
             // get default instrument for playback

@@ -180,41 +180,6 @@ public class EmotionsDataSource {
     }
 
     /**
-     * getAllEmotions gets a preview list of all emotions.
-     * 
-     * @return List of Emotion preview strings.
-     */
-    public List<String> getAllEmotionListPreviews(long apprenticeId) {
-        List<String> emotions = new LinkedList<String>();
-
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EMOTIONS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
-
-        // create database handle
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // select all emotions from database
-        Cursor cursor = db.rawQuery(query, null);
-
-        Emotion emotion = null;
-        if (cursor.moveToFirst()) {
-            do {
-                // create emotion objects based on emotion data from database
-                emotion = new Emotion();
-                emotion.setId(cursor.getLong(0));
-                emotion.setName(cursor.getString(1));
-                emotion.setLabelId(cursor.getLong(2));
-                emotion.setApprenticeId(cursor.getLong(3));
-
-                // add emotion string to list of strings
-                emotions.add(emotion.toString());
-            } while (cursor.moveToNext());
-        }
-
-        return emotions;
-    }
-
-    /**
      * Get a list of all emotions ids.
      * 
      * @return List of Emotion ids.
@@ -247,12 +212,11 @@ public class EmotionsDataSource {
         return emotions;
     }
 
-    public Emotion getEmotion(long apprenticeId, long emotionId) {
+    public Emotion getEmotion(long emotionId) {
         Emotion emotion = new Emotion();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EMOTIONS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
-                + " AND " + OtashuDatabaseHelper.COLUMN_ID + "=" + emotionId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + emotionId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -299,11 +263,18 @@ public class EmotionsDataSource {
         // get all emotions first
         List<Emotion> allEmotions = getAllEmotions(apprenticeId);
 
-        // choose random emotion
-        int chosenIndex = new Random().nextInt(allEmotions.size());
+        if (allEmotions.size() > 1) {
+            // choose random emotion
+            int chosenIndex = new Random().nextInt(allEmotions.size());
 
-        emotion = allEmotions.get(chosenIndex);
-
+            emotion = allEmotions.get(chosenIndex);
+        } else {
+            if (allEmotions.size() > 0) {
+                emotion = allEmotions.get(0);
+            } else {
+                emotion = new Emotion();
+            }
+        }
         return emotion;
     }
 

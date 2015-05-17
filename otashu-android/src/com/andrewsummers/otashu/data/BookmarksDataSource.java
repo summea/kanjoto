@@ -2,9 +2,7 @@
 package com.andrewsummers.otashu.data;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 import com.andrewsummers.otashu.model.Bookmark;
 
@@ -131,29 +129,6 @@ public class BookmarksDataSource {
     }
 
     /**
-     * Get all bookmark ids from database table.
-     * 
-     * @return List of Bookmarks ids.
-     */
-    public List<Integer> getAllBookmarkIds() {
-        List<Integer> bookmark_ids = new ArrayList<Integer>();
-
-        Cursor cursor = database.query(
-                OtashuDatabaseHelper.TABLE_BOOKMARKS, allColumns, null,
-                null, null, null, null);
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Bookmark bookmark = cursorToBookmark(cursor);
-            bookmark_ids.add((int) bookmark.getId());
-            cursor.moveToNext();
-        }
-
-        cursor.close();
-        return bookmark_ids;
-    }
-
-    /**
      * Access column data at current position of result.
      * 
      * @param cursor Current cursor location.
@@ -165,71 +140,6 @@ public class BookmarksDataSource {
         bookmark.setName(cursor.getString(1));
         bookmark.setSerializedValue(cursor.getString(2));
         return bookmark;
-    }
-
-    /**
-     * getAllBookmarks gets a preview list of all bookmarks.
-     * 
-     * @return List of Bookmark preview strings.
-     */
-    public List<String> getAllBookmarkListPreviews() {
-        List<String> bookmarks = new LinkedList<String>();
-
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_BOOKMARKS;
-
-        // create database handle
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // select all bookmarks from database
-        Cursor cursor = db.rawQuery(query, null);
-
-        Bookmark bookmark = null;
-        if (cursor.moveToFirst()) {
-            do {
-                // create bookmark objects based on bookmark data from database
-                bookmark = new Bookmark();
-                bookmark.setId(cursor.getLong(0));
-                bookmark.setName(cursor.getString(1));
-                bookmark.setSerializedValue(cursor.getString(2));
-
-                // add bookmark string to list of strings
-                bookmarks.add(bookmark.toString());
-            } while (cursor.moveToNext());
-        }
-
-        return bookmarks;
-    }
-
-    /**
-     * Get a list of all bookmarks ids.
-     * 
-     * @return List of Bookmark ids.
-     */
-    public List<Long> getAllBookmarkListDBTableIds() {
-        List<Long> bookmarks = new LinkedList<Long>();
-
-        String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
-                + OtashuDatabaseHelper.TABLE_BOOKMARKS;
-
-        // create database handle
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // select all bookmarks from database
-        Cursor cursor = db.rawQuery(query, null);
-
-        Bookmark bookmark = null;
-        if (cursor.moveToFirst()) {
-            do {
-                // create bookmark objects based on bookmark data from database
-                bookmark = new Bookmark();
-                bookmark.setId(cursor.getLong(0));
-
-                // add bookmark to bookmarks list
-                bookmarks.add(bookmark.getId());
-            } while (cursor.moveToNext());
-        }
-
-        return bookmarks;
     }
 
     public Bookmark getBookmark(long bookmarkId) {
@@ -270,20 +180,6 @@ public class BookmarksDataSource {
 
         db.update(OtashuDatabaseHelper.TABLE_BOOKMARKS, contentValues,
                 OtashuDatabaseHelper.COLUMN_ID + "=" + bookmark.getId(), null);
-
-        return bookmark;
-    }
-
-    public Bookmark getRandomBookmark() {
-        Bookmark bookmark = new Bookmark();
-
-        // get all bookmarks first
-        List<Bookmark> allBookmarks = getAllBookmarks();
-
-        // choose random bookmark
-        int chosenIndex = new Random().nextInt(allBookmarks.size());
-
-        bookmark = allBookmarks.get(chosenIndex);
 
         return bookmark;
     }

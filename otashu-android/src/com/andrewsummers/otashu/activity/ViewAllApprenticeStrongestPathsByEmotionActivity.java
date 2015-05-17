@@ -220,7 +220,7 @@ public class ViewAllApprenticeStrongestPathsByEmotionActivity extends ListActivi
         Long[] allEmotions = allEmotionsData
                 .toArray(new Long[allEmotionsData.size()]);
 
-        Emotion emotion = eds.getEmotion(apprenticeId, allEmotions[(int) emotionId]);
+        Emotion emotion = eds.getEmotion(allEmotions[(int) emotionId]);
 
         eds.close();
 

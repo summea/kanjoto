@@ -4,7 +4,6 @@ package com.andrewsummers.otashu.data;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -141,34 +140,6 @@ public class KeyNotesDataSource {
     }
 
     /**
-     * Get all keyNote ids from database table.
-     * 
-     * @return List of KeyNotes ids.
-     */
-    public List<Integer> getAllKeyNoteIds(long apprenticeId) {
-        List<Integer> keyNote_ids = new ArrayList<Integer>();
-
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_NOTES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
-
-        // create database handle
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // select all notes from database
-        Cursor cursor = db.rawQuery(query, null);
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            KeyNote keyNote = cursorToKeyNote(cursor);
-            keyNote_ids.add((int) keyNote.getId());
-            cursor.moveToNext();
-        }
-
-        cursor.close();
-        return keyNote_ids;
-    }
-
-    /**
      * Access column data at current position of result.
      * 
      * @param cursor Current cursor location.
@@ -182,75 +153,6 @@ public class KeyNotesDataSource {
         keyNote.setWeight(cursor.getFloat(3));
         keyNote.setApprenticeId(cursor.getLong(4));
         return keyNote;
-    }
-
-    /**
-     * getAllKeyNotes gets a preview list of all keyNotes.
-     * 
-     * @return List of KeyNote preview strings.
-     */
-    public List<String> getAllKeyNoteListPreviews(long apprenticeId) {
-        List<String> keyNotes = new LinkedList<String>();
-
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_NOTES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
-
-        // create database handle
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // select all keyNotes from database
-        Cursor cursor = db.rawQuery(query, null);
-
-        KeyNote keyNote = null;
-        if (cursor.moveToFirst()) {
-            do {
-                // create keyNote objects based on keyNote data from database
-                keyNote = new KeyNote();
-                keyNote.setId(cursor.getLong(0));
-                keyNote.setKeySignatureId(cursor.getLong(1));
-                keyNote.setNotevalue(cursor.getInt(2));
-                keyNote.setWeight(cursor.getFloat(3));
-                keyNote.setApprenticeId(cursor.getLong(4));
-
-                // add keyNote string to list of strings
-                keyNotes.add(keyNote.toString());
-            } while (cursor.moveToNext());
-        }
-
-        return keyNotes;
-    }
-
-    /**
-     * Get a list of all keyNotes ids.
-     * 
-     * @return List of KeyNote ids.
-     */
-    public List<Long> getAllKeyNoteListDBTableIds(long apprenticeId) {
-        List<Long> keyNotes = new LinkedList<Long>();
-
-        String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
-                + OtashuDatabaseHelper.TABLE_KEY_NOTES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
-
-        // create database handle
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // select all keyNotes from database
-        Cursor cursor = db.rawQuery(query, null);
-
-        KeyNote keyNote = null;
-        if (cursor.moveToFirst()) {
-            do {
-                // create keyNote objects based on keyNote data from database
-                keyNote = new KeyNote();
-                keyNote.setId(cursor.getLong(0));
-
-                // add keyNote to keyNotes list
-                keyNotes.add(keyNote.getId());
-            } while (cursor.moveToNext());
-        }
-
-        return keyNotes;
     }
 
     public KeyNote getKeyNote(long apprenticeId, long keyNoteId) {

@@ -4,7 +4,6 @@ package com.andrewsummers.otashu.data;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 import com.andrewsummers.otashu.model.Apprentice;
 
@@ -129,33 +128,6 @@ public class ApprenticesDataSource {
     }
 
     /**
-     * Get all apprentice ids from database table.
-     * 
-     * @return List of Apprentices ids.
-     */
-    public List<Long> getAllApprenticeIds() {
-        List<Long> apprentice_ids = new ArrayList<Long>();
-
-        String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
-                + OtashuDatabaseHelper.TABLE_APPRENTICES;
-
-        // create database handle
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // select all notes from database
-        Cursor cursor = db.rawQuery(query, null);
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            apprentice_ids.add(cursor.getLong(0));
-            cursor.moveToNext();
-        }
-
-        cursor.close();
-        return apprentice_ids;
-    }
-
-    /**
      * Access column data at current position of result.
      * 
      * @param cursor Current cursor location.
@@ -167,39 +139,6 @@ public class ApprenticesDataSource {
         apprentice.setName(cursor.getString(1));
         apprentice.setLearningStyleId(cursor.getLong(2));
         return apprentice;
-    }
-
-    /**
-     * getAllApprentices gets a preview list of all apprentices.
-     * 
-     * @return List of Apprentice preview strings.
-     */
-    public List<String> getAllApprenticeListPreviews() {
-        List<String> apprentices = new LinkedList<String>();
-
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICES;
-
-        // create database handle
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // select all apprentices from database
-        Cursor cursor = db.rawQuery(query, null);
-
-        Apprentice apprentice = null;
-        if (cursor.moveToFirst()) {
-            do {
-                // create apprentice objects based on apprentice data from database
-                apprentice = new Apprentice();
-                apprentice.setId(cursor.getLong(0));
-                apprentice.setName(cursor.getString(1));
-                apprentice.setLearningStyleId(cursor.getLong(2));
-
-                // add apprentice string to list of strings
-                apprentices.add(apprentice.toString());
-            } while (cursor.moveToNext());
-        }
-
-        return apprentices;
     }
 
     /**
@@ -273,20 +212,6 @@ public class ApprenticesDataSource {
         db.update(OtashuDatabaseHelper.TABLE_APPRENTICES, contentValues,
                 OtashuDatabaseHelper.COLUMN_ID
                         + "=" + apprentice.getId(), null);
-
-        return apprentice;
-    }
-
-    public Apprentice getRandomApprentice() {
-        Apprentice apprentice = new Apprentice();
-
-        // get all apprentices first
-        List<Apprentice> allApprentices = getAllApprentices();
-
-        // choose random apprentice
-        int chosenIndex = new Random().nextInt(allApprentices.size());
-
-        apprentice = allApprentices.get(chosenIndex);
 
         return apprentice;
     }

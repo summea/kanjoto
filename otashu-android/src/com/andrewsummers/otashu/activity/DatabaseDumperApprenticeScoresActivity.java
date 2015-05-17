@@ -30,7 +30,7 @@ public class DatabaseDumperApprenticeScoresActivity extends Activity {
                 "pref_selected_apprentice", "1"));
 
         ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
-        List<ApprenticeScore> allApprenticeScores = asds.getAllApprenticeScores(apprenticeId);
+        List<ApprenticeScore> allApprenticeScores = asds.getAllApprenticeScoresByApprentice(apprenticeId);
         asds.close();
 
         TextView debugText = (TextView) findViewById(R.id.debug_text);

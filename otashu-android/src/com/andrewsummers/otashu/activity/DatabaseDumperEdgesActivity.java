@@ -30,7 +30,7 @@ public class DatabaseDumperEdgesActivity extends Activity {
                 "pref_selected_apprentice", "1"));
 
         EdgesDataSource edds = new EdgesDataSource(this);
-        List<Edge> allEdges = edds.getAllEdges(apprenticeId);
+        List<Edge> allEdges = edds.getAllEdgesByApprentice(apprenticeId);
         edds.close();
 
         TextView debugText = (TextView) findViewById(R.id.debug_text);

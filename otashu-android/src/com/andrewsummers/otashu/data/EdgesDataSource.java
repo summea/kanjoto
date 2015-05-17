@@ -3,7 +3,6 @@ package com.andrewsummers.otashu.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -116,7 +115,7 @@ public class EdgesDataSource {
      * 
      * @return List of Edges.
      */
-    public List<Edge> getAllEdges(long apprenticeId) {
+    public List<Edge> getAllEdgesByApprentice(long apprenticeId) {
         List<Edge> edges = new ArrayList<Edge>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
@@ -164,42 +163,6 @@ public class EdgesDataSource {
                 + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
                 + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
                 + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId;
-
-        // create database handle
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // select all notes from database
-        Cursor cursor = db.rawQuery(query, null);
-
-        Edge edge = null;
-        if (cursor.moveToFirst()) {
-            do {
-                // create note objects based on note data from database
-                edge = new Edge();
-                edge.setId(cursor.getLong(0));
-                edge.setGraphId(cursor.getLong(1));
-                edge.setEmotionId(cursor.getLong(2));
-                edge.setFromNodeId(cursor.getInt(3));
-                edge.setToNodeId(cursor.getInt(4));
-                edge.setWeight(cursor.getFloat(5));
-                edge.setPosition(cursor.getInt(6));
-                edge.setApprenticeId(cursor.getLong(7));
-
-                // add note string to list of strings
-                edges.add(edge);
-            } while (cursor.moveToNext());
-        }
-
-        return edges;
-    }
-
-    public List<Edge> getAllEdges(long apprenticeId, long graphId, int position) {
-        List<Edge> edges = new ArrayList<Edge>();
-
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
-                + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
-                + " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -404,36 +367,6 @@ public class EdgesDataSource {
     }
 
     /**
-     * Get all edge ids from database table.
-     * 
-     * @return List of Edges ids.
-     */
-    public List<Integer> getAllEdgeIds(long apprenticeId, long graphId) {
-        List<Integer> edge_ids = new ArrayList<Integer>();
-
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
-                + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
-                + " ORDER BY " + OtashuDatabaseHelper.COLUMN_WEIGHT + " ASC";
-
-        // create database handle
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // select all notes from database
-        Cursor cursor = db.rawQuery(query, null);
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Edge edge = cursorToEdge(cursor);
-            edge_ids.add((int) edge.getId());
-            cursor.moveToNext();
-        }
-
-        cursor.close();
-        return edge_ids;
-    }
-
-    /**
      * Access column data at current position of result.
      * 
      * @param cursor Current cursor location.
@@ -452,84 +385,11 @@ public class EdgesDataSource {
         return edge;
     }
 
-    /**
-     * getAllEdges gets a preview list of all edges.
-     * 
-     * @return List of Edge preview strings.
-     */
-    public List<String> getAllEdgeListPreviews(long apprenticeId) {
-        List<String> edges = new LinkedList<String>();
-
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
-
-        // create database handle
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // select all edges from database
-        Cursor cursor = db.rawQuery(query, null);
-
-        Edge edge = null;
-        if (cursor.moveToFirst()) {
-            do {
-                // create edge objects based on edge data from database
-                edge = new Edge();
-                edge.setId(cursor.getLong(0));
-                edge.setGraphId(cursor.getLong(1));
-                edge.setEmotionId(cursor.getLong(2));
-                edge.setFromNodeId(cursor.getInt(3));
-                edge.setToNodeId(cursor.getInt(4));
-                edge.setWeight(cursor.getFloat(5));
-                edge.setPosition(cursor.getInt(6));
-                edge.setApprenticeId(cursor.getLong(7));
-
-                // add edge string to list of strings
-                edges.add(edge.toString());
-            } while (cursor.moveToNext());
-        }
-
-        return edges;
-    }
-
-    /**
-     * Get a list of all edges ids.
-     * 
-     * @return List of Edge ids.
-     */
-    public List<Long> getAllEdgeListDBTableIds(long apprenticeId) {
-        List<Long> edges = new LinkedList<Long>();
-
-        String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
-                + OtashuDatabaseHelper.TABLE_EDGES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
-
-        // create database handle
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // select all edges from database
-        Cursor cursor = db.rawQuery(query, null);
-
-        Edge edge = null;
-        if (cursor.moveToFirst()) {
-            do {
-                // create edge objects based on edge data from database
-                edge = new Edge();
-                edge.setId(Long.parseLong(cursor.getString(0)));
-
-                // add edge to edges list
-                edges.add(edge.getId());
-            } while (cursor.moveToNext());
-        }
-
-        return edges;
-    }
-
-    public Edge getEdge(long apprenticeId, long edgeId) {
+    public Edge getEdge(long edgeId) {
         Edge edge = new Edge();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
-                + " AND " + OtashuDatabaseHelper.COLUMN_ID + "=" + edgeId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + edgeId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -555,48 +415,13 @@ public class EdgesDataSource {
         return edge;
     }
 
-    public Edge getEdge(long apprenticeId, long graphId, int fromNodeId, int toNodeId) {
-        Edge edge = new Edge();
-        edge.setWeight(-1.0f);
-
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
-                + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
-                + " AND " + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=" + fromNodeId
-                + " AND " + OtashuDatabaseHelper.COLUMN_TO_NODE_ID + "=" + toNodeId;
-
-        // create database handle
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // select all edges from database
-        Cursor cursor = db.rawQuery(query, null);
-
-        if (cursor.moveToFirst()) {
-            do {
-                // create edge objects based on edge data from database
-                edge = new Edge();
-                edge.setId(cursor.getLong(0));
-                edge.setGraphId(cursor.getLong(1));
-                edge.setEmotionId(cursor.getLong(2));
-                edge.setFromNodeId(cursor.getInt(3));
-                edge.setToNodeId(cursor.getInt(4));
-                edge.setWeight(cursor.getFloat(5));
-                edge.setPosition(cursor.getInt(6));
-                edge.setApprenticeId(cursor.getLong(7));
-            } while (cursor.moveToNext());
-        }
-
-        return edge;
-    }
-
-    public Edge getEdge(long apprenticeId, long graphId, long emotionId, int fromNodeId,
+    public Edge getEdge(long graphId, long emotionId, int fromNodeId,
             int toNodeId) {
         Edge edge = new Edge();
         edge.setWeight(-1.0f);
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
-                + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
                 + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId
                 + " AND " + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=" + fromNodeId
                 + " AND " + OtashuDatabaseHelper.COLUMN_TO_NODE_ID + "=" + toNodeId;
@@ -646,20 +471,6 @@ public class EdgesDataSource {
         return edge;
     }
 
-    public Edge getRandomEdge(long apprenticeId) {
-        Edge edge = new Edge();
-
-        // get all edges first
-        List<Edge> allEdges = getAllEdges(apprenticeId);
-
-        // choose random edge
-        int chosenIndex = new Random().nextInt(allEdges.size());
-
-        edge = allEdges.get(chosenIndex);
-
-        return edge;
-    }
-
     public Edge getRandomEdge(long apprenticeId, long graphId, long emotionId, int fromNodeId,
             int toNodeId,
             int position, int mode) {
@@ -667,27 +478,37 @@ public class EdgesDataSource {
         List<Edge> allEdges = getAllEdges(apprenticeId, graphId, emotionId, fromNodeId, toNodeId,
                 position, mode);
 
-        // Process:
-        // 1. Grab two random, node-related edges
-        // 2. Look for the lower weight (easier choice) between the two chosen edges
-        // 3. Return the edge with the lower weight
+        if (allEdges.size() > 1) {
+            // Process:
+            // 1. Grab two random, node-related edges
+            // 2. Look for the lower weight (easier choice) between the two chosen edges
+            // 3. Return the edge with the lower weight
 
-        // choose two random edges
-        int chosenIndex = new Random().nextInt(allEdges.size());
-        Edge edgeOne = allEdges.get(chosenIndex);
+            // choose two random edges
+            int chosenIndex = new Random().nextInt(allEdges.size());
+            Edge edgeOne = allEdges.get(chosenIndex);
 
-        chosenIndex = new Random().nextInt(allEdges.size());
-        Edge edgeTwo = allEdges.get(chosenIndex);
+            chosenIndex = new Random().nextInt(allEdges.size());
+            Edge edgeTwo = allEdges.get(chosenIndex);
 
-        Log.d("MYLOG", "]] found edge one: " + edgeOne.getWeight());
-        Log.d("MYLOG", "]] found edge two: " + edgeTwo.getWeight());
+            Log.d("MYLOG", "]] found edge one: " + edgeOne.getWeight());
+            Log.d("MYLOG", "]] found edge two: " + edgeTwo.getWeight());
 
-        if (edgeOne.getWeight() < edgeTwo.getWeight()) {
-            Log.d("MYLOG", "]] edge one has a lower weight!");
-            return edgeOne;
+            if (edgeOne.getWeight() < edgeTwo.getWeight()) {
+                Log.d("MYLOG", "]] edge one has a lower weight!");
+                return edgeOne;
+            } else {
+                Log.d("MYLOG", "]] edge two has a lower or equal weight!");
+                return edgeTwo;
+            }
         } else {
-            Log.d("MYLOG", "]] edge two has a lower or equal weight!");
-            return edgeTwo;
+            if (allEdges.size() > 0) {
+                Edge edge = allEdges.get(0);
+                return edge;
+            } else {
+                Edge edge = new Edge();
+                return edge;
+            }
         }
     }
 
@@ -696,7 +517,7 @@ public class EdgesDataSource {
             int improvisationLevel) {
         List<Edge> results = new ArrayList<Edge>();
 
-        //int lastToNotevalue = 0;
+        // int lastToNotevalue = 0;
         for (int i = 0; i < 3; i++) {
             // get lowest first edge
             String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
@@ -753,7 +574,7 @@ public class EdgesDataSource {
                     edge.setPosition(cursor.getInt(6));
                     edge.setApprenticeId(cursor.getLong(7));
                     results.add(edge);
-                    //lastToNotevalue = edge.getToNodeId();
+                    // lastToNotevalue = edge.getToNodeId();
                 }
             } catch (Exception e) {
                 Log.d("MYLOG", e.getStackTrace().toString());

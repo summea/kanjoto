@@ -124,7 +124,7 @@ public class DrawView extends View {
                 canvas.drawBitmap(mBitmap, 0, 0, mPaint);
             }
         }
-
+        
         try {
             mBitmap.compress(Bitmap.CompressFormat.PNG, 100, fout);
             fout.flush();

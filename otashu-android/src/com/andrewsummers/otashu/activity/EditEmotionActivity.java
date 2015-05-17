@@ -62,7 +62,7 @@ public class EditEmotionActivity extends Activity implements OnClickListener {
 
         // open data source handle
         EmotionsDataSource eds = new EmotionsDataSource(this);
-        editEmotion = eds.getEmotion(apprenticeId, emotionId);
+        editEmotion = eds.getEmotion(emotionId);
         eds.close();
 
         // fill in existing form data

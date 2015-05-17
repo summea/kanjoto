@@ -89,7 +89,7 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
         nds.close();
 
         EmotionsDataSource eds = new EmotionsDataSource(this);
-        Emotion relatedEmotion = eds.getEmotion(apprenticeId, noteset.getEmotion());
+        Emotion relatedEmotion = eds.getEmotion(noteset.getEmotion());
         eds.close();
 
         LabelsDataSource lds = new LabelsDataSource(this);

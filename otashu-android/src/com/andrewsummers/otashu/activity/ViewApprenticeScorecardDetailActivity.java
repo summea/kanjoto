@@ -58,9 +58,8 @@ public class ViewApprenticeScorecardDetailActivity extends Activity {
 
         // get number of correct answers
         ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
-        int total = asds.getApprenticeScoresCount(apprenticeId, apprenticeScorecard.getId());
-        int totalCorrect = asds.getCorrectApprenticeScoresCount(apprenticeId,
-                apprenticeScorecard.getId());
+        int total = asds.getApprenticeScoresCount(apprenticeScorecard.getId());
+        int totalCorrect = asds.getCorrectApprenticeScoresCount(apprenticeScorecard.getId());
         asds.close();
 
         double guessesCorrectPercentage = 0.0d;

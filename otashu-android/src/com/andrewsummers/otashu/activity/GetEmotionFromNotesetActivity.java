@@ -184,7 +184,7 @@ public class GetEmotionFromNotesetActivity extends Activity implements OnClickLi
                 }
 
                 EmotionsDataSource emds = new EmotionsDataSource(this);
-                Emotion emotion = emds.getEmotion(apprenticeId, emotionId);
+                Emotion emotion = emds.getEmotion(emotionId);
                 eds.close();
 
                 Log.d("MYLOG", "> final match result... method: " + method + " emotion: "

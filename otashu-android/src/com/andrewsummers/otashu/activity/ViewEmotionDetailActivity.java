@@ -63,7 +63,7 @@ public class ViewEmotionDetailActivity extends Activity implements OnClickListen
 
         EmotionsDataSource eds = new EmotionsDataSource(this);
         Emotion emotion = new Emotion();
-        emotion = eds.getEmotion(apprenticeId, emotionId);
+        emotion = eds.getEmotion(emotionId);
         eds.close();
 
         LabelsDataSource lds = new LabelsDataSource(this);
