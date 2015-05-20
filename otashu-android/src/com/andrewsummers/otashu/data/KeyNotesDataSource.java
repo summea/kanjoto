@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import com.andrewsummers.otashu.model.KeyNote;
 
@@ -93,14 +92,12 @@ public class KeyNotesDataSource {
      * @param keyNote KeyNote to delete.
      */
     public void deleteKeyNote(KeyNote keyNote) {
-        long id = keyNote.getId();
-
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        // delete keyNote
+        // delete noteset
         db.delete(OtashuDatabaseHelper.TABLE_KEY_NOTES,
-                OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
+                OtashuDatabaseHelper.COLUMN_ID + " = " + keyNote.getId(), null);
     }
 
     /**
@@ -155,12 +152,11 @@ public class KeyNotesDataSource {
         return keyNote;
     }
 
-    public KeyNote getKeyNote(long apprenticeId, long keyNoteId) {
+    public KeyNote getKeyNote(long keyNoteId) {
         KeyNote keyNote = new KeyNote();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_NOTES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
-                + " AND " + OtashuDatabaseHelper.COLUMN_ID + "=" + keyNoteId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + keyNoteId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -183,12 +179,11 @@ public class KeyNotesDataSource {
         return keyNote;
     }
 
-    public List<KeyNote> getKeyNotesByKeySignature(long apprenticeId, long keySignatureId) {
+    public List<KeyNote> getKeyNotesByKeySignature(long keySignatureId) {
         List<KeyNote> keyNotes = new ArrayList<KeyNote>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_NOTES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
-                + " AND " + OtashuDatabaseHelper.COLUMN_KEY_SIGNATURE_ID + "=" + keySignatureId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_KEY_SIGNATURE_ID + "=" + keySignatureId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -212,12 +207,11 @@ public class KeyNotesDataSource {
         return keyNotes;
     }
 
-    public List<Integer> getKeyNoteNotevaluesByKeySignature(long apprenticeId, long keySignatureId) {
+    public List<Integer> getKeyNoteNotevaluesByKeySignature(long keySignatureId) {
         List<Integer> keyNotes = new ArrayList<Integer>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_NOTES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
-                + " AND " + OtashuDatabaseHelper.COLUMN_KEY_SIGNATURE_ID + "=" + keySignatureId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_KEY_SIGNATURE_ID + "=" + keySignatureId;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -253,21 +247,6 @@ public class KeyNotesDataSource {
         return keyNote;
     }
 
-    public KeyNote getRandomKeyNote(long apprenticeId) {
-        KeyNote keyNote = new KeyNote();
-
-        // get all keyNotes first
-        List<KeyNote> allKeyNotes = getAllKeyNotes(apprenticeId);
-
-        if (allKeyNotes.size() > 0) {
-            // choose random keyNote
-            int chosenIndex = new Random().nextInt(allKeyNotes.size());
-            keyNote = allKeyNotes.get(chosenIndex);
-        }
-
-        return keyNote;
-    }
-
     public List<Long> keySignatureIdsThatContain(long apprenticeId, int notevalue) {
         List<Long> keySignatureIds = new ArrayList<Long>();
 
@@ -294,7 +273,6 @@ public class KeyNotesDataSource {
 
     public long getKeySignatureByNotes(long apprenticeId, List<Integer> notevaluesInKeySignature) {
         long keySignatureId = 1;
-        // List<Long> foundKeySignatureIds = new ArrayList<Long>();
         HashMap<Long, Integer> foundKeySignatureIds = new HashMap<Long, Integer>();
 
         // loop through each notevalue from input

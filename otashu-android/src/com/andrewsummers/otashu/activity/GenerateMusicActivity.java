@@ -876,12 +876,11 @@ public class GenerateMusicActivity extends Activity {
 
         // get all notes in current key signature
         List<KeyNote> keyNotesInKeySignature = knds
-                .getKeyNotesByKeySignature(apprenticeId, currentKeySignatureId);
+                .getKeyNotesByKeySignature(currentKeySignatureId);
 
         if (keyNotesInKeySignature.isEmpty()) {
             currentKeySignatureId = 4; // TODO: make dynamic
-            keyNotesInKeySignature = knds.getKeyNotesByKeySignature(apprenticeId,
-                    currentKeySignatureId);
+            keyNotesInKeySignature = knds.getKeyNotesByKeySignature(currentKeySignatureId);
         }
 
         for (KeyNote kn : keyNotesInKeySignature) {

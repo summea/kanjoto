@@ -199,8 +199,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
                 for (int i = 0; i < notesToInsert.size(); i++) {
                     // check if note is already in table set
                     // knds.getKeyNoteNotevaluesByKeySignature(currentKeySignatureId);
-                    List<KeyNote> keyNotes = knds.getKeyNotesByKeySignature(apprenticeId,
-                            currentKeySignatureId);
+                    List<KeyNote> keyNotes = knds.getKeyNotesByKeySignature(currentKeySignatureId);
 
                     for (KeyNote kn : keyNotes) {
                         if (kn.getNotevalue() == notesToInsert.get(i).getNotevalue()) {
@@ -257,8 +256,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
                 for (int i = 0; i < notesToInsert.size(); i++) {
                     // check if note is already in table set
                     // knds.getKeyNoteNotevaluesByKeySignature(currentKeySignatureId);
-                    List<KeyNote> keyNotes = knds.getKeyNotesByKeySignature(apprenticeId,
-                            currentKeySignatureId);
+                    List<KeyNote> keyNotes = knds.getKeyNotesByKeySignature(currentKeySignatureId);
 
                     boolean found = false;
                     for (KeyNote kn : keyNotes) {
@@ -290,8 +288,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
 
                 // check if achievement was earned in play mode
                 if (programMode == 2) {
-                    List<KeyNote> keyNotes = knds.getKeyNotesByKeySignature(apprenticeId,
-                            currentKeySignatureId);
+                    List<KeyNote> keyNotes = knds.getKeyNotesByKeySignature(currentKeySignatureId);
 
                     if (keyNotes.size() >= notesToCompleteScale) {
                         String key = String.valueOf(currentKeySignatureId);
@@ -438,7 +435,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
         // 4. select all notes from selected key signature
         Log.d("MYLOG", "4. select all notes from selected key signature");
         List<Integer> currentKeySignatureNotes = knds
-                .getKeyNoteNotevaluesByKeySignature(apprenticeId, currentKeySignatureId);
+                .getKeyNoteNotevaluesByKeySignature(currentKeySignatureId);
 
         // 5. sort notes in list
         Log.d("MYLOG", "5. sort notes in list");
