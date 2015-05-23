@@ -29,9 +29,6 @@ public class NotesetAdapter extends BaseAdapter {
     SparseArray<Notevalue> notevalues = new SparseArray<Notevalue>();
     SparseArray<Label> labels = new SparseArray<Label>();
 
-    // HashMap<Integer, Notevalue> notevalues = new HashMap<Integer, Notevalue>();
-    // HashMap<Integer, Label> labels = new HashMap<Integer, Label>();
-
     public NotesetAdapter(Context context, List<NotesetAndRelated> allNotesetsAndNotes) {
         mContext = context;
         notesetsAndRelated = allNotesetsAndNotes;

@@ -4,7 +4,6 @@ package com.andrewsummers.otashu.data;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 import com.andrewsummers.otashu.model.Label;
 
@@ -128,29 +127,6 @@ public class LabelsDataSource {
     }
 
     /**
-     * Get all label ids from database table.
-     * 
-     * @return List of Labels ids.
-     */
-    public List<Integer> getAllLabelIds() {
-        List<Integer> label_ids = new ArrayList<Integer>();
-
-        Cursor cursor = database.query(
-                OtashuDatabaseHelper.TABLE_LABELS, allColumns, null,
-                null, null, null, null);
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Label label = cursorToLabel(cursor);
-            label_ids.add((int) label.getId());
-            cursor.moveToNext();
-        }
-
-        cursor.close();
-        return label_ids;
-    }
-
-    /**
      * Access column data at current position of result.
      * 
      * @param cursor Current cursor location.
@@ -266,20 +242,6 @@ public class LabelsDataSource {
 
         db.update(OtashuDatabaseHelper.TABLE_LABELS, contentValues, OtashuDatabaseHelper.COLUMN_ID
                 + "=" + label.getId(), null);
-
-        return label;
-    }
-
-    public Label getRandomLabel() {
-        Label label = new Label();
-
-        // get all labels first
-        List<Label> allLabels = getAllLabels();
-
-        // choose random label
-        int chosenIndex = new Random().nextInt(allLabels.size());
-
-        label = allLabels.get(chosenIndex);
 
         return label;
     }

@@ -136,6 +136,7 @@ public class ViewAllNotesetsActivity extends ListActivity {
                         // if we've reached the end of the visible list, get more items (if
                         // available) ... also note: the list header takes up 1 row, so we need to
                         // subtract 2 to get an accurate measurement of our current last row
+                        // TODO: fix tablet issue...
                         if ((getListView().getLastVisiblePosition() == adapter.getCount() - 2)
                                 && (getListView().getChildAt(getListView().getChildCount() - 2)
                                         .getBottom() <= getListView().getHeight())) {

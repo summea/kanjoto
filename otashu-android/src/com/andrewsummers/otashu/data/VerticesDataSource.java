@@ -2,9 +2,7 @@
 package com.andrewsummers.otashu.data;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 import com.andrewsummers.otashu.model.Vertex;
 
@@ -128,29 +126,6 @@ public class VerticesDataSource {
     }
 
     /**
-     * Get all vertex ids from database table.
-     * 
-     * @return List of Vertices ids.
-     */
-    public List<Integer> getAllVertexIds() {
-        List<Integer> vertex_ids = new ArrayList<Integer>();
-
-        Cursor cursor = database.query(
-                OtashuDatabaseHelper.TABLE_VERTICES, allColumns, null,
-                null, null, null, null);
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Vertex vertex = cursorToVertex(cursor);
-            vertex_ids.add((int) vertex.getId());
-            cursor.moveToNext();
-        }
-
-        cursor.close();
-        return vertex_ids;
-    }
-
-    /**
      * Access column data at current position of result.
      * 
      * @param cursor Current cursor location.
@@ -162,71 +137,6 @@ public class VerticesDataSource {
         vertex.setGraphId(cursor.getLong(1));
         vertex.setNode(cursor.getInt(2));
         return vertex;
-    }
-
-    /**
-     * getAllVertices gets a preview list of all vertices.
-     * 
-     * @return List of Vertex preview strings.
-     */
-    public List<String> getAllVertexListPreviews() {
-        List<String> vertices = new LinkedList<String>();
-
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_VERTICES;
-
-        // create database handle
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // select all vertices from database
-        Cursor cursor = db.rawQuery(query, null);
-
-        Vertex vertex = null;
-        if (cursor.moveToFirst()) {
-            do {
-                // create vertex objects based on vertex data from database
-                vertex = new Vertex();
-                vertex.setId(cursor.getLong(0));
-                vertex.setGraphId(cursor.getLong(1));
-                vertex.setNode(cursor.getInt(2));
-
-                // add vertex string to list of strings
-                vertices.add(vertex.toString());
-            } while (cursor.moveToNext());
-        }
-
-        return vertices;
-    }
-
-    /**
-     * Get a list of all vertices ids.
-     * 
-     * @return List of Vertex ids.
-     */
-    public List<Long> getAllVertexListDBTableIds() {
-        List<Long> vertices = new LinkedList<Long>();
-
-        String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
-                + OtashuDatabaseHelper.TABLE_VERTICES;
-
-        // create database handle
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // select all vertices from database
-        Cursor cursor = db.rawQuery(query, null);
-
-        Vertex vertex = null;
-        if (cursor.moveToFirst()) {
-            do {
-                // create vertex objects based on vertex data from database
-                vertex = new Vertex();
-                vertex.setId(Long.parseLong(cursor.getString(0)));
-
-                // add vertex to vertices list
-                vertices.add(vertex.getId());
-            } while (cursor.moveToNext());
-        }
-
-        return vertices;
     }
 
     public Vertex getVertex(long graphId, int vertexNodeId) {
@@ -268,20 +178,6 @@ public class VerticesDataSource {
         db.update(OtashuDatabaseHelper.TABLE_VERTICES, contentValues,
                 OtashuDatabaseHelper.COLUMN_ID
                         + "=" + vertex.getId(), null);
-
-        return vertex;
-    }
-
-    public Vertex getRandomVertex() {
-        Vertex vertex = new Vertex();
-
-        // get all vertices first
-        List<Vertex> allVertices = getAllVertices();
-
-        // choose random vertex
-        int chosenIndex = new Random().nextInt(allVertices.size());
-
-        vertex = allVertices.get(chosenIndex);
 
         return vertex;
     }

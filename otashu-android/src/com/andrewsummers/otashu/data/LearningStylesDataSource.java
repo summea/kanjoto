@@ -4,7 +4,6 @@ package com.andrewsummers.otashu.data;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 import com.andrewsummers.otashu.model.LearningStyle;
 
@@ -127,29 +126,6 @@ public class LearningStylesDataSource {
     }
 
     /**
-     * Get all learningStyle ids from database table.
-     * 
-     * @return List of LearningStyles ids.
-     */
-    public List<Integer> getAllLearningStyleIds() {
-        List<Integer> learningStyle_ids = new ArrayList<Integer>();
-
-        Cursor cursor = database.query(
-                OtashuDatabaseHelper.TABLE_LEARNING_STYLES, allColumns, null,
-                null, null, null, null);
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            LearningStyle learningStyle = cursorToLearningStyle(cursor);
-            learningStyle_ids.add((int) learningStyle.getId());
-            cursor.moveToNext();
-        }
-
-        cursor.close();
-        return learningStyle_ids;
-    }
-
-    /**
      * Access column data at current position of result.
      * 
      * @param cursor Current cursor location.
@@ -160,38 +136,6 @@ public class LearningStylesDataSource {
         learningStyle.setId(cursor.getLong(0));
         learningStyle.setName(cursor.getString(1));
         return learningStyle;
-    }
-
-    /**
-     * getAllLearningStyles gets a preview list of all learningStyles.
-     * 
-     * @return List of LearningStyle preview strings.
-     */
-    public List<String> getAllLearningStyleListPreviews() {
-        List<String> learningStyles = new LinkedList<String>();
-
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_LEARNING_STYLES;
-
-        // create database handle
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // select all learningStyles from database
-        Cursor cursor = db.rawQuery(query, null);
-
-        LearningStyle learningStyle = null;
-        if (cursor.moveToFirst()) {
-            do {
-                // create learningStyle objects based on learningStyle data from database
-                learningStyle = new LearningStyle();
-                learningStyle.setId(cursor.getLong(0));
-                learningStyle.setName(cursor.getString(1));
-
-                // add learningStyle string to list of strings
-                learningStyles.add(learningStyle.toString());
-            } while (cursor.moveToNext());
-        }
-
-        return learningStyles;
     }
 
     /**
@@ -261,20 +205,6 @@ public class LearningStylesDataSource {
 
         db.update(OtashuDatabaseHelper.TABLE_LEARNING_STYLES, contentValues,
                 OtashuDatabaseHelper.COLUMN_ID + "=" + learningStyle.getId(), null);
-
-        return learningStyle;
-    }
-
-    public LearningStyle getRandomLearningStyle() {
-        LearningStyle learningStyle = new LearningStyle();
-
-        // get all learningStyles first
-        List<LearningStyle> allLearningStyles = getAllLearningStyles();
-
-        // choose random learningStyle
-        int chosenIndex = new Random().nextInt(allLearningStyles.size());
-
-        learningStyle = allLearningStyles.get(chosenIndex);
 
         return learningStyle;
     }
