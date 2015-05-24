@@ -148,6 +148,7 @@
     <string name="pref_auto_save_scorecard">Auto Save Scorecards</string>    
     <string name="pref_default_instrument">Default Instrument</string>
     <string name="pref_default_playback_speed">Default Playback Speed</string>
+    <string name="pref_developer_mode">Developer Mode</string>
     <string name="pref_emofing_upload_url">Emofing Upload URL</string>
     <string name="pref_emotion_graph_for_apprentice">Emotion Graph Id for Apprentice</string>
     <string name="pref_general_category">General</string>

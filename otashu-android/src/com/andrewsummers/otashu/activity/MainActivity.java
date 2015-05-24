@@ -6,6 +6,7 @@ import com.andrewsummers.otashu.adapter.ImageAdapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
@@ -22,7 +23,8 @@ import android.widget.GridView;
  * menu to various areas of the program.
  */
 public class MainActivity extends Activity implements OnClickListener {
-
+    private SharedPreferences sharedPref;
+    
     /**
      * onCreate override that provides menu buttons on menu view.
      * 
@@ -73,7 +75,14 @@ public class MainActivity extends Activity implements OnClickListener {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        int developerMode = Integer.parseInt(sharedPref.getString(
+                "pref_developer_mode", "0"));
+        if (developerMode == 1) {
+            inflater.inflate(R.menu.menu_main_developer, menu);
+        } else {
+            inflater.inflate(R.menu.menu_main, menu);
+        }
         return true;
     }
 

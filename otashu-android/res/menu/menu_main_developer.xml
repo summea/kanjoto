@@ -7,6 +7,15 @@
         android:id="@+id/view_labels"
         android:title="@string/menu_button_view_labels" />
     <item
+        android:id="@+id/export_database"
+        android:title="@string/menu_button_export_database" />
+    <item
+        android:id="@+id/import_database"
+        android:title="@string/menu_button_import_database" />
+    <item
+        android:id="@+id/database_dumper"
+        android:title="@string/menu_button_database_dumper" />
+    <item
         android:id="@+id/view_bookmarks"
         android:title="@string/menu_button_bookmarks" />
     <item

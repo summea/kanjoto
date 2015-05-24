@@ -81,6 +81,11 @@
             android:key="pref_music_upload_url"
             android:title="@string/pref_music_upload_url"
             android:defaultValue="" />
+            
+        <CheckBoxPreference
+            android:key="pref_developer_mode"
+            android:title="@string/pref_developer_mode"
+            android:defaultValue="false" />
 
     </PreferenceCategory>
 
