@@ -76,9 +76,9 @@ public class MainActivity extends Activity implements OnClickListener {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        int developerMode = Integer.parseInt(sharedPref.getString(
-                "pref_developer_mode", "0"));
-        if (developerMode == 1) {
+        boolean developerMode = sharedPref.getBoolean(
+                "pref_developer_mode", false);
+        if (developerMode) {
             inflater.inflate(R.menu.menu_main_developer, menu);
         } else {
             inflater.inflate(R.menu.menu_main, menu);
