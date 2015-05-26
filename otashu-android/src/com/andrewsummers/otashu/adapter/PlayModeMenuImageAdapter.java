@@ -40,8 +40,8 @@ public class PlayModeMenuImageAdapter extends BaseAdapter {
         ImageView imageView;
         if (convertView == null) { // if it's not recycled, initialize some attributes
             imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(180, 180));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            //imageView.setLayoutParams(new GridView.LayoutParams(180, 180));
+            //imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(0, 0, 0, 0);
         } else {
             imageView = (ImageView) convertView;

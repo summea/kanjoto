@@ -157,6 +157,10 @@ public class Square {
         GLES20.glDisableVertexAttribArray(mPositionHandle);
     }
 
+    public float[] getColor() {
+        return color;
+    }
+    
     public void setColor(float newColor[]) {
         color[0] = newColor[0];
         color[1] = newColor[1];

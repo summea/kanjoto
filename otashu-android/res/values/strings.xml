@@ -2,7 +2,7 @@
     <string name="achievement_completed_scale">Scale Completed!</string>
     <string name="achievement_found_strong_path">Found Strong Path</string>
     <string name="achievement_found_strong_transition">Found Strong Transition</string>
-    <string name="app_name">otashu</string>
+    <string name="app_name">kanjoto</string>
     <string name="apprentice_achievements_placeholder">...</string>
     <string name="apprentice_achievements_title">Achievements</string>
     <string name="apprentice_deleted">apprentice deleted</string>
@@ -105,7 +105,7 @@
     <string name="learning_style_name">Name</string>
     <string name="learning_style_saved">learning style saved</string>
     <string name="list_header_title">List Title</string>
-    <string name="main_menu_title">otashu</string>
+    <string name="main_menu_title">kanjoto</string>
     <string name="menu_button_apprentice_strongest_paths">Apprentice Strongest Paths</string>
     <string name="menu_button_bookmarks">Bookmarks</string>
     <string name="menu_button_create_apprentice">New</string>
@@ -125,7 +125,7 @@
     <string name="menu_button_scorecards">Scorecards</string>
     <string name="menu_button_settings">Settings</string>
     <string name="menu_button_view_labels">Labels</string>
-    <string name="menu_title">otashu</string>
+    <string name="menu_title">kanjoto</string>
     <string name="need_emotions">Please create an emotion first!</string>
     <string name="noteset_deleted">noteset deleted</string>
     <string name="noteset_detail_emotion_label">Emotion</string>

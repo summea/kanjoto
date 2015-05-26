@@ -55,7 +55,7 @@ public class ViewAllNotesetsActivity extends ListActivity {
     List<NotesetAndRelated> allNotesetsAndNotes = new LinkedList<NotesetAndRelated>();
     private int currentOffset = 0;
     private int totalNotesetsAvailable = 0;
-    private int limit = 15;
+    private int limit = 25;
     private Boolean doneLoading = false;
     private SharedPreferences sharedPref;
     private long apprenticeId = 0;

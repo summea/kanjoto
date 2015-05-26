@@ -20,7 +20,7 @@
         android:id="@+id/gridview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:columnWidth="1dp"
+        android:columnWidth="180dp"
         android:numColumns="2"
         android:verticalSpacing="20dp"
         android:horizontalSpacing="1dp"

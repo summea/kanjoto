@@ -3,14 +3,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#ffffff">
+    android:background="#eeeeee">
     
-    <GridView
+    <TextView
+        android:id="@+id/main_menu_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/main_menu_title"
+        android:textSize="50sp"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:layout_centerHorizontal="true" />
+    
+    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/gridview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:columnWidth="1dp"
-        android:numColumns="2"
+        android:columnWidth="400dp"
+        android:numColumns="1"
         android:verticalSpacing="20dp"
         android:horizontalSpacing="1dp"
         android:stretchMode="columnWidth"

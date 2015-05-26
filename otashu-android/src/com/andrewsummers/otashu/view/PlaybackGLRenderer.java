@@ -24,6 +24,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import com.andrewsummers.otashu.model.Note;
 
+import android.graphics.Color;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
@@ -109,13 +110,16 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
 
                 // speed of squares
                 mSquares.get(i).setY(mSquares.get(i).getY() + verticalSpeed);
-
+                
+                
+                /*
                 if (i == itemCurrentlyPlaying && (tPlay < (tPlay + innerMoveUntil))) {
                     mSquares.get(i).setX(mSquares.get(i).getX() + horizontalSpeed);
                 } else if (i == itemCurrentlyPlaying
                         && (tPlay > (tPlay + innerMoveUntil) && tPlay < (tPlay + innerUnMoveUntil))) {
                     mSquares.get(i).setX(mSquares.get(i).getX() - horizontalSpeed);
                 }
+                */
 
                 Matrix.setIdentityM(mModelMatrix, 0);
                 Matrix.translateM(mModelMatrix, 0, mSquares.get(i).getX(), mSquares.get(i).getY(),
@@ -123,7 +127,17 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
                 Matrix.multiplyMM(mMVPMatrix, 0, mMVPMatrix, 0, mModelMatrix, 0);
 
                 // Draw square
-                mSquares.get(i).draw(mMVPMatrix);
+                //float newColor[] = mSquares.get(i).getColor();
+                //newColor[0] = 1.0f;
+                if (i == itemCurrentlyPlaying) {
+                    float originalColor[] = mSquares.get(i).getColor();
+                    float newColor[] = new float[] { 255, 255, 255, 255 };
+                    mSquares.get(i).setColor(newColor);
+                    mSquares.get(i).draw(mMVPMatrix);
+                    mSquares.get(i).setColor(originalColor);
+                } else {
+                    mSquares.get(i).draw(mMVPMatrix);
+                }
 
                 // this is used to fix timing issue
                 // sometimes blocks slow down as they are drawn on screen this section takes out a
@@ -137,6 +151,7 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
             }
         }
 
+        /*
         innerMoveUntil--;
         innerUnMoveUntil--;
 
@@ -144,6 +159,7 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
             innerMoveUntil = 3;
             innerUnMoveUntil = 6;
         }
+        */
 
         // note: MediaPlayer begins playing music slightly before visualizer starts, so the
         // animation begins with second note

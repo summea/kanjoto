@@ -265,7 +265,7 @@ public class GenerateMusicActivity extends Activity {
                     color = Color.parseColor(label.getColor());
                     float[] noteColor = {
                             Color.red(color) / 255.0f, Color.green(color) / 255.0f,
-                            Color.blue(color) / 255.0f, 1.0f
+                            Color.blue(color) / 255.0f, 0.1f
                     };
                     noteColorTable.put(notevalue.getNotevalue(), noteColor);
                     found = true;
