@@ -43,7 +43,7 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
     private int tPlay = 0;
     private int innerMoveUntil = 3;
     private int innerUnMoveUntil = 6;
-    private int squaresToRemove = 1;
+    private int squaresToRemove = 0;
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
     private final float[] mMVPMatrix = new float[16];
@@ -131,10 +131,17 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
                 //newColor[0] = 1.0f;
                 if (i == itemCurrentlyPlaying) {
                     float originalColor[] = mSquares.get(i).getColor();
-                    float newColor[] = new float[] { 255, 255, 255, 255 };
+                    float red = originalColor[0] - 50.0f;
+                    float green = originalColor[1] - 50.0f;
+                    float blue = originalColor[2] - 50.0f;
+                    if (red < 0.0f) red = 0.0f;
+                    if (green < 0.0f) green = 0.0f;
+                    if (blue < 0.0f) blue = 0.0f;
+                    
+                    float newColor[] = new float[] { red, green, blue, 1.0f };
                     mSquares.get(i).setColor(newColor);
                     mSquares.get(i).draw(mMVPMatrix);
-                    mSquares.get(i).setColor(originalColor);
+                    //mSquares.get(i).setColor(originalColor);
                 } else {
                     mSquares.get(i).draw(mMVPMatrix);
                 }
@@ -163,7 +170,8 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
 
         // note: MediaPlayer begins playing music slightly before visualizer starts, so the
         // animation begins with second note
-        if (tPlay % 30 == 0) {
+        //if (tPlay % 30 == 0) {
+        if (tPlay % 26 == 0) {
             itemCurrentlyPlaying++;
         }
 

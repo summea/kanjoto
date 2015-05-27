@@ -15,7 +15,7 @@
         <TextView
             android:id="@+id/emotion"
             android:layout_width="0dip"
-            android:layout_height="100dp"
+            android:layout_height="75dp"
             android:layout_weight="1"
             android:background="@drawable/row_selector"
             android:padding="15dp"
@@ -24,7 +24,7 @@
         <TextView
             android:id="@+id/note_1"
             android:layout_width="0dip"
-            android:layout_height="100dp"
+            android:layout_height="75dp"
             android:layout_weight="1"
             android:background="#99ccff"
             android:padding="15dp"
@@ -33,7 +33,7 @@
         <TextView
             android:id="@+id/note_2"
             android:layout_width="0dip"
-            android:layout_height="100dp"
+            android:layout_height="75dp"
             android:layout_weight="1"
             android:background="#ff99cc"
             android:padding="15dp"
@@ -42,7 +42,7 @@
         <TextView
             android:id="@+id/note_3"
             android:layout_width="0dip"
-            android:layout_height="100dp"
+            android:layout_height="75dp"
             android:layout_weight="1"
             android:background="#ffff99"
             android:padding="15dp"
@@ -51,7 +51,7 @@
         <TextView
             android:id="@+id/note_4"
             android:layout_width="0dip"
-            android:layout_height="100dp"
+            android:layout_height="75dp"
             android:layout_weight="1"
             android:background="#ccffcc"
             android:padding="15dp"

@@ -125,10 +125,10 @@ public class Square {
         // get handle to vertex shader's vPosition member
         mPositionHandle = GLES20.glGetAttribLocation(mProgram, "vPosition");
 
-        // Enable a handle to the triangle vertices
+        // Enable a handle to the rectangle vertices
         GLES20.glEnableVertexAttribArray(mPositionHandle);
 
-        // Prepare the triangle coordinate data
+        // Prepare the rectangle coordinate data
         GLES20.glVertexAttribPointer(
                 mPositionHandle, COORDS_PER_VERTEX,
                 GLES20.GL_FLOAT, false,
@@ -137,7 +137,7 @@ public class Square {
         // get handle to fragment shader's vColor member
         mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
 
-        // Set color for drawing the triangle
+        // Set color for drawing the rectangle
         GLES20.glUniform4fv(mColorHandle, 1, color, 0);
 
         // get handle to shape's transformation matrix

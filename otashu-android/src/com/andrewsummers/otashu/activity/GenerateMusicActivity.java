@@ -81,6 +81,8 @@ public class GenerateMusicActivity extends Activity {
     private SharedPreferences sharedPref;
     private long apprenticeId = 0;
     private Apprentice apprentice;
+    //private int GENERAL_NOTE_LENGTH = 480;
+    private int GENERAL_NOTE_LENGTH = 360;
 
     // TODO: make this more dynamic
     private static SparseArray<String> noteMap;
@@ -391,23 +393,23 @@ public class GenerateMusicActivity extends Activity {
         tempoTrack.insertEvent(t);
         tempoTrack.insertEvent(pc);
 
-        int currentTotalNoteLength = 480;
+        int currentTotalNoteLength = GENERAL_NOTE_LENGTH;
 
         for (int i = 0; i < notes.size(); i++) {
             int channel = 0;
             int pitch = notes.get(i).getNotevalue();
             int velocity = 100;
-            int length = 480;
-            float fLength = 480.0f;
+            int length = GENERAL_NOTE_LENGTH;
+            float fLength = GENERAL_NOTE_LENGTH;
 
             fLength = notes.get(i).getLength();
             if (notes.get(i).getVelocity() > 0)
                 velocity = notes.get(i).getVelocity();
 
             if (fLength > 0.0)
-                fLength = (480 * notes.get(i).getLength());
+                fLength = (GENERAL_NOTE_LENGTH * notes.get(i).getLength());
             else
-                fLength = 480;
+                fLength = GENERAL_NOTE_LENGTH;
 
             length = (int) fLength;
 
@@ -420,9 +422,9 @@ public class GenerateMusicActivity extends Activity {
             noteTrack.insertNote(channel, pitch, velocity, i * currentTotalNoteLength, length);
 
             if (length > 0) {
-                currentTotalNoteLength = 480; // TODO: make this match note length (better) somehow
+                currentTotalNoteLength = GENERAL_NOTE_LENGTH; // TODO: make this match note length (better) somehow
             } else {
-                currentTotalNoteLength = 480;
+                currentTotalNoteLength = GENERAL_NOTE_LENGTH;
             }
         }
 
