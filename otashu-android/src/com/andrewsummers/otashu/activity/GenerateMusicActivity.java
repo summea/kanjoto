@@ -81,8 +81,7 @@ public class GenerateMusicActivity extends Activity {
     private SharedPreferences sharedPref;
     private long apprenticeId = 0;
     private Apprentice apprentice;
-    //private int GENERAL_NOTE_LENGTH = 480;
-    private int GENERAL_NOTE_LENGTH = 360;
+    private int GENERAL_NOTE_LENGTH = 480;
 
     // TODO: make this more dynamic
     private static SparseArray<String> noteMap;
@@ -245,7 +244,7 @@ public class GenerateMusicActivity extends Activity {
 
         generateMusic(notes, musicSource, defaultInstrument, playbackSpeed);
 
-        playMusic(musicSource);
+        
 
         List<Notevalue> allNotevalues = new ArrayList<Notevalue>();
         List<Label> allLabels = new ArrayList<Label>();
@@ -289,6 +288,8 @@ public class GenerateMusicActivity extends Activity {
         mGLView = new PlaybackGLSurfaceView(this, notes, noteColorTable, playbackSpeed);
         setContentView(mGLView);
 
+        playMusic(musicSource);
+        
         // return to previous activity when done playing
         mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
             @Override

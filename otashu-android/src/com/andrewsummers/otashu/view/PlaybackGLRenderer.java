@@ -37,6 +37,7 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
     private Square mSquare;
     private List<Square> mSquares = new ArrayList<Square>();
     private List<Note> noteSequence = new ArrayList<Note>();
+    //private float verticalSpeed = 0.036f;
     private float verticalSpeed = 0.036f;
     private float horizontalSpeed = 0.035f;
     private int itemCurrentlyPlaying = 0;
@@ -111,7 +112,6 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
                 // speed of squares
                 mSquares.get(i).setY(mSquares.get(i).getY() + verticalSpeed);
                 
-                
                 /*
                 if (i == itemCurrentlyPlaying && (tPlay < (tPlay + innerMoveUntil))) {
                     mSquares.get(i).setX(mSquares.get(i).getX() + horizontalSpeed);
@@ -127,18 +127,22 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
                 Matrix.multiplyMM(mMVPMatrix, 0, mMVPMatrix, 0, mModelMatrix, 0);
 
                 // Draw square
-                //float newColor[] = mSquares.get(i).getColor();
+                float newColor[] = mSquares.get(i).getColor();
                 //newColor[0] = 1.0f;
                 if (i == itemCurrentlyPlaying) {
-                    float originalColor[] = mSquares.get(i).getColor();
-                    float red = originalColor[0] - 50.0f;
-                    float green = originalColor[1] - 50.0f;
-                    float blue = originalColor[2] - 50.0f;
-                    if (red < 0.0f) red = 0.0f;
-                    if (green < 0.0f) green = 0.0f;
-                    if (blue < 0.0f) blue = 0.0f;
+                    newColor[0] = 0.2f;
+                    newColor[1] = 0.2f;
+                    newColor[2] = 0.2f;
+                    //float originalColor[] = mSquares.get(i).getColor();
+                    //float red = originalColor[0] - 0.02f;
+                    //float green = originalColor[1] - 0.02f;
+                    //float blue = originalColor[2] - 0.02f;
+                    //if (red < 0.0f) red = 0.0f;
+                    //if (green < 0.0f) green = 0.0f;
+                    //if (blue < 0.0f) blue = 0.0f;
                     
-                    float newColor[] = new float[] { red, green, blue, 1.0f };
+                    //float newColor[] = new float[] { red, green, blue, 1.0f };
+                    //float newColor[] = new float[] { mSquares.get(i).getColor()[0] - 0.02f, mSquares.get(i).getColor()[1] - 0.02f, mSquares.get(i).getColor()[2] - 0.02f, 1.0f };
                     mSquares.get(i).setColor(newColor);
                     mSquares.get(i).draw(mMVPMatrix);
                     //mSquares.get(i).setColor(originalColor);
@@ -150,11 +154,13 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
                 // sometimes blocks slow down as they are drawn on screen this section takes out a
                 // specific number of blocks once blocks are out of sight... which speeds up the
                 // "currently playing" block animation
+                /*
                 if (mSquares.get(i).getY() > 35 && squaresToRemove > 0) {
                     mSquares.remove(i);
                     squaresToRemove--;
                     Log.d("MYLOG", "deleting square...");
                 }
+                */
             }
         }
 
@@ -171,7 +177,7 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
         // note: MediaPlayer begins playing music slightly before visualizer starts, so the
         // animation begins with second note
         //if (tPlay % 30 == 0) {
-        if (tPlay % 26 == 0) {
+        if (tPlay % 28 == 0) {
             itemCurrentlyPlaying++;
         }
 
