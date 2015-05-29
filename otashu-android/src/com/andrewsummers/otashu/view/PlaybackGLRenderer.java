@@ -24,7 +24,6 @@ import javax.microedition.khronos.opengles.GL10;
 
 import com.andrewsummers.otashu.model.Note;
 
-import android.graphics.Color;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
@@ -177,7 +176,7 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
         // note: MediaPlayer begins playing music slightly before visualizer starts, so the
         // animation begins with second note
         //if (tPlay % 30 == 0) {
-        if (tPlay % 28 == 0) {
+        if (tPlay % 27 == 0) {
             itemCurrentlyPlaying++;
         }
 

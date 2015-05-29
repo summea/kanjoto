@@ -11,7 +11,6 @@ import com.andrewsummers.otashu.data.BookmarksDataSource;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.model.Bookmark;
 import com.andrewsummers.otashu.model.Emotion;
-import com.andrewsummers.otashu.task.UploadFileTask;
 
 import android.app.Activity;
 import android.content.Context;

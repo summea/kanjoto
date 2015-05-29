@@ -82,6 +82,12 @@ public class GenerateMusicActivity extends Activity {
     private long apprenticeId = 0;
     private Apprentice apprentice;
     private int GENERAL_NOTE_LENGTH = 480;
+    
+    private Runnable videoTask = new Runnable() {
+        public void run() {
+            playMusic(musicSource);
+        }
+    };
 
     // TODO: make this more dynamic
     private static SparseArray<String> noteMap;
@@ -287,9 +293,12 @@ public class GenerateMusicActivity extends Activity {
         // Use GLSurfaceView as ContentView for this Activity
         mGLView = new PlaybackGLSurfaceView(this, notes, noteColorTable, playbackSpeed);
         setContentView(mGLView);
+        
+        //Handler handler = new Handler();
+        //handler.postDelayed(videoTask, 300);
 
         playMusic(musicSource);
-        
+  
         // return to previous activity when done playing
         mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
             @Override
