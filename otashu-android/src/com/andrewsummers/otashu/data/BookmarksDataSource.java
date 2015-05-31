@@ -38,7 +38,7 @@ public class BookmarksDataSource {
      * @throws SQLException
      */
     public void open() throws SQLException {
-        database = dbHelper.getWritableDatabase();
+        setDatabase(dbHelper.getWritableDatabase());
     }
 
     /**
@@ -182,5 +182,13 @@ public class BookmarksDataSource {
                 OtashuDatabaseHelper.COLUMN_ID + "=" + bookmark.getId(), null);
 
         return bookmark;
+    }
+
+    public SQLiteDatabase getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(SQLiteDatabase database) {
+        this.database = database;
     }
 }

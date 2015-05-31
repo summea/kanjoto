@@ -15,6 +15,7 @@
 - add note colors to notes on "top 3 strengths" layout
 - add UI formatting to Apprentice top three strengths detail activity
 - fix horizontal animation timing for music generation activity
+- music playback pauses at random times on phone which interferes with sync between audio and graphics
 - standardize strings view naming
 - noteset folders (lists by label or emotion)
 - fix getTakenAt ISO date issue
