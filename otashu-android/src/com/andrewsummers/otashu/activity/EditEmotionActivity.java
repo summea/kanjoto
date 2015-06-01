@@ -119,6 +119,7 @@ public class EditEmotionActivity extends Activity implements OnClickListener {
 
                 emotionToUpdate.setName(emotionName.toString());
                 emotionToUpdate.setLabelId(allLabelIds.get(emotionLabel.getSelectedItemPosition()));
+                emotionToUpdate.setApprenticeId(apprenticeId);
 
                 // first insert new emotion (parent of all related notes)
                 saveEmotionUpdates(v, emotionToUpdate);

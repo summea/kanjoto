@@ -11,7 +11,9 @@ import com.andrewsummers.otashu.model.Emotion;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -23,14 +25,16 @@ import android.widget.Toast;
 /**
  * CreateEmotionActivity is an Activity which provides users the ability to create new emotions.
  * <p>
- * This activity provides a form for creating a new Emotion. An Emotion is basically a label
- * or tag for an emotion that is s;aved into the database for later use. Emotions are typically used
- * in connection with Noteset objects (e.g. noteset-emotion combinations).
+ * This activity provides a form for creating a new Emotion. An Emotion is basically a label or tag
+ * for an emotion that is s;aved into the database for later use. Emotions are typically used in
+ * connection with Noteset objects (e.g. noteset-emotion combinations).
  * </p>
  */
 public class CreateEmotionActivity extends Activity implements OnClickListener {
     private Button buttonSave;
     private Emotion newlyInsertedEmotion = new Emotion();
+    private SharedPreferences sharedPref;
+    private long apprenticeId = 0;
 
     /**
      * onCreate override that provides emotion creation view to user .
@@ -43,6 +47,10 @@ public class CreateEmotionActivity extends Activity implements OnClickListener {
 
         // get specific layout for content view
         setContentView(R.layout.activity_create_emotion);
+
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        apprenticeId = Long.parseLong(sharedPref.getString(
+                "pref_selected_apprentice", "1"));
 
         // add listeners to buttons
         buttonSave = (Button) findViewById(R.id.button_save);
@@ -92,6 +100,7 @@ public class CreateEmotionActivity extends Activity implements OnClickListener {
 
                 emotionToInsert.setName(emotionName.toString());
                 emotionToInsert.setLabelId(allLabelIds.get(emotionLabel.getSelectedItemPosition()));
+                emotionToInsert.setApprenticeId(apprenticeId);
 
                 // save emotion to database
                 saveEmotion(v, emotionToInsert);

@@ -39,14 +39,11 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
     //private float verticalSpeed = 0.036f;
     private float verticalSpeed = 0.036f;
     private float horizontalSpeed = 0.035f;
-    private int itemCurrentlyPlaying = 0;
+    private int itemCurrentlyPlaying = -1;
     private int tPlay = 0;
     private int innerMoveUntil = 3;
     private int innerUnMoveUntil = 6;
     private int squaresToRemove = 0;
-    private long startTime = System.currentTimeMillis();
-    private long endTime;
-    private long deltaTime;
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
     private final float[] mMVPMatrix = new float[16];
@@ -70,14 +67,13 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
+
         // Set the background frame color
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        GLES20.glDisable(GLES20.GL_DEPTH_TEST);
-        GLES20.glDisable(GLES20.GL_CULL_FACE);
 
-        //float y = 0.0f;
+        float i = 0.0f;
         float currentRowX = -1.5f;
-        for (int i = 0; i < noteSequence.size(); i++) {
+        for (Note note : noteSequence) {
             mSquare = new Square();
             if (i % 4 == 0)
                 currentRowX = -1.5f;
@@ -85,34 +81,19 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
                 currentRowX += 1.0f;
             mSquare.setX(currentRowX);
             mSquare.setY(i * -1.0f);
-            mSquare.setColor(noteColorTable.get(noteSequence.get(i).getNotevalue()));
+            mSquare.setColor(noteColorTable.get(note.getNotevalue()));
             mSquares.add(mSquare);
+            i++;
         }
-        
-        // Set the camera position (View matrix)
-        Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -3, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
     }
 
     @Override
     public void onDrawFrame(GL10 unused) {
-        /*
-        endTime = System.currentTimeMillis();
-        deltaTime = endTime - startTime;
-        if (deltaTime < 30) {
-            try {
-                Thread.sleep(30 - deltaTime);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        startTime = System.currentTimeMillis();
-        */
-        
         // Draw background color
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
-        
+        // Set the camera position (View matrix)
+        Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -3, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
 
         // keep track of which note currently is being played
         // increment / decrement x value of currently played note
@@ -121,13 +102,12 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
         // tPlay: overall play time counter
         // innerMoveUntil: animate until tPlay == this value
         // innerUnMoveUntil: un-animate until tPlay == this value
-        
+
         for (int i = 0; i < mSquares.size(); i++) {
             if (mSquares.get(i) != null) {
-                
                 // Calculate the projection and view transformation
                 Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
-                
+
                 // speed of squares
                 mSquares.get(i).setY(mSquares.get(i).getY() + verticalSpeed);
                 
@@ -196,7 +176,7 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
         // note: MediaPlayer begins playing music slightly before visualizer starts, so the
         // animation begins with second note
         //if (tPlay % 30 == 0) {
-        if (tPlay % 28 == 0) {
+        if (tPlay % 27 == 0) {
             itemCurrentlyPlaying++;
         }
 

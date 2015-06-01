@@ -232,6 +232,10 @@ public class GenerateMusicActivity extends Activity {
                 logicA();
         }
 
+        if (notes.size() >= 30) {
+            notes.subList(30, notes.size()).clear();
+        }
+        
         final List<Note> finalNotes = notes;
 
         StringBuilder notesText = new StringBuilder();
