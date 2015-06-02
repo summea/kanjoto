@@ -170,13 +170,13 @@ public class ViewAllEmotionsActivity extends ListActivity {
                 startActivity(intent);
                 return true;
             case R.id.context_menu_delete:
-                confirmDelete();
+                confirmDelete(info);
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
     }
-
+/*
     public void confirmDelete() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.dialog_confirm_delete_message).setTitle(
@@ -213,7 +213,42 @@ public class ViewAllEmotionsActivity extends ListActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+*/
+    public void confirmDelete(final AdapterContextMenuInfo info) {
+        final EmotionsDataSource bds = new EmotionsDataSource(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.dialog_confirm_delete_message).setTitle(
+                R.string.dialog_confirm_delete_title);
+        builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // user clicked ok, so go ahead and delete bookmark
+                // get correct bookmark id to delete
+                Emotion bookmarkToDelete = bds.getEmotion(info.id);
+                deleteEmotion(bookmarkToDelete);
 
+                Context context = getApplicationContext();
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context,
+                        context.getResources().getString(R.string.bookmark_deleted),
+                        duration);
+                toast.show();
+
+                // refresh list
+                adapter.removeItem(info.position - 1);
+                adapter.notifyDataSetChanged();
+            }
+        });
+        builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // user clicked cancel
+                // just go back to list for now
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+    
     public Emotion getEmotionFromListPosition(long rowId) {
         long emotionId = rowId;
 

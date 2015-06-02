@@ -335,6 +335,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                     // prepare noteset
                     notesetToInsert.setEmotion((int) chosenEmotion.getId());
                     notesetToInsert.setEnabled(1);
+                    notesetToInsert.setApprenticeId(apprenticeId);
 
                     // check if noteset already exists, first
                     NotesetAndRelated notesetAndRelated = new NotesetAndRelated();

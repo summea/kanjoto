@@ -396,7 +396,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
         Note anchorNote = getRandomNote(39, 50);
 
         // 2. check to see if a key signature contains notevalue
-        Log.d("MYLOG", "2. check to see if a key signature contains notevalue");
+        Log.d("MYLOG", "2. check to see if a key signature contains notevalue for apprentice: " + apprenticeId);
         KeyNotesDataSource knds = new KeyNotesDataSource(this);
         List<Long> keySignatureIds = knds.keySignatureIdsThatContain(apprenticeId,
                 anchorNote.getNotevalue());

@@ -89,7 +89,14 @@ public class PlayModeMainMenuActivity extends Activity implements OnClickListene
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean developerMode = sharedPref.getBoolean(
+                "pref_developer_mode", false);
+        if (developerMode) {
+            inflater.inflate(R.menu.menu_main_developer, menu);
+        } else {
+            inflater.inflate(R.menu.menu_main, menu);
+        }
         return true;
     }
 
