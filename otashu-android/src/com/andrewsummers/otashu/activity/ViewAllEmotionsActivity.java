@@ -8,9 +8,11 @@ import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.adapter.EmotionAdapter;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.LabelsDataSource;
+import com.andrewsummers.otashu.data.NotesetsDataSource;
 import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.Label;
 import com.andrewsummers.otashu.model.EmotionAndRelated;
+import com.andrewsummers.otashu.model.Noteset;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -20,6 +22,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -176,61 +179,32 @@ public class ViewAllEmotionsActivity extends ListActivity {
                 return super.onContextItemSelected(item);
         }
     }
-/*
-    public void confirmDelete() {
+
+    public void confirmDelete(final AdapterContextMenuInfo info) {
+        final EmotionsDataSource bds = new EmotionsDataSource(this);
+        final NotesetsDataSource nds = new NotesetsDataSource(this);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.dialog_confirm_delete_message).setTitle(
                 R.string.dialog_confirm_delete_title);
         builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // user clicked ok
-                // go ahead and delete emotion
-
+                // user clicked ok, so go ahead and delete emotion
                 // get correct emotion id to delete
-                Emotion emotionToDelete = getEmotionFromListPosition(selectedPositionInList);
-
+                Emotion emotionToDelete = bds.getEmotion(info.id);
+                Log.d("MYLOG", "emotion id to delete: " + info.id);
                 deleteEmotion(emotionToDelete);
+                
+                // also, delete related notesets and notes
+                List<Noteset> relatedNotesets = nds.getAllNotesetsByEmotion(info.id);
+                for (Noteset noteset : relatedNotesets) {
+                    nds.deleteNoteset(noteset);
+                }
 
                 Context context = getApplicationContext();
                 int duration = Toast.LENGTH_SHORT;
 
                 Toast toast = Toast.makeText(context,
                         context.getResources().getString(R.string.emotion_deleted),
-                        duration);
-                toast.show();
-
-                // refresh list
-                adapter.removeItem(selectedPositionInList);
-                adapter.notifyDataSetChanged();
-            }
-        });
-        builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // user clicked cancel
-                // just go back to list for now
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-*/
-    public void confirmDelete(final AdapterContextMenuInfo info) {
-        final EmotionsDataSource bds = new EmotionsDataSource(this);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.dialog_confirm_delete_message).setTitle(
-                R.string.dialog_confirm_delete_title);
-        builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // user clicked ok, so go ahead and delete bookmark
-                // get correct bookmark id to delete
-                Emotion bookmarkToDelete = bds.getEmotion(info.id);
-                deleteEmotion(bookmarkToDelete);
-
-                Context context = getApplicationContext();
-                int duration = Toast.LENGTH_SHORT;
-
-                Toast toast = Toast.makeText(context,
-                        context.getResources().getString(R.string.bookmark_deleted),
                         duration);
                 toast.show();
 

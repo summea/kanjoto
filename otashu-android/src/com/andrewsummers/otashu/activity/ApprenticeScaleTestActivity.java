@@ -412,6 +412,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
             approach = "Random";
             KeySignature ks = new KeySignature();
             ks.setEmotionId(emotionId);
+            ks.setApprenticeId(apprenticeId);
             KeySignaturesDataSource ksds = new KeySignaturesDataSource(this);
             ks = ksds.createKeySignature(ks);
             KeyNote kn = new KeyNote();

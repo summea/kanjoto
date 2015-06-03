@@ -540,4 +540,37 @@ public class NotesetsDataSource {
 
         return count;
     }
+    
+    /**
+     * Get all notesets from database table by emotion.
+     * 
+     * @return List of notesets.
+     */
+    public List<Noteset> getAllNotesetsByEmotion(long emotion_id) {
+        List<Noteset> notesets = new ArrayList<Noteset>();
+
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotion_id;
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notesets from database
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                // create noteset objects based on noteset data from database
+                Noteset noteset = new Noteset();
+                noteset.setId(cursor.getInt(0));
+                noteset.setName(cursor.getString(1));
+                noteset.setEmotion((cursor.getInt(2)));
+                noteset.setEnabled(cursor.getInt(3));
+                noteset.setApprenticeId(cursor.getLong(4));
+                notesets.add(noteset);
+            } while (cursor.moveToNext());
+        }
+
+        return notesets;
+    }
 }

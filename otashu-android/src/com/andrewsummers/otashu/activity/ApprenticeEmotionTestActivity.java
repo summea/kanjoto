@@ -605,17 +605,14 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
             approach = "Learned Data";
             Edge edgeOne = edds.getRandomEdge(apprenticeId, emotionGraphId, emotionId, 0, 0, 1, 0);
             Edge edgeTwo = edds.getRandomEdge(apprenticeId, emotionGraphId, emotionId,
-                    edgeOne.getToNodeId(), 0,
-                    2, 3);
-            Edge edgeThree = new Edge();
+                    edgeOne.getToNodeId(), 0, 2, 3);
+            Edge edgeThree = edds.getRandomEdge(apprenticeId, emotionGraphId, emotionId,
+                    edgeTwo.getToNodeId(), 0, 3, 3);
+
             if (randomOption == 1) {
                 approach = "Learned Data +";
-                edgeThree.setFromNodeId(edgeTwo.getToNodeId());
+                edgeOne.setFromNodeId(randomNotevalue);
                 edgeThree.setToNodeId(randomNotevalue);
-            } else {
-                edgeThree = edds.getRandomEdge(apprenticeId, emotionGraphId, emotionId,
-                        edgeTwo.getToNodeId(),
-                        0, 3, 3);
             }
 
             Note note1 = new Note();
@@ -631,6 +628,13 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
             note4.setNotevalue(edgeThree.getToNodeId());
             notes.add(note4);
         } catch (Exception e) {
+            // Using Random Approach
+            approach = "Random";
+            // stay within 39..50 for now (C4..B4)
+            notes = generateNotes(39, 50);
+        }
+
+        if ((notes.get(0).getNotevalue() == 0) && (notes.get(1).getNotevalue() == 0)) {
             // Using Random Approach
             approach = "Random";
             // stay within 39..50 for now (C4..B4)

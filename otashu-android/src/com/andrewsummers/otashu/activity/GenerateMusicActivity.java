@@ -16,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.ApprenticesDataSource;
 import com.andrewsummers.otashu.data.EdgesDataSource;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
@@ -40,6 +41,7 @@ import com.leff.midi.event.meta.Tempo;
 import com.leff.midi.event.meta.TimeSignature;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -52,6 +54,7 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.SparseArray;
+import android.widget.Toast;
 
 /**
  * GenerateMusicActivity is an Activity which generates music.
@@ -82,7 +85,7 @@ public class GenerateMusicActivity extends Activity {
     private long apprenticeId = 0;
     private Apprentice apprentice;
     private int GENERAL_NOTE_LENGTH = 480;
-    
+
     private Runnable videoTask = new Runnable() {
         public void run() {
             playMusic(musicSource);
@@ -215,119 +218,148 @@ public class GenerateMusicActivity extends Activity {
 
         Log.d("MYLOG", "> chosen logic type id: " + logicType);
 
-        switch (logicType) {
-            case 1:
-                notes = logicA();
-                break;
-            case 2:
-                notes = logicB();
-                break;
-            case 3:
-                notes = logicC();
-                break;
-            case 4:
-                notes = logicD();
-                break;
-            default:
-                logicA();
+        try {
+            switch (logicType) {
+                case 1:
+                    notes = logicA();
+                    break;
+                case 2:
+                    notes = logicB();
+                    break;
+                case 3:
+                    notes = logicC();
+                    break;
+                case 4:
+                    notes = logicD();
+                    break;
+                default:
+                    notes = logicD();
+            }
+        } catch (Exception e) {
+            notes = logicD();
         }
 
-        if (notes.size() >= 30) {
-            notes.subList(30, notes.size()).clear();
-        }
-        
-        final List<Note> finalNotes = notes;
-
-        StringBuilder notesText = new StringBuilder();
-        int lineBreak = 1;
-        for (Note note : notes) {
-            notesText.append(noteMap.get(note.getNotevalue()) + ", ");
-            if (lineBreak % 4 == 0)
-                notesText.append("\n");
-            lineBreak++;
+        // check if notes is full of zeros
+        boolean allSameFlag = true;
+        for (int i = 0; i < notes.size(); i++) {
+            if (notes.get(i).getNotevalue() != 0) {
+                allSameFlag = false;
+            }
         }
 
-        // get default instrument for playback
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String defaultInstrument = sharedPref.getString("pref_default_instrument", "");
-        playbackSpeed = Integer.valueOf(sharedPref.getString("pref_default_playback_speed", "120"));
+        if (!allSameFlag) {
 
-        generateMusic(notes, musicSource, defaultInstrument, playbackSpeed);
+            if (notes.size() >= 30) {
+                notes.subList(30, notes.size()).clear();
+            }
 
-        
+            final List<Note> finalNotes = notes;
 
-        List<Notevalue> allNotevalues = new ArrayList<Notevalue>();
-        List<Label> allLabels = new ArrayList<Label>();
+            StringBuilder notesText = new StringBuilder();
+            int lineBreak = 1;
+            for (Note note : notes) {
+                notesText.append(noteMap.get(note.getNotevalue()) + ", ");
+                if (lineBreak % 4 == 0)
+                    notesText.append("\n");
+                lineBreak++;
+            }
 
-        NotevaluesDataSource nvds = new NotevaluesDataSource(this);
-        allNotevalues = nvds.getAllNotevalues();
-        nvds.close();
+            // get default instrument for playback
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+            String defaultInstrument = sharedPref.getString("pref_default_instrument", "");
+            playbackSpeed = Integer.valueOf(sharedPref.getString("pref_default_playback_speed",
+                    "120"));
 
-        LabelsDataSource lds = new LabelsDataSource(this);
-        allLabels = lds.getAllLabels();
-        lds.close();
+            Log.d("MYLOG", "ever notes: " + notes.toString());
+            generateMusic(notes, musicSource, defaultInstrument, playbackSpeed);
 
-        int color = 0;
+            List<Notevalue> allNotevalues = new ArrayList<Notevalue>();
+            List<Label> allLabels = new ArrayList<Label>();
 
-        for (Notevalue notevalue : allNotevalues) {
-            boolean found = false;
-            for (Label label : allLabels) {
-                if (notevalue.getLabelId() == label.getId()) {
-                    color = Color.parseColor(label.getColor());
+            NotevaluesDataSource nvds = new NotevaluesDataSource(this);
+            allNotevalues = nvds.getAllNotevalues();
+            nvds.close();
+
+            LabelsDataSource lds = new LabelsDataSource(this);
+            allLabels = lds.getAllLabels();
+            lds.close();
+
+            int color = 0;
+
+            for (Notevalue notevalue : allNotevalues) {
+                boolean found = false;
+                for (Label label : allLabels) {
+                    if (notevalue.getLabelId() == label.getId()) {
+                        color = Color.parseColor(label.getColor());
+                        float[] noteColor = {
+                                Color.red(color) / 255.0f, Color.green(color) / 255.0f,
+                                Color.blue(color) / 255.0f, 0.1f
+                        };
+                        noteColorTable.put(notevalue.getNotevalue(), noteColor);
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    color = Color.parseColor("#dddddd");
                     float[] noteColor = {
                             Color.red(color) / 255.0f, Color.green(color) / 255.0f,
-                            Color.blue(color) / 255.0f, 0.1f
+                            Color.blue(color) / 255.0f
                     };
                     noteColorTable.put(notevalue.getNotevalue(), noteColor);
-                    found = true;
-                    break;
                 }
             }
 
-            if (!found) {
-                color = Color.parseColor("#dddddd");
-                float[] noteColor = {
-                        Color.red(color) / 255.0f, Color.green(color) / 255.0f,
-                        Color.blue(color) / 255.0f
-                };
-                noteColorTable.put(notevalue.getNotevalue(), noteColor);
-            }
-        }
+            // Use GLSurfaceView as ContentView for this Activity
+            mGLView = new PlaybackGLSurfaceView(this, notes, noteColorTable, playbackSpeed);
+            setContentView(mGLView);
 
-        // Use GLSurfaceView as ContentView for this Activity
-        mGLView = new PlaybackGLSurfaceView(this, notes, noteColorTable, playbackSpeed);
-        setContentView(mGLView);
-        
-        //Handler handler = new Handler();
-        //handler.postDelayed(videoTask, 300);
+            // Handler handler = new Handler();
+            // handler.postDelayed(videoTask, 300);
 
-        playMusic(musicSource);
-  
-        // return to previous activity when done playing
-        mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer aMediaPlayer) {
-                // fill return intent with values we are passing to parent activity
-                Intent output = new Intent();
-                output.putExtra("serialized_notes",
-                        serializeBookmarkData(selectedEmotionId, finalNotes));
+            playMusic(musicSource);
 
-                // sending back data to parent activity (the activity that originally launched this
-                // activity)
-                setResult(RESULT_OK, output);
+            // return to previous activity when done playing
+            mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer aMediaPlayer) {
+                    // fill return intent with values we are passing to parent activity
+                    Intent output = new Intent();
+                    output.putExtra("serialized_notes",
+                            serializeBookmarkData(selectedEmotionId, finalNotes));
 
-                if (mediaPlayer != null) {
-                    if (mediaPlayer.isPlaying()) {
-                        // stop playing music
-                        mediaPlayer.stop();
+                    // sending back data to parent activity (the activity that originally launched
+                    // this
+                    // activity)
+                    setResult(RESULT_OK, output);
+
+                    if (mediaPlayer != null) {
+                        if (mediaPlayer.isPlaying()) {
+                            // stop playing music
+                            mediaPlayer.stop();
+                        }
+                        mediaPlayer.release();
                     }
-                    mediaPlayer.release();
-                }
 
-                // close activity
-                finish();
-            }
-        });
+                    // close activity
+                    finish();
+                }
+            });
+
+        } else {
+            // not enough data yet to play something
+            Context context = getApplicationContext();
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context,
+                    context.getResources().getString(R.string.apprentice_not_sure_what_to_play),
+                    duration);
+            toast.show();
+
+            // close activity
+            finish();
+        }
     }
 
     /**
@@ -436,7 +468,8 @@ public class GenerateMusicActivity extends Activity {
             noteTrack.insertNote(channel, pitch, velocity, i * currentTotalNoteLength, length);
 
             if (length > 0) {
-                currentTotalNoteLength = GENERAL_NOTE_LENGTH; // TODO: make this match note length (better) somehow
+                currentTotalNoteLength = GENERAL_NOTE_LENGTH; // TODO: make this match note length
+                                                              // (better) somehow
             } else {
                 currentTotalNoteLength = GENERAL_NOTE_LENGTH;
             }

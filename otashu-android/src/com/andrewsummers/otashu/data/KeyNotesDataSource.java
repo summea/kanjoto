@@ -14,6 +14,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class KeyNotesDataSource {
     private SQLiteDatabase database;
@@ -221,6 +222,7 @@ public class KeyNotesDataSource {
 
         if (cursor.moveToFirst()) {
             do {
+                Log.d("MYLOG", "key note stuff: " + cursor.getInt(2));
                 keyNotes.add(cursor.getInt(2));
             } while (cursor.moveToNext());
         }

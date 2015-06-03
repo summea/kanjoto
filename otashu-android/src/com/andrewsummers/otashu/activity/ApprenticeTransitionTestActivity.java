@@ -517,16 +517,35 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
             approach = "Learned Data";
             Edge foundEdge = edds.getRandomEdge(apprenticeId, transitionGraphId, emotionId, 0, 0,
                     1, 0);
-            if (randomOption == 1) {
-                approach = "Learned Data +";
-                foundEdge.setToNodeId(randomNotevalue);
+            
+            // if edge is already pretty certain (0.0f == strongest weight)
+            // choose/create a random edge to test
+            if (foundEdge.getWeight() <= 0.0f) {
+             // Using Random Approach
+                approach = "Random";
+                // stay within 39..50 for now (C4..B4)
+                noteOne = generateNote(39, 50);
+                noteTwo = generateNote(39, 50);
+            } else {
+                if (randomOption == 1) {
+                    approach = "Learned Data +";
+                    foundEdge.setToNodeId(randomNotevalue);
+                }
+    
+                noteOne = new Note();
+                noteTwo = new Note();
+                noteOne.setNotevalue(foundEdge.getFromNodeId());
+                noteTwo.setNotevalue(foundEdge.getToNodeId());
             }
-
-            noteOne = new Note();
-            noteTwo = new Note();
-            noteOne.setNotevalue(foundEdge.getFromNodeId());
-            noteTwo.setNotevalue(foundEdge.getToNodeId());
         } catch (Exception e) {
+            // Using Random Approach
+            approach = "Random";
+            // stay within 39..50 for now (C4..B4)
+            noteOne = generateNote(39, 50);
+            noteTwo = generateNote(39, 50);
+        }
+
+        if ((noteOne.getNotevalue() == 0) || (noteTwo.getNotevalue() == 0)) {
             // Using Random Approach
             approach = "Random";
             // stay within 39..50 for now (C4..B4)

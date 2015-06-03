@@ -111,7 +111,9 @@ public class CreateEmotionActivity extends Activity implements OnClickListener {
 
                 // save emotion to database
                 saveEmotion(v, emotionToInsert);
-                
+    
+                /*
+                // TODO: look at this later 
                 // save randomly-created notesets too for this emotion
                 // this is in order to help speed up the apprentice's process
                 // of finding new notes during apprentice tests
@@ -149,6 +151,7 @@ public class CreateEmotionActivity extends Activity implements OnClickListener {
                         }
                     }
                 }
+                */
 
                 // close activity
                 finish();
