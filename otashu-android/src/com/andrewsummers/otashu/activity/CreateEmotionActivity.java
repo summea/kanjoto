@@ -8,12 +8,9 @@ import java.util.Random;
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.LabelsDataSource;
-import com.andrewsummers.otashu.data.NotesDataSource;
-import com.andrewsummers.otashu.data.NotesetsDataSource;
 import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.Note;
 import com.andrewsummers.otashu.model.Noteset;
-import com.andrewsummers.otashu.model.NotesetAndRelated;
 
 import android.app.Activity;
 import android.content.Context;
@@ -241,49 +238,5 @@ public class CreateEmotionActivity extends Activity implements OnClickListener {
         }
 
         return notes;
-    }
-    
-    private boolean doesNotesetExist(NotesetAndRelated notesetAndRelated) {
-        boolean notesetExists = false;
-        NotesDataSource nds = new NotesDataSource(this);
-        notesetExists = nds.doesNotesetExist(notesetAndRelated);
-        return notesetExists;
-    }
-    
-    /**
-     * Save noteset data.
-     * 
-     * @param v Incoming view.
-     * @param data Incoming string of data to be saved.
-     */
-    private void saveNoteset(View v, Noteset noteset) {
-
-        // save noteset in database
-        NotesetsDataSource nds = new NotesetsDataSource(this);
-        newlyInsertedNoteset = nds.createNoteset(noteset);
-        nds.close();
-
-        Context context = getApplicationContext();
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(context,
-                context.getResources().getString(R.string.noteset_saved),
-                duration);
-        toast.show();
-    }
-
-    private void saveNote(View v, Note note) {
-        // save noteset in database
-        NotesDataSource nds = new NotesDataSource(this);
-        nds.createNote(note);
-        nds.close();
-
-        Context context = getApplicationContext();
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(context,
-                context.getResources().getString(R.string.noteset_saved),
-                duration);
-        toast.show();
     }
 }

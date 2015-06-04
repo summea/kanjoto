@@ -169,8 +169,9 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
 
         // note: MediaPlayer begins playing music slightly before visualizer starts, so the
         // animation begins with second note
-        // if (tPlay % 30 == 0) {
-        if (tPlay % 27 == 0) {
+        // TODO: take a look at this later...
+        if (tPlay % 29 == 0) {  // for tablet version
+        // if (tPlay % 27 == 0) {   // for phone version
             itemCurrentlyPlaying++;
         }
 
