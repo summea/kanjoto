@@ -3,6 +3,9 @@ package com.andrewsummers.otashu.view;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -35,6 +38,11 @@ public class DrawView extends View {
     private Canvas mCanvas;
     private Paint mBitmapPaint;
     private FileOutputStream fout;
+    private int[] emofingColors = {Color.rgb(0, 0, 0),
+            Color.rgb(255, 51, 102), Color.rgb(255, 102, 51), Color.rgb(255, 204, 51),
+            Color.rgb(204, 255, 51), Color.rgb(102, 255, 51), Color.rgb(51, 255, 102),
+            Color.rgb(51, 255, 204), Color.rgb(51, 204, 255), Color.rgb(51, 102, 255),
+            Color.rgb(102, 51, 255), Color.rgb(204, 51, 255), Color.rgb(255, 51, 204)};
 
     public DrawView(Context context) {
         super(context);
@@ -67,44 +75,21 @@ public class DrawView extends View {
         for (int i = 1; i <= mEmofing.size(); i++) {
             for (int j = 1; j <= 12; j++) {
                 // 7. Plot root number reductions (the emofing)
-                switch (j) {
-                    case 1:
-                        mPaint.setColor(Color.rgb(255, 51, 102));
-                        break;
-                    case 2:
-                        mPaint.setColor(Color.rgb(255, 102, 51));
-                        break;
-                    case 3:
-                        mPaint.setColor(Color.rgb(255, 204, 51));
-                        break;
-                    case 4:
-                        mPaint.setColor(Color.rgb(204, 255, 51));
-                        break;
-                    case 5:
-                        mPaint.setColor(Color.rgb(102, 255, 51));
-                        break;
-                    case 6:
-                        mPaint.setColor(Color.rgb(51, 255, 102));
-                        break;
-                    case 7:
-                        mPaint.setColor(Color.rgb(51, 255, 204));
-                        break;
-                    case 8:
-                        mPaint.setColor(Color.rgb(51, 204, 255));
-                        break;
-                    case 9:
-                        mPaint.setColor(Color.rgb(51, 102, 255));
-                        break;
-                    case 10:
-                        mPaint.setColor(Color.rgb(102, 51, 255));
-                        break;
-                    case 11:
-                        mPaint.setColor(Color.rgb(204, 51, 255));
-                        break;
-                    case 12:
-                        mPaint.setColor(Color.rgb(255, 51, 204));
-                        break;
-                }
+                mPaint.setColor(emofingColors[j]);
+                /*
+                 * switch (j) { case 1: mPaint.setColor(Color.rgb(255, 51, 102)); break; case 2:
+                 * mPaint.setColor(Color.rgb(255, 102, 51)); break; case 3:
+                 * mPaint.setColor(Color.rgb(255, 204, 51)); break; case 4:
+                 * mPaint.setColor(Color.rgb(204, 255, 51)); break; case 5:
+                 * mPaint.setColor(Color.rgb(102, 255, 51)); break; case 6:
+                 * mPaint.setColor(Color.rgb(51, 255, 102)); break; case 7:
+                 * mPaint.setColor(Color.rgb(51, 255, 204)); break; case 8:
+                 * mPaint.setColor(Color.rgb(51, 204, 255)); break; case 9:
+                 * mPaint.setColor(Color.rgb(51, 102, 255)); break; case 10:
+                 * mPaint.setColor(Color.rgb(102, 51, 255)); break; case 11:
+                 * mPaint.setColor(Color.rgb(204, 51, 255)); break; case 12:
+                 * mPaint.setColor(Color.rgb(255, 51, 204)); break; }
+                 */
 
                 int value = mEmofing.get(i).get(j);
 
@@ -124,7 +109,7 @@ public class DrawView extends View {
                 canvas.drawBitmap(mBitmap, 0, 0, mPaint);
             }
         }
-        
+
         try {
             mBitmap.compress(Bitmap.CompressFormat.PNG, 100, fout);
             fout.flush();

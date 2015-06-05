@@ -119,13 +119,15 @@ public class EdgesDataSource {
         List<Edge> edges = new ArrayList<Edge>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all notes from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(apprenticeId)
+        });
 
         Edge edge = null;
         if (cursor.moveToFirst()) {
@@ -160,15 +162,19 @@ public class EdgesDataSource {
         List<Edge> edges = new ArrayList<Edge>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
-                + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
-                + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?"
+                + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=?"
+                + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all notes from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(apprenticeId),
+                String.valueOf(graphId),
+                String.valueOf(emotionId)
+        });
 
         Edge edge = null;
         if (cursor.moveToFirst()) {
@@ -206,18 +212,24 @@ public class EdgesDataSource {
         List<Edge> edges = new ArrayList<Edge>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
-                + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
-                + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId
-                + " AND " + OtashuDatabaseHelper.COLUMN_WEIGHT + "<" + weightLimit
-                + " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?"
+                + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=?"
+                + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=?"
+                + " AND " + OtashuDatabaseHelper.COLUMN_WEIGHT + "<?"
+                + " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=?"
                 + " ORDER BY " + OtashuDatabaseHelper.COLUMN_WEIGHT + " ASC";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all notes from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(apprenticeId),
+                String.valueOf(graphId),
+                String.valueOf(emotionId),
+                String.valueOf(weightLimit),
+                String.valueOf(position)
+        });
 
         Edge edge = null;
         if (cursor.moveToFirst()) {
@@ -260,6 +272,7 @@ public class EdgesDataSource {
 
         List<Edge> edges = new ArrayList<Edge>();
 
+        // TODO: might be time to re-think this part...
         String query = "";
         switch (mode) {
             case 0:

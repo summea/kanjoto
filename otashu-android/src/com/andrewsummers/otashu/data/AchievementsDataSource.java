@@ -103,13 +103,15 @@ public class AchievementsDataSource {
         List<Achievement> achievements = new ArrayList<Achievement>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_ACHIEVEMENTS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all notes from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(apprenticeId)
+        });
 
         Achievement achievement = null;
         if (cursor.moveToFirst()) {
@@ -150,13 +152,15 @@ public class AchievementsDataSource {
         Achievement achievement = new Achievement();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_ACHIEVEMENTS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + achievementId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all achievements from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+            String.valueOf(achievementId)
+        });
 
         if (cursor.moveToFirst()) {
             do {
@@ -186,7 +190,7 @@ public class AchievementsDataSource {
 
         // select all achievements from database
         Cursor cursor = db.rawQuery(query, new String[] {
-                key
+            key
         });
 
         if (cursor.moveToFirst()) {

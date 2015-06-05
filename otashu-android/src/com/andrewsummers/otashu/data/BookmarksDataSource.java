@@ -146,13 +146,15 @@ public class BookmarksDataSource {
         Bookmark bookmark = new Bookmark();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_BOOKMARKS + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_ID + "=" + bookmarkId;
+                + OtashuDatabaseHelper.COLUMN_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all bookmarks from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+            String.valueOf(bookmarkId)
+        });
 
         if (cursor.moveToFirst()) {
             do {

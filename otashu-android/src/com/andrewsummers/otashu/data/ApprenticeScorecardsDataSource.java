@@ -110,9 +110,10 @@ public class ApprenticeScorecardsDataSource {
         List<ApprenticeScorecard> apprenticeScorecards = new ArrayList<ApprenticeScorecard>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORECARDS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?";
         if (orderBy != null && !orderBy.isEmpty()) {
-            query += " ORDER BY " + orderBy + " ASC";
+            // query += " ORDER BY " + orderBy + " ASC";
+            query += " ORDER BY ? ASC";
         }
 
         Log.d("MYLOG", "order query: " + query);
@@ -121,7 +122,10 @@ public class ApprenticeScorecardsDataSource {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all notes from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(apprenticeId),
+                orderBy
+        });
 
         ApprenticeScorecard apprenticeScorecard = null;
         if (cursor.moveToFirst()) {
@@ -167,13 +171,15 @@ public class ApprenticeScorecardsDataSource {
         List<String> apprenticeScorecards = new LinkedList<String>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORECARDS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all apprenticeScorecards from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+            String.valueOf(apprenticeId)
+        });
 
         ApprenticeScorecard apprenticeScorecard = null;
         if (cursor.moveToFirst()) {
@@ -199,13 +205,13 @@ public class ApprenticeScorecardsDataSource {
         ApprenticeScorecard apprenticeScorecard = new ApprenticeScorecard();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORECARDS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + apprenticeScorecardId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all apprenticeScorecards from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[]{ String.valueOf(apprenticeScorecardId) });
 
         if (cursor.moveToFirst()) {
             do {

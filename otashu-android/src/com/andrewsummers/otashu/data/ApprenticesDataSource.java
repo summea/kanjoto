@@ -177,13 +177,15 @@ public class ApprenticesDataSource {
         Apprentice apprentice = new Apprentice();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICES + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_ID + "=" + apprenticeId;
+                + OtashuDatabaseHelper.COLUMN_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all apprentices from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+            String.valueOf(apprenticeId)
+        });
 
         if (cursor.moveToFirst()) {
             do {

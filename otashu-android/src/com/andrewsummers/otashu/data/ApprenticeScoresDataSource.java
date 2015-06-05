@@ -113,13 +113,15 @@ public class ApprenticeScoresDataSource {
         List<ApprenticeScore> apprenticeScores = new ArrayList<ApprenticeScore>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all notes from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(apprenticeId)
+        });
 
         ApprenticeScore apprenticeScore = null;
         if (cursor.moveToFirst()) {
@@ -150,13 +152,15 @@ public class ApprenticeScoresDataSource {
         List<ApprenticeScore> apprenticeScores = new ArrayList<ApprenticeScore>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_SCORECARD_ID + "=" + scorecardId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_SCORECARD_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all notes from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(scorecardId)
+        });
 
         ApprenticeScore apprenticeScore = null;
         if (cursor.moveToFirst()) {
@@ -199,13 +203,15 @@ public class ApprenticeScoresDataSource {
         ApprenticeScore apprenticeScore = new ApprenticeScore();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + apprenticeScoreId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all apprenticeScores from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(apprenticeScoreId)
+        });
 
         if (cursor.moveToFirst()) {
             do {
@@ -253,14 +259,17 @@ public class ApprenticeScoresDataSource {
         int totalCorrect = 0;
 
         String query = "SELECT COUNT(*) FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_SCORECARD_ID + "=" + scorecardId
-                + " AND " + OtashuDatabaseHelper.COLUMN_CORRECT + "=1"
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_SCORECARD_ID + "=?"
+                + " AND " + OtashuDatabaseHelper.COLUMN_CORRECT + "=?"
                 + " GROUP BY " + OtashuDatabaseHelper.COLUMN_QUESTION_NUMBER;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(scorecardId),
+                String.valueOf(1)
+        });
         totalCorrect = cursor.getCount();
 
         return totalCorrect;
@@ -275,7 +284,7 @@ public class ApprenticeScoresDataSource {
         int total = 0;
 
         String query = "SELECT COUNT(*) FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_SCORECARD_ID + "=" + scorecardId
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_SCORECARD_ID + "=?"
                 + " GROUP BY " + OtashuDatabaseHelper.COLUMN_QUESTION_NUMBER;
 
         Log.d("MYLOG", query);
@@ -283,7 +292,9 @@ public class ApprenticeScoresDataSource {
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+            String.valueOf(scorecardId)
+        });
         total = cursor.getCount();
 
         return total;
