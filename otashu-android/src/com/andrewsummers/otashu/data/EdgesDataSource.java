@@ -272,60 +272,89 @@ public class EdgesDataSource {
 
         List<Edge> edges = new ArrayList<Edge>();
 
-        // TODO: might be time to re-think this part...
-        String query = "";
-        switch (mode) {
-            case 0:
-                query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
-                        + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "="
-                        + apprenticeId
-                        + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
-                        + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId
-                        + " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position;
-                break;
-            case 1:
-                query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
-                        + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "="
-                        + apprenticeId
-                        + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
-                        + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId
-                        + " AND " + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=" + fromNodeId
-                        + " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position;
-                break;
-            case 2:
-                query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
-                        + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "="
-                        + apprenticeId
-                        + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
-                        + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId
-                        + " AND " + OtashuDatabaseHelper.COLUMN_TO_NODE_ID + "=" + toNodeId
-                        + " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position;
-                break;
-            case 3:
-                query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
-                        + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "="
-                        + apprenticeId
-                        + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
-                        + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId
-                        + " AND " + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=" + toNodeId
-                        + " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position;
-                break;
-            case 4:
-                query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
-                        + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "="
-                        + apprenticeId
-                        + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
-                        + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId
-                        + " AND " + OtashuDatabaseHelper.COLUMN_TO_NODE_ID + "=" + fromNodeId
-                        + " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position;
-                break;
-        }
-
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
+        Cursor cursor = null;
+
+        // TODO: might be time to re-think this part...
+        String query = "";
         // select all notes from database
-        Cursor cursor = db.rawQuery(query, null);
+        switch (mode) {
+            case 0:
+                query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
+                        + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?"
+                        + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=?"
+                        + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=?"
+                        + " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=?";
+                cursor = db.rawQuery(query, new String[] {
+                        String.valueOf(apprenticeId),
+                        String.valueOf(graphId),
+                        String.valueOf(emotionId),
+                        String.valueOf(position),
+                });
+                break;
+            case 1:
+                query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
+                        + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?"
+                        + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=?"
+                        + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=?"
+                        + " AND " + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=?"
+                        + " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=?";
+                cursor = db.rawQuery(query, new String[] {
+                        String.valueOf(apprenticeId),
+                        String.valueOf(graphId),
+                        String.valueOf(emotionId),
+                        String.valueOf(fromNodeId),
+                        String.valueOf(position),
+                });
+                break;
+            case 2:
+                query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
+                        + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?"
+                        + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=?"
+                        + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=?"
+                        + " AND " + OtashuDatabaseHelper.COLUMN_TO_NODE_ID + "=?"
+                        + " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=?";
+                cursor = db.rawQuery(query, new String[] {
+                        String.valueOf(apprenticeId),
+                        String.valueOf(graphId),
+                        String.valueOf(emotionId),
+                        String.valueOf(toNodeId),
+                        String.valueOf(position),
+                });
+                break;
+            case 3:
+                query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
+                        + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?"
+                        + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=?"
+                        + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=?"
+                        + " AND " + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=?"
+                        + " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=?";
+                cursor = db.rawQuery(query, new String[] {
+                        String.valueOf(apprenticeId),
+                        String.valueOf(graphId),
+                        String.valueOf(emotionId),
+                        String.valueOf(toNodeId),
+                        String.valueOf(position),
+                });
+                break;
+            case 4:
+                query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
+                        + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?"
+                        + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=?"
+                        + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=?"
+                        + " AND " + OtashuDatabaseHelper.COLUMN_TO_NODE_ID + "=?"
+                        + " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=?";
+                cursor = db.rawQuery(query, new String[] {
+                        String.valueOf(apprenticeId),
+                        String.valueOf(graphId),
+                        String.valueOf(emotionId),
+                        String.valueOf(fromNodeId),
+                        String.valueOf(position),
+                });
+                break;
+        }
 
         // check if any results have been found
         if (cursor.getCount() > 0) {
@@ -349,12 +378,17 @@ public class EdgesDataSource {
             }
         } else {
             query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
-                    + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
-                    + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
-                    + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId
-                    + " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position;
+                    + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?"
+                    + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=?"
+                    + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=?"
+                    + " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=?";
 
-            cursor = db.rawQuery(query, null);
+            cursor = db.rawQuery(query, new String[] {
+                    String.valueOf(apprenticeId),
+                    String.valueOf(graphId),
+                    String.valueOf(emotionId),
+                    String.valueOf(position),
+            });
 
             Edge edge = null;
             if (cursor.moveToFirst()) {
@@ -402,13 +436,15 @@ public class EdgesDataSource {
         Edge edge = new Edge();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + edgeId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all edges from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(edgeId)
+        });
 
         if (cursor.moveToFirst()) {
             do {
@@ -434,16 +470,21 @@ public class EdgesDataSource {
         edge.setWeight(-1.0f);
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
-                + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId
-                + " AND " + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=" + fromNodeId
-                + " AND " + OtashuDatabaseHelper.COLUMN_TO_NODE_ID + "=" + toNodeId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=?"
+                + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=?"
+                + " AND " + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=?"
+                + " AND " + OtashuDatabaseHelper.COLUMN_TO_NODE_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all edges from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(graphId),
+                String.valueOf(emotionId),
+                String.valueOf(fromNodeId),
+                String.valueOf(toNodeId),
+        });
 
         if (cursor.moveToFirst()) {
             do {
@@ -554,7 +595,14 @@ public class EdgesDataSource {
             SQLiteDatabase db = dbHelper.getWritableDatabase();
 
             // select all edges from database
-            Cursor cursor = db.rawQuery(query, null);
+            Cursor cursor = db.rawQuery(query, new String[] {
+                    String.valueOf(apprenticeId),
+                    String.valueOf(graphId),
+                    String.valueOf(emotionId),
+                    String.valueOf(fromNode),
+                    String.valueOf(position),
+                    // String.valueOf(nextI),
+            });
 
             // query selects three random emotion-related notesets
             // now, find which of the notesets here has lowest (strongest) weight
