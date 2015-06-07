@@ -110,13 +110,15 @@ public class KeyNotesDataSource {
         List<KeyNote> keyNotes = new ArrayList<KeyNote>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_NOTES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all notes from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(apprenticeId),
+        });
 
         KeyNote keyNote = null;
         if (cursor.moveToFirst()) {
@@ -157,13 +159,15 @@ public class KeyNotesDataSource {
         KeyNote keyNote = new KeyNote();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_NOTES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + keyNoteId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all keyNotes from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(keyNoteId),
+        });
 
         if (cursor.moveToFirst()) {
             do {
@@ -184,13 +188,15 @@ public class KeyNotesDataSource {
         List<KeyNote> keyNotes = new ArrayList<KeyNote>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_NOTES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_KEY_SIGNATURE_ID + "=" + keySignatureId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_KEY_SIGNATURE_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all keyNotes from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(keySignatureId),
+        });
 
         if (cursor.moveToFirst()) {
             do {
@@ -212,13 +218,15 @@ public class KeyNotesDataSource {
         List<Integer> keyNotes = new ArrayList<Integer>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_NOTES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_KEY_SIGNATURE_ID + "=" + keySignatureId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_KEY_SIGNATURE_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all keyNotes from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(keySignatureId),
+        });
 
         if (cursor.moveToFirst()) {
             do {
@@ -254,14 +262,17 @@ public class KeyNotesDataSource {
 
         String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
                 + OtashuDatabaseHelper.TABLE_KEY_NOTES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
-                + " AND " + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "=" + notevalue;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?"
+                + " AND " + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all keyNotes from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(apprenticeId),
+                String.valueOf(notevalue),
+        });
 
         if (cursor.moveToFirst()) {
             do {
@@ -283,15 +294,17 @@ public class KeyNotesDataSource {
             String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + ", "
                     + OtashuDatabaseHelper.COLUMN_KEY_SIGNATURE_ID + " FROM "
                     + OtashuDatabaseHelper.TABLE_KEY_NOTES
-                    + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
-                    + " AND " + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "="
-                    + notevaluesInKeySignature.get(i);
+                    + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?"
+                    + " AND " + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "=?";
 
             // create database handle
             SQLiteDatabase db = dbHelper.getWritableDatabase();
 
             // select all keyNotes from database
-            Cursor cursor = db.rawQuery(query, null);
+            Cursor cursor = db.rawQuery(query, new String[] {
+                    String.valueOf(apprenticeId),
+                    String.valueOf(notevaluesInKeySignature.get(i)),
+            });
 
             if (cursor.moveToFirst()) {
                 do {

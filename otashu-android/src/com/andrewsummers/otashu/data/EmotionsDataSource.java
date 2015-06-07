@@ -105,13 +105,15 @@ public class EmotionsDataSource {
         List<Emotion> emotions = new ArrayList<Emotion>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EMOTIONS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all notes from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(apprenticeId),
+        });
 
         Emotion emotion = null;
         if (cursor.moveToFirst()) {
@@ -141,13 +143,15 @@ public class EmotionsDataSource {
 
         String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
                 + OtashuDatabaseHelper.TABLE_EMOTIONS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all notes from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(apprenticeId),
+        });
 
         if (cursor.moveToFirst()) {
             do {
@@ -189,13 +193,15 @@ public class EmotionsDataSource {
 
         String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
                 + OtashuDatabaseHelper.TABLE_EMOTIONS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all emotions from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(apprenticeId),
+        });
 
         Emotion emotion = null;
         if (cursor.moveToFirst()) {
@@ -216,13 +222,15 @@ public class EmotionsDataSource {
         Emotion emotion = new Emotion();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EMOTIONS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + emotionId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all emotions from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(emotionId),
+        });
 
         if (cursor.moveToFirst()) {
             do {
@@ -285,13 +293,15 @@ public class EmotionsDataSource {
      */
     public int getEmotionCount(long apprenticeId) {
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EMOTIONS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all notes from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(apprenticeId),
+        });
         int count = cursor.getCount();
         cursor.close();
 

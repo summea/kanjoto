@@ -172,13 +172,15 @@ public class GraphsDataSource {
         Graph graph = new Graph();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_GRAPHS + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_ID + "=" + graphId;
+                + OtashuDatabaseHelper.COLUMN_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all graphs from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(graphId),
+        });
 
         if (cursor.moveToFirst()) {
             do {
