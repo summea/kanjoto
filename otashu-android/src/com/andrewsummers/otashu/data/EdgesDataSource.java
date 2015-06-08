@@ -567,42 +567,48 @@ public class EdgesDataSource {
     }
 
     public List<Edge> getStrongPath(long apprenticeId, long graphId, long emotionId, int position,
-            int fromNode,
-            int improvisationLevel) {
+            int fromNode, int improvisationLevel) {
         List<Edge> results = new ArrayList<Edge>();
 
+        // TODO: clean up later...
         // int lastToNotevalue = 0;
+        List<String> parameters = new ArrayList<String>();
+        parameters.add(String.valueOf(apprenticeId));
+        parameters.add(String.valueOf(graphId));
+        parameters.add(String.valueOf(emotionId));
+
         for (int i = 0; i < 3; i++) {
+
             // get lowest first edge
             String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
-                    + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
-                    + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
-                    + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId;
-            if (fromNode > 0) {
-                query += " AND " + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=" + fromNode;
-            }
+                    + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?"
+                    + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=?"
+                    + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=?";
             if (position > 0) {
-                query += " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position;
+                query += " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=?";
+                //parameters.add(String.valueOf(position));
             } else {
                 int nextI = i + 1;
-                query += " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=" + nextI;
+                query += " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=?";
+                //parameters.add(String.valueOf(nextI));
+            }
+            if (fromNode > 0) {
+                query += " AND " + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=" + fromNode;
+                //parameters.add(String.valueOf(fromNode));
             }
             query += " ORDER BY RANDOM() LIMIT 3";
 
             Log.d("MYLOG", "query: " + query);
+            Log.d("MYLOG", "parameters: " + parameters.toString());
 
             // create database handle
             SQLiteDatabase db = dbHelper.getWritableDatabase();
 
             // select all edges from database
-            Cursor cursor = db.rawQuery(query, new String[] {
-                    String.valueOf(apprenticeId),
-                    String.valueOf(graphId),
-                    String.valueOf(emotionId),
-                    String.valueOf(fromNode),
-                    String.valueOf(position),
-                    // String.valueOf(nextI),
-            });
+            Log.d("MYLOG", "parameters size: " + parameters.size());
+            String[] paramsArr = parameters.toArray(new String[parameters.size()]);
+            Log.d("MYLOG", "params array size: " + paramsArr.length);
+            Cursor cursor = db.rawQuery(query, paramsArr);
 
             // query selects three random emotion-related notesets
             // now, find which of the notesets here has lowest (strongest) weight
@@ -652,10 +658,10 @@ public class EdgesDataSource {
 
         // get lowest first edge
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
-                + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId
-                + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotionId
-                + " AND " + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=" + fromNodeId
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?"
+                + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=?"
+                + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=?"
+                + " AND " + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=?"
                 + " ORDER BY " + OtashuDatabaseHelper.COLUMN_WEIGHT + " ASC LIMIT 1";
 
         Log.d("MYLOG", "query: " + query);
@@ -664,7 +670,12 @@ public class EdgesDataSource {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all edges from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(apprenticeId),
+                String.valueOf(graphId),
+                String.valueOf(emotionId),
+                String.valueOf(fromNodeId),
+        });
 
         if (cursor.moveToFirst()) {
             do {

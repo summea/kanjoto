@@ -916,6 +916,7 @@ public class GenerateMusicActivity extends Activity {
             }
         }
 
+        Log.d("MYLOG", "logic d notes " + notes.toString());
         List<Note> firstNoteset = notes.subList(0, 3);
         currentKeySignatureId = determineKeySignature(firstNoteset);
 
