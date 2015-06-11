@@ -22,6 +22,7 @@
 
 
 ## DONE:
+- 20150610: added database import confirm feature
 - 20150511: added ApprenticeScoresDataSource tests
 - 20150509: added ApprenticeScorecardsDataSource tests
 - 20150508: added AchievementsDataSource tests

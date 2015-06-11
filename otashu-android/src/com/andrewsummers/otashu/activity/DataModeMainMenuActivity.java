@@ -5,6 +5,8 @@ import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.adapter.DataModeMenuImageAdapter;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -115,7 +117,7 @@ public class DataModeMainMenuActivity extends Activity implements OnClickListene
                 intent = new Intent(this, ExportDatabaseActivity.class);
                 break;
             case R.id.import_database:
-                intent = new Intent(this, ImportDatabaseActivity.class);
+                confirmImport();
                 break;
             case R.id.database_dumper:
                 intent = new Intent(this, DatabaseDumperActivity.class);
@@ -149,7 +151,10 @@ public class DataModeMainMenuActivity extends Activity implements OnClickListene
                 break;
         }
 
-        startActivity(intent);
+        if (intent != null) {
+            startActivity(intent);
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -159,5 +164,25 @@ public class DataModeMainMenuActivity extends Activity implements OnClickListene
 
     public void setProgramMode(int programMode) {
         this.programMode = programMode;
+    }
+
+    public void confirmImport() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.dialog_confirm_import_message).setTitle(
+                R.string.dialog_confirm_import_title);
+        builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // user clicked ok, so go ahead and import database
+                Intent intent = new Intent(getBaseContext(), ImportDatabaseActivity.class);
+                startActivity(intent);
+            }
+        });
+        builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // user clicked cancel
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

@@ -1,20 +1,32 @@
 
 package com.andrewsummers.otashu.activity;
 
+import java.util.List;
+
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.adapter.ImageAdapter;
+import com.andrewsummers.otashu.data.EmotionsDataSource;
+import com.andrewsummers.otashu.data.NotesetsDataSource;
+import com.andrewsummers.otashu.model.Emotion;
+import com.andrewsummers.otashu.model.Noteset;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.Toast;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
@@ -24,7 +36,7 @@ import android.widget.GridView;
  */
 public class MainActivity extends Activity implements OnClickListener {
     private SharedPreferences sharedPref;
-    
+
     /**
      * onCreate override that provides menu buttons on menu view.
      * 
@@ -102,7 +114,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 intent = new Intent(this, ExportDatabaseActivity.class);
                 break;
             case R.id.import_database:
-                intent = new Intent(this, ImportDatabaseActivity.class);
+                confirmImport();
                 break;
             case R.id.database_dumper:
                 intent = new Intent(this, DatabaseDumperActivity.class);
@@ -136,7 +148,30 @@ public class MainActivity extends Activity implements OnClickListener {
                 break;
         }
 
-        startActivity(intent);
+        if (intent != null) {
+            startActivity(intent);
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    public void confirmImport() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.dialog_confirm_import_message).setTitle(
+                R.string.dialog_confirm_import_title);
+        builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // user clicked ok, so go ahead and import database
+                Intent intent = new Intent(getBaseContext(), ImportDatabaseActivity.class);
+                startActivity(intent);
+            }
+        });
+        builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // user clicked cancel
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

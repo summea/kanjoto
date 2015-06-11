@@ -74,6 +74,8 @@
     <string name="data_mode_menu_title">Data Mode</string>
     <string name="dialog_confirm_delete_message">Are you sure you want to delete this?</string>
     <string name="dialog_confirm_delete_title">Delete</string>
+    <string name="dialog_confirm_import_message">Are you sure you want to import this?</string>
+    <string name="dialog_confirm_import_title">Import</string>
     <string name="edit_apprentice_title">Edit Apprentice</string>
     <string name="edit_bookmark_title">Edit Bookmark</string>
     <string name="edit_emotion_title">Edit Emotion</string>

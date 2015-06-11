@@ -916,9 +916,15 @@ public class GenerateMusicActivity extends Activity {
             }
         }
 
-        Log.d("MYLOG", "logic d notes " + notes.toString());
-        List<Note> firstNoteset = notes.subList(0, 3);
-        currentKeySignatureId = determineKeySignature(firstNoteset);
+        
+        List<Note> firstNoteset = new ArrayList<Note>();
+        if (notes.isEmpty()) {
+            currentKeySignatureId = 4; // TODO: make dynamic
+        } else {
+            Log.d("MYLOG", "logic d notes " + notes.toString());
+            firstNoteset = notes.subList(0, 3);
+            currentKeySignatureId = determineKeySignature(firstNoteset);
+        }
 
         notes.clear();
 
