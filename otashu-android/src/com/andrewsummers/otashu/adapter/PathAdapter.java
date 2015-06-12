@@ -2,6 +2,7 @@
 package com.andrewsummers.otashu.adapter;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import com.andrewsummers.otashu.R;
@@ -81,6 +82,9 @@ public class PathAdapter extends BaseAdapter {
         emotion.setText(paths.get(position).getPath().get(0).getEmotionId() + "");
 
         String backgroundColor = "#dddddd";
+
+        // TODO: add matching background color for emotion
+
         /*
          * if (path.get(position).getLabel().getColor() != null) { backgroundColor =
          * path.get(position).getLabel().getColor(); } if
@@ -106,6 +110,15 @@ public class PathAdapter extends BaseAdapter {
 
         Log.d("MYLOG", "note items length: " + noteItems.length + "");
 
+        LabelsDataSource lds = new LabelsDataSource(mContext);
+        List<Label> allLabels = lds.getAllLabels();
+        lds.close();
+
+        HashMap<Long, Label> allLabelsMap = new HashMap<Long, Label>();
+        for (Label label : allLabels) {
+            allLabelsMap.put(label.getId(), label);
+        }
+
         // fill in note names for each note in each row of this custom list
         for (int i = 0; i < noteItems.length - 1; i++) {
             note = (TextView) convertView.findViewById(noteItems[i]);
@@ -116,6 +129,16 @@ public class PathAdapter extends BaseAdapter {
                     .getNotelabel());
 
             backgroundColor = "#dddddd";
+
+            // TODO: add matching background color for note
+            if (allLabelsMap
+                    .get(notevalues.get(paths.get(position).getPath().get(i).getToNodeId())
+                            .getLabelId()).getColor() != null) {
+                backgroundColor = allLabelsMap.get(
+                        notevalues.get(paths.get(position).getPath().get(i).getToNodeId())
+                                .getLabelId()).getColor();
+            }
+
             /*
              * if (labels.get( (int) notevalues.get(
              * paths.get(position).getNotes().get(i).getNotevalue()) .getLabelId()).getColor() !=

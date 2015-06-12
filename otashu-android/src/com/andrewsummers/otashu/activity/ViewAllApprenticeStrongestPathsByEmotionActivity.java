@@ -157,7 +157,7 @@ public class ViewAllApprenticeStrongestPathsByEmotionActivity extends ListActivi
         Intent intent = null;
         switch (item.getItemId()) {
             case R.id.context_menu_view:
-                intent = new Intent(this, ViewEmotionDetailActivity.class);
+                intent = new Intent(this, ViewTopApprenticeStrongestPathsActivity.class);
                 intent.putExtra("list_id", info.id);
                 startActivity(intent);
                 return true;

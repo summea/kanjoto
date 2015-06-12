@@ -1,32 +1,22 @@
 
 package com.andrewsummers.otashu.activity;
 
-import java.util.List;
-
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.adapter.ImageAdapter;
-import com.andrewsummers.otashu.data.EmotionsDataSource;
-import com.andrewsummers.otashu.data.NotesetsDataSource;
-import com.andrewsummers.otashu.model.Emotion;
-import com.andrewsummers.otashu.model.Noteset;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.Toast;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 

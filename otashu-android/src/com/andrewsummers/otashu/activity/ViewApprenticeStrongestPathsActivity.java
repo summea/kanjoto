@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -35,6 +36,8 @@ public class ViewApprenticeStrongestPathsActivity extends Activity {
         apprenticeId = Long.parseLong(sharedPref.getString(
                 "pref_selected_apprentice", "1"));
 
+        Intent intent = getIntent();
+        
         TextView pathText = (TextView) findViewById(R.id.path_text);
         pathText.setText("Strongest Path\n");
 
@@ -44,7 +47,7 @@ public class ViewApprenticeStrongestPathsActivity extends Activity {
         long graphId = 2;
 
         // select a given emotion
-        long emotionId = 1;
+        long emotionId = intent.getLongExtra("list_id", 1);
 
         // select a given weight limit
         float weightLimit = 0.5f;
