@@ -6,16 +6,20 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.andrewsummers.otashu.R;
+import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.data.NotevaluesDataSource;
+import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.Label;
 import com.andrewsummers.otashu.model.Notevalue;
 import com.andrewsummers.otashu.model.Path;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.StateListDrawable;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -28,12 +32,18 @@ public class PathAdapter extends BaseAdapter {
 
     private Context mContext;
     private List<Path> paths;
+    private SharedPreferences sharedPref;
+    private long apprenticeId = 0;
     SparseArray<Notevalue> notevalues = new SparseArray<Notevalue>();
     SparseArray<Label> labels = new SparseArray<Label>();
 
     public PathAdapter(Context context, List<Path> allPaths) {
         mContext = context;
         paths = allPaths;
+
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(mContext);
+        apprenticeId = Long.parseLong(sharedPref.getString(
+                "pref_selected_apprentice", "1"));
 
         Log.d("MYLOG", "all paths: " + allPaths.toString());
 
@@ -77,19 +87,40 @@ public class PathAdapter extends BaseAdapter {
                     R.layout.row_noteset, null);
         }
 
+        EmotionsDataSource eds = new EmotionsDataSource(mContext);
+        List<Emotion> allEmotions = eds.getAllEmotions(apprenticeId);
+        eds.close();
+
+        HashMap<Long, Emotion> allEmotionsMap = new HashMap<Long, Emotion>();
+        for (Emotion emotion : allEmotions) {
+            allEmotionsMap.put(emotion.getId(), emotion);
+        }
+
+        LabelsDataSource lds = new LabelsDataSource(mContext);
+        List<Label> allLabels = lds.getAllLabels();
+        lds.close();
+
+        HashMap<Long, Label> allLabelsMap = new HashMap<Long, Label>();
+        for (Label label : allLabels) {
+            allLabelsMap.put(label.getId(), label);
+        }
+
         TextView emotion = (TextView) convertView.findViewById(R.id.emotion);
         Log.d("MYLOG", "> get path data: " + paths.get(position).toString());
-        emotion.setText(paths.get(position).getPath().get(0).getEmotionId() + "");
+        emotion.setText(allEmotionsMap.get(paths.get(position).getPath().get(0).getEmotionId())
+                .getName() + "");
 
         String backgroundColor = "#dddddd";
 
         // TODO: add matching background color for emotion
 
-        /*
-         * if (path.get(position).getLabel().getColor() != null) { backgroundColor =
-         * path.get(position).getLabel().getColor(); } if
-         * (path.get(position).getNoteset().getEnabled() == 0) { backgroundColor = "#e8e8e8"; }
-         */
+        if (allLabelsMap.get(
+                allEmotionsMap.get(paths.get(position).getPath().get(0).getEmotionId())
+                        .getLabelId()).getColor() != null) {
+            backgroundColor = allLabelsMap.get(
+                    allEmotionsMap.get(paths.get(position).getPath().get(0).getEmotionId())
+                            .getLabelId()).getColor();
+        }
 
         // add correct color to background (but maintain default state "pressed" and "selected"
         // effects)
@@ -108,17 +139,6 @@ public class PathAdapter extends BaseAdapter {
         };
         TextView note = null;
 
-        Log.d("MYLOG", "note items length: " + noteItems.length + "");
-
-        LabelsDataSource lds = new LabelsDataSource(mContext);
-        List<Label> allLabels = lds.getAllLabels();
-        lds.close();
-
-        HashMap<Long, Label> allLabelsMap = new HashMap<Long, Label>();
-        for (Label label : allLabels) {
-            allLabelsMap.put(label.getId(), label);
-        }
-
         // fill in note names for each note in each row of this custom list
         for (int i = 0; i < noteItems.length - 1; i++) {
             note = (TextView) convertView.findViewById(noteItems[i]);
@@ -132,20 +152,12 @@ public class PathAdapter extends BaseAdapter {
 
             // TODO: add matching background color for note
             if (allLabelsMap
-                    .get(notevalues.get(paths.get(position).getPath().get(i).getToNodeId())
+                    .get(notevalues.get(paths.get(position).getPath().get(i).getFromNodeId())
                             .getLabelId()).getColor() != null) {
                 backgroundColor = allLabelsMap.get(
-                        notevalues.get(paths.get(position).getPath().get(i).getToNodeId())
+                        notevalues.get(paths.get(position).getPath().get(i).getFromNodeId())
                                 .getLabelId()).getColor();
             }
-
-            /*
-             * if (labels.get( (int) notevalues.get(
-             * paths.get(position).getNotes().get(i).getNotevalue()) .getLabelId()).getColor() !=
-             * null) backgroundColor = labels.get( (int) notevalues.get(
-             * paths.get(position).getNotes().get(i).getNotevalue()) .getLabelId()).getColor(); if
-             * (paths.get(position).getNoteset().getEnabled() == 0) { backgroundColor = "#e8e8e8"; }
-             */
 
             drawable = new StateListDrawable();
             drawable.addState(new int[] {
@@ -161,21 +173,20 @@ public class PathAdapter extends BaseAdapter {
             if (i == noteItems.length - 2) {
 
                 note = (TextView) convertView.findViewById(noteItems[i + 1]);
-                // note.setText(getNoteName(path.get(position).getNotes().get(i).getNotevalue()));
 
                 note.setText(notevalues.get(
                         paths.get(position).getPath().get(i).getToNodeId())
                         .getNotelabel());
 
                 backgroundColor = "#dddddd";
-                /*
-                 * if (labels.get( (int) notevalues.get(
-                 * paths.get(position).getNotes().get(i).getNotevalue()) .getLabelId()).getColor()
-                 * != null) backgroundColor = labels.get( (int) notevalues.get(
-                 * paths.get(position).getNotes().get(i).getNotevalue()) .getLabelId()).getColor();
-                 * if (paths.get(position).getNoteset().getEnabled() == 0) { backgroundColor =
-                 * "#e8e8e8"; }
-                 */
+
+                if (allLabelsMap
+                        .get(notevalues.get(paths.get(position).getPath().get(i).getToNodeId())
+                                .getLabelId()).getColor() != null) {
+                    backgroundColor = allLabelsMap.get(
+                            notevalues.get(paths.get(position).getPath().get(i).getToNodeId())
+                                    .getLabelId()).getColor();
+                }
 
                 drawable = new StateListDrawable();
                 drawable.addState(new int[] {

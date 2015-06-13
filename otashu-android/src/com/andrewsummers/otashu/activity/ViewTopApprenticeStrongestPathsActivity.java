@@ -74,7 +74,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
                 listView, false);
         TextView headerText = (TextView) listHeader.findViewById(R.id.list_header_title);
         headerText.setText(R.string.top_apprentice_strongest_paths_list_header);
-        listView.addHeaderView(listHeader);
+        listView.addHeaderView(listHeader, "", false);
 
         fillList();
     }

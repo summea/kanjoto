@@ -4,15 +4,12 @@
 - make sure vertices are generated at start of program (if not already existing... these are same for all apprentices)
 - make sure vertices are shared for all apprentices and users
 - create auto test/learn for Emotion test
-- break out general database into Apprentice-specific database
 - think about adding support for different note speeds in Logic D
 - connect label_id to background color in "list all scorecards" activity
 - connect label_id to background color in "view graph detail" activity
 - connect label_id to background color in "list all graphs" activity
 - add noteset and emotion background colors to UI for "strongest path detail" activity
 - add noteset playback to "top 3 strengths" detail activity
-- show emotion name in "top 3 strengths" list activity
-- add note colors to notes on "top 3 strengths" layout
 - add UI formatting to Apprentice top three strengths detail activity
 - fix horizontal animation timing for music generation activity
 - music playback pauses at random times on phone which interferes with sync between audio and graphics
@@ -22,6 +19,8 @@
 
 
 ## DONE:
+- 20150612: added emotion name in "top 3 strengths" list activity
+- 20150612: added note colors to notes on "top 3 strengths" layout
 - 20150610: added database import confirm feature
 - 20150511: added ApprenticeScoresDataSource tests
 - 20150509: added ApprenticeScorecardsDataSource tests
