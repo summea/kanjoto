@@ -115,13 +115,15 @@ public class NotesetsDataSource {
         List<Noteset> notesets = new ArrayList<Noteset>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all notes from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(apprenticeId)
+        });
 
         Noteset noteset = null;
         if (cursor.moveToFirst()) {
@@ -151,7 +153,7 @@ public class NotesetsDataSource {
         List<Noteset> notesets = new ArrayList<Noteset>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?";
         if (limit > 0)
             query += " LIMIT " + limit;
         if (offset > 0)
@@ -161,7 +163,9 @@ public class NotesetsDataSource {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all notes from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(apprenticeId)
+        });
 
         Noteset noteset = null;
         if (cursor.moveToFirst()) {
@@ -191,13 +195,15 @@ public class NotesetsDataSource {
         SparseArray<List<Note>> notesetBundles = new SparseArray<List<Note>>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all notesets from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(apprenticeId)
+        });
 
         if (cursor.moveToFirst()) {
             do {
@@ -206,8 +212,10 @@ public class NotesetsDataSource {
                 // get all related notes inside this noteset
                 // TODO: make this query approach more efficient at some point, if necessary
                 String queryForRelatedNotes = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES
-                        + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = " + notesetId;
-                Cursor cursorForRelatedNotes = db.rawQuery(queryForRelatedNotes, null);
+                        + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + "=?";
+                Cursor cursorForRelatedNotes = db.rawQuery(queryForRelatedNotes, new String[] {
+                        String.valueOf(notesetId)
+                });
 
                 List<Note> notes = new LinkedList<Note>();
 
@@ -241,15 +249,19 @@ public class NotesetsDataSource {
         SparseArray<List<Note>> notesetBundles = new SparseArray<List<Note>>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId
-                + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=" + emotion_id
-                + " AND " + OtashuDatabaseHelper.COLUMN_ENABLED + "=1";
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?"
+                + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=?"
+                + " AND " + OtashuDatabaseHelper.COLUMN_ENABLED + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all notesets from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(apprenticeId),
+                String.valueOf(emotion_id),
+                String.valueOf(1),
+        });
 
         if (cursor.moveToFirst()) {
             do {
@@ -540,7 +552,7 @@ public class NotesetsDataSource {
 
         return count;
     }
-    
+
     /**
      * Get all notesets from database table by emotion.
      * 

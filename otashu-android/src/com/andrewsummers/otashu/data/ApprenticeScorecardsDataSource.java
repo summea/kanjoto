@@ -112,7 +112,6 @@ public class ApprenticeScorecardsDataSource {
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORECARDS
                 + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?";
         if (orderBy != null && !orderBy.isEmpty()) {
-            // query += " ORDER BY " + orderBy + " ASC";
             query += " ORDER BY ? ASC";
         }
 
@@ -178,7 +177,7 @@ public class ApprenticeScorecardsDataSource {
 
         // select all apprenticeScorecards from database
         Cursor cursor = db.rawQuery(query, new String[] {
-            String.valueOf(apprenticeId)
+                String.valueOf(apprenticeId)
         });
 
         ApprenticeScorecard apprenticeScorecard = null;
@@ -211,7 +210,9 @@ public class ApprenticeScorecardsDataSource {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all apprenticeScorecards from database
-        Cursor cursor = db.rawQuery(query, new String[]{ String.valueOf(apprenticeScorecardId) });
+        Cursor cursor = db.rawQuery(query, new String[] {
+            String.valueOf(apprenticeScorecardId)
+        });
 
         if (cursor.moveToFirst()) {
             do {

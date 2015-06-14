@@ -209,13 +209,15 @@ public class LabelsDataSource {
         Label label = new Label();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_LABELS + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_ID + "=" + labelId;
+                + OtashuDatabaseHelper.COLUMN_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all labels from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(labelId)
+        });
 
         if (cursor.moveToFirst()) {
             do {

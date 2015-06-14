@@ -335,7 +335,7 @@ public class EdgesDataSource {
                         String.valueOf(apprenticeId),
                         String.valueOf(graphId),
                         String.valueOf(emotionId),
-                        String.valueOf(toNodeId),
+                        String.valueOf(fromNodeId),
                         String.valueOf(position),
                 });
                 break;
@@ -350,7 +350,7 @@ public class EdgesDataSource {
                         String.valueOf(apprenticeId),
                         String.valueOf(graphId),
                         String.valueOf(emotionId),
-                        String.valueOf(fromNodeId),
+                        String.valueOf(toNodeId),
                         String.valueOf(position),
                 });
                 break;

@@ -105,13 +105,15 @@ public class KeySignaturesDataSource {
         List<KeySignature> keySignatures = new ArrayList<KeySignature>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_SIGNATURES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=" + apprenticeId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all notes from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(apprenticeId)
+        });
 
         KeySignature keySignature = null;
         if (cursor.moveToFirst()) {
@@ -148,13 +150,15 @@ public class KeySignaturesDataSource {
         KeySignature keySignature = new KeySignature();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_KEY_SIGNATURES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=" + keySignatureId;
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all keySignatures from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(keySignatureId)
+        });
 
         if (cursor.moveToFirst()) {
             do {

@@ -174,13 +174,15 @@ public class LearningStylesDataSource {
         LearningStyle learningStyle = new LearningStyle();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_LEARNING_STYLES + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_ID + "=" + learningStyleId;
+                + OtashuDatabaseHelper.COLUMN_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all learningStyles from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(learningStyleId)
+        });
 
         if (cursor.moveToFirst()) {
             do {

@@ -112,14 +112,16 @@ public class NotesDataSource {
     public Note getNote(long id) {
         Note note = new Note();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_ID + "=" + id;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all notes from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(id)
+        });
 
         if (cursor.moveToFirst()) {
             do {
@@ -180,14 +182,16 @@ public class NotesDataSource {
     public List<Note> getAllNotesByNotesetId(long notesetId) {
         List<Note> notes = new ArrayList<Note>();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_NOTESET_ID + "=" + notesetId;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all notes from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(notesetId)
+        });
 
         Note note = null;
         if (cursor.moveToFirst()) {
@@ -212,14 +216,16 @@ public class NotesDataSource {
     public List<Note> getAllNotesByPosition(int position) {
         List<Note> notes = new ArrayList<Note>();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_POSITION + "=" + position;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_POSITION + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all notes from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(position)
+        });
 
         Note note = null;
         if (cursor.moveToFirst()) {
@@ -261,22 +267,22 @@ public class NotesDataSource {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         for (int i = 0; i < notesetAndRelatedToCheck.getNotes().size(); i++) {
-            // TODO: check position with i
-
             // TODO: check all possible note sequences
             // and narrow down as we move through the note positions
             Log.d("MYLOG", "checking note " + i + " in list...");
             String query = "SELECT " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + ", "
-                    + OtashuDatabaseHelper.COLUMN_NOTEVALUE + " FROM "
-                    + OtashuDatabaseHelper.TABLE_NOTES + " WHERE "
-                    + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "="
-                    + notesetAndRelatedToCheck.getNotes().get(i) + " AND "
-                    + OtashuDatabaseHelper.COLUMN_POSITION + "=" + (i + 1);
+                    + OtashuDatabaseHelper.COLUMN_NOTEVALUE
+                    + " FROM " + OtashuDatabaseHelper.TABLE_NOTES
+                    + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "=?"
+                    + " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=?";
 
             Log.d("MYLOG", "query: " + query);
 
             // select all notes from database
-            Cursor cursor = db.rawQuery(query, null);
+            Cursor cursor = db.rawQuery(query, new String[] {
+                    String.valueOf(notesetAndRelatedToCheck.getNotes().get(i)),
+                    String.valueOf(i + 1),
+            });
 
             if (cursor.moveToFirst()) {
                 do {
@@ -315,14 +321,15 @@ public class NotesDataSource {
         if (foundSet.size() > 0) {
 
             for (Long id : foundSet) {
-                String query = "SELECT * FROM "
-                        + OtashuDatabaseHelper.TABLE_NOTESETS + " WHERE "
-                        + OtashuDatabaseHelper.COLUMN_ID + "=" + id;
+                String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS
+                        + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=?";
 
                 Log.d("MYLOG", "query: " + query);
 
                 // select all notes from database
-                Cursor cursor = db.rawQuery(query, null);
+                Cursor cursor = db.rawQuery(query, new String[] {
+                        String.valueOf(id)
+                });
 
                 if (cursor.moveToFirst()) {
                     do {
@@ -359,23 +366,6 @@ public class NotesDataSource {
         note.setPosition(cursor.getInt(4));
         return note;
     }
-
-    /**
-     * getAllNotes gets a preview list of all notes.
-     * 
-     * @return List of Note preview strings.
-     */
-    /*
-     * TODO: cleanup public List<String> getAllNoteListPreviews() { List<String> notes = new
-     * LinkedList<String>(); String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES; //
-     * create database handle SQLiteDatabase db = dbHelper.getWritableDatabase(); // select all
-     * notes from database Cursor cursor = db.rawQuery(query, null); Note note = null; if
-     * (cursor.moveToFirst()) { do { // create note objects based on note data from database note =
-     * new Note(); note.setId(Integer.parseInt(cursor.getString(0)));
-     * note.setNotevalue(cursor.getInt(1)); note.setVelocity(cursor.getInt(2));
-     * note.setLength(cursor.getFloat(3)); note.setPosition(cursor.getInt(4)); // add note string to
-     * list of strings notes.add(note.toString()); } while (cursor.moveToNext()); } return notes; }
-     */
 
     public Note updateNote(Note note) {
         // create database handle

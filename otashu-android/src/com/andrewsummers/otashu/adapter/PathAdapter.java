@@ -106,14 +106,13 @@ public class PathAdapter extends BaseAdapter {
         }
 
         TextView emotion = (TextView) convertView.findViewById(R.id.emotion);
-        Log.d("MYLOG", "> get path data: " + paths.get(position).toString());
         emotion.setText(allEmotionsMap.get(paths.get(position).getPath().get(0).getEmotionId())
                 .getName() + "");
 
         String backgroundColor = "#dddddd";
 
-        // TODO: add matching background color for emotion
-
+        // TODO: refactor this in the future...
+        // get background color of related label
         if (allLabelsMap.get(
                 allEmotionsMap.get(paths.get(position).getPath().get(0).getEmotionId())
                         .getLabelId()).getColor() != null) {
@@ -142,15 +141,14 @@ public class PathAdapter extends BaseAdapter {
         // fill in note names for each note in each row of this custom list
         for (int i = 0; i < noteItems.length - 1; i++) {
             note = (TextView) convertView.findViewById(noteItems[i]);
-            // note.setText(getNoteName(path.get(position).getNotes().get(i).getNotevalue()));
-
             note.setText(notevalues.get(
                     paths.get(position).getPath().get(i).getFromNodeId())
                     .getNotelabel());
 
             backgroundColor = "#dddddd";
 
-            // TODO: add matching background color for note
+            // TODO: refactor this in the future...
+            // get background color of related label
             if (allLabelsMap
                     .get(notevalues.get(paths.get(position).getPath().get(i).getFromNodeId())
                             .getLabelId()).getColor() != null) {
