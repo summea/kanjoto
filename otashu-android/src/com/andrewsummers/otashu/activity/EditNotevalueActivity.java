@@ -55,10 +55,9 @@ public class EditNotevalueActivity extends Activity implements OnClickListener {
         nvds.close();
 
         LabelsDataSource lds = new LabelsDataSource(this);
-
         List<String> allLabels = new ArrayList<String>();
         allLabels = lds.getAllLabelListPreviews();
-
+        
         Label selectedLabel = lds.getLabel(editNotevalue.getLabelId());
         lds.close();
 
@@ -119,7 +118,7 @@ public class EditNotevalueActivity extends Activity implements OnClickListener {
                 notevalueToUpdate.setLabelId(allLabelIds.get(notevalueLabel
                         .getSelectedItemPosition()));
 
-                // first insert new notevalue (parent of all related notes)
+                // update notevalue
                 saveNotevalueUpdates(v, notevalueToUpdate);
 
                 // close activity

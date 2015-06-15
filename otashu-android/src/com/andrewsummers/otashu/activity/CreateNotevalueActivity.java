@@ -47,7 +47,6 @@ public class CreateNotevalueActivity extends Activity implements OnClickListener
         buttonSave.setOnClickListener(this);
 
         LabelsDataSource lds = new LabelsDataSource(this);
-
         List<String> allLabels = new ArrayList<String>();
         allLabels = lds.getAllLabelListPreviews();
         lds.close();
@@ -65,7 +64,7 @@ public class CreateNotevalueActivity extends Activity implements OnClickListener
         // locate next spinner in layout
         spinner = (Spinner) findViewById(R.id.spinner_label);
 
-        // create array adapter for list of notevalues
+        // create array adapter for list of labels
         ArrayAdapter<String> labelsAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item);
         labelsAdapter.addAll(allLabels);

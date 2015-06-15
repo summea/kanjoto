@@ -28,6 +28,18 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp" />
         
+    <TextView
+        android:id="@+id/spinner_label_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/spinner_label_label" />
+            
+    <Spinner
+        android:id="@+id/spinner_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp" />
+        
     <Button
         android:id="@+id/button_save"
         android:layout_width="match_parent"

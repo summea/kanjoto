@@ -220,6 +220,7 @@ public class GenerateMusicActivity extends Activity {
 
         try {
             switch (logicType) {
+                /*
                 case 1:
                     notes = logicA();
                     break;
@@ -232,6 +233,7 @@ public class GenerateMusicActivity extends Activity {
                 case 4:
                     notes = logicD();
                     break;
+                */
                 default:
                     notes = logicD();
             }
@@ -966,8 +968,7 @@ public class GenerateMusicActivity extends Activity {
                     int randomNumber = random.nextInt(3) + 1;
                     if (randomNumber == 1) {
                         edges = eds.getStrongPath(apprenticeId, graphId, selectedEmotionId, 0,
-                                nextNodeTo,
-                                improvisationLevel);
+                                nextNodeTo, improvisationLevel);
                     } else {
                         edges = eds.getStrongPath(apprenticeId, graphId, selectedEmotionId, 0,
                                 nextNodeTo, 0);

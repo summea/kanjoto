@@ -11,7 +11,7 @@ import android.util.Log;
  * application database.
  */
 public class OtashuDatabaseHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 56;
+    private static final int DATABASE_VERSION = 57;
     private static final String DATABASE_NAME = "otashu_collection.db";
 
     public static final String COLUMN_ID = "_id";
@@ -116,7 +116,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_GRAPHS = "CREATE TABLE " + TABLE_GRAPHS
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
             + COLUMN_NAME + " text,"
-            + COLUMN_LABEL_ID + ");";
+            + COLUMN_LABEL_ID + " integer);";
 
     private static final String CREATE_TABLE_VERTICES = "CREATE TABLE " + TABLE_VERTICES
             + " (" + COLUMN_ID + " integer primary key autoincrement, "

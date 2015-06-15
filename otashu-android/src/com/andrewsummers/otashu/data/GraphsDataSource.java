@@ -21,6 +21,7 @@ public class GraphsDataSource {
     private String[] allColumns = {
             OtashuDatabaseHelper.COLUMN_ID,
             OtashuDatabaseHelper.COLUMN_NAME,
+            OtashuDatabaseHelper.COLUMN_LABEL_ID,
     };
 
     /**
@@ -57,6 +58,7 @@ public class GraphsDataSource {
     public Graph createGraph(Graph graph) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, graph.getName());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_LABEL_ID, graph.getLabelId());
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -114,6 +116,7 @@ public class GraphsDataSource {
                 graph = new Graph();
                 graph.setId(cursor.getLong(0));
                 graph.setName(cursor.getString(1));
+                graph.setLabelId(cursor.getLong(2));
 
                 // add note string to list of strings
                 graphs.add(graph);
@@ -133,6 +136,7 @@ public class GraphsDataSource {
         Graph graph = new Graph();
         graph.setId(cursor.getLong(0));
         graph.setName(cursor.getString(1));
+        graph.setLabelId(cursor.getLong(2));
         return graph;
     }
 
@@ -158,7 +162,9 @@ public class GraphsDataSource {
             do {
                 // create graph objects based on graph data from database
                 graph = new Graph();
-                graph.setId(Long.parseLong(cursor.getString(0)));
+                graph.setId(cursor.getLong(0));
+                graph.setName(cursor.getString(1));
+                graph.setLabelId(cursor.getLong(2));
 
                 // add graph to graphs list
                 graphs.add(graph.getId());
@@ -188,6 +194,7 @@ public class GraphsDataSource {
                 graph = new Graph();
                 graph.setId(cursor.getLong(0));
                 graph.setName(cursor.getString(1));
+                graph.setLabelId(cursor.getLong(2));
             } while (cursor.moveToNext());
         }
 
@@ -202,6 +209,7 @@ public class GraphsDataSource {
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, graph.getId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, graph.getName());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_LABEL_ID, graph.getLabelId());
 
         db.update(OtashuDatabaseHelper.TABLE_GRAPHS, contentValues, OtashuDatabaseHelper.COLUMN_ID
                 + "=" + graph.getId(), null);

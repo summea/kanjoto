@@ -1,8 +1,12 @@
 
 package com.andrewsummers.otashu.activity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.GraphsDataSource;
+import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.model.Graph;
 
 import android.app.Activity;
@@ -10,8 +14,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 /**
@@ -43,6 +49,27 @@ public class CreateGraphActivity extends Activity implements OnClickListener {
         // add listeners to buttons
         buttonSave = (Button) findViewById(R.id.button_save);
         buttonSave.setOnClickListener(this);
+        
+        LabelsDataSource lds = new LabelsDataSource(this);
+        List<String> allLabels = new ArrayList<String>();
+        allLabels = lds.getAllLabelListPreviews();
+        lds.close();
+
+        ArrayAdapter<CharSequence> adapter = null;
+
+        // locate next spinner in layout
+        Spinner spinner = (Spinner) findViewById(R.id.spinner_label);
+
+        // create array adapter for list of labels
+        ArrayAdapter<String> labelsAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item);
+        labelsAdapter.addAll(allLabels);
+
+        // specify the default layout when list of choices appears
+        labelsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // apply this adapter to the spinner
+        spinner.setAdapter(labelsAdapter);
     }
 
     /**
@@ -55,12 +82,19 @@ public class CreateGraphActivity extends Activity implements OnClickListener {
         switch (v.getId()) {
             case R.id.button_save:
                 // gather graph data from form
+                LabelsDataSource lds = new LabelsDataSource(this);
+                List<Long> allLabelIds = lds.getAllLabelListDBTableIds();
+                lds.close();
+                
                 Graph graphToInsert = new Graph();
 
                 String graphName = ((EditText) findViewById(R.id.edittext_graph_name)).getText()
                         .toString();
+                Spinner notevalueLabel = (Spinner) findViewById(R.id.spinner_label);
 
                 graphToInsert.setName(graphName.toString());
+                graphToInsert.setLabelId(allLabelIds.get(notevalueLabel
+                        .getSelectedItemPosition()));
 
                 // first insert new graph (parent of all related notes)
                 saveGraph(v, graphToInsert);

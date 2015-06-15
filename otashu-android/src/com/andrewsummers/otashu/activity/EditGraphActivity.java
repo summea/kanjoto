@@ -1,17 +1,24 @@
 
 package com.andrewsummers.otashu.activity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.GraphsDataSource;
+import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.model.Graph;
+import com.andrewsummers.otashu.model.Label;
 
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 /**
@@ -51,13 +58,35 @@ public class EditGraphActivity extends Activity implements OnClickListener {
         int graphId = (int) getIntent().getExtras().getLong("list_id");
 
         // open data source handle
-        GraphsDataSource lds = new GraphsDataSource(this);
-        editGraph = lds.getGraph(graphId);
-        lds.close();
+        GraphsDataSource gds = new GraphsDataSource(this);
+        editGraph = gds.getGraph(graphId);
+        gds.close();
 
         // fill in existing form data
         EditText graphNameText = (EditText) findViewById(R.id.edittext_graph_name);
         graphNameText.setText(editGraph.getName());
+        
+        LabelsDataSource lds = new LabelsDataSource(this);
+        List<String> allLabels = new ArrayList<String>();
+        allLabels = lds.getAllLabelListPreviews();
+        
+        Label selectedLabel = lds.getLabel(editGraph.getLabelId());
+        lds.close();
+        
+        // locate next spinner in layout
+        Spinner spinner = (Spinner) findViewById(R.id.spinner_label);
+        
+        // create array adapter for list of notevalues
+        ArrayAdapter<String> labelsAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item);
+        labelsAdapter.addAll(allLabels);
+
+        // specify the default layout when list of choices appears
+        labelsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // apply this adapter to the spinner
+        spinner.setAdapter(labelsAdapter);
+        spinner.setSelection(labelsAdapter.getPosition(selectedLabel.getName()));
     }
 
     /**
@@ -70,15 +99,22 @@ public class EditGraphActivity extends Activity implements OnClickListener {
         switch (v.getId()) {
             case R.id.button_save:
                 // gather graph data from form
+                LabelsDataSource lds = new LabelsDataSource(this);
+                List<Long> allLabelIds = lds.getAllLabelListDBTableIds();
+                lds.close();
+                
                 Graph graphToUpdate = new Graph();
                 graphToUpdate.setId(editGraph.getId());
 
                 String graphName = ((EditText) findViewById(R.id.edittext_graph_name)).getText()
                         .toString();
+                Spinner graphLabel = (Spinner) findViewById(R.id.spinner_label);
 
                 graphToUpdate.setName(graphName.toString());
+                graphToUpdate.setLabelId(allLabelIds.get(graphLabel
+                        .getSelectedItemPosition()));
 
-                // first insert new graph (parent of all related notes)
+                // update graph
                 saveGraphUpdates(v, graphToUpdate);
 
                 // close activity
@@ -111,9 +147,9 @@ public class EditGraphActivity extends Activity implements OnClickListener {
      */
     private void saveGraphUpdates(View v, Graph graph) {
         // save graph in database
-        GraphsDataSource lds = new GraphsDataSource(this);
-        lds.updateGraph(graph);
-        lds.close();
+        GraphsDataSource gds = new GraphsDataSource(this);
+        gds.updateGraph(graph);
+        gds.close();
 
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
