@@ -7,7 +7,6 @@
 - think about adding support for different note speeds in Logic D
 - connect label_id to background color in "list all scorecards" activity
 - connect label_id to background color in "view graph detail" activity
-- connect label_id to background color in "list all graphs" activity
 - add noteset and emotion background colors to UI for "strongest path detail" activity
 - add noteset playback to "top 3 strengths" detail activity
 - add UI formatting to Apprentice top three strengths detail activity
@@ -19,6 +18,10 @@
 
 
 ## DONE:
+- 20150615: added graph create feature
+- 20150615: added graph edit feature
+- 20150615: fixed graph delete feature
+- 20150615: connected label_id to background color in "list all graphs" activity
 - 20150612: added emotion name in "top 3 strengths" list activity
 - 20150612: added note colors to notes on "top 3 strengths" layout
 - 20150610: added database import confirm feature

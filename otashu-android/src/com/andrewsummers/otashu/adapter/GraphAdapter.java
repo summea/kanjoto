@@ -11,7 +11,6 @@ import com.andrewsummers.otashu.model.Label;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +34,6 @@ public class GraphAdapter extends BaseAdapter {
         allLabelsMap = new HashMap<Long, Label>();
         for (Label label : allLabels) {
             allLabelsMap.put(label.getId(), label);
-            Log.d("MYLOG", "putting label: " + label.getId() + " putting color: " + label.getColor());
         }
     }
 
@@ -66,13 +64,12 @@ public class GraphAdapter extends BaseAdapter {
         graph.setText(graphs.get(position).getId() + " " + graphs.get(position).getName());
 
         // set relevant background color, if available
-        /*
-        if (allLabelsMap.get(graphs.get(position).getLabelId()).getColor() != null) {
-            graph.setBackgroundColor(Color.parseColor(allLabelsMap.get(
-                    graphs.get(position).getLabelId()).getColor()));
+        if (graphs.get(position).getLabelId() > 0) {
+            if (allLabelsMap.get(graphs.get(position).getLabelId()).getColor() != null) {
+                graph.setBackgroundColor(Color.parseColor(allLabelsMap.get(
+                        graphs.get(position).getLabelId()).getColor()));
+            }
         }
-        */
-        Log.d("MYLOG", "color: " + allLabelsMap.get(1));
 
         return convertView;
     }

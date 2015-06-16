@@ -143,25 +143,23 @@ public class ViewAllGraphsActivity extends ListActivity {
                 startActivity(intent);
                 return true;
             case R.id.context_menu_delete:
-                confirmDelete();
+                confirmDelete(info);
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
     }
 
-    public void confirmDelete() {
+    public void confirmDelete(final AdapterContextMenuInfo info) {
+        final GraphsDataSource gds = new GraphsDataSource(this);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.dialog_confirm_delete_message).setTitle(
                 R.string.dialog_confirm_delete_title);
         builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // user clicked ok
-                // go ahead and delete graph
-
+                // user clicked ok, so go ahead and delete graph
                 // get correct graph id to delete
-                Graph graphToDelete = getGraphFromListPosition(selectedPositionInList);
-
+                Graph graphToDelete = gds.getGraph(info.id);
                 deleteGraph(graphToDelete);
 
                 Context context = getApplicationContext();
@@ -173,7 +171,7 @@ public class ViewAllGraphsActivity extends ListActivity {
                 toast.show();
 
                 // refresh list
-                adapter.removeItem(selectedPositionInList);
+                adapter.removeItem(info.position - 1);
                 adapter.notifyDataSetChanged();
             }
         });
@@ -185,28 +183,6 @@ public class ViewAllGraphsActivity extends ListActivity {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    public Graph getGraphFromListPosition(long rowId) {
-        long graphId = rowId;
-        List<Long> allGraphsData = new LinkedList<Long>();
-        GraphsDataSource lds = new GraphsDataSource(this);
-
-        // get string version of returned graph list
-        allGraphsData = lds.getAllGraphListDBTableIds();
-        lds.close();
-
-        // prevent crashes due to lack of database data
-        if (allGraphsData.isEmpty())
-            allGraphsData.add((long) 0);
-
-        Long[] allGraphs = allGraphsData
-                .toArray(new Long[allGraphsData.size()]);
-
-        Graph graph = lds.getGraph(allGraphs[(int) graphId]);
-        lds.close();
-
-        return graph;
     }
 
     public void deleteGraph(Graph graph) {
