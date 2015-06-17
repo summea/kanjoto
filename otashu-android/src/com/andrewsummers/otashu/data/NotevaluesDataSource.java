@@ -214,14 +214,16 @@ public class NotevaluesDataSource {
     public Notevalue getNotevalue(long notevalueId) {
         Notevalue notevalue = new Notevalue();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTEVALUES + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_ID + "=" + notevalueId;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTEVALUES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all notevalues from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(notevalueId)
+        });
 
         if (cursor.moveToFirst()) {
             do {
@@ -237,17 +239,19 @@ public class NotevaluesDataSource {
         return notevalue;
     }
 
-    public Notevalue getNotevalueByNoteValue(int noteValueId) {
+    public Notevalue getNotevalueByNoteValue(int notevalueId) {
         Notevalue notevalue = new Notevalue();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTEVALUES + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "=" + noteValueId;
+                + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all notevalues from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(notevalueId)
+        });
 
         if (cursor.moveToFirst()) {
             do {

@@ -142,15 +142,18 @@ public class VerticesDataSource {
     public Vertex getVertex(long graphId, int vertexNodeId) {
         Vertex vertex = new Vertex();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_VERTICES + " WHERE "
-                + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=" + graphId + " AND "
-                + OtashuDatabaseHelper.COLUMN_NODE + "=" + vertexNodeId;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_VERTICES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=?"
+                + " AND " + OtashuDatabaseHelper.COLUMN_NODE + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all vertices from database
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(graphId),
+                String.valueOf(vertexNodeId),
+        });
 
         if (cursor.moveToFirst()) {
             do {

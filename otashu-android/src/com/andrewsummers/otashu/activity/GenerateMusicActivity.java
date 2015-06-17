@@ -221,6 +221,7 @@ public class GenerateMusicActivity extends Activity {
         try {
             switch (logicType) {
                 /*
+                // TODO: fix Logic D... in EdgesDataSource getStrongPath()
                 case 1:
                     notes = logicA();
                     break;

@@ -65,17 +65,17 @@ public class EditGraphActivity extends Activity implements OnClickListener {
         // fill in existing form data
         EditText graphNameText = (EditText) findViewById(R.id.edittext_graph_name);
         graphNameText.setText(editGraph.getName());
-        
+
         LabelsDataSource lds = new LabelsDataSource(this);
         List<String> allLabels = new ArrayList<String>();
         allLabels = lds.getAllLabelListPreviews();
-        
+
         Label selectedLabel = lds.getLabel(editGraph.getLabelId());
         lds.close();
-        
+
         // locate next spinner in layout
         Spinner spinner = (Spinner) findViewById(R.id.spinner_label);
-        
+
         // create array adapter for list of notevalues
         ArrayAdapter<String> labelsAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item);
@@ -102,7 +102,7 @@ public class EditGraphActivity extends Activity implements OnClickListener {
                 LabelsDataSource lds = new LabelsDataSource(this);
                 List<Long> allLabelIds = lds.getAllLabelListDBTableIds();
                 lds.close();
-                
+
                 Graph graphToUpdate = new Graph();
                 graphToUpdate.setId(editGraph.getId());
 

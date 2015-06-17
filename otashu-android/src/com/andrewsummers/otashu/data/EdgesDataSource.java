@@ -586,15 +586,15 @@ public class EdgesDataSource {
                     + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=?";
             if (position > 0) {
                 query += " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=?";
-                //parameters.add(String.valueOf(position));
+                // parameters.add(String.valueOf(position));
             } else {
                 int nextI = i + 1;
                 query += " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=?";
-                //parameters.add(String.valueOf(nextI));
+                // parameters.add(String.valueOf(nextI));
             }
             if (fromNode > 0) {
                 query += " AND " + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=" + fromNode;
-                //parameters.add(String.valueOf(fromNode));
+                // parameters.add(String.valueOf(fromNode));
             }
             query += " ORDER BY RANDOM() LIMIT 3";
 

@@ -18,6 +18,7 @@
 
 
 ## DONE:
+- 20150616: added parameters to database queries
 - 20150615: added graph create feature
 - 20150615: added graph edit feature
 - 20150615: fixed graph delete feature
