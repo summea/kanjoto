@@ -220,8 +220,6 @@ public class GenerateMusicActivity extends Activity {
 
         try {
             switch (logicType) {
-                /*
-                // TODO: fix Logic D... in EdgesDataSource getStrongPath()
                 case 1:
                     notes = logicA();
                     break;
@@ -234,7 +232,6 @@ public class GenerateMusicActivity extends Activity {
                 case 4:
                     notes = logicD();
                     break;
-                */
                 default:
                     notes = logicD();
             }
@@ -919,7 +916,6 @@ public class GenerateMusicActivity extends Activity {
             }
         }
 
-        
         List<Note> firstNoteset = new ArrayList<Note>();
         if (notes.isEmpty()) {
             currentKeySignatureId = 4; // TODO: make dynamic
