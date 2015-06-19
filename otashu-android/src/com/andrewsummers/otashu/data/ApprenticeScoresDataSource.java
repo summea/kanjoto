@@ -85,6 +85,8 @@ public class ApprenticeScoresDataSource {
 
         ApprenticeScore newApprenticeScore = cursorToApprenticeScore(cursor);
         cursor.close();
+        db.close();
+        
         return newApprenticeScore;
     }
 
@@ -102,6 +104,8 @@ public class ApprenticeScoresDataSource {
         // delete apprenticeScore
         db.delete(OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
+        
+        db.close();
     }
 
     /**
@@ -139,6 +143,8 @@ public class ApprenticeScoresDataSource {
                 apprenticeScores.add(apprenticeScore);
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return apprenticeScores;
     }
@@ -178,6 +184,8 @@ public class ApprenticeScoresDataSource {
                 apprenticeScores.add(apprenticeScore);
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return apprenticeScores;
     }
@@ -225,6 +233,8 @@ public class ApprenticeScoresDataSource {
                 apprenticeScore.setApprenticeId(cursor.getLong(5));
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return apprenticeScore;
     }
@@ -247,6 +257,8 @@ public class ApprenticeScoresDataSource {
         db.update(OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES, contentValues,
                 OtashuDatabaseHelper.COLUMN_ID + "=" + apprenticeScore.getId(), null);
 
+        db.close();
+        
         return apprenticeScore;
     }
 
@@ -272,6 +284,8 @@ public class ApprenticeScoresDataSource {
         });
         totalCorrect = cursor.getCount();
 
+        db.close();
+        
         return totalCorrect;
     }
 
@@ -297,6 +311,8 @@ public class ApprenticeScoresDataSource {
         });
         total = cursor.getCount();
 
+        db.close();
+        
         return total;
     }
 

@@ -91,6 +91,8 @@ public class EdgesDataSource {
         cursor.moveToFirst();
         Edge newEdge = cursorToEdge(cursor);
         cursor.close();
+        db.close();
+        
         return newEdge;
     }
 
@@ -108,6 +110,8 @@ public class EdgesDataSource {
         // delete edge
         db.delete(OtashuDatabaseHelper.TABLE_EDGES,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
+        
+        db.close();
     }
 
     /**
@@ -148,6 +152,8 @@ public class EdgesDataSource {
             } while (cursor.moveToNext());
         }
 
+        db.close();
+        
         return edges;
     }
 
@@ -194,6 +200,8 @@ public class EdgesDataSource {
                 edges.add(edge);
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return edges;
     }
@@ -249,6 +257,8 @@ public class EdgesDataSource {
                 edges.add(edge);
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return edges;
     }
@@ -409,6 +419,8 @@ public class EdgesDataSource {
                 } while (cursor.moveToNext());
             }
         }
+        
+        db.close();
 
         return edges;
     }
@@ -461,6 +473,8 @@ public class EdgesDataSource {
             } while (cursor.moveToNext());
         }
 
+        db.close();
+        
         return edge;
     }
 
@@ -501,6 +515,8 @@ public class EdgesDataSource {
             } while (cursor.moveToNext());
         }
 
+        db.close();
+        
         return edge;
     }
 
@@ -522,6 +538,8 @@ public class EdgesDataSource {
         db.update(OtashuDatabaseHelper.TABLE_EDGES, contentValues, OtashuDatabaseHelper.COLUMN_ID
                 + "=" + edge.getId(), null);
 
+        db.close();
+        
         return edge;
     }
 
@@ -673,6 +691,9 @@ public class EdgesDataSource {
 
             Log.d("MYLOG", "strong found edge: " + results.toString());
         }
+        
+        db.close();
+        
         return results;
     }
 
@@ -718,6 +739,9 @@ public class EdgesDataSource {
         }
 
         Log.d("MYLOG", "strong found transition edge: " + result.toString());
+        
+        db.close();
+        
         return result;
     }
 

@@ -85,6 +85,8 @@ public class NotesetsDataSource {
         cursor.moveToFirst();
         Noteset newNoteset = cursorToNoteset(cursor);
         cursor.close();
+        db.close();
+        
         return newNoteset;
     }
 
@@ -104,6 +106,8 @@ public class NotesetsDataSource {
         // delete related notes
         db.delete(OtashuDatabaseHelper.TABLE_NOTES,
                 OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = " + noteset.getId(), null);
+        
+        db.close();
     }
 
     /**
@@ -140,6 +144,8 @@ public class NotesetsDataSource {
                 notesets.add(noteset);
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return notesets;
     }
@@ -182,6 +188,8 @@ public class NotesetsDataSource {
                 notesets.add(noteset);
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return notesets;
     }
@@ -237,6 +245,8 @@ public class NotesetsDataSource {
 
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return notesetBundles;
     }
@@ -296,6 +306,8 @@ public class NotesetsDataSource {
 
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return notesetBundles;
     }
@@ -346,6 +358,8 @@ public class NotesetsDataSource {
 
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return notesetBundle;
     }
@@ -422,6 +436,8 @@ public class NotesetsDataSource {
 
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return notesetBundle;
     }
@@ -502,6 +518,8 @@ public class NotesetsDataSource {
                 notesets.add(itemForList);
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return notesets;
     }
@@ -531,6 +549,8 @@ public class NotesetsDataSource {
                 noteset.setApprenticeId(cursor.getLong(4));
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return noteset;
     }
@@ -552,6 +572,8 @@ public class NotesetsDataSource {
         db.update(OtashuDatabaseHelper.TABLE_NOTESETS, contentValues,
                 OtashuDatabaseHelper.COLUMN_ID + "=" + noteset.getId(), null);
 
+        db.close();
+        
         return noteset;
     }
 
@@ -571,6 +593,8 @@ public class NotesetsDataSource {
         });
 
         count = cursor.getCount();
+        
+        db.close();
 
         return count;
     }
@@ -606,6 +630,8 @@ public class NotesetsDataSource {
                 notesets.add(noteset);
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return notesets;
     }

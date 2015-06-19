@@ -77,6 +77,8 @@ public class EmotionsDataSource {
         cursor.moveToFirst();
         Emotion newEmotion = cursorToEmotion(cursor);
         cursor.close();
+        db.close();
+        
         return newEmotion;
     }
 
@@ -94,6 +96,8 @@ public class EmotionsDataSource {
         // delete emotion
         db.delete(OtashuDatabaseHelper.TABLE_EMOTIONS,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
+        
+        db.close();
     }
 
     /**
@@ -129,6 +133,8 @@ public class EmotionsDataSource {
                 emotions.add(emotion);
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return emotions;
     }
@@ -165,6 +171,8 @@ public class EmotionsDataSource {
         }
 
         cursor.close();
+        db.close();
+        
         return emotion_ids;
     }
 
@@ -215,6 +223,8 @@ public class EmotionsDataSource {
             } while (cursor.moveToNext());
         }
 
+        db.close();
+        
         return emotions;
     }
 
@@ -262,6 +272,8 @@ public class EmotionsDataSource {
         db.update(OtashuDatabaseHelper.TABLE_EMOTIONS, contentValues,
                 OtashuDatabaseHelper.COLUMN_ID + "=" + emotion.getId(), null);
 
+        db.close();
+        
         return emotion;
     }
 
@@ -304,6 +316,7 @@ public class EmotionsDataSource {
         });
         int count = cursor.getCount();
         cursor.close();
+        db.close();
 
         return count;
     }

@@ -76,6 +76,8 @@ public class BookmarksDataSource {
 
         Bookmark newBookmark = cursorToBookmark(cursor);
         cursor.close();
+        db.close();
+        
         return newBookmark;
     }
 
@@ -93,6 +95,8 @@ public class BookmarksDataSource {
         // delete bookmark
         db.delete(OtashuDatabaseHelper.TABLE_BOOKMARKS,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
+        
+        db.close();
     }
 
     /**
@@ -124,6 +128,8 @@ public class BookmarksDataSource {
                 bookmarks.add(bookmark);
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return bookmarks;
     }
@@ -165,6 +171,8 @@ public class BookmarksDataSource {
                 bookmark.setSerializedValue(cursor.getString(2));
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return bookmark;
     }
@@ -183,6 +191,8 @@ public class BookmarksDataSource {
         db.update(OtashuDatabaseHelper.TABLE_BOOKMARKS, contentValues,
                 OtashuDatabaseHelper.COLUMN_ID + "=" + bookmark.getId(), null);
 
+        db.close();
+        
         return bookmark;
     }
 

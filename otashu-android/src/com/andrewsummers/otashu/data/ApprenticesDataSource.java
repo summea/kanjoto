@@ -75,6 +75,8 @@ public class ApprenticesDataSource {
         cursor.moveToFirst();
         Apprentice newApprentice = cursorToApprentice(cursor);
         cursor.close();
+        db.close();
+        
         return newApprentice;
     }
 
@@ -92,6 +94,8 @@ public class ApprenticesDataSource {
         // delete apprentice
         db.delete(OtashuDatabaseHelper.TABLE_APPRENTICES,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
+        
+        db.close();
     }
 
     /**
@@ -123,6 +127,8 @@ public class ApprenticesDataSource {
                 apprentices.add(apprentice);
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return apprentices;
     }
@@ -170,6 +176,8 @@ public class ApprenticesDataSource {
             } while (cursor.moveToNext());
         }
 
+        db.close();
+        
         return apprentices;
     }
 
@@ -196,6 +204,8 @@ public class ApprenticesDataSource {
                 apprentice.setLearningStyleId(cursor.getLong(2));
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return apprentice;
     }
@@ -215,6 +225,8 @@ public class ApprenticesDataSource {
                 OtashuDatabaseHelper.COLUMN_ID
                         + "=" + apprentice.getId(), null);
 
+        db.close();
+        
         return apprentice;
     }
 

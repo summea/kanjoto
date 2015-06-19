@@ -74,6 +74,8 @@ public class GraphsDataSource {
         cursor.moveToFirst();
         Graph newGraph = cursorToGraph(cursor);
         cursor.close();
+        db.close();
+        
         return newGraph;
     }
 
@@ -91,6 +93,8 @@ public class GraphsDataSource {
         // delete graph
         db.delete(OtashuDatabaseHelper.TABLE_GRAPHS,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
+        
+        db.close();
     }
 
     /**
@@ -122,6 +126,8 @@ public class GraphsDataSource {
                 graphs.add(graph);
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return graphs;
     }
@@ -171,6 +177,8 @@ public class GraphsDataSource {
             } while (cursor.moveToNext());
         }
 
+        db.close();
+        
         return graphs;
     }
 
@@ -197,6 +205,8 @@ public class GraphsDataSource {
                 graph.setLabelId(cursor.getLong(2));
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return graph;
     }
@@ -214,6 +224,8 @@ public class GraphsDataSource {
         db.update(OtashuDatabaseHelper.TABLE_GRAPHS, contentValues, OtashuDatabaseHelper.COLUMN_ID
                 + "=" + graph.getId(), null);
 
+        db.close();
+        
         return graph;
     }
 }

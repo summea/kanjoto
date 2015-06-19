@@ -77,6 +77,8 @@ public class AchievementsDataSource {
         cursor.moveToFirst();
         Achievement newAchievement = cursorToAchievement(cursor);
         cursor.close();
+        db.close();
+        
         return newAchievement;
     }
 
@@ -92,6 +94,8 @@ public class AchievementsDataSource {
         // delete noteset
         db.delete(OtashuDatabaseHelper.TABLE_ACHIEVEMENTS,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + achievement.getId(), null);
+        
+        db.close();
     }
 
     /**
@@ -128,6 +132,8 @@ public class AchievementsDataSource {
                 achievements.add(achievement);
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return achievements;
     }
@@ -249,6 +255,8 @@ public class AchievementsDataSource {
         db.update(OtashuDatabaseHelper.TABLE_ACHIEVEMENTS, contentValues,
                 OtashuDatabaseHelper.COLUMN_ID + "=" + achievement.getId(), null);
 
+        db.close();
+        
         return achievement;
     }
 
