@@ -73,6 +73,8 @@ public class VerticesDataSource {
         cursor.moveToFirst();
         Vertex newVertex = cursorToVertex(cursor);
         cursor.close();
+        db.close();
+
         return newVertex;
     }
 
@@ -90,6 +92,8 @@ public class VerticesDataSource {
         // delete vertex
         db.delete(OtashuDatabaseHelper.TABLE_VERTICES,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
+
+        db.close();
     }
 
     /**
@@ -121,6 +125,8 @@ public class VerticesDataSource {
                 vertices.add(vertex);
             } while (cursor.moveToNext());
         }
+
+        db.close();
 
         return vertices;
     }
@@ -165,6 +171,8 @@ public class VerticesDataSource {
             } while (cursor.moveToNext());
         }
 
+        db.close();
+
         return vertex;
     }
 
@@ -181,6 +189,8 @@ public class VerticesDataSource {
         db.update(OtashuDatabaseHelper.TABLE_VERTICES, contentValues,
                 OtashuDatabaseHelper.COLUMN_ID
                         + "=" + vertex.getId(), null);
+
+        db.close();
 
         return vertex;
     }

@@ -87,6 +87,8 @@ public class NotesDataSource {
         cursor.moveToFirst();
         Note newNote = cursorToNote(cursor);
         cursor.close();
+        db.close();
+
         return newNote;
     }
 
@@ -102,6 +104,8 @@ public class NotesDataSource {
         // delete noteset
         db.delete(OtashuDatabaseHelper.TABLE_NOTES,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + note.getId(), null);
+
+        db.close();
     }
 
     /**
@@ -134,6 +138,8 @@ public class NotesDataSource {
                 note.setPosition(cursor.getInt(5));
             } while (cursor.moveToNext());
         }
+
+        db.close();
 
         return note;
     }
@@ -170,6 +176,8 @@ public class NotesDataSource {
                 notes.add(note);
             } while (cursor.moveToNext());
         }
+
+        db.close();
 
         return notes;
     }
@@ -210,6 +218,8 @@ public class NotesDataSource {
             } while (cursor.moveToNext());
         }
 
+        db.close();
+
         return notes;
     }
 
@@ -243,6 +253,8 @@ public class NotesDataSource {
                 notes.add(note);
             } while (cursor.moveToNext());
         }
+
+        db.close();
 
         return notes;
     }
@@ -348,6 +360,8 @@ public class NotesDataSource {
 
         Log.d("MYLOG", "found noteset? " + notesetExists);
 
+        db.close();
+
         return notesetExists;
     }
 
@@ -380,6 +394,8 @@ public class NotesDataSource {
 
         db.update(OtashuDatabaseHelper.TABLE_NOTES, contentValues, OtashuDatabaseHelper.COLUMN_ID
                 + "=" + note.getId(), null);
+
+        db.close();
 
         return note;
     }

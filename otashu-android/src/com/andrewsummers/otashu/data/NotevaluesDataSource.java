@@ -77,6 +77,8 @@ public class NotevaluesDataSource {
         cursor.moveToFirst();
         Notevalue newNotevalue = cursorToNotevalue(cursor);
         cursor.close();
+        db.close();
+        
         return newNotevalue;
     }
 
@@ -94,6 +96,8 @@ public class NotevaluesDataSource {
         // delete notevalue
         db.delete(OtashuDatabaseHelper.TABLE_NOTEVALUES,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
+        
+        db.close();
     }
 
     /**
@@ -126,6 +130,8 @@ public class NotevaluesDataSource {
                 notevalues.add(notevalue);
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return notevalues;
     }
@@ -176,6 +182,8 @@ public class NotevaluesDataSource {
             } while (cursor.moveToNext());
         }
 
+        db.close();
+        
         return notevalues;
     }
 
@@ -207,6 +215,8 @@ public class NotevaluesDataSource {
                 notevalues.add(notevalue.getId());
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return notevalues;
     }
@@ -235,6 +245,8 @@ public class NotevaluesDataSource {
                 notevalue.setLabelId(cursor.getLong(3));
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return notevalue;
     }
@@ -263,6 +275,8 @@ public class NotevaluesDataSource {
                 notevalue.setLabelId(cursor.getLong(3));
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return notevalue;
     }
@@ -281,6 +295,8 @@ public class NotevaluesDataSource {
         db.update(OtashuDatabaseHelper.TABLE_NOTEVALUES, contentValues,
                 OtashuDatabaseHelper.COLUMN_ID + "=" + notevalue.getId(), null);
 
+        db.close();
+        
         return notevalue;
     }
 

@@ -77,6 +77,8 @@ public class KeySignaturesDataSource {
 
         KeySignature newKeySignature = cursorToKeySignature(cursor);
         cursor.close();
+        db.close();
+        
         return newKeySignature;
     }
 
@@ -94,6 +96,8 @@ public class KeySignaturesDataSource {
         // delete keySignature
         db.delete(OtashuDatabaseHelper.TABLE_KEY_SIGNATURES,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
+        
+        db.close();
     }
 
     /**
@@ -128,6 +132,8 @@ public class KeySignaturesDataSource {
                 keySignatures.add(keySignature);
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return keySignatures;
     }
@@ -170,6 +176,8 @@ public class KeySignaturesDataSource {
             } while (cursor.moveToNext());
         }
 
+        db.close();
+        
         return keySignature;
     }
 
@@ -187,6 +195,8 @@ public class KeySignaturesDataSource {
         db.update(OtashuDatabaseHelper.TABLE_KEY_SIGNATURES, contentValues,
                 OtashuDatabaseHelper.COLUMN_ID + "=" + keySignature.getId(), null);
 
+        db.close();
+        
         return keySignature;
     }
 

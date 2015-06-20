@@ -84,6 +84,8 @@ public class KeyNotesDataSource {
 
         KeyNote newKeyNote = cursorToKeyNote(cursor);
         cursor.close();
+        db.close();
+        
         return newKeyNote;
     }
 
@@ -99,6 +101,8 @@ public class KeyNotesDataSource {
         // delete noteset
         db.delete(OtashuDatabaseHelper.TABLE_KEY_NOTES,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + keyNote.getId(), null);
+        
+        db.close();
     }
 
     /**
@@ -135,6 +139,8 @@ public class KeyNotesDataSource {
                 keyNotes.add(keyNote);
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return keyNotes;
     }
@@ -180,6 +186,8 @@ public class KeyNotesDataSource {
                 keyNote.setApprenticeId(cursor.getLong(4));
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return keyNote;
     }
@@ -210,6 +218,8 @@ public class KeyNotesDataSource {
                 keyNotes.add(keyNote);
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return keyNotes;
     }
@@ -234,6 +244,8 @@ public class KeyNotesDataSource {
                 keyNotes.add(cursor.getInt(2));
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return keyNotes;
     }
@@ -254,6 +266,8 @@ public class KeyNotesDataSource {
         db.update(OtashuDatabaseHelper.TABLE_KEY_NOTES, contentValues,
                 OtashuDatabaseHelper.COLUMN_ID + "=" + keyNote.getId(), null);
 
+        db.close();
+        
         return keyNote;
     }
 
@@ -280,6 +294,8 @@ public class KeyNotesDataSource {
                 keySignatureIds.add(cursor.getLong(0));
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return keySignatureIds;
     }
@@ -288,6 +304,9 @@ public class KeyNotesDataSource {
         long keySignatureId = 1;
         HashMap<Long, Integer> foundKeySignatureIds = new HashMap<Long, Integer>();
 
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        
         // loop through each notevalue from input
         // and check to see if we've found a key signature from database
         for (int i = 0; i < notevaluesInKeySignature.size(); i++) {
@@ -296,9 +315,6 @@ public class KeyNotesDataSource {
                     + OtashuDatabaseHelper.TABLE_KEY_NOTES
                     + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?"
                     + " AND " + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "=?";
-
-            // create database handle
-            SQLiteDatabase db = dbHelper.getWritableDatabase();
 
             // select all keyNotes from database
             Cursor cursor = db.rawQuery(query, new String[] {
@@ -337,6 +353,8 @@ public class KeyNotesDataSource {
                 }
             }
         }
+        
+        db.close();
 
         return keySignatureId;
     }

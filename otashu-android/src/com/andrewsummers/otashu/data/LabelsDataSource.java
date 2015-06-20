@@ -74,6 +74,8 @@ public class LabelsDataSource {
         cursor.moveToFirst();
         Label newLabel = cursorToLabel(cursor);
         cursor.close();
+        db.close();
+        
         return newLabel;
     }
 
@@ -91,6 +93,8 @@ public class LabelsDataSource {
         // delete label
         db.delete(OtashuDatabaseHelper.TABLE_LABELS,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
+        
+        db.close();
     }
 
     /**
@@ -122,6 +126,8 @@ public class LabelsDataSource {
                 labels.add(label);
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return labels;
     }
@@ -169,6 +175,8 @@ public class LabelsDataSource {
                 labels.add(label.toString());
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return labels;
     }
@@ -201,6 +209,8 @@ public class LabelsDataSource {
                 labels.add(label.getId());
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return labels;
     }
@@ -228,6 +238,8 @@ public class LabelsDataSource {
                 label.setColor(cursor.getString(2));
             } while (cursor.moveToNext());
         }
+        
+        db.close();
 
         return label;
     }
@@ -245,6 +257,8 @@ public class LabelsDataSource {
         db.update(OtashuDatabaseHelper.TABLE_LABELS, contentValues, OtashuDatabaseHelper.COLUMN_ID
                 + "=" + label.getId(), null);
 
+        db.close();
+        
         return label;
     }
 }

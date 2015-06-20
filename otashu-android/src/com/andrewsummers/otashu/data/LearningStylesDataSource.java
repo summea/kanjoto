@@ -74,6 +74,8 @@ public class LearningStylesDataSource {
 
         LearningStyle newLearningStyle = cursorToLearningStyle(cursor);
         cursor.close();
+        db.close();
+
         return newLearningStyle;
     }
 
@@ -91,6 +93,8 @@ public class LearningStylesDataSource {
         // delete learningStyle
         db.delete(OtashuDatabaseHelper.TABLE_LEARNING_STYLES,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
+
+        db.close();
     }
 
     /**
@@ -121,6 +125,8 @@ public class LearningStylesDataSource {
                 learningStyles.add(learningStyle);
             } while (cursor.moveToNext());
         }
+
+        db.close();
 
         return learningStyles;
     }
@@ -167,6 +173,8 @@ public class LearningStylesDataSource {
             } while (cursor.moveToNext());
         }
 
+        db.close();
+
         return learningStyles;
     }
 
@@ -193,6 +201,8 @@ public class LearningStylesDataSource {
             } while (cursor.moveToNext());
         }
 
+        db.close();
+
         return learningStyle;
     }
 
@@ -207,6 +217,8 @@ public class LearningStylesDataSource {
 
         db.update(OtashuDatabaseHelper.TABLE_LEARNING_STYLES, contentValues,
                 OtashuDatabaseHelper.COLUMN_ID + "=" + learningStyle.getId(), null);
+
+        db.close();
 
         return learningStyle;
     }
