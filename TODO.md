@@ -18,6 +18,7 @@
 
 
 ## DONE:
+- 20150620: added developer mode setting (hide database dumper)
 - 20150619: closed database in data sources
 - 20150616: added parameters to database queries
 - 20150615: added graph create feature

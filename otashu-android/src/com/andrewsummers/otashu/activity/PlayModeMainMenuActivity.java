@@ -186,4 +186,12 @@ public class PlayModeMainMenuActivity extends Activity implements OnClickListene
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // make sure menu is up to date (e.g. developer mode changes)
+        invalidateOptionsMenu();
+    }
 }
