@@ -1,11 +1,17 @@
 
 package com.andrewsummers.otashu.activity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.ApprenticesDataSource;
+import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.model.Apprentice;
+import com.andrewsummers.otashu.model.Emotion;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,8 +19,11 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * The ApprenticeActivity class provides tests for the Apprentice with test results noted as judged
@@ -46,6 +55,39 @@ public class ApprenticeTrainingActivity extends Activity implements OnClickListe
         apprenticeName.setText(apprentice.getName());
         apprenticeText.setText("Take a test?");
 
+        // get all emotions for spinner
+        EmotionsDataSource eds = new EmotionsDataSource(this);
+        List<Emotion> allEmotions = new ArrayList<Emotion>();
+        allEmotions = eds.getAllEmotions(apprenticeId);
+        eds.close();
+
+        // make sure there's at least one emotion for the spinner list
+        if (allEmotions.isEmpty()) {
+            Context context = getApplicationContext();
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context,
+                    context.getResources().getString(R.string.need_emotions),
+                    duration);
+            toast.show();
+
+            finish();
+        }
+
+        // locate next spinner in layout
+        Spinner spinner = (Spinner) findViewById(R.id.spinner_emotion_focus);
+
+        // create array adapter for list of emotions
+        ArrayAdapter<Emotion> emotionsAdapter = new ArrayAdapter<Emotion>(this,
+                android.R.layout.simple_spinner_item);
+        emotionsAdapter.addAll(allEmotions);
+
+        // specify the default layout when list of choices appears
+        emotionsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // apply this adapter to the spinner
+        spinner.setAdapter(emotionsAdapter);
+
         try {
             // add listeners to buttons
             buttonApprenticeEmotionTest.setOnClickListener(this);
@@ -59,6 +101,22 @@ public class ApprenticeTrainingActivity extends Activity implements OnClickListe
     @Override
     public void onClick(View v) {
         Intent intent = null;
+
+        // get all emotions for spinner list
+        List<Integer> allEmotionIds = new ArrayList<Integer>();
+        EmotionsDataSource eds = new EmotionsDataSource(this);
+        allEmotionIds = eds.getAllEmotionIds(apprenticeId);
+
+        // set selected emotion in spinner
+        Spinner emotionSpinner = (Spinner) findViewById(R.id.spinner_emotion_focus);
+        int selectedEmotionFocusValue = allEmotionIds.get(emotionSpinner
+                .getSelectedItemPosition());
+        eds.close();
+
+        // fill bundle with values we are passing to next activity
+        Bundle bundle = new Bundle();
+        bundle.putInt("focus_emotion_id", selectedEmotionFocusValue);
+
         switch (v.getId()) {
             case R.id.button_apprentice_emotion_test:
                 intent = new Intent(this, ApprenticeEmotionTestActivity.class);
@@ -71,6 +129,7 @@ public class ApprenticeTrainingActivity extends Activity implements OnClickListe
                 break;
         }
         if (intent != null) {
+            intent.putExtras(bundle);
             startActivityForResult(intent, 1);
         }
     }

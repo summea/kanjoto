@@ -163,6 +163,7 @@
     <string name="pref_transition_graph_for_apprentice">Transition Graph Id for Apprentice</string>
     <string name="remote_noteset">getting remote noteset...</string>
     <string name="spinner_apprentice_label">Apprentice</string>
+    <string name="spinner_emotion_focus_label">Emotion Focus</string>
     <string name="spinner_emotion_label_label">Label</string>
     <string name="spinner_emotion_label">Emotion</string>
     <string name="spinner_instrument_label">Instrument</string>
