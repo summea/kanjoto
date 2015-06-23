@@ -69,6 +69,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
     private long apprenticeId = 0;
     private int programMode;
     private int notesToCompleteScale = 7;
+    private long emotionFocusId = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,6 +89,10 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
                 "pref_scale_graph_for_apprentice", "3")));
         apprenticeId = Long.parseLong(sharedPref.getString(
                 "pref_selected_apprentice", "1"));
+
+        // get data from bundle
+        Bundle bundle = getIntent().getExtras();
+        emotionFocusId = bundle.getInt("emotion_focus_id");
 
         try {
             // add listeners to buttons
@@ -379,9 +384,13 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
     }
 
     public void apprenticeAskProcess() {
-        // get random emotion
         EmotionsDataSource eds = new EmotionsDataSource(this);
-        chosenEmotion = eds.getRandomEmotion(apprenticeId);
+        // are we focusing on a specific emotion?
+        if (emotionFocusId > 0) {
+            chosenEmotion = eds.getEmotion(emotionFocusId);
+        } else {
+            chosenEmotion = eds.getRandomEmotion(apprenticeId);
+        }
         eds.close();
 
         emotionId = chosenEmotion.getId();
@@ -396,7 +405,8 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
         Note anchorNote = getRandomNote(39, 50);
 
         // 2. check to see if a key signature contains notevalue
-        Log.d("MYLOG", "2. check to see if a key signature contains notevalue for apprentice: " + apprenticeId);
+        Log.d("MYLOG", "2. check to see if a key signature contains notevalue for apprentice: "
+                + apprenticeId);
         KeyNotesDataSource knds = new KeyNotesDataSource(this);
         List<Long> keySignatureIds = knds.keySignatureIdsThatContain(apprenticeId,
                 anchorNote.getNotevalue());

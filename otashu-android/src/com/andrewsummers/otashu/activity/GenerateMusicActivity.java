@@ -158,7 +158,7 @@ public class GenerateMusicActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // get selected instrument_id from spinner
+        // get data from bundle
         Bundle bundle = getIntent().getExtras();
         selectedEmotionId = bundle.getInt("emotion_id");
         selectedLogicId = bundle.getInt("logic_id");

@@ -76,6 +76,7 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
     private int programMode;
     private List<Edge> currentEdges = new ArrayList<Edge>();
     private float strongTransitionLevel = 0.4f;
+    private long emotionFocusId = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -95,6 +96,10 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                 "pref_transition_graph_for_apprentice", "2"));
         apprenticeId = Long.parseLong(sharedPref.getString(
                 "pref_selected_apprentice", "1"));
+
+        // get data from bundle
+        Bundle bundle = getIntent().getExtras();
+        emotionFocusId = bundle.getInt("emotion_focus_id");
 
         try {
             // add listeners to buttons
@@ -491,9 +496,13 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
     }
 
     public void apprenticeAskProcess() {
-        // get random emotion
         EmotionsDataSource eds = new EmotionsDataSource(this);
-        chosenEmotion = eds.getRandomEmotion(apprenticeId);
+        // are we focusing on a specific emotion?
+        if (emotionFocusId > 0) {
+            chosenEmotion = eds.getEmotion(emotionFocusId);
+        } else {
+            chosenEmotion = eds.getRandomEmotion(apprenticeId);
+        }
         eds.close();
 
         emotionId = chosenEmotion.getId();
@@ -517,11 +526,11 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
             approach = "Learned Data";
             Edge foundEdge = edds.getRandomEdge(apprenticeId, transitionGraphId, emotionId, 0, 0,
                     1, 0);
-            
+
             // if edge is already pretty certain (0.0f == strongest weight)
             // choose/create a random edge to test
             if (foundEdge.getWeight() <= 0.0f) {
-             // Using Random Approach
+                // Using Random Approach
                 approach = "Random";
                 // stay within 39..50 for now (C4..B4)
                 noteOne = generateNote(39, 50);
@@ -531,7 +540,7 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                     approach = "Learned Data +";
                     foundEdge.setToNodeId(randomNotevalue);
                 }
-    
+
                 noteOne = new Note();
                 noteTwo = new Note();
                 noteOne.setNotevalue(foundEdge.getFromNodeId());

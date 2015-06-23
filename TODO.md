@@ -18,6 +18,7 @@
 
 
 ## DONE:
+- 20150622: added "set focus for a single emotion during training tests" feature
 - 20150620: added developer mode setting (hide database dumper)
 - 20150619: closed database in data sources
 - 20150616: added parameters to database queries

@@ -93,6 +93,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
     private int programMode;
     private List<Edge> currentEdges = new ArrayList<Edge>();
     private float strongPathLevel = 0.4f;
+    private long emotionFocusId = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -116,6 +117,10 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                 "pref_emotion_graph_for_apprentice", "1"));
         apprenticeId = Long.parseLong(sharedPref.getString(
                 "pref_selected_apprentice", "1"));
+
+        // get data from bundle
+        Bundle bundle = getIntent().getExtras();
+        emotionFocusId = bundle.getInt("emotion_focus_id");
 
         try {
             // add listeners to buttons
@@ -567,7 +572,12 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
 
             finish();
         } else {
-            chosenEmotion = eds.getRandomEmotion(apprenticeId);
+            // are we focusing on a specific emotion?
+            if (emotionFocusId > 0) {
+                chosenEmotion = eds.getEmotion(emotionFocusId);
+            } else {
+                chosenEmotion = eds.getRandomEmotion(apprenticeId);
+            }
         }
 
         eds.close();

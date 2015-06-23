@@ -61,6 +61,13 @@ public class ApprenticeTrainingActivity extends Activity implements OnClickListe
         allEmotions = eds.getAllEmotions(apprenticeId);
         eds.close();
 
+        // add an "all" option for emotions spinner
+        Emotion all = new Emotion();
+        all.setId(3);
+        all.setName("all");
+        all.setApprenticeId(apprenticeId);
+        allEmotions.add(0, all);
+
         // make sure there's at least one emotion for the spinner list
         if (allEmotions.isEmpty()) {
             Context context = getApplicationContext();
@@ -109,13 +116,19 @@ public class ApprenticeTrainingActivity extends Activity implements OnClickListe
 
         // set selected emotion in spinner
         Spinner emotionSpinner = (Spinner) findViewById(R.id.spinner_emotion_focus);
-        int selectedEmotionFocusValue = allEmotionIds.get(emotionSpinner
-                .getSelectedItemPosition());
+
+        int selectedEmotionFocusValue = 0;
+
+        // check to see if an emotion other than "all" has been selected
+        if (emotionSpinner.getSelectedItemPosition() > 0) {
+            selectedEmotionFocusValue = allEmotionIds.get(emotionSpinner
+                    .getSelectedItemPosition() - 1);
+        }
         eds.close();
 
         // fill bundle with values we are passing to next activity
         Bundle bundle = new Bundle();
-        bundle.putInt("focus_emotion_id", selectedEmotionFocusValue);
+        bundle.putInt("emotion_focus_id", selectedEmotionFocusValue);
 
         switch (v.getId()) {
             case R.id.button_apprentice_emotion_test:
