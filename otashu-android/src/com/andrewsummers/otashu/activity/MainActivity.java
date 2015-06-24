@@ -1,8 +1,11 @@
 
 package com.andrewsummers.otashu.activity;
 
+import java.io.File;
+
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.adapter.ImageAdapter;
+import com.andrewsummers.otashu.data.OtashuDatabaseHelper;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -10,7 +13,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -36,6 +41,18 @@ public class MainActivity extends Activity implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // check if database exists
+        File databaseFile = new File(Environment.getExternalStorageDirectory().toString() + "/otashu/" + OtashuDatabaseHelper.DATABASE_NAME);
+        if (!databaseFile.exists()) {
+            // need to create database file first
+            OtashuDatabaseHelper dbHelper = new OtashuDatabaseHelper(this);
+            dbHelper.getWritableDatabase();
+            dbHelper.close();
+            
+            // have user name a new apprentice
+            
+        }
+        
         // set default preferences
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 

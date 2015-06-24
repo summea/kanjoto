@@ -3,7 +3,9 @@ package com.andrewsummers.otashu.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.util.Log;
 
 /**
@@ -12,7 +14,9 @@ import android.util.Log;
  */
 public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 57;
-    private static final String DATABASE_NAME = "otashu_collection.db";
+    public static final String DATABASE_NAME = "otashu_collection.db";
+    public static final String DATABASE_PATH = Environment.getExternalStorageDirectory().toString()
+            + "/otashu/" + OtashuDatabaseHelper.DATABASE_NAME;
 
     public static final String COLUMN_ID = "_id";
 
@@ -188,7 +192,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
      * @param context Current state.
      */
     public OtashuDatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, DATABASE_PATH, null, DATABASE_VERSION);
     }
 
     /**
@@ -198,6 +202,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
+        Log.d("MYLOG", "db: creating tables...");
         db.execSQL(CREATE_TABLE_NOTESETS);
         db.execSQL(CREATE_TABLE_NOTES);
         db.execSQL(CREATE_TABLE_EMOTIONS);
@@ -214,6 +219,76 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_APPRENTICES);
         db.execSQL(CREATE_TABLE_LEARNING_STYLES);
         db.execSQL(CREATE_TABLE_ACHIEVEMENTS);
+        
+        // add default apprentice
+        Log.d("MYLOG", "db: adding apprentices...");
+        db.rawQuery("INSERT INTO " + TABLE_APPRENTICES + "(" + COLUMN_ID + "," + COLUMN_NAME + "," + COLUMN_LEARNING_STYLE_ID + ") VALUES (?,?,?)", new String[] {
+                "1",
+                "Early",
+                "1", 
+        });
+        
+        // add default emotions
+        // TODO
+        /*
+        Log.d("MYLOG", "db: adding emotions...");
+        db.rawQuery("INSERT INTO " + TABLE_EMOTIONS + "(" + COLUMN_ID + "," + COLUMN_NAME + "," + COLUMN_LABEL_ID + "," + COLUMN_APPRENTICE_ID + ") VALUES (?,?,?,?)", new String[] {
+                "1",
+                "Happy",
+                "1",
+                "1",
+        });
+        db.rawQuery("INSERT INTO " + TABLE_EMOTIONS + "(" + COLUMN_ID + "," + COLUMN_NAME + "," + COLUMN_LABEL_ID + "," + COLUMN_APPRENTICE_ID + ") VALUES (?,?,?,?)", new String[] {
+                "2",
+                "Sad",
+                "1",
+                "1",
+        });
+        */
+        
+        // add default graphs
+        Log.d("MYLOG", "db: adding graphs...");
+        db.rawQuery("INSERT INTO " + TABLE_GRAPHS + "(" + COLUMN_ID + "," + COLUMN_NAME + "," + COLUMN_LABEL_ID + ") VALUES (?,?,?)", new String[] {
+                "1",
+                "Emotion Graph",
+                "1",
+        });
+        db.rawQuery("INSERT INTO " + TABLE_GRAPHS + "(" + COLUMN_ID + "," + COLUMN_NAME + "," + COLUMN_LABEL_ID + ") VALUES (?,?,?)", new String[] {
+                "2",
+                "Transition Graph",
+                "1",
+        });
+        db.rawQuery("INSERT INTO " + TABLE_GRAPHS + "(" + COLUMN_ID + "," + COLUMN_NAME + "," + COLUMN_LABEL_ID + ") VALUES (?,?,?)", new String[] {
+                "3",
+                "Scale Graph",
+                "1",
+        });
+        
+        // add default labels
+        // TODO
+        
+        // add default learning styles
+        Log.d("MYLOG", "db: adding learning styles...");
+        db.rawQuery("INSERT INTO " + TABLE_LEARNING_STYLES + "(" + COLUMN_ID + "," + COLUMN_NAME + ") VALUES (?,?)", new String[] {
+                "1",
+                "Logic A",
+        });
+        db.rawQuery("INSERT INTO " + TABLE_LEARNING_STYLES + "(" + COLUMN_ID + "," + COLUMN_NAME + ") VALUES (?,?)", new String[] {
+                "1",
+                "Logic B",
+        });
+        db.rawQuery("INSERT INTO " + TABLE_LEARNING_STYLES + "(" + COLUMN_ID + "," + COLUMN_NAME + ") VALUES (?,?)", new String[] {
+                "1",
+                "Logic C",
+        });
+        db.rawQuery("INSERT INTO " + TABLE_LEARNING_STYLES + "(" + COLUMN_ID + "," + COLUMN_NAME + ") VALUES (?,?)", new String[] {
+                "1",
+                "Logic D",
+        });        
+        
+        // add default notevalues
+        // TODO
+        
     }
 
     /**
