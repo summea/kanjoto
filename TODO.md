@@ -18,6 +18,11 @@
 
 
 ## DONE:
+- 20150624: added "create default learning styles when program is first run" feature
+- 20150624: added "create the three default graphs when program is first run" feature
+- 20150624: added "create database when program is first run" feature
+- 20150624: added "create new apprentice when app is first run" feature
+- 20150624: added "create new emotion when program is first run" feature
 - 20150622: added "set focus for a single emotion during training tests" feature
 - 20150620: added developer mode setting (hide database dumper)
 - 20150619: closed database in data sources

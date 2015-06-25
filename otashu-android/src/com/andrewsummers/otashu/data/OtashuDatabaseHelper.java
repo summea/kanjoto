@@ -1,11 +1,14 @@
 
 package com.andrewsummers.otashu.data;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 /**
@@ -14,6 +17,7 @@ import android.util.Log;
  */
 public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 57;
+    private static Context mContext;
     public static final String DATABASE_NAME = "otashu_collection.db";
     public static final String DATABASE_PATH = Environment.getExternalStorageDirectory().toString()
             + "/otashu/" + OtashuDatabaseHelper.DATABASE_NAME;
@@ -193,6 +197,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
      */
     public OtashuDatabaseHelper(Context context) {
         super(context, DATABASE_PATH, null, DATABASE_VERSION);
+        mContext = context;
     }
 
     /**
@@ -202,6 +207,8 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
+        ContentValues contentValues = new ContentValues();
+        
         Log.d("MYLOG", "db: creating tables...");
         db.execSQL(CREATE_TABLE_NOTESETS);
         db.execSQL(CREATE_TABLE_NOTES);
@@ -221,74 +228,83 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_ACHIEVEMENTS);
         
         // add default apprentice
-        Log.d("MYLOG", "db: adding apprentices...");
-        db.rawQuery("INSERT INTO " + TABLE_APPRENTICES + "(" + COLUMN_ID + "," + COLUMN_NAME + "," + COLUMN_LEARNING_STYLE_ID + ") VALUES (?,?,?)", new String[] {
-                "1",
-                "Early",
-                "1", 
-        });
+        Log.d("MYLOG", "db: adding apprentices...");        
+        contentValues.put(OtashuDatabaseHelper.COLUMN_ID, 1);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, "Early");
+        contentValues.put(OtashuDatabaseHelper.COLUMN_LEARNING_STYLE_ID, 1);
+        db.insert(OtashuDatabaseHelper.TABLE_APPRENTICES, null, contentValues);
+        
+        // select default apprentice
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(mContext);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("pref_selected_apprentice",
+                Long.toString(1));
+        editor.apply();
         
         // add default emotions
         // TODO
-        /*
         Log.d("MYLOG", "db: adding emotions...");
-        db.rawQuery("INSERT INTO " + TABLE_EMOTIONS + "(" + COLUMN_ID + "," + COLUMN_NAME + "," + COLUMN_LABEL_ID + "," + COLUMN_APPRENTICE_ID + ") VALUES (?,?,?,?)", new String[] {
-                "1",
-                "Happy",
-                "1",
-                "1",
-        });
-        db.rawQuery("INSERT INTO " + TABLE_EMOTIONS + "(" + COLUMN_ID + "," + COLUMN_NAME + "," + COLUMN_LABEL_ID + "," + COLUMN_APPRENTICE_ID + ") VALUES (?,?,?,?)", new String[] {
-                "2",
-                "Sad",
-                "1",
-                "1",
-        });
-        */
+        contentValues = new ContentValues();
+        contentValues.put(OtashuDatabaseHelper.COLUMN_ID, 1);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, "Happy");
+        contentValues.put(OtashuDatabaseHelper.COLUMN_LABEL_ID, 1);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID, 1);
+        db.insert(OtashuDatabaseHelper.TABLE_EMOTIONS, null, contentValues);
+        
+        contentValues = new ContentValues();
+        contentValues.put(OtashuDatabaseHelper.COLUMN_ID, 2);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, "Sad");
+        contentValues.put(OtashuDatabaseHelper.COLUMN_LABEL_ID, 1);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID, 1);
+        db.insert(OtashuDatabaseHelper.TABLE_EMOTIONS, null, contentValues);
         
         // add default graphs
         Log.d("MYLOG", "db: adding graphs...");
-        db.rawQuery("INSERT INTO " + TABLE_GRAPHS + "(" + COLUMN_ID + "," + COLUMN_NAME + "," + COLUMN_LABEL_ID + ") VALUES (?,?,?)", new String[] {
-                "1",
-                "Emotion Graph",
-                "1",
-        });
-        db.rawQuery("INSERT INTO " + TABLE_GRAPHS + "(" + COLUMN_ID + "," + COLUMN_NAME + "," + COLUMN_LABEL_ID + ") VALUES (?,?,?)", new String[] {
-                "2",
-                "Transition Graph",
-                "1",
-        });
-        db.rawQuery("INSERT INTO " + TABLE_GRAPHS + "(" + COLUMN_ID + "," + COLUMN_NAME + "," + COLUMN_LABEL_ID + ") VALUES (?,?,?)", new String[] {
-                "3",
-                "Scale Graph",
-                "1",
-        });
+        contentValues = new ContentValues();
+        contentValues.put(OtashuDatabaseHelper.COLUMN_ID, 1);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, "Emotion Graph");
+        contentValues.put(OtashuDatabaseHelper.COLUMN_LABEL_ID, 1);
+        db.insert(OtashuDatabaseHelper.TABLE_GRAPHS, null, contentValues);
+        
+        contentValues = new ContentValues();
+        contentValues.put(OtashuDatabaseHelper.COLUMN_ID, 2);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, "Transition Graph");
+        contentValues.put(OtashuDatabaseHelper.COLUMN_LABEL_ID, 1);
+        db.insert(OtashuDatabaseHelper.TABLE_GRAPHS, null, contentValues);
+        
+        contentValues = new ContentValues();
+        contentValues.put(OtashuDatabaseHelper.COLUMN_ID, 3);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, "Scale Graph");
+        contentValues.put(OtashuDatabaseHelper.COLUMN_LABEL_ID, 1);
+        db.insert(OtashuDatabaseHelper.TABLE_GRAPHS, null, contentValues);
         
         // add default labels
         // TODO
         
         // add default learning styles
         Log.d("MYLOG", "db: adding learning styles...");
-        db.rawQuery("INSERT INTO " + TABLE_LEARNING_STYLES + "(" + COLUMN_ID + "," + COLUMN_NAME + ") VALUES (?,?)", new String[] {
-                "1",
-                "Logic A",
-        });
-        db.rawQuery("INSERT INTO " + TABLE_LEARNING_STYLES + "(" + COLUMN_ID + "," + COLUMN_NAME + ") VALUES (?,?)", new String[] {
-                "1",
-                "Logic B",
-        });
-        db.rawQuery("INSERT INTO " + TABLE_LEARNING_STYLES + "(" + COLUMN_ID + "," + COLUMN_NAME + ") VALUES (?,?)", new String[] {
-                "1",
-                "Logic C",
-        });
-        db.rawQuery("INSERT INTO " + TABLE_LEARNING_STYLES + "(" + COLUMN_ID + "," + COLUMN_NAME + ") VALUES (?,?)", new String[] {
-                "1",
-                "Logic D",
-        });        
+        contentValues = new ContentValues();
+        contentValues.put(OtashuDatabaseHelper.COLUMN_ID, 1);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, "Logic A");
+        db.insert(OtashuDatabaseHelper.TABLE_LEARNING_STYLES, null, contentValues);
+        
+        contentValues = new ContentValues();
+        contentValues.put(OtashuDatabaseHelper.COLUMN_ID, 2);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, "Logic B");
+        db.insert(OtashuDatabaseHelper.TABLE_LEARNING_STYLES, null, contentValues);
+        
+        contentValues = new ContentValues();
+        contentValues.put(OtashuDatabaseHelper.COLUMN_ID, 3);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, "Logic C");
+        db.insert(OtashuDatabaseHelper.TABLE_LEARNING_STYLES, null, contentValues);
+        
+        contentValues = new ContentValues();
+        contentValues.put(OtashuDatabaseHelper.COLUMN_ID, 4);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, "Logic D");
+        db.insert(OtashuDatabaseHelper.TABLE_LEARNING_STYLES, null, contentValues);
         
         // add default notevalues
         // TODO
-        
     }
 
     /**
