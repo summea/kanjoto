@@ -12,7 +12,7 @@
     <string name="spinner_apprentice_learning_style_label">Learning Style</string>
     <string name="apprentice_name">Name</string>
     <string name="apprentice_name_label">Name</string>
-    <string name="apprentice_not_sure_what_to_play">Sorry, I\'m not sure what to play...</string>
+    <string name="apprentice_not_sure_what_to_play">Sorry, I\'m not sure what to play... maybe I need more training?</string>
     <string name="apprentice_saved">apprentice saved</string>
     <string name="apprentice_scorecard_deleted">Scorecard deleted</string>
     <string name="apprentice_scorecard_detail_taken_at_label">Taken At</string>

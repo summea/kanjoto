@@ -1,9 +1,18 @@
 
 package com.andrewsummers.otashu.data;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.AssetManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -21,6 +30,8 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "otashu_collection.db";
     public static final String DATABASE_PATH = Environment.getExternalStorageDirectory().toString()
             + "/otashu/" + OtashuDatabaseHelper.DATABASE_NAME;
+    public static final String LABELS_IMPORT_FILE = "labels.csv";
+    public static final String NOTEVALUES_IMPORT_FILE = "notevalues.csv";
 
     public static final String COLUMN_ID = "_id";
 
@@ -208,7 +219,13 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         ContentValues contentValues = new ContentValues();
-        
+
+        // set default preferences
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(mContext);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("pref_selected_apprentice", Long.toString(1));
+        editor.apply();
+
         Log.d("MYLOG", "db: creating tables...");
         db.execSQL(CREATE_TABLE_NOTESETS);
         db.execSQL(CREATE_TABLE_NOTES);
@@ -226,38 +243,30 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_APPRENTICES);
         db.execSQL(CREATE_TABLE_LEARNING_STYLES);
         db.execSQL(CREATE_TABLE_ACHIEVEMENTS);
-        
+
         // add default apprentice
-        Log.d("MYLOG", "db: adding apprentices...");        
+        Log.d("MYLOG", "db: adding apprentices...");
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, 1);
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, "Early");
         contentValues.put(OtashuDatabaseHelper.COLUMN_LEARNING_STYLE_ID, 1);
         db.insert(OtashuDatabaseHelper.TABLE_APPRENTICES, null, contentValues);
-        
-        // select default apprentice
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(mContext);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("pref_selected_apprentice",
-                Long.toString(1));
-        editor.apply();
-        
+
         // add default emotions
-        // TODO
         Log.d("MYLOG", "db: adding emotions...");
         contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, 1);
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, "Happy");
-        contentValues.put(OtashuDatabaseHelper.COLUMN_LABEL_ID, 1);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_LABEL_ID, 3);
         contentValues.put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID, 1);
         db.insert(OtashuDatabaseHelper.TABLE_EMOTIONS, null, contentValues);
-        
+
         contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, 2);
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, "Sad");
-        contentValues.put(OtashuDatabaseHelper.COLUMN_LABEL_ID, 1);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_LABEL_ID, 5);
         contentValues.put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID, 1);
         db.insert(OtashuDatabaseHelper.TABLE_EMOTIONS, null, contentValues);
-        
+
         // add default graphs
         Log.d("MYLOG", "db: adding graphs...");
         contentValues = new ContentValues();
@@ -265,46 +274,117 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, "Emotion Graph");
         contentValues.put(OtashuDatabaseHelper.COLUMN_LABEL_ID, 1);
         db.insert(OtashuDatabaseHelper.TABLE_GRAPHS, null, contentValues);
-        
+
         contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, 2);
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, "Transition Graph");
         contentValues.put(OtashuDatabaseHelper.COLUMN_LABEL_ID, 1);
         db.insert(OtashuDatabaseHelper.TABLE_GRAPHS, null, contentValues);
-        
+
         contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, 3);
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, "Scale Graph");
         contentValues.put(OtashuDatabaseHelper.COLUMN_LABEL_ID, 1);
         db.insert(OtashuDatabaseHelper.TABLE_GRAPHS, null, contentValues);
-        
+
         // add default labels
-        // TODO
-        
+        AssetManager am = mContext.getAssets();
+        InputStream LABELS_CSV = null;
+        try {
+            LABELS_CSV = am.open(OtashuDatabaseHelper.LABELS_IMPORT_FILE);
+        } catch (IOException e) {
+            Log.d("MYLOG", e.getMessage());
+        }
+
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new InputStreamReader(LABELS_CSV, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            Log.d("MYLOG", e.getMessage());
+        }
+
+        // parse and edit approach based on example code from this source:
+        // http://stackoverflow.com/q/16672074/1167750
+        String line = "";
+        if (LABELS_CSV != null && br != null) {
+            try {
+                db.beginTransaction();
+                // read in CSV file and split into content value items
+                while ((line = br.readLine()) != null) {
+                    String[] csvColumns = line.split(",");
+                    contentValues = new ContentValues();
+                    contentValues.put(OtashuDatabaseHelper.COLUMN_ID, csvColumns[0]);
+                    contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, csvColumns[1]);
+                    contentValues.put(OtashuDatabaseHelper.COLUMN_COLOR, csvColumns[2]);
+                    db.insert(TABLE_LABELS, null, contentValues);
+                }
+                db.setTransactionSuccessful();
+            } catch (IOException e) {
+                Log.d("MYLOG", e.getMessage());
+            } finally {
+                db.endTransaction();
+            }
+        }
+
         // add default learning styles
         Log.d("MYLOG", "db: adding learning styles...");
         contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, 1);
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, "Logic A");
         db.insert(OtashuDatabaseHelper.TABLE_LEARNING_STYLES, null, contentValues);
-        
+
         contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, 2);
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, "Logic B");
         db.insert(OtashuDatabaseHelper.TABLE_LEARNING_STYLES, null, contentValues);
-        
+
         contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, 3);
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, "Logic C");
         db.insert(OtashuDatabaseHelper.TABLE_LEARNING_STYLES, null, contentValues);
-        
+
         contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, 4);
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, "Logic D");
         db.insert(OtashuDatabaseHelper.TABLE_LEARNING_STYLES, null, contentValues);
-        
+
         // add default notevalues
-        // TODO
+        InputStream NOTEVALUES_CSV = null;
+        try {
+            NOTEVALUES_CSV = am.open(OtashuDatabaseHelper.NOTEVALUES_IMPORT_FILE);
+        } catch (IOException e) {
+            Log.d("MYLOG", e.getMessage());
+        }
+
+        try {
+            br = new BufferedReader(new InputStreamReader(NOTEVALUES_CSV, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            Log.d("MYLOG", e.getMessage());
+        }
+
+        // parse and edit approach based on example code from this source:
+        // http://stackoverflow.com/q/16672074/1167750
+        line = "";
+        if (NOTEVALUES_CSV != null && br != null) {
+            try {
+                db.beginTransaction();
+                // read in CSV file and split into content value items
+                while ((line = br.readLine()) != null) {
+                    String[] csvColumns = line.split(",");
+                    contentValues = new ContentValues();
+                    contentValues.put(OtashuDatabaseHelper.COLUMN_ID, csvColumns[0]);
+                    contentValues.put(OtashuDatabaseHelper.COLUMN_NOTEVALUE, csvColumns[1]);
+                    contentValues.put(OtashuDatabaseHelper.COLUMN_NOTELABEL, csvColumns[2]);
+                    contentValues.put(OtashuDatabaseHelper.COLUMN_LABEL_ID, csvColumns[3]);
+                    db.insert(TABLE_NOTEVALUES, null, contentValues);
+                }
+                db.setTransactionSuccessful();
+            } catch (IOException e) {
+                Log.d("MYLOG", e.getMessage());
+            } finally {
+                db.endTransaction();
+            }
+        }
     }
 
     /**

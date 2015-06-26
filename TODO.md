@@ -18,6 +18,8 @@
 
 
 ## DONE:
+- 20150625: added "create default labels when program is first run" feature
+- 20150625: added "create default notevalues when program is first run" feature
 - 20150624: added "create default learning styles when program is first run" feature
 - 20150624: added "create the three default graphs when program is first run" feature
 - 20150624: added "create database when program is first run" feature

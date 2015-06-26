@@ -42,17 +42,17 @@ public class MainActivity extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
 
         // check if database exists
-        File databaseFile = new File(Environment.getExternalStorageDirectory().toString() + "/otashu/" + OtashuDatabaseHelper.DATABASE_NAME);
+        File databaseFile = new File(Environment.getExternalStorageDirectory().toString()
+                + "/otashu/" + OtashuDatabaseHelper.DATABASE_NAME);
         if (!databaseFile.exists()) {
             // need to create database file first
             OtashuDatabaseHelper dbHelper = new OtashuDatabaseHelper(this);
             dbHelper.getWritableDatabase();
             dbHelper.close();
-            
-            // have user name a new apprentice
-            
+
+            // TODO: have user name a new apprentice
         }
-        
+
         // set default preferences
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
