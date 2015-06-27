@@ -84,6 +84,7 @@
         <activity android:name="com.andrewsummers.otashu.activity.ViewApprenticeDetailActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.CreateApprenticeActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.EditApprenticeActivity" />
+        <activity android:name="com.andrewsummers.otashu.activity.NameApprenticeActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.DataModeMainMenuActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.PlayModeMainMenuActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.ChooseApprenticeActivity" />

@@ -12,6 +12,7 @@
     <string name="spinner_apprentice_learning_style_label">Learning Style</string>
     <string name="apprentice_name">Name</string>
     <string name="apprentice_name_label">Name</string>
+    <string name="apprentice_named">apprentice named</string>
     <string name="apprentice_not_sure_what_to_play">Sorry, I\'m not sure what to play... maybe I need more training?</string>
     <string name="apprentice_saved">apprentice saved</string>
     <string name="apprentice_scorecard_deleted">Scorecard deleted</string>
@@ -129,6 +130,7 @@
     <string name="menu_button_settings">Settings</string>
     <string name="menu_button_view_labels">Labels</string>
     <string name="menu_title">kanjoto</string>
+    <string name="name_apprentice_title">Name Your Apprentice</string>
     <string name="need_emotions">Please create an emotion first!</string>
     <string name="noteset_deleted">noteset deleted</string>
     <string name="noteset_detail_emotion_label">Emotion</string>
