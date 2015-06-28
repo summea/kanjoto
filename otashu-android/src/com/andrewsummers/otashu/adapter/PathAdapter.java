@@ -81,83 +81,51 @@ public class PathAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         if (convertView == null) {
             convertView = ((LayoutInflater) mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
                     R.layout.row_noteset, null);
         }
 
-        EmotionsDataSource eds = new EmotionsDataSource(mContext);
-        List<Emotion> allEmotions = eds.getAllEmotions(apprenticeId);
-        eds.close();
+        try {
+            EmotionsDataSource eds = new EmotionsDataSource(mContext);
+            List<Emotion> allEmotions = eds.getAllEmotions(apprenticeId);
+            eds.close();
 
-        HashMap<Long, Emotion> allEmotionsMap = new HashMap<Long, Emotion>();
-        for (Emotion emotion : allEmotions) {
-            allEmotionsMap.put(emotion.getId(), emotion);
-        }
+            HashMap<Long, Emotion> allEmotionsMap = new HashMap<Long, Emotion>();
+            for (Emotion emotion : allEmotions) {
+                allEmotionsMap.put(emotion.getId(), emotion);
+            }
 
-        LabelsDataSource lds = new LabelsDataSource(mContext);
-        List<Label> allLabels = lds.getAllLabels();
-        lds.close();
+            LabelsDataSource lds = new LabelsDataSource(mContext);
+            List<Label> allLabels = lds.getAllLabels();
+            lds.close();
 
-        HashMap<Long, Label> allLabelsMap = new HashMap<Long, Label>();
-        for (Label label : allLabels) {
-            allLabelsMap.put(label.getId(), label);
-        }
+            HashMap<Long, Label> allLabelsMap = new HashMap<Long, Label>();
+            for (Label label : allLabels) {
+                allLabelsMap.put(label.getId(), label);
+            }
 
-        TextView emotion = (TextView) convertView.findViewById(R.id.emotion);
-        emotion.setText(allEmotionsMap.get(paths.get(position).getPath().get(0).getEmotionId())
-                .getName() + "");
+            TextView emotion = (TextView) convertView.findViewById(R.id.emotion);
+            emotion.setText(allEmotionsMap.get(paths.get(position).getPath().get(0).getEmotionId())
+                    .getName() + "");
 
-        String backgroundColor = "#dddddd";
-
-        // TODO: refactor this in the future...
-        // get background color of related label
-        if (allLabelsMap.get(
-                allEmotionsMap.get(paths.get(position).getPath().get(0).getEmotionId())
-                        .getLabelId()).getColor() != null) {
-            backgroundColor = allLabelsMap.get(
-                    allEmotionsMap.get(paths.get(position).getPath().get(0).getEmotionId())
-                            .getLabelId()).getColor();
-        }
-
-        // add correct color to background (but maintain default state "pressed" and "selected"
-        // effects)
-        StateListDrawable drawable = new StateListDrawable();
-        drawable.addState(new int[] {
-                android.R.attr.state_pressed
-        }, mContext.getResources().getDrawable(R.drawable.row_selector));
-        drawable.addState(new int[] {
-                android.R.attr.state_selected
-        }, mContext.getResources().getDrawable(R.drawable.row_selector));
-        drawable.addState(new int[] {}, new ColorDrawable(Color.parseColor(backgroundColor)));
-        emotion.setBackground(drawable);
-
-        int[] noteItems = {
-                R.id.note_1, R.id.note_2, R.id.note_3, R.id.note_4
-        };
-        TextView note = null;
-
-        // fill in note names for each note in each row of this custom list
-        for (int i = 0; i < noteItems.length - 1; i++) {
-            note = (TextView) convertView.findViewById(noteItems[i]);
-            note.setText(notevalues.get(
-                    paths.get(position).getPath().get(i).getFromNodeId())
-                    .getNotelabel());
-
-            backgroundColor = "#dddddd";
+            String backgroundColor = "#dddddd";
 
             // TODO: refactor this in the future...
             // get background color of related label
-            if (allLabelsMap
-                    .get(notevalues.get(paths.get(position).getPath().get(i).getFromNodeId())
+            if (allLabelsMap.get(
+                    allEmotionsMap.get(paths.get(position).getPath().get(0).getEmotionId())
                             .getLabelId()).getColor() != null) {
                 backgroundColor = allLabelsMap.get(
-                        notevalues.get(paths.get(position).getPath().get(i).getFromNodeId())
+                        allEmotionsMap.get(paths.get(position).getPath().get(0).getEmotionId())
                                 .getLabelId()).getColor();
             }
 
-            drawable = new StateListDrawable();
+            // add correct color to background (but maintain default state "pressed" and "selected"
+            // effects)
+            StateListDrawable drawable = new StateListDrawable();
             drawable.addState(new int[] {
                     android.R.attr.state_pressed
             }, mContext.getResources().getDrawable(R.drawable.row_selector));
@@ -165,24 +133,29 @@ public class PathAdapter extends BaseAdapter {
                     android.R.attr.state_selected
             }, mContext.getResources().getDrawable(R.drawable.row_selector));
             drawable.addState(new int[] {}, new ColorDrawable(Color.parseColor(backgroundColor)));
-            note.setBackground(drawable);
+            emotion.setBackground(drawable);
 
-            // make sure to add last note (because of the "from" and "to" differences)
-            if (i == noteItems.length - 2) {
+            int[] noteItems = {
+                    R.id.note_1, R.id.note_2, R.id.note_3, R.id.note_4
+            };
+            TextView note = null;
 
-                note = (TextView) convertView.findViewById(noteItems[i + 1]);
-
+            // fill in note names for each note in each row of this custom list
+            for (int i = 0; i < noteItems.length - 1; i++) {
+                note = (TextView) convertView.findViewById(noteItems[i]);
                 note.setText(notevalues.get(
-                        paths.get(position).getPath().get(i).getToNodeId())
+                        paths.get(position).getPath().get(i).getFromNodeId())
                         .getNotelabel());
 
                 backgroundColor = "#dddddd";
 
+                // TODO: refactor this in the future...
+                // get background color of related label
                 if (allLabelsMap
-                        .get(notevalues.get(paths.get(position).getPath().get(i).getToNodeId())
+                        .get(notevalues.get(paths.get(position).getPath().get(i).getFromNodeId())
                                 .getLabelId()).getColor() != null) {
                     backgroundColor = allLabelsMap.get(
-                            notevalues.get(paths.get(position).getPath().get(i).getToNodeId())
+                            notevalues.get(paths.get(position).getPath().get(i).getFromNodeId())
                                     .getLabelId()).getColor();
                 }
 
@@ -197,7 +170,40 @@ public class PathAdapter extends BaseAdapter {
                         new ColorDrawable(Color.parseColor(backgroundColor)));
                 note.setBackground(drawable);
 
+                // make sure to add last note (because of the "from" and "to" differences)
+                if (i == noteItems.length - 2) {
+
+                    note = (TextView) convertView.findViewById(noteItems[i + 1]);
+
+                    note.setText(notevalues.get(
+                            paths.get(position).getPath().get(i).getToNodeId())
+                            .getNotelabel());
+
+                    backgroundColor = "#dddddd";
+
+                    if (allLabelsMap
+                            .get(notevalues.get(paths.get(position).getPath().get(i).getToNodeId())
+                                    .getLabelId()).getColor() != null) {
+                        backgroundColor = allLabelsMap.get(
+                                notevalues.get(paths.get(position).getPath().get(i).getToNodeId())
+                                        .getLabelId()).getColor();
+                    }
+
+                    drawable = new StateListDrawable();
+                    drawable.addState(new int[] {
+                            android.R.attr.state_pressed
+                    }, mContext.getResources().getDrawable(R.drawable.row_selector));
+                    drawable.addState(new int[] {
+                            android.R.attr.state_selected
+                    }, mContext.getResources().getDrawable(R.drawable.row_selector));
+                    drawable.addState(new int[] {},
+                            new ColorDrawable(Color.parseColor(backgroundColor)));
+                    note.setBackground(drawable);
+
+                }
             }
+        } catch (Exception e) {
+            Log.d("MYLOG", e.getStackTrace().toString());
         }
 
         return convertView;

@@ -81,10 +81,6 @@ public class ViewAllApprenticeStrongestPathsActivity extends ListActivity {
 
         // TODO: check if crash still happens when there is no database data...
 
-        // prevent crashes due to lack of database data
-        // if (allNotesetsData.isEmpty())
-        // allNotesetsData.add("empty");
-
         // pass list data to adapter
         adapter = new EmotionAdapter(this, allEmotionsAndRelated);
 

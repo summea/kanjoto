@@ -55,8 +55,6 @@ public class CreateGraphActivity extends Activity implements OnClickListener {
         allLabels = lds.getAllLabelListPreviews();
         lds.close();
 
-        ArrayAdapter<CharSequence> adapter = null;
-
         // locate next spinner in layout
         Spinner spinner = (Spinner) findViewById(R.id.spinner_label);
 
