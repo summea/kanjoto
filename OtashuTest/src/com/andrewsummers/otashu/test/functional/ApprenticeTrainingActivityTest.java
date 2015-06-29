@@ -7,21 +7,13 @@ import com.andrewsummers.otashu.activity.ApprenticeTrainingActivity;
 import com.andrewsummers.otashu.activity.ApprenticeTransitionTestActivity;
 
 import android.app.Instrumentation.ActivityMonitor;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.RenamingDelegatingContext;
 import android.test.TouchUtils;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.widget.Button;
-import android.widget.Spinner;
 
 public class ApprenticeTrainingActivityTest extends
         ActivityInstrumentationTestCase2<ApprenticeTrainingActivity> {
 
-    private RenamingDelegatingContext context;
-    private ApprenticeEmotionTestActivity apprenticeEmotionTestActivity;
     private int TIMEOUT_IN_MS = 7000;
 
     public ApprenticeTrainingActivityTest() {
@@ -31,7 +23,6 @@ public class ApprenticeTrainingActivityTest extends
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        context = new RenamingDelegatingContext(getInstrumentation().getTargetContext(), "test_");
     }
 
     @Override
