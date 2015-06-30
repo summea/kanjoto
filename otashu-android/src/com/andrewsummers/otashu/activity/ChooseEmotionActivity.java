@@ -11,6 +11,7 @@ import com.andrewsummers.otashu.data.BookmarksDataSource;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.model.Bookmark;
 import com.andrewsummers.otashu.model.Emotion;
+import com.andrewsummers.otashu.task.UploadFileTask;
 
 import android.app.Activity;
 import android.content.Context;
@@ -81,8 +82,8 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
         buttonBookmark.setOnClickListener(this);
 
         // TODO: find a place for the "send music" option
-        // buttonSendMusic = (Button) findViewById(R.id.button_send_music);
-        // buttonSendMusic.setOnClickListener(this);
+        buttonSendMusic = (Button) findViewById(R.id.button_send_music);
+        buttonSendMusic.setOnClickListener(this);
 
         // get all emotions for spinner
         EmotionsDataSource eds = new EmotionsDataSource(this);
@@ -198,8 +199,6 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
                 // save last generated note sequence as a bookmark
                 save_bookmark();
                 break;
-             // TODO: find a place for the "send music" option
-            /*
             case R.id.button_send_music:
                 // disable button to avoid multiple sends for same emotion
                 buttonSendMusic = (Button) findViewById(R.id.button_send_music);
@@ -208,7 +207,6 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
                 // then send emofing to server
                 new UploadFileTask().execute(musicUploadUrl, fullPathString, "file");
                 break;
-            */
         }
     }
 
