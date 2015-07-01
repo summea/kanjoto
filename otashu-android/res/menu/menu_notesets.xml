@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/noteset_filter"
+        android:title="@string/menu_button_noteset_filter"
+        android:showAsAction="ifRoom"
+        android:actionLayout="@layout/action_noteset_filter" />
+    <item
         android:id="@+id/create_noteset"
         android:title="@string/menu_button_create_noteset"
         android:showAsAction="ifRoom" />

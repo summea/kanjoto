@@ -1,6 +1,7 @@
 
 package com.andrewsummers.otashu.activity;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,6 +35,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
@@ -225,6 +228,27 @@ public class ViewAllNotesetsActivity extends ListActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_notesets, menu);
+
+        // fill filter (by emotion) list
+        EmotionsDataSource eds = new EmotionsDataSource(this);
+        List<Emotion> allEmotions = new ArrayList<Emotion>();
+        allEmotions = eds.getAllEmotions(apprenticeId);
+        eds.close();
+
+        // locate next spinner in layout
+        Spinner spinner = (Spinner) menu.findItem(R.id.noteset_filter).getActionView();
+
+        // create array adapter for list of emotions
+        ArrayAdapter<Emotion> emotionsAdapter = new ArrayAdapter<Emotion>(this,
+                android.R.layout.simple_spinner_item);
+        emotionsAdapter.addAll(allEmotions);
+
+        // specify the default layout when list of choices appears
+        emotionsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // apply this adapter to the spinner
+        spinner.setAdapter(emotionsAdapter);
+
         return true;
     }
 

@@ -125,6 +125,7 @@
     <string name="menu_button_export_database">Export Database</string>
     <string name="menu_button_graphs">Graphs</string>
     <string name="menu_button_import_database">Import Database</string>
+    <string name="menu_button_noteset_filter">Filter</string>
     <string name="menu_button_notevalues">Notevalues</string>
     <string name="menu_button_scorecards">Scorecards</string>
     <string name="menu_button_settings">Settings</string>
