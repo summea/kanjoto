@@ -86,7 +86,7 @@ public class NotesetsDataSource {
         Noteset newNoteset = cursorToNoteset(cursor);
         cursor.close();
         db.close();
-        
+
         return newNoteset;
     }
 
@@ -106,7 +106,7 @@ public class NotesetsDataSource {
         // delete related notes
         db.delete(OtashuDatabaseHelper.TABLE_NOTES,
                 OtashuDatabaseHelper.COLUMN_NOTESET_ID + " = " + noteset.getId(), null);
-        
+
         db.close();
     }
 
@@ -144,7 +144,7 @@ public class NotesetsDataSource {
                 notesets.add(noteset);
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return notesets;
@@ -188,7 +188,7 @@ public class NotesetsDataSource {
                 notesets.add(noteset);
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return notesets;
@@ -221,7 +221,7 @@ public class NotesetsDataSource {
                 // TODO: make this query approach more efficient at some point, if necessary
                 String queryForRelatedNotes = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES
                         + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + "=?";
-                
+
                 Cursor cursorForRelatedNotes = db.rawQuery(queryForRelatedNotes, new String[] {
                         String.valueOf(notesetId)
                 });
@@ -245,7 +245,7 @@ public class NotesetsDataSource {
 
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return notesetBundles;
@@ -282,7 +282,7 @@ public class NotesetsDataSource {
                 // TODO: make this query approach more efficient at some point, if necessary
                 String queryForRelatedNotes = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES
                         + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + "=?";
-                
+
                 Cursor cursorForRelatedNotes = db.rawQuery(queryForRelatedNotes, new String[] {
                         String.valueOf(notesetId)
                 });
@@ -306,7 +306,7 @@ public class NotesetsDataSource {
 
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return notesetBundles;
@@ -334,7 +334,7 @@ public class NotesetsDataSource {
                 // TODO: make this query approach more efficient at some point, if necessary
                 String queryForRelatedNotes = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES
                         + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + "=?";
-                
+
                 Cursor cursorForRelatedNotes = db.rawQuery(queryForRelatedNotes, new String[] {
                         String.valueOf(notesetId)
                 });
@@ -358,7 +358,7 @@ public class NotesetsDataSource {
 
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return notesetBundle;
@@ -396,7 +396,7 @@ public class NotesetsDataSource {
                 // TODO: make this query approach more efficient at some point, if necessary
                 String queryForRelatedNotes = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES
                         + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + "=?";
-                
+
                 Cursor cursorForRelatedNotes = db.rawQuery(queryForRelatedNotes, new String[] {
                         String.valueOf(id)
                 });
@@ -436,7 +436,7 @@ public class NotesetsDataSource {
 
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return notesetBundle;
@@ -494,7 +494,7 @@ public class NotesetsDataSource {
                 // TODO: make this query approach more efficient at some point, if necessary
                 String queryForRelatedNotes = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTES
                         + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + "=?";
-                
+
                 Cursor cursorForRelatedNotes = db.rawQuery(queryForRelatedNotes, new String[] {
                         String.valueOf(noteset.getId())
                 });
@@ -518,7 +518,7 @@ public class NotesetsDataSource {
                 notesets.add(itemForList);
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return notesets;
@@ -549,7 +549,7 @@ public class NotesetsDataSource {
                 noteset.setApprenticeId(cursor.getLong(4));
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return noteset;
@@ -573,7 +573,7 @@ public class NotesetsDataSource {
                 OtashuDatabaseHelper.COLUMN_ID + "=" + noteset.getId(), null);
 
         db.close();
-        
+
         return noteset;
     }
 
@@ -593,7 +593,7 @@ public class NotesetsDataSource {
         });
 
         count = cursor.getCount();
-        
+
         db.close();
 
         return count;
@@ -630,7 +630,67 @@ public class NotesetsDataSource {
                 notesets.add(noteset);
             } while (cursor.moveToNext());
         }
-        
+
+        db.close();
+
+        return notesets;
+    }
+
+    /**
+     * Get all notesets from database table by emotion.
+     * 
+     * @return List of notesets.
+     */
+    public List<Noteset> getAllNotesetsByEmotion(long apprenticeId, long emotionId, int limit,
+            int offset) {
+        List<Noteset> notesets = new ArrayList<Noteset>();
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        Cursor cursor = null;
+
+        if (emotionId > 0) {
+            String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS
+                    + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?"
+                    + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=?";
+            if (limit > 0)
+                query += " LIMIT " + limit;
+            if (offset > 0)
+                query += " OFFSET " + offset;
+
+            // select all notesets from database
+            cursor = db.rawQuery(query, new String[] {
+                    String.valueOf(apprenticeId),
+                    String.valueOf(emotionId)
+            });
+        } else {
+            String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS
+                    + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?";
+            if (limit > 0)
+                query += " LIMIT " + limit;
+            if (offset > 0)
+                query += " OFFSET " + offset;
+
+            // select all notesets from database
+            cursor = db.rawQuery(query, new String[] {
+                    String.valueOf(apprenticeId),
+            });
+        }
+
+        if (cursor.moveToFirst()) {
+            do {
+                // create noteset objects based on noteset data from database
+                Noteset noteset = new Noteset();
+                noteset.setId(cursor.getInt(0));
+                noteset.setName(cursor.getString(1));
+                noteset.setEmotion((cursor.getInt(2)));
+                noteset.setEnabled(cursor.getInt(3));
+                noteset.setApprenticeId(cursor.getLong(4));
+                notesets.add(noteset);
+            } while (cursor.moveToNext());
+        }
+
         db.close();
 
         return notesets;

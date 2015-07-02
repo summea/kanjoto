@@ -6,12 +6,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.andrewsummers.otashu.R;
+import com.andrewsummers.otashu.adapter.EmotionAdapter;
 import com.andrewsummers.otashu.adapter.NotesetAdapter;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.data.NotesDataSource;
 import com.andrewsummers.otashu.data.NotesetsDataSource;
 import com.andrewsummers.otashu.model.Emotion;
+import com.andrewsummers.otashu.model.EmotionAndRelated;
 import com.andrewsummers.otashu.model.Label;
 import com.andrewsummers.otashu.model.Note;
 import com.andrewsummers.otashu.model.Noteset;
@@ -35,6 +37,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -62,6 +65,7 @@ public class ViewAllNotesetsActivity extends ListActivity {
     private Boolean doneLoading = false;
     private SharedPreferences sharedPref;
     private long apprenticeId = 0;
+    private long filterEmotionId = 0;
 
     /**
      * onCreate override used to gather and display a list of all notesets saved in database.
@@ -107,7 +111,8 @@ public class ViewAllNotesetsActivity extends ListActivity {
         totalNotesetsAvailable = nsds.getCount(apprenticeId);
 
         if (currentOffset <= totalNotesetsAvailable && !doneLoading) {
-            allNotesets = nsds.getAllNotesets(apprenticeId, limit, currentOffset);
+            //allNotesets = nsds.getAllNotesets(apprenticeId, limit, currentOffset);
+            allNotesets = nsds.getAllNotesetsByEmotion(apprenticeId, filterEmotionId, limit, currentOffset);
 
             for (Noteset noteset : allNotesets) {
                 relatedNotes = nds.getAllNotesByNotesetId(noteset.getId());
@@ -230,25 +235,47 @@ public class ViewAllNotesetsActivity extends ListActivity {
         inflater.inflate(R.menu.menu_notesets, menu);
 
         // fill filter (by emotion) list
+        Label relatedLabel = new Label();
+        List<Emotion> allEmotions = new LinkedList<Emotion>();
+        List<EmotionAndRelated> allEmotionsAndRelated = new LinkedList<EmotionAndRelated>();
+
         EmotionsDataSource eds = new EmotionsDataSource(this);
-        List<Emotion> allEmotions = new ArrayList<Emotion>();
+        LabelsDataSource lds = new LabelsDataSource(this);
+
         allEmotions = eds.getAllEmotions(apprenticeId);
+
+        for (Emotion emotion : allEmotions) {
+            relatedLabel = lds.getLabel(emotion.getLabelId());
+            EmotionAndRelated emotionAndRelated = new EmotionAndRelated();
+            emotionAndRelated.setEmotion(emotion);
+            emotionAndRelated.setLabel(relatedLabel);
+            allEmotionsAndRelated.add(emotionAndRelated);
+        }
+
         eds.close();
+        lds.close();
 
-        // locate next spinner in layout
-        Spinner spinner = (Spinner) menu.findItem(R.id.noteset_filter).getActionView();
+        // pass list data to adapter
+        EmotionAdapter emotionAdapter = new EmotionAdapter(this, allEmotionsAndRelated);
+        
+        Spinner spinner = (Spinner) menu.findItem(R.id.noteset_filter).getActionView(); 
+        spinner.setAdapter(emotionAdapter);
 
-        // create array adapter for list of emotions
-        ArrayAdapter<Emotion> emotionsAdapter = new ArrayAdapter<Emotion>(this,
-                android.R.layout.simple_spinner_item);
-        emotionsAdapter.addAll(allEmotions);
+        spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                Log.d("MYLOG", "> filter selected... positon" + position + " id: " + id);
+                filterEmotionId = id;
+                // TODO: refresh notesets list after choosing a filter option
+                adapter.notifyDataSetChanged();                
+                fillList();
+            }
 
-        // specify the default layout when list of choices appears
-        emotionsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // apply this adapter to the spinner
-        spinner.setAdapter(emotionsAdapter);
-
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+            }
+        });
+        
         return true;
     }
 
