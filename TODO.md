@@ -13,11 +13,11 @@
 - fix horizontal animation timing for music generation activity
 - music playback pauses at random times on phone which interferes with sync between audio and graphics
 - standardize strings view naming
-- noteset folders (lists by label or emotion)
 - fix getTakenAt ISO date issue
 
 
 ## DONE:
+- 20150702: added "filter notesets by emotion (in view notesets activity)" feature
 - 20150625: added "create default labels when program is first run" feature
 - 20150625: added "create default notevalues when program is first run" feature
 - 20150624: added "create default learning styles when program is first run" feature

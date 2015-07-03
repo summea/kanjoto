@@ -1,7 +1,6 @@
 
 package com.andrewsummers.otashu.activity;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,7 +37,6 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -111,8 +109,9 @@ public class ViewAllNotesetsActivity extends ListActivity {
         totalNotesetsAvailable = nsds.getCount(apprenticeId);
 
         if (currentOffset <= totalNotesetsAvailable && !doneLoading) {
-            //allNotesets = nsds.getAllNotesets(apprenticeId, limit, currentOffset);
-            allNotesets = nsds.getAllNotesetsByEmotion(apprenticeId, filterEmotionId, limit, currentOffset);
+            // allNotesets = nsds.getAllNotesets(apprenticeId, limit, currentOffset);
+            allNotesets = nsds.getAllNotesetsByEmotion(apprenticeId, filterEmotionId, limit,
+                    currentOffset);
 
             for (Noteset noteset : allNotesets) {
                 relatedNotes = nds.getAllNotesByNotesetId(noteset.getId());
@@ -203,7 +202,9 @@ public class ViewAllNotesetsActivity extends ListActivity {
         totalNotesetsAvailable = nsds.getCount(apprenticeId);
 
         if (currentOffset <= totalNotesetsAvailable) {
-            allNotesets = nsds.getAllNotesets(apprenticeId, limit, currentOffset);
+            // allNotesets = nsds.getAllNotesets(apprenticeId, limit, currentOffset);
+            allNotesets = nsds.getAllNotesetsByEmotion(apprenticeId, filterEmotionId, limit,
+                    currentOffset);
 
             for (Noteset noteset : allNotesets) {
                 relatedNotes = nds.getAllNotesByNotesetId(noteset.getId());
@@ -244,6 +245,18 @@ public class ViewAllNotesetsActivity extends ListActivity {
 
         allEmotions = eds.getAllEmotions(apprenticeId);
 
+        Emotion firstEmotion = new Emotion();
+        firstEmotion.setId(0);
+        firstEmotion.setLabelId(1);
+        firstEmotion.setName("All");
+        Label firstLabel = new Label();
+        firstLabel.setId(0);
+        firstLabel.setColor("#00000000");
+        EmotionAndRelated firstEmotionAndRelated = new EmotionAndRelated();
+        firstEmotionAndRelated.setEmotion(firstEmotion);
+        firstEmotionAndRelated.setLabel(firstLabel);
+        allEmotionsAndRelated.add(firstEmotionAndRelated);
+
         for (Emotion emotion : allEmotions) {
             relatedLabel = lds.getLabel(emotion.getLabelId());
             EmotionAndRelated emotionAndRelated = new EmotionAndRelated();
@@ -257,17 +270,19 @@ public class ViewAllNotesetsActivity extends ListActivity {
 
         // pass list data to adapter
         EmotionAdapter emotionAdapter = new EmotionAdapter(this, allEmotionsAndRelated);
-        
-        Spinner spinner = (Spinner) menu.findItem(R.id.noteset_filter).getActionView(); 
+
+        Spinner spinner = (Spinner) menu.findItem(R.id.noteset_filter).getActionView();
         spinner.setAdapter(emotionAdapter);
 
         spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView,
+                    int position, long id) {
                 Log.d("MYLOG", "> filter selected... positon" + position + " id: " + id);
                 filterEmotionId = id;
                 // TODO: refresh notesets list after choosing a filter option
-                adapter.notifyDataSetChanged();                
+                adapter.clear();
+                adapter.notifyDataSetChanged();
                 fillList();
             }
 
@@ -275,7 +290,7 @@ public class ViewAllNotesetsActivity extends ListActivity {
             public void onNothingSelected(AdapterView<?> parentView) {
             }
         });
-        
+
         return true;
     }
 
