@@ -78,5 +78,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/button_selector" />
+            
+        <TextView
+            android:id="@+id/spinner_emotion_focus_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/spinner_emotion_focus_label" />
+
+        <Spinner
+            android:id="@+id/spinner_emotion_focus"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
 
 </LinearLayout>

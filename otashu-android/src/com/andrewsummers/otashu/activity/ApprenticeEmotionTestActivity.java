@@ -139,17 +139,35 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
         buttonPlayNoteset = (Button) findViewById(R.id.button_play_noteset);
         buttonPlayNoteset.setClickable(false);
 
-        apprenticeAskProcess();
+        // get random emotion
+        EmotionsDataSource eds = new EmotionsDataSource(this);
+        int emotionCount = eds.getEmotionCount(apprenticeId);
+        eds.close();
+        
+        // make sure there's at least one emotion for the spinner list
+        if (emotionCount <= 0) {
+            Context context = getApplicationContext();
+            int duration = Toast.LENGTH_SHORT;
 
-        mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer aMediaPlayer) {
-                // enable play button again
-                buttonYes.setClickable(true);
-                buttonNo.setClickable(true);
-                buttonPlayNoteset.setClickable(true);
-            }
-        });
+            Toast toast = Toast.makeText(context,
+                    context.getResources().getString(R.string.need_emotions),
+                    duration);
+            toast.show();
+
+            finish();
+        } else {
+            apprenticeAskProcess();
+
+            mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer aMediaPlayer) {
+                    // enable play button again
+                    buttonYes.setClickable(true);
+                    buttonNo.setClickable(true);
+                    buttonPlayNoteset.setClickable(true);
+                }
+            });
+        }
     }
 
     public List<Note> generateNotes(int fromIndex, int toIndex) {
@@ -560,24 +578,11 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
         EmotionsDataSource eds = new EmotionsDataSource(this);
         int emotionCount = eds.getEmotionCount(apprenticeId);
 
-        // make sure there's at least one emotion for the spinner list
-        if (emotionCount <= 0) {
-            Context context = getApplicationContext();
-            int duration = Toast.LENGTH_SHORT;
-
-            Toast toast = Toast.makeText(context,
-                    context.getResources().getString(R.string.need_emotions),
-                    duration);
-            toast.show();
-
-            finish();
+        // are we focusing on a specific emotion?
+        if (emotionFocusId > 0) {
+            chosenEmotion = eds.getEmotion(emotionFocusId);
         } else {
-            // are we focusing on a specific emotion?
-            if (emotionFocusId > 0) {
-                chosenEmotion = eds.getEmotion(emotionFocusId);
-            } else {
-                chosenEmotion = eds.getRandomEmotion(apprenticeId);
-            }
+            chosenEmotion = eds.getRandomEmotion(apprenticeId);
         }
 
         eds.close();
@@ -644,12 +649,16 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
             notes = generateNotes(39, 50);
         }
 
-        if ((notes.get(0).getNotevalue() == 0) && (notes.get(1).getNotevalue() == 0)) {
+        // make sure notes are filled in
+        if ((notes.get(0).getNotevalue() == 0) || (notes.get(1).getNotevalue() == 0)
+                || (notes.get(2).getNotevalue() == 0) || (notes.get(3).getNotevalue() == 0)) {
             // Using Random Approach
             approach = "Random";
             // stay within 39..50 for now (C4..B4)
             notes = generateNotes(39, 50);
         }
+
+        Log.d("MYLOG", "checking generated notes in emotion test: " + notes.toString());
 
         notesToInsert = notes;
 

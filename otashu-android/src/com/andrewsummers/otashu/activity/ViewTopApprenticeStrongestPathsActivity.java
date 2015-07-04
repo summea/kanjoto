@@ -52,6 +52,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
     private long emotionId = 0;
     private SharedPreferences sharedPref;
     private long apprenticeId = 0;
+    private List<Path> topPaths = new ArrayList<Path>();
 
     /**
      * onCreate override used to gather and display a list of all emotions saved in database.
@@ -81,7 +82,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
 
     public void fillList() {
         // fill list with Top 3 strongest Apprentice paths (if available)
-        List<Path> topPaths = new ArrayList<Path>();
+        topPaths = new ArrayList<Path>();
         EdgesDataSource eds = new EdgesDataSource(this);
 
         // select a given graph
@@ -244,7 +245,8 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         Intent intent = null;
         switch (item.getItemId()) {
             case R.id.context_menu_view:
-                intent = new Intent(this, ViewEmotionDetailActivity.class);
+                intent = new Intent(this, ViewApprenticeStrongestPathDetailActivity.class);
+                intent.putExtra("emotion_id", emotionId);
                 intent.putExtra("list_id", info.id);
                 startActivity(intent);
                 return true;

@@ -6,7 +6,6 @@
 - create auto test/learn for Emotion test
 - think about adding support for different note speeds in Logic D
 - connect label_id to background color in "list all scorecards" activity
-- connect label_id to background color in "view graph detail" activity
 - add noteset and emotion background colors to UI for "strongest path detail" activity
 - add noteset playback to "top 3 strengths" detail activity
 - add UI formatting to Apprentice top three strengths detail activity
@@ -17,6 +16,9 @@
 
 
 ## DONE:
+- 20150703: fixed when apprentice has no emotions (or data) crash happens on apprentice training tests (emotion, scale, transition)
+- 20150703: connected label_id to background color in "view graph detail" activity
+- 20150703: ensured all four notes are generated for a new apprentice during emotion test
 - 20150702: added "filter notesets by emotion (in view notesets activity)" feature
 - 20150625: added "create default labels when program is first run" feature
 - 20150625: added "create default notevalues when program is first run" feature

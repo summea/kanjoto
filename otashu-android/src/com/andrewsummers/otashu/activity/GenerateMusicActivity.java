@@ -487,7 +487,7 @@ public class GenerateMusicActivity extends Activity {
             Log.d("MYLOG", e.getStackTrace().toString());
         }
 
-        Log.d("MYLOG", "checking....... " + selectedEmotionId + " notes: " + notes.toString());
+        Log.d("MYLOG", "checking generate music activity....... " + selectedEmotionId + " notes: " + notes.toString());
         serializeBookmarkData(selectedEmotionId, notes);
     }
 

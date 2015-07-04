@@ -30,5 +30,20 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_marginBottom="20dp"
         android:padding="15dp" />
+        
+    <TextView
+        android:id="@+id/graph_label_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/graph_label_label"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold" />
+        
+    <TextView
+        android:id="@+id/graph_label_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:padding="15dp" />
 
 </LinearLayout>

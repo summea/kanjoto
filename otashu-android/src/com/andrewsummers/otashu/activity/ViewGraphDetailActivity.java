@@ -3,9 +3,12 @@ package com.andrewsummers.otashu.activity;
 
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.GraphsDataSource;
+import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.model.Graph;
+import com.andrewsummers.otashu.model.Label;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -35,12 +38,24 @@ public class ViewGraphDetailActivity extends Activity {
         graphId = (int) getIntent().getExtras().getLong("list_id");
 
         Graph graph = new Graph();
-        GraphsDataSource lds = new GraphsDataSource(this);
-        graph = lds.getGraph(graphId);
+        GraphsDataSource gds = new GraphsDataSource(this);
+        graph = gds.getGraph(graphId);
+        gds.close();
+        
+        LabelsDataSource lds = new LabelsDataSource(this);
+        Label label = lds.getLabel(graph.getLabelId());
         lds.close();
 
         // fill in form data
         TextView graphName = (TextView) findViewById(R.id.graph_name_value);
         graphName.setText(graph.getName());
+        
+        TextView graphLabel = (TextView) findViewById(R.id.graph_label_value);
+        graphLabel.setText(lds.getLabel(graph.getLabelId()).getName());
+
+        // get label background color, if available
+        if (label.getColor() != null) {
+            graphLabel.setBackgroundColor(Color.parseColor(label.getColor()));
+        }
     }
 }

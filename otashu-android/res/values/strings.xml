@@ -96,6 +96,7 @@
     <string name="get_emotion_from_noteset_title">Get Emotion from Noteset</string>
     <string name="graph_deleted">graph deleted</string>
     <string name="graph_detail_name_label">Name</string>
+    <string name="graph_label_label">Label</string>
     <string name="graph_name">Name</string>
     <string name="graph_saved">graph saved</string>
     <string name="http_request_failed">HTTP request failed</string>

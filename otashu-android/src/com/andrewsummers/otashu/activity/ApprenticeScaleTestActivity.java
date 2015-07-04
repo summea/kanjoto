@@ -111,17 +111,35 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
         buttonPlayNoteset = (Button) findViewById(R.id.button_play_noteset);
         buttonPlayNoteset.setClickable(false);
 
-        apprenticeAskProcess();
+        // get random emotion
+        EmotionsDataSource eds = new EmotionsDataSource(this);
+        int emotionCount = eds.getEmotionCount(apprenticeId);
+        eds.close();
 
-        mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer aMediaPlayer) {
-                // enable play button again
-                buttonYes.setClickable(true);
-                buttonNo.setClickable(true);
-                buttonPlayNoteset.setClickable(true);
-            }
-        });
+        // make sure there's at least one emotion for the spinner list
+        if (emotionCount <= 0) {
+            Context context = getApplicationContext();
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context,
+                    context.getResources().getString(R.string.need_emotions),
+                    duration);
+            toast.show();
+
+            finish();
+        } else {
+            apprenticeAskProcess();
+
+            mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer aMediaPlayer) {
+                    // enable play button again
+                    buttonYes.setClickable(true);
+                    buttonNo.setClickable(true);
+                    buttonPlayNoteset.setClickable(true);
+                }
+            });
+        }
     }
 
     public Note getRandomNote(int fromIndex, int toIndex) {

@@ -275,13 +275,13 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, 2);
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, "Transition Graph");
-        contentValues.put(OtashuDatabaseHelper.COLUMN_LABEL_ID, 1);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_LABEL_ID, 2);
         db.insert(OtashuDatabaseHelper.TABLE_GRAPHS, null, contentValues);
 
         contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, 3);
         contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, "Scale Graph");
-        contentValues.put(OtashuDatabaseHelper.COLUMN_LABEL_ID, 1);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_LABEL_ID, 3);
         db.insert(OtashuDatabaseHelper.TABLE_GRAPHS, null, contentValues);
 
         // add default labels
