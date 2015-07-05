@@ -8,6 +8,8 @@ public class EmotionAndRelated {
 
     private Emotion emotion = new Emotion();
     private Label label = new Label();
+    private float certainty = 0.0f;
+    private String method;
 
     /**
      * getEmotion gets emotion
@@ -43,6 +45,42 @@ public class EmotionAndRelated {
      */
     public void setLabel(Label label) {
         this.label = label;
+    }
+    
+    /**
+     * getCertainty gets related Certainty
+     * 
+     * @return <code>float</code> certainty value
+     */
+    public float getCertainty() {
+        return certainty;
+    }
+
+    /**
+     * setCertainty sets certainty
+     * 
+     * @param float New Certainty object.
+     */
+    public void setCertainty(float certainty) {
+        this.certainty = certainty;
+    }
+    
+    /**
+     * getMethod gets related selection Method
+     * 
+     * @return <code>String</code> selection method
+     */
+    public String getMethod() {
+        return method;
+    }
+
+    /**
+     * setMethod sets selection method
+     * 
+     * @param String new selection method
+     */
+    public void setMethod(String method) {
+        this.method = method;
     }
 
     /**

@@ -11,6 +11,7 @@ import com.andrewsummers.otashu.data.EdgesDataSource;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.NotesDataSource;
 import com.andrewsummers.otashu.model.Emotion;
+import com.andrewsummers.otashu.model.EmotionAndRelated;
 import com.andrewsummers.otashu.model.Note;
 
 import android.app.Activity;
@@ -150,52 +151,21 @@ public class GetEmotionFromNotesetActivity extends Activity implements OnClickLi
                 // try to find an emotion match for given noteset
                 Log.d("MYLOG", "looking for emotion match...");
 
-                //long foundEmotionId = 0;
+                EmotionAndRelated emotionAndRelated = getEmotion(notes);
 
-                List<Integer> notevalues = new ArrayList<Integer>();
-                for (Note note : notes) {
-                    notevalues.add(note.getNotevalue());
-                }
-
-                // check emotion graph edges for a match
-                EdgesDataSource eds = new EdgesDataSource(this);
-                HashMap<String, String> result = eds
-                        .getEmotionFromNotes(apprenticeId, emotionGraphId, notevalues);
-                eds.close();
-
-                String method = "Graph Approach";
-                long emotionId = Long.parseLong(result.get("emotionId"));
-                float certainty = Float.parseFloat(result.get("certainty"));
-
-                if ((certainty <= 50.0) || (emotionId <= 0)) {
-                    // check user's notesets for a match
-                    // TODO
-
-                    NotesDataSource nds = new NotesDataSource(this);
-                    result = nds.getEmotionFromNotes(notevalues);
-
-                    float notesetApproachCertainty = Float.parseFloat(result.get("certainty"));
-
-                    if (notesetApproachCertainty > 50.0) {
-                        method = "Noteset Approach";
-                        emotionId = Long.parseLong(result.get("emotionId"));
-                        certainty = Float.parseFloat(result.get("certainty"));
-                    }
-                }
-
-                EmotionsDataSource emds = new EmotionsDataSource(this);
-                Emotion emotion = emds.getEmotion(emotionId);
-                eds.close();
-
-                Log.d("MYLOG", "> final match result... method: " + method + " emotion: "
-                        + emotion.getName() + " certainty: " + certainty);
+                Log.d("MYLOG", "> final match result... method: " + emotionAndRelated.getMethod()
+                        + " emotion: "
+                        + emotionAndRelated.getEmotion().getName() + " certainty: "
+                        + emotionAndRelated.getCertainty());
 
                 Context context = getApplicationContext();
                 int duration = Toast.LENGTH_SHORT;
 
-                Toast toast = Toast.makeText(context, "match result... method: " + method
+                Toast toast = Toast.makeText(context, "match result... method: "
+                        + emotionAndRelated.getMethod()
                         + " emotion: "
-                        + emotion.getName() + " certainty: " + certainty,
+                        + emotionAndRelated.getEmotion().getName() + " certainty: "
+                        + emotionAndRelated.getCertainty(),
                         duration);
                 toast.show();
 
@@ -230,6 +200,51 @@ public class GetEmotionFromNotesetActivity extends Activity implements OnClickLi
 
         // play music
         mediaPlayer.start();
+    }
+
+    public EmotionAndRelated getEmotion(List<Note> emotionNotes) {
+        EmotionAndRelated emotionAndRelated = new EmotionAndRelated();
+
+        List<Integer> notevalues = new ArrayList<Integer>();
+        for (Note note : emotionNotes) {
+            notevalues.add(note.getNotevalue());
+        }
+
+        // check emotion graph edges for a match
+        EdgesDataSource eds = new EdgesDataSource(this);
+        HashMap<String, String> edsResult = eds
+                .getEmotionFromNotes(apprenticeId, emotionGraphId, notevalues);
+        eds.close();
+
+        String method = "Graph Approach";
+        long emotionId = Long.parseLong(edsResult.get("emotionId"));
+        float certainty = Float.parseFloat(edsResult.get("certainty"));
+
+        if ((certainty <= 50.0) || (emotionId <= 0)) {
+            // check user's notesets for a match
+            // TODO
+
+            NotesDataSource nds = new NotesDataSource(this);
+            edsResult = nds.getEmotionFromNotes(notevalues);
+
+            float notesetApproachCertainty = Float.parseFloat(edsResult.get("certainty"));
+
+            if (notesetApproachCertainty > 50.0) {
+                method = "Noteset Approach";
+                emotionId = Long.parseLong(edsResult.get("emotionId"));
+                certainty = Float.parseFloat(edsResult.get("certainty"));
+            }
+        }
+
+        EmotionsDataSource emds = new EmotionsDataSource(this);
+        Emotion emotion = emds.getEmotion(emotionId);
+        eds.close();
+
+        emotionAndRelated.setEmotion(emotion);
+        emotionAndRelated.setCertainty(certainty);
+        emotionAndRelated.setMethod(method);
+
+        return emotionAndRelated;
     }
 
     /**
