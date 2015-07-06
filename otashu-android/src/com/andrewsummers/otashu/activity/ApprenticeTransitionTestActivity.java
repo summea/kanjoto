@@ -700,6 +700,7 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
             aScore.setCorrect(isCorrect);
             aScore.setEdgeId(edgeId);
             aScore.setApprenticeId(apprenticeId);
+            aScore.setGraphId(transitionGraphId);
 
             ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
             asds.createApprenticeScore(aScore);

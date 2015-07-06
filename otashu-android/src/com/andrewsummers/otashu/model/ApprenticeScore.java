@@ -11,6 +11,7 @@ public class ApprenticeScore {
     private int correct;
     private long edgeId;
     private long apprenticeId;
+    private long graphId;
 
     /**
      * getId gets ApprenticeScore id
@@ -119,6 +120,24 @@ public class ApprenticeScore {
     public void setApprenticeId(long apprenticeId) {
         this.apprenticeId = apprenticeId;
     }
+    
+    /**
+     * getGraphId gets Graph id
+     * 
+     * @return <code>long</code> graphId value
+     */
+    public long getGraphId() {
+        return graphId;
+    }
+
+    /**
+     * setGraphId sets Graph id
+     * 
+     * @param graphId New graphId value.
+     */
+    public void setGraphId(long graphId) {
+        this.graphId = graphId;
+    }
 
     /**
      * toString override to return ApprenticeScore name.
@@ -128,6 +147,7 @@ public class ApprenticeScore {
     @Override
     public String toString() {
         return "id: " + id + " scorecard_id: " + scorecardId + " question_number: "
-                + questionNumber + " correct: " + correct + " edgeId: " + edgeId + "\n";
+                + questionNumber + " correct: " + correct + " edgeId: " + edgeId
+                + "graphId: " + graphId + "\n";
     }
 }

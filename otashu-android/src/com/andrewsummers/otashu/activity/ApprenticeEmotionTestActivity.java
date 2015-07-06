@@ -801,7 +801,10 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
             aScore.setCorrect(isCorrect);
             aScore.setEdgeId(edgeId);
             aScore.setApprenticeId(apprenticeId);
+            aScore.setGraphId(emotionGraphId);
 
+            Log.d("MYLOG", "saving emotion score: " + aScore.toString());
+            
             ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
             asds.createApprenticeScore(aScore);
             asds.close();

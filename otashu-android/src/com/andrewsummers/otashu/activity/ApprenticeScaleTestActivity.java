@@ -613,6 +613,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
             aScore.setCorrect(isCorrect);
             aScore.setEdgeId(edgeId);
             aScore.setApprenticeId(apprenticeId);
+            aScore.setGraphId(scaleGraphId);
 
             ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
             asds.createApprenticeScore(aScore);

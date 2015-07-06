@@ -116,7 +116,7 @@ public class ApprenticeScorecardsDataSource {
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORECARDS
                 + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?";
         if (orderBy != null && !orderBy.isEmpty()) {
-            query += " ORDER BY ? ASC";
+            query += " ORDER BY " + orderBy + " ASC";
         }
 
         Log.d("MYLOG", "order query: " + query);
@@ -127,7 +127,6 @@ public class ApprenticeScorecardsDataSource {
         // select all notes from database
         Cursor cursor = db.rawQuery(query, new String[] {
                 String.valueOf(apprenticeId),
-                orderBy
         });
 
         ApprenticeScorecard apprenticeScorecard = null;
