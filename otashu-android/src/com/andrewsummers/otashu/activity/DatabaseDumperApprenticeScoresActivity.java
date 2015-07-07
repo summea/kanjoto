@@ -39,9 +39,10 @@ public class DatabaseDumperApprenticeScoresActivity extends Activity {
                 + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_SCORECARD_ID
                 + "|" + OtashuDatabaseHelper.COLUMN_QUESTION_NUMBER
                 + "|" + OtashuDatabaseHelper.COLUMN_CORRECT + "|"
-                + OtashuDatabaseHelper.COLUMN_EDGE_ID + "|"
+                + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "|"
                 + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "|"
-                + OtashuDatabaseHelper.COLUMN_GRAPH_ID
+                + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "|"
+                + OtashuDatabaseHelper.COLUMN_SCALE_ID
                 + "\n");
 
         for (ApprenticeScore aScore : allApprenticeScores) {
@@ -50,9 +51,10 @@ public class DatabaseDumperApprenticeScoresActivity extends Activity {
             newText += aScore.getId() + "|" + aScore.getScorecardId()
                     + "|" + aScore.getQuestionNumber()
                     + "|" + aScore.getCorrect()
-                    + "|" + aScore.getEdgeId()
+                    + "|" + aScore.getNotevalue()
                     + "|" + aScore.getApprenticeId()
-                    + "|" + aScore.getGraphId()+ "\n";
+                    + "|" + aScore.getGraphId()
+                    + "|" + aScore.getScaleId() + "\n";
 
             debugText.setText(newText);
         }

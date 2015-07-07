@@ -233,7 +233,7 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
         VerticesDataSource vds = new VerticesDataSource(this);
         EdgesDataSource edds = new EdgesDataSource(this);
 
-        long edgeId = 0;
+        long notevalue = 0;
 
         // Examine note1 + note2
         Note noteA = focusNotes.get(0);
@@ -290,7 +290,7 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                     newEdge.setPosition(1);
                     newEdge.setApprenticeId(apprenticeId);
                     newEdge = edds.createEdge(newEdge);
-                    edgeId = newEdge.getId();
+                    //notevalue = newEdge.getId();
                 } else {
                     // edge exists between nodeA and nodeB, just update weight
 
@@ -302,12 +302,13 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                         bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
                         edge.setWeight(bd.floatValue());
                         edds.updateEdge(edge);
-                        edgeId = edge.getId();
+                        //notevalue = edge.getId();
                     }
                 }
 
                 // save score
-                saveScore(0, edgeId);
+                saveScore(0, noteA.getNotevalue());
+                saveScore(0, noteB.getNotevalue());
 
                 // disable buttons while playing
                 buttonYes = (Button) findViewById(R.id.button_yes);
@@ -386,7 +387,7 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                     newEdge.setPosition(1);
                     newEdge.setApprenticeId(apprenticeId);
                     newEdge = edds.createEdge(newEdge);
-                    edgeId = newEdge.getId();
+                    notevalue = newEdge.getId();
 
                     currentEdges.add(newEdge);
                 } else {
@@ -400,14 +401,15 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                         bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
                         edge.setWeight(bd.floatValue());
                         edds.updateEdge(edge);
-                        edgeId = edge.getId();
+                        notevalue = edge.getId();
                     }
 
                     currentEdges.add(edge);
                 }
 
                 // save score
-                saveScore(1, edgeId);
+                saveScore(1, noteA.getNotevalue());
+                saveScore(1, noteB.getNotevalue());
 
                 // check if achievement was earned in play mode
                 if (programMode == 2) {
@@ -655,7 +657,7 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
         super.onBackPressed();
     }
 
-    public void saveScore(int isCorrect, long edgeId) {
+    public void saveScore(int isCorrect, long notevalue) {
         boolean autoSaveScorecard = sharedPref.getBoolean(
                 "pref_auto_save_scorecard", false);
 
@@ -698,9 +700,11 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
             aScore.setScorecardId(scorecardId);
             aScore.setQuestionNumber(totalGuesses);
             aScore.setCorrect(isCorrect);
-            aScore.setEdgeId(edgeId);
-            aScore.setApprenticeId(apprenticeId);
+            aScore.setNotevalue(notevalue);
+            aScore.setApprenticeId(apprenticeId);            
             aScore.setGraphId(transitionGraphId);
+            
+            Log.d("MYLOG", "current transition score: " + aScore.toString());
 
             ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
             asds.createApprenticeScore(aScore);

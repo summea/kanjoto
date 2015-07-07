@@ -242,6 +242,9 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
                         }
                     }
                 }
+                
+                // save score
+                saveScore(0, currentKeySignatureId);
 
                 // disable buttons while playing
                 buttonYes = (Button) findViewById(R.id.button_yes);
@@ -351,6 +354,9 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
                         ads.close();
                     }
                 }
+                
+                // save score
+                saveScore(1, currentKeySignatureId);
 
                 // disable buttons while playing
                 buttonYes = (Button) findViewById(R.id.button_yes);
@@ -568,7 +574,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
         super.onBackPressed();
     }
 
-    public void saveScore(int isCorrect, long edgeId) {
+    public void saveScore(int isCorrect, long scaleId) {
         boolean autoSaveScorecard = sharedPref.getBoolean(
                 "pref_auto_save_scorecard", false);
 
@@ -611,9 +617,9 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
             aScore.setScorecardId(scorecardId);
             aScore.setQuestionNumber(totalGuesses);
             aScore.setCorrect(isCorrect);
-            aScore.setEdgeId(edgeId);
             aScore.setApprenticeId(apprenticeId);
             aScore.setGraphId(scaleGraphId);
+            aScore.setScaleId(scaleId);
 
             ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
             asds.createApprenticeScore(aScore);

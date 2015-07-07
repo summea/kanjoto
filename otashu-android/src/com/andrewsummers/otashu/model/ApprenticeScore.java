@@ -9,9 +9,10 @@ public class ApprenticeScore {
     private long scorecardId;
     private int questionNumber;
     private int correct;
-    private long edgeId;
+    private long notevalue;
     private long apprenticeId;
     private long graphId;
+    private long scaleId;
 
     /**
      * getId gets ApprenticeScore id
@@ -86,21 +87,21 @@ public class ApprenticeScore {
     }
 
     /**
-     * getEdgeId gets ApprenticeScore edge that connects the two related nodes (notes)
+     * getNotevalue gets ApprenticeScore edge that connects the two related nodes (notes)
      * 
-     * @return <code>long</code> of ApprenticeScore edgeId
+     * @return <code>long</code> of ApprenticeScore notevalue
      */
-    public long getEdgeId() {
-        return this.edgeId;
+    public long getNotevalue() {
+        return this.notevalue;
     }
 
     /**
-     * setEdgeId sets ApprenticeScore edge that connects the two related nodes (notes)
+     * setNotevalue sets ApprenticeScore edge that connects the two related nodes (notes)
      * 
-     * @param edgeId New ApprenticeScore edgeId
+     * @param notevalue New ApprenticeScore notevalue
      */
-    public void setEdgeId(long edgeId) {
-        this.edgeId = edgeId;
+    public void setNotevalue(long notevalue) {
+        this.notevalue = notevalue;
     }
 
     /**
@@ -138,6 +139,24 @@ public class ApprenticeScore {
     public void setGraphId(long graphId) {
         this.graphId = graphId;
     }
+    
+    /**
+     * getScaleId gets Scale id
+     * 
+     * @return <code>long</code> scaleId value
+     */
+    public long getScaleId() {
+        return scaleId;
+    }
+
+    /**
+     * setScaleId sets Scale id
+     * 
+     * @param scaleId New scaleId value.
+     */
+    public void setScaleId(long scaleId) {
+        this.scaleId = scaleId;
+    }
 
     /**
      * toString override to return ApprenticeScore name.
@@ -147,7 +166,7 @@ public class ApprenticeScore {
     @Override
     public String toString() {
         return "id: " + id + " scorecard_id: " + scorecardId + " question_number: "
-                + questionNumber + " correct: " + correct + " edgeId: " + edgeId
-                + "graphId: " + graphId + "\n";
+                + questionNumber + " correct: " + correct + " notevalue: " + notevalue
+                + " apprentice_id: " + apprenticeId + " graphId: " + graphId + "\n";
     }
 }

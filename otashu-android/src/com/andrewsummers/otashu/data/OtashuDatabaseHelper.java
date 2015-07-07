@@ -76,6 +76,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_QUESTION_NUMBER = "question_number";
     public static final String COLUMN_CORRECT = "correct";
     public static final String COLUMN_EDGE_ID = "edge_id";
+    public static final String COLUMN_SCALE_ID = "scale_id";
 
     public static final String TABLE_KEY_SIGNATURES = "key_signatures";
 
@@ -163,9 +164,10 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_SCORECARD_ID + " integer,"
             + COLUMN_QUESTION_NUMBER + " integer,"
             + COLUMN_CORRECT + " integer,"
-            + COLUMN_EDGE_ID + " integer,"
+            + COLUMN_NOTEVALUE + " integer,"
             + COLUMN_GRAPH_ID + " integer,"
-            + COLUMN_APPRENTICE_ID + " integer);";
+            + COLUMN_APPRENTICE_ID + " integer,"
+            + COLUMN_SCALE_ID + " integer);";
 
     private static final String CREATE_TABLE_KEY_SIGNATURES = "CREATE TABLE "
             + TABLE_KEY_SIGNATURES
@@ -395,5 +397,6 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.d("MYLOG", ">>> new database version: " + newVersion);
         Log.d("MYLOG", "updating database...");
+        // db.execSQL("ALTER TABLE " + TABLE_APPRENTICE_SCORES + " ADD COLUMN " + COLUMN_SCALE_ID + " integer");
     }
 }

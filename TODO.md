@@ -13,9 +13,12 @@
 - music playback pauses at random times on phone which interferes with sync between audio and graphics
 - standardize strings view naming
 - fix getTakenAt ISO date issue
+- if db is deleted while app has been closed from a page other than main activity, user isn't asked to create a new apprentice
 
 
 ## DONE:
+- 20150706: fixed "scale test scores aren't being saved" issue
+- 20150706: changed edge_id in apprentice scores to note values (vertices)
 - 20150703: fixed when apprentice has no emotions (or data) crash happens on apprentice training tests (emotion, scale, transition)
 - 20150703: connected label_id to background color in "view graph detail" activity
 - 20150703: ensured all four notes are generated for a new apprentice during emotion test

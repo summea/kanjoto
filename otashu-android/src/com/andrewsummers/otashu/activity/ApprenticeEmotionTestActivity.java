@@ -143,7 +143,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
         EmotionsDataSource eds = new EmotionsDataSource(this);
         int emotionCount = eds.getEmotionCount(apprenticeId);
         eds.close();
-        
+
         // make sure there's at least one emotion for the spinner list
         if (emotionCount <= 0) {
             Context context = getApplicationContext();
@@ -240,13 +240,16 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                 // don't add generated noteset to user collection (even if Apprentice is allowed to
                 // auto-add generated noteset)
 
+                Note noteA,
+                noteB;
+
                 // examine notes for graph purposes
                 for (int i = 0; i < notesToInsert.size() - 1; i++) {
-                    long edgeId = 0;
+                    long notevalue = 0;
 
                     // Examine note1 + note2
-                    Note noteA = notesToInsert.get(i);
-                    Note noteB = notesToInsert.get(i + 1);
+                    noteA = notesToInsert.get(i);
+                    noteB = notesToInsert.get(i + 1);
 
                     // Do nodes exist?
                     Vertex nodeA = vds.getVertex(emotionGraphId, noteA.getNotevalue());
@@ -288,7 +291,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                         newEdge.setPosition(i + 1);
                         newEdge.setApprenticeId(apprenticeId);
                         newEdge = edds.createEdge(newEdge);
-                        edgeId = newEdge.getId();
+                        notevalue = newEdge.getId();
                     } else {
                         // edge exists between nodeA and nodeB, just update weight
 
@@ -300,12 +303,18 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                             bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
                             edge.setWeight(bd.floatValue());
                             edds.updateEdge(edge);
-                            edgeId = edge.getId();
+                            notevalue = edge.getId();
                         }
                     }
 
                     // save score
-                    saveScore(0, edgeId);
+                    saveScore(0, noteA.getNotevalue());
+                }
+
+                // save score
+                if (notesToInsert.get(notesToInsert.size() - 1) != null) {
+                    noteA = notesToInsert.get(notesToInsert.size() - 1);
+                    saveScore(0, noteA.getNotevalue());
                 }
 
                 // disable buttons while playing
@@ -388,11 +397,11 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
 
                 // examine notes for graph purposes
                 for (int i = 0; i < notesToInsert.size() - 1; i++) {
-                    long edgeId = 0;
+                    long notevalue = 0;
 
                     // Examine note1 + note2
-                    Note noteA = notesToInsert.get(i);
-                    Note noteB = notesToInsert.get(i + 1);
+                    noteA = notesToInsert.get(i);
+                    noteB = notesToInsert.get(i + 1);
 
                     // Do nodes exist?
                     Vertex nodeA = vds.getVertex(emotionGraphId, noteA.getNotevalue());
@@ -436,7 +445,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                         newEdge.setPosition(i + 1);
                         newEdge.setApprenticeId(apprenticeId);
                         newEdge = edds.createEdge(newEdge);
-                        edgeId = newEdge.getId();
+                        notevalue = newEdge.getId();
 
                         currentEdges.add(newEdge);
                     } else {
@@ -450,14 +459,20 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                             bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
                             edge.setWeight(bd.floatValue());
                             edds.updateEdge(edge);
-                            edgeId = edge.getId();
+                            notevalue = edge.getId();
                         }
 
                         currentEdges.add(edge);
                     }
 
                     // save score
-                    saveScore(1, edgeId);
+                    saveScore(1, noteA.getNotevalue());
+                }
+
+                // save last score
+                if (notesToInsert.get(notesToInsert.size() - 1) != null) {
+                    noteA = notesToInsert.get(notesToInsert.size() - 1);
+                    saveScore(1, noteA.getNotevalue());
                 }
 
                 // check if achievement was earned in play mode
@@ -756,7 +771,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
         super.onBackPressed();
     }
 
-    public void saveScore(int isCorrect, long edgeId) {
+    public void saveScore(int isCorrect, long notevalue) {
         boolean autoSaveScorecard = sharedPref.getBoolean(
                 "pref_auto_save_scorecard", false);
 
@@ -799,12 +814,12 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
             aScore.setScorecardId(scorecardId);
             aScore.setQuestionNumber(totalGuesses);
             aScore.setCorrect(isCorrect);
-            aScore.setEdgeId(edgeId);
+            aScore.setNotevalue(notevalue);
             aScore.setApprenticeId(apprenticeId);
             aScore.setGraphId(emotionGraphId);
 
             Log.d("MYLOG", "saving emotion score: " + aScore.toString());
-            
+
             ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
             asds.createApprenticeScore(aScore);
             asds.close();
