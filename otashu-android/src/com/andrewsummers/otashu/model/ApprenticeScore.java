@@ -121,7 +121,7 @@ public class ApprenticeScore {
     public void setApprenticeId(long apprenticeId) {
         this.apprenticeId = apprenticeId;
     }
-    
+
     /**
      * getGraphId gets Graph id
      * 
@@ -139,7 +139,7 @@ public class ApprenticeScore {
     public void setGraphId(long graphId) {
         this.graphId = graphId;
     }
-    
+
     /**
      * getScaleId gets Scale id
      * 

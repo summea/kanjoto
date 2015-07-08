@@ -290,7 +290,7 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                     newEdge.setPosition(1);
                     newEdge.setApprenticeId(apprenticeId);
                     newEdge = edds.createEdge(newEdge);
-                    //notevalue = newEdge.getId();
+                    // notevalue = newEdge.getId();
                 } else {
                     // edge exists between nodeA and nodeB, just update weight
 
@@ -302,7 +302,7 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                         bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
                         edge.setWeight(bd.floatValue());
                         edds.updateEdge(edge);
-                        //notevalue = edge.getId();
+                        // notevalue = edge.getId();
                     }
                 }
 
@@ -701,9 +701,9 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
             aScore.setQuestionNumber(totalGuesses);
             aScore.setCorrect(isCorrect);
             aScore.setNotevalue(notevalue);
-            aScore.setApprenticeId(apprenticeId);            
+            aScore.setApprenticeId(apprenticeId);
             aScore.setGraphId(transitionGraphId);
-            
+
             Log.d("MYLOG", "current transition score: " + aScore.toString());
 
             ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);

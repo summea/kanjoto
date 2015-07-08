@@ -17,6 +17,8 @@
 
 
 ## DONE:
+- 20150707: added "keep track of what test was taken for scorecards" feature (graph id)
+- 20150707: fixed apprentice scores database issue (columns seem to be shifted when data is added)
 - 20150706: fixed "scale test scores aren't being saved" issue
 - 20150706: changed edge_id in apprentice scores to note values (vertices)
 - 20150703: fixed when apprentice has no emotions (or data) crash happens on apprentice training tests (emotion, scale, transition)

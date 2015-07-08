@@ -242,7 +242,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
                         }
                     }
                 }
-                
+
                 // save score
                 saveScore(0, currentKeySignatureId);
 
@@ -354,7 +354,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
                         ads.close();
                     }
                 }
-                
+
                 // save score
                 saveScore(1, currentKeySignatureId);
 
@@ -574,6 +574,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
         super.onBackPressed();
     }
 
+    // TODO: save more detailed information for scale test?
     public void saveScore(int isCorrect, long scaleId) {
         boolean autoSaveScorecard = sharedPref.getBoolean(
                 "pref_auto_save_scorecard", false);

@@ -30,7 +30,8 @@ public class DatabaseDumperApprenticeScoresActivity extends Activity {
                 "pref_selected_apprentice", "1"));
 
         ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
-        List<ApprenticeScore> allApprenticeScores = asds.getAllApprenticeScoresByApprentice(apprenticeId);
+        List<ApprenticeScore> allApprenticeScores = asds
+                .getAllApprenticeScoresByApprentice(apprenticeId);
         asds.close();
 
         TextView debugText = (TextView) findViewById(R.id.debug_text);
@@ -40,8 +41,8 @@ public class DatabaseDumperApprenticeScoresActivity extends Activity {
                 + "|" + OtashuDatabaseHelper.COLUMN_QUESTION_NUMBER
                 + "|" + OtashuDatabaseHelper.COLUMN_CORRECT + "|"
                 + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "|"
-                + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "|"
                 + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "|"
+                + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "|"
                 + OtashuDatabaseHelper.COLUMN_SCALE_ID
                 + "\n");
 
@@ -52,8 +53,8 @@ public class DatabaseDumperApprenticeScoresActivity extends Activity {
                     + "|" + aScore.getQuestionNumber()
                     + "|" + aScore.getCorrect()
                     + "|" + aScore.getNotevalue()
-                    + "|" + aScore.getApprenticeId()
                     + "|" + aScore.getGraphId()
+                    + "|" + aScore.getApprenticeId()
                     + "|" + aScore.getScaleId() + "\n";
 
             debugText.setText(newText);

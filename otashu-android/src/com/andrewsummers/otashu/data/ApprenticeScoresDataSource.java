@@ -24,8 +24,8 @@ public class ApprenticeScoresDataSource {
             OtashuDatabaseHelper.COLUMN_QUESTION_NUMBER,
             OtashuDatabaseHelper.COLUMN_CORRECT,
             OtashuDatabaseHelper.COLUMN_NOTEVALUE,
-            OtashuDatabaseHelper.COLUMN_APPRENTICE_ID,
             OtashuDatabaseHelper.COLUMN_GRAPH_ID,
+            OtashuDatabaseHelper.COLUMN_APPRENTICE_ID,
             OtashuDatabaseHelper.COLUMN_SCALE_ID,
     };
 
@@ -68,10 +68,10 @@ public class ApprenticeScoresDataSource {
                 apprenticeScore.getQuestionNumber());
         contentValues.put(OtashuDatabaseHelper.COLUMN_CORRECT, apprenticeScore.getCorrect());
         contentValues.put(OtashuDatabaseHelper.COLUMN_NOTEVALUE, apprenticeScore.getNotevalue());
-        contentValues.put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID,
-                apprenticeScore.getApprenticeId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_GRAPH_ID,
                 apprenticeScore.getGraphId());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID,
+                apprenticeScore.getApprenticeId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_SCALE_ID,
                 apprenticeScore.getScaleId());
 
@@ -92,7 +92,7 @@ public class ApprenticeScoresDataSource {
         ApprenticeScore newApprenticeScore = cursorToApprenticeScore(cursor);
         cursor.close();
         db.close();
-        
+
         return newApprenticeScore;
     }
 
@@ -110,7 +110,7 @@ public class ApprenticeScoresDataSource {
         // delete apprenticeScore
         db.delete(OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
-        
+
         db.close();
     }
 
@@ -143,15 +143,15 @@ public class ApprenticeScoresDataSource {
                 apprenticeScore.setQuestionNumber(cursor.getInt(2));
                 apprenticeScore.setCorrect(cursor.getInt(3));
                 apprenticeScore.setNotevalue(cursor.getLong(4));
-                apprenticeScore.setApprenticeId(cursor.getLong(5));
-                apprenticeScore.setGraphId(cursor.getLong(6));
+                apprenticeScore.setGraphId(cursor.getLong(5));
+                apprenticeScore.setApprenticeId(cursor.getLong(6));
                 apprenticeScore.setScaleId(cursor.getLong(7));
 
                 // add note string to list of strings
                 apprenticeScores.add(apprenticeScore);
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return apprenticeScores;
@@ -186,15 +186,15 @@ public class ApprenticeScoresDataSource {
                 apprenticeScore.setQuestionNumber(cursor.getInt(2));
                 apprenticeScore.setCorrect(cursor.getInt(3));
                 apprenticeScore.setNotevalue(cursor.getLong(4));
-                apprenticeScore.setApprenticeId(cursor.getLong(5));
-                apprenticeScore.setGraphId(cursor.getLong(6));
+                apprenticeScore.setGraphId(cursor.getLong(5));
+                apprenticeScore.setApprenticeId(cursor.getLong(6));
                 apprenticeScore.setScaleId(cursor.getLong(7));
 
                 // add note string to list of strings
                 apprenticeScores.add(apprenticeScore);
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return apprenticeScores;
@@ -213,8 +213,8 @@ public class ApprenticeScoresDataSource {
         apprenticeScore.setQuestionNumber(cursor.getInt(2));
         apprenticeScore.setCorrect(cursor.getInt(3));
         apprenticeScore.setNotevalue(cursor.getLong(4));
-        apprenticeScore.setApprenticeId(cursor.getLong(5));
-        apprenticeScore.setGraphId(cursor.getLong(6));
+        apprenticeScore.setGraphId(cursor.getLong(5));
+        apprenticeScore.setApprenticeId(cursor.getLong(6));
         apprenticeScore.setScaleId(cursor.getLong(7));
         return apprenticeScore;
     }
@@ -242,12 +242,12 @@ public class ApprenticeScoresDataSource {
                 apprenticeScore.setQuestionNumber(cursor.getInt(2));
                 apprenticeScore.setCorrect(cursor.getInt(3));
                 apprenticeScore.setNotevalue(cursor.getLong(4));
-                apprenticeScore.setApprenticeId(cursor.getLong(5));
-                apprenticeScore.setGraphId(cursor.getLong(6));
+                apprenticeScore.setGraphId(cursor.getLong(5));
+                apprenticeScore.setApprenticeId(cursor.getLong(6));
                 apprenticeScore.setScaleId(cursor.getLong(7));
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return apprenticeScore;
@@ -265,10 +265,10 @@ public class ApprenticeScoresDataSource {
                 apprenticeScore.getQuestionNumber());
         contentValues.put(OtashuDatabaseHelper.COLUMN_CORRECT, apprenticeScore.getCorrect());
         contentValues.put(OtashuDatabaseHelper.COLUMN_NOTEVALUE, apprenticeScore.getNotevalue());
-        contentValues.put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID,
-                apprenticeScore.getApprenticeId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_GRAPH_ID,
                 apprenticeScore.getGraphId());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID,
+                apprenticeScore.getApprenticeId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_SCALE_ID,
                 apprenticeScore.getScaleId());
 
@@ -276,7 +276,7 @@ public class ApprenticeScoresDataSource {
                 OtashuDatabaseHelper.COLUMN_ID + "=" + apprenticeScore.getId(), null);
 
         db.close();
-        
+
         return apprenticeScore;
     }
 
@@ -303,7 +303,7 @@ public class ApprenticeScoresDataSource {
         totalCorrect = cursor.getCount();
 
         db.close();
-        
+
         return totalCorrect;
     }
 
@@ -325,12 +325,12 @@ public class ApprenticeScoresDataSource {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         Cursor cursor = db.rawQuery(query, new String[] {
-            String.valueOf(scorecardId)
+                String.valueOf(scorecardId)
         });
         total = cursor.getCount();
 
         db.close();
-        
+
         return total;
     }
 
