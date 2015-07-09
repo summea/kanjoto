@@ -14,7 +14,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 public class GraphsDataSource {
-    private SQLiteDatabase database;
     private OtashuDatabaseHelper dbHelper;
 
     // database table columns
@@ -39,7 +38,7 @@ public class GraphsDataSource {
      * @throws SQLException
      */
     public void open() throws SQLException {
-        database = dbHelper.getWritableDatabase();
+        dbHelper.getWritableDatabase();
     }
 
     /**

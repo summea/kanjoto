@@ -86,11 +86,13 @@ public class GenerateMusicActivity extends Activity {
     private Apprentice apprentice;
     private int GENERAL_NOTE_LENGTH = 480;
 
+    /*
     private Runnable videoTask = new Runnable() {
         public void run() {
             playMusic(musicSource);
         }
     };
+    */
 
     // TODO: make this more dynamic
     private static SparseArray<String> noteMap;

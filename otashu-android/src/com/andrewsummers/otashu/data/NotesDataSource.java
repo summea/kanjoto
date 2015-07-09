@@ -19,7 +19,6 @@ import android.util.Log;
 import android.util.SparseArray;
 
 public class NotesDataSource {
-    private SQLiteDatabase database;
     private OtashuDatabaseHelper dbHelper;
     private Context mContext;
 
@@ -49,7 +48,7 @@ public class NotesDataSource {
      * @throws SQLException
      */
     public void open() throws SQLException {
-        database = dbHelper.getWritableDatabase();
+        dbHelper.getWritableDatabase();
     }
 
     /**

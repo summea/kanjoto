@@ -35,7 +35,7 @@ public class ViewEmotionDetailActivity extends Activity implements OnClickListen
     private Button buttonSendEmofing = null;
     private Button buttonViewEmofing = null;
     private SharedPreferences sharedPref;
-    private long apprenticeId = 0;
+    //private long apprenticeId = 0;
     private String emofingUploadUrl;
     private File path = Environment.getExternalStorageDirectory();
     private String externalDirectory = path.toString() + "/otashu/";
@@ -55,8 +55,8 @@ public class ViewEmotionDetailActivity extends Activity implements OnClickListen
         setContentView(R.layout.activity_view_emotion_detail);
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        apprenticeId = Long.parseLong(sharedPref.getString(
-                "pref_selected_apprentice", "1"));
+        //apprenticeId = Long.parseLong(sharedPref.getString(
+                //"pref_selected_apprentice", "1"));
         emofingUploadUrl = sharedPref.getString("pref_emofing_upload_url", "");
 
         emotionId = (int) getIntent().getExtras().getLong("list_id");

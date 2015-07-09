@@ -57,7 +57,7 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
     private File musicSource = new File(externalDirectory + "otashu_preview.mid");
     private static MediaPlayer mediaPlayer;
     private SharedPreferences sharedPref;
-    private long apprenticeId = 0;
+    //private long apprenticeId = 0;
 
     /**
      * onCreate override used to get details view.
@@ -72,8 +72,8 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
         setContentView(R.layout.activity_view_noteset_detail);
         
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        apprenticeId = Long.parseLong(sharedPref.getString(
-                "pref_selected_apprentice", "1"));
+        //apprenticeId = Long.parseLong(sharedPref.getString(
+                //"pref_selected_apprentice", "1"));
 
         notesetId = (int) getIntent().getExtras().getLong("list_id");
 

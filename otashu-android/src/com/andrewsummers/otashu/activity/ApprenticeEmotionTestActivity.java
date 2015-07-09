@@ -591,7 +591,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
 
         // get random emotion
         EmotionsDataSource eds = new EmotionsDataSource(this);
-        int emotionCount = eds.getEmotionCount(apprenticeId);
+        //int emotionCount = eds.getEmotionCount(apprenticeId);
 
         // are we focusing on a specific emotion?
         if (emotionFocusId > 0) {

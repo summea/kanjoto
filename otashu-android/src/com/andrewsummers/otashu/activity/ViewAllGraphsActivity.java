@@ -39,7 +39,7 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 public class ViewAllGraphsActivity extends ListActivity {
     private ListView listView = null;
-    private int selectedPositionInList = 0;
+    //private int selectedPositionInList = 0;
     private GraphAdapter adapter = null;
 
     /**
@@ -120,7 +120,7 @@ public class ViewAllGraphsActivity extends ListActivity {
         super.onCreateContextMenu(menu, v, menuInfo);
 
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        selectedPositionInList = info.position;
+        //selectedPositionInList = info.position;
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.context_menu_graph, menu);

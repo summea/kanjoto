@@ -38,12 +38,12 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
     private List<Note> noteSequence = new ArrayList<Note>();
     // private float verticalSpeed = 0.036f;
     private float verticalSpeed = 0.036f;
-    private float horizontalSpeed = 0.035f;
+    //private float horizontalSpeed = 0.035f;
     private int itemCurrentlyPlaying = -1;
     private int tPlay = 0;
-    private int innerMoveUntil = 3;
-    private int innerUnMoveUntil = 6;
-    private int squaresToRemove = 0;
+    //private int innerMoveUntil = 3;
+    //private int innerUnMoveUntil = 6;
+    //private int squaresToRemove = 0;
     private float newColor[];
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"

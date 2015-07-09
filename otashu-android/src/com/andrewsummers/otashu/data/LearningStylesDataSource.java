@@ -14,7 +14,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 public class LearningStylesDataSource {
-    private SQLiteDatabase database;
     private OtashuDatabaseHelper dbHelper;
 
     // database table columns
@@ -38,7 +37,7 @@ public class LearningStylesDataSource {
      * @throws SQLException
      */
     public void open() throws SQLException {
-        database = dbHelper.getWritableDatabase();
+        dbHelper.getWritableDatabase();
     }
 
     /**
