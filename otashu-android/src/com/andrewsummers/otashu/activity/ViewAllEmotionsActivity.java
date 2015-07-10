@@ -150,7 +150,7 @@ public class ViewAllEmotionsActivity extends ListActivity {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
 
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+        //AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
         //selectedPositionInList = info.position;
 
         MenuInflater inflater = getMenuInflater();
