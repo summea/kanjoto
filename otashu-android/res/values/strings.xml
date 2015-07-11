@@ -164,6 +164,7 @@
     <string name="pref_screen_alarm">Alarm</string>
     <string name="pref_scale_graph_for_apprentice">Scale Graph Id for Apprentice</string>
     <string name="pref_selected_apprentice">Selected Apprentice</string>
+    <string name="pref_selected_database">Selected Database</string>
     <string name="pref_transition_graph_for_apprentice">Transition Graph Id for Apprentice</string>
     <string name="remote_noteset">getting remote noteset...</string>
     <string name="spinner_apprentice_label">Apprentice</string>

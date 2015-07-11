@@ -24,9 +24,13 @@ import android.util.Log;
 public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 57;
     private static Context mContext;
+    
+    public static final String PRODUCTION_DATABASE_NAME = "otashu_collection.db"; 
+    public static final String TEST_DATABASE_NAME = "kanjoto_test.db";
+    
     public static final String DATABASE_NAME = "otashu_collection.db";
     public static final String DATABASE_PATH = Environment.getExternalStorageDirectory().toString()
-            + "/otashu/" + OtashuDatabaseHelper.DATABASE_NAME;
+            + "/otashu/";
     public static final String LABELS_IMPORT_FILE = "labels.csv";
     public static final String NOTEVALUES_IMPORT_FILE = "notevalues.csv";
 
@@ -206,8 +210,15 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
      * @param context Current state.
      */
     public OtashuDatabaseHelper(Context context) {
-        super(context, DATABASE_PATH, null, DATABASE_VERSION);
+        super(context, DATABASE_PATH + OtashuDatabaseHelper.DATABASE_NAME, null, DATABASE_VERSION);
         mContext = context;
+        Log.d("MYLOG", "database helper regular");
+    }
+    
+    public OtashuDatabaseHelper(Context context, String databaseName) {
+        super(context, DATABASE_PATH + databaseName, null, DATABASE_VERSION);
+        mContext = context;
+        Log.d("MYLOG", "database helper with database: " + DATABASE_PATH + databaseName);
     }
 
     /**
@@ -217,6 +228,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
+        Log.d("MYLOG", "database: " + db.toString());
         ContentValues contentValues = new ContentValues();
 
         // set default preferences

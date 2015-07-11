@@ -10,9 +10,11 @@ import com.andrewsummers.otashu.model.Edge;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.SparseArray;
 
@@ -43,6 +45,11 @@ public class EdgesDataSource {
      */
     public EdgesDataSource(Context context) {
         dbHelper = new OtashuDatabaseHelper(context);
+    }
+    
+    public EdgesDataSource(Context context, String databaseName) {
+        Log.d("MYLOG", "edges database name: " + databaseName);
+        dbHelper = new OtashuDatabaseHelper(context, databaseName);
     }
 
     /**

@@ -10,6 +10,7 @@ import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.EdgesDataSource;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.NotesDataSource;
+import com.andrewsummers.otashu.data.OtashuDatabaseHelper;
 import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.EmotionAndRelated;
 import com.andrewsummers.otashu.model.Note;
@@ -41,7 +42,8 @@ public class GetEmotionFromNotesetActivity extends Activity implements OnClickLi
     private String externalDirectory = path.toString() + "/otashu/";
     private File musicSource = new File(externalDirectory + "otashu_preview.mid");
     private static MediaPlayer mediaPlayer;
-    private long apprenticeId = 0;
+    private long apprenticeId = 0;    
+    private String databaseName;
 
     /**
      * onCreate override that provides noteset creation view to user .
@@ -56,11 +58,15 @@ public class GetEmotionFromNotesetActivity extends Activity implements OnClickLi
         setContentView(R.layout.activity_get_emotion_from_noteset);
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        databaseName = sharedPref.getString(
+                "pref_selected_database", OtashuDatabaseHelper.PRODUCTION_DATABASE_NAME);
         emotionGraphId = Long.parseLong(sharedPref.getString(
                 "pref_emotion_graph_for_apprentice", "1"));
         apprenticeId = Long.parseLong(sharedPref.getString(
                 "pref_selected_apprentice", "1"));
 
+        Log.d("MYLOG", "get emotion database name: " + databaseName);
+        
         // locate next spinner in layout
         Spinner spinner = (Spinner) findViewById(R.id.spinner_emotion);
 
@@ -211,7 +217,7 @@ public class GetEmotionFromNotesetActivity extends Activity implements OnClickLi
         }
 
         // check emotion graph edges for a match
-        EdgesDataSource eds = new EdgesDataSource(this);
+        EdgesDataSource eds = new EdgesDataSource(this, databaseName);
         HashMap<String, String> edsResult = eds
                 .getEmotionFromNotes(apprenticeId, emotionGraphId, notevalues);
         eds.close();

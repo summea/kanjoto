@@ -86,6 +86,11 @@
             android:key="pref_developer_mode"
             android:title="@string/pref_developer_mode"
             android:defaultValue="false" />
+            
+        <EditTextPreference
+            android:key="pref_selected_database"
+            android:title="@string/pref_selected_database"
+            android:defaultValue="" />
 
     </PreferenceCategory>
 
