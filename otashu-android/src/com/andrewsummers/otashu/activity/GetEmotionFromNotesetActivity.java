@@ -242,7 +242,7 @@ public class GetEmotionFromNotesetActivity extends Activity implements OnClickLi
             }
         }
 
-        EmotionsDataSource emds = new EmotionsDataSource(this);
+        EmotionsDataSource emds = new EmotionsDataSource(this, databaseName);
         Emotion emotion = emds.getEmotion(emotionId);
         eds.close();
 

@@ -212,6 +212,48 @@ public class EdgesDataSource {
 
         return edges;
     }
+    
+    public List<Edge> getAllEdgesWithoutEmotionId(long apprenticeId, long graphId, int position) {
+        List<Edge> edges = new ArrayList<Edge>();
+
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_EDGES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?"
+                + " AND " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=?"
+                + " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=?";
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notes from database
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(apprenticeId),
+                String.valueOf(graphId),
+                String.valueOf(position)
+        });
+
+        Edge edge = null;
+        if (cursor.moveToFirst()) {
+            do {
+                // create note objects based on note data from database
+                edge = new Edge();
+                edge.setId(cursor.getLong(0));
+                edge.setGraphId(cursor.getLong(1));
+                edge.setEmotionId(cursor.getLong(2));
+                edge.setFromNodeId(cursor.getInt(3));
+                edge.setToNodeId(cursor.getInt(4));
+                edge.setWeight(cursor.getFloat(5));
+                edge.setPosition(cursor.getInt(6));
+                edge.setApprenticeId(cursor.getLong(7));
+
+                // add note string to list of strings
+                edges.add(edge);
+            } while (cursor.moveToNext());
+        }
+        
+        db.close();
+
+        return edges;
+    }
 
     /**
      * Get all edges from database table.
@@ -822,13 +864,15 @@ public class EdgesDataSource {
 
         // select an edge position
         int position = 1;
-        List<Edge> p1Edges = getAllEdges(apprenticeId, graphId, position);
+        List<Edge> p1Edges = getAllEdgesWithoutEmotionId(apprenticeId, graphId, position);
 
         position = 2;
-        List<Edge> p2Edges = getAllEdges(apprenticeId, graphId, position);
+        List<Edge> p2Edges = getAllEdgesWithoutEmotionId(apprenticeId, graphId, position);
+        Log.d("MYLOG", "p1edges: " + p1Edges.toString());
+        Log.d("MYLOG", "p2edges: " + p2Edges.toString());
 
         position = 3;
-        List<Edge> p3Edges = getAllEdges(apprenticeId, graphId, position);
+        List<Edge> p3Edges = getAllEdgesWithoutEmotionId(apprenticeId, graphId, position);
 
         int i = 0;
         // loop through all position 1-2 edges

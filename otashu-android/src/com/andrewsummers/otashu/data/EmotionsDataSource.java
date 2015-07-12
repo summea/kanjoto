@@ -34,6 +34,10 @@ public class EmotionsDataSource {
     public EmotionsDataSource(Context context) {
         dbHelper = new OtashuDatabaseHelper(context);
     }
+    
+    public EmotionsDataSource(Context context, String databaseName) {
+        dbHelper = new OtashuDatabaseHelper(context, databaseName);
+    }
 
     /**
      * Open database.
