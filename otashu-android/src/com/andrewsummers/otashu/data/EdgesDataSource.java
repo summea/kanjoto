@@ -10,11 +10,9 @@ import com.andrewsummers.otashu.model.Edge;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.SparseArray;
 
@@ -46,9 +44,14 @@ public class EdgesDataSource {
     public EdgesDataSource(Context context) {
         dbHelper = new OtashuDatabaseHelper(context);
     }
-    
+
+    /**
+     * EdgesDataSource constructor.
+     * 
+     * @param context Current state.
+     * @param databaseName Database to use.
+     */
     public EdgesDataSource(Context context, String databaseName) {
-        Log.d("MYLOG", "edges database name: " + databaseName);
         dbHelper = new OtashuDatabaseHelper(context, databaseName);
     }
 
@@ -99,7 +102,7 @@ public class EdgesDataSource {
         Edge newEdge = cursorToEdge(cursor);
         cursor.close();
         db.close();
-        
+
         return newEdge;
     }
 
@@ -117,7 +120,7 @@ public class EdgesDataSource {
         // delete edge
         db.delete(OtashuDatabaseHelper.TABLE_EDGES,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
-        
+
         db.close();
     }
 
@@ -160,7 +163,7 @@ public class EdgesDataSource {
         }
 
         db.close();
-        
+
         return edges;
     }
 
@@ -207,12 +210,12 @@ public class EdgesDataSource {
                 edges.add(edge);
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return edges;
     }
-    
+
     public List<Edge> getAllEdgesWithoutEmotionId(long apprenticeId, long graphId, int position) {
         List<Edge> edges = new ArrayList<Edge>();
 
@@ -249,7 +252,7 @@ public class EdgesDataSource {
                 edges.add(edge);
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return edges;
@@ -306,7 +309,7 @@ public class EdgesDataSource {
                 edges.add(edge);
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return edges;
@@ -468,7 +471,7 @@ public class EdgesDataSource {
                 } while (cursor.moveToNext());
             }
         }
-        
+
         db.close();
 
         return edges;
@@ -523,7 +526,7 @@ public class EdgesDataSource {
         }
 
         db.close();
-        
+
         return edge;
     }
 
@@ -565,7 +568,7 @@ public class EdgesDataSource {
         }
 
         db.close();
-        
+
         return edge;
     }
 
@@ -588,7 +591,7 @@ public class EdgesDataSource {
                 + "=" + edge.getId(), null);
 
         db.close();
-        
+
         return edge;
     }
 
@@ -740,9 +743,9 @@ public class EdgesDataSource {
 
             Log.d("MYLOG", "strong found edge: " + results.toString());
         }
-        
+
         db.close();
-        
+
         return results;
     }
 
@@ -788,9 +791,9 @@ public class EdgesDataSource {
         }
 
         Log.d("MYLOG", "strong found transition edge: " + result.toString());
-        
+
         db.close();
-        
+
         return result;
     }
 

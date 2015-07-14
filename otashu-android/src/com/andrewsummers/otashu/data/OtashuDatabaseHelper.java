@@ -24,11 +24,11 @@ import android.util.Log;
 public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 57;
     private static Context mContext;
-    
-    public static final String PRODUCTION_DATABASE_NAME = "otashu_collection.db"; 
+
+    public static final String PRODUCTION_DATABASE_NAME = "kanjoto.db";
     public static final String TEST_DATABASE_NAME = "kanjoto_test.db";
-    
-    public static final String DATABASE_NAME = "otashu_collection.db";
+
+    public static final String DATABASE_NAME = "kanjoto.db";
     public static final String DATABASE_PATH = Environment.getExternalStorageDirectory().toString()
             + "/otashu/";
     public static final String LABELS_IMPORT_FILE = "labels.csv";
@@ -214,7 +214,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         mContext = context;
         Log.d("MYLOG", "database helper regular");
     }
-    
+
     public OtashuDatabaseHelper(Context context, String databaseName) {
         super(context, DATABASE_PATH + databaseName, null, DATABASE_VERSION);
         mContext = context;
@@ -409,6 +409,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.d("MYLOG", ">>> new database version: " + newVersion);
         Log.d("MYLOG", "updating database...");
-        // db.execSQL("ALTER TABLE " + TABLE_APPRENTICE_SCORES + " ADD COLUMN " + COLUMN_SCALE_ID + " integer");
+        // db.execSQL("ALTER TABLE " + TABLE_APPRENTICE_SCORES + " ADD COLUMN " + COLUMN_SCALE_ID +
+        // " integer");
     }
 }

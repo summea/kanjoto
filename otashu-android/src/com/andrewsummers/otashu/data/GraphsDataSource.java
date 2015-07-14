@@ -33,6 +33,16 @@ public class GraphsDataSource {
     }
 
     /**
+     * GraphsDataSource constructor.
+     * 
+     * @param context Current state.
+     * @param databaseName Database to use.
+     */
+    public GraphsDataSource(Context context, String databaseName) {
+        dbHelper = new OtashuDatabaseHelper(context, databaseName);
+    }
+
+    /**
      * Open database.
      * 
      * @throws SQLException
@@ -74,7 +84,7 @@ public class GraphsDataSource {
         Graph newGraph = cursorToGraph(cursor);
         cursor.close();
         db.close();
-        
+
         return newGraph;
     }
 
@@ -92,7 +102,7 @@ public class GraphsDataSource {
         // delete graph
         db.delete(OtashuDatabaseHelper.TABLE_GRAPHS,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
-        
+
         db.close();
     }
 
@@ -125,7 +135,7 @@ public class GraphsDataSource {
                 graphs.add(graph);
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return graphs;
@@ -177,7 +187,7 @@ public class GraphsDataSource {
         }
 
         db.close();
-        
+
         return graphs;
     }
 
@@ -204,7 +214,7 @@ public class GraphsDataSource {
                 graph.setLabelId(cursor.getLong(2));
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return graph;
@@ -224,7 +234,7 @@ public class GraphsDataSource {
                 + "=" + graph.getId(), null);
 
         db.close();
-        
+
         return graph;
     }
 }

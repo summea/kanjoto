@@ -42,7 +42,7 @@ public class GetEmotionFromNotesetActivity extends Activity implements OnClickLi
     private String externalDirectory = path.toString() + "/otashu/";
     private File musicSource = new File(externalDirectory + "otashu_preview.mid");
     private static MediaPlayer mediaPlayer;
-    private long apprenticeId = 0;    
+    private long apprenticeId = 0;
     private String databaseName;
 
     /**
@@ -66,7 +66,7 @@ public class GetEmotionFromNotesetActivity extends Activity implements OnClickLi
                 "pref_selected_apprentice", "1"));
 
         Log.d("MYLOG", "get emotion database name: " + databaseName);
-        
+
         // locate next spinner in layout
         Spinner spinner = (Spinner) findViewById(R.id.spinner_emotion);
 

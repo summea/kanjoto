@@ -35,6 +35,16 @@ public class AchievementsDataSource {
     }
 
     /**
+     * AchievementsDataSource constructor.
+     * 
+     * @param context Current state.
+     * @param databaseName Database to use.
+     */
+    public AchievementsDataSource(Context context, String databaseName) {
+        dbHelper = new OtashuDatabaseHelper(context, databaseName);
+    }
+
+    /**
      * Open database.
      * 
      * @throws SQLException
@@ -78,7 +88,7 @@ public class AchievementsDataSource {
         Achievement newAchievement = cursorToAchievement(cursor);
         cursor.close();
         db.close();
-        
+
         return newAchievement;
     }
 
@@ -94,7 +104,7 @@ public class AchievementsDataSource {
         // delete noteset
         db.delete(OtashuDatabaseHelper.TABLE_ACHIEVEMENTS,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + achievement.getId(), null);
-        
+
         db.close();
     }
 
@@ -132,7 +142,7 @@ public class AchievementsDataSource {
                 achievements.add(achievement);
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return achievements;
@@ -165,7 +175,7 @@ public class AchievementsDataSource {
 
         // select all achievements from database
         Cursor cursor = db.rawQuery(query, new String[] {
-            String.valueOf(achievementId)
+                String.valueOf(achievementId)
         });
 
         if (cursor.moveToFirst()) {
@@ -196,7 +206,7 @@ public class AchievementsDataSource {
 
         // select all achievements from database
         Cursor cursor = db.rawQuery(query, new String[] {
-            key
+                key
         });
 
         if (cursor.moveToFirst()) {
@@ -256,7 +266,7 @@ public class AchievementsDataSource {
                 OtashuDatabaseHelper.COLUMN_ID + "=" + achievement.getId(), null);
 
         db.close();
-        
+
         return achievement;
     }
 

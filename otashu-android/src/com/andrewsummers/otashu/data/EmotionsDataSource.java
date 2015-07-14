@@ -34,7 +34,13 @@ public class EmotionsDataSource {
     public EmotionsDataSource(Context context) {
         dbHelper = new OtashuDatabaseHelper(context);
     }
-    
+
+    /**
+     * EmotionsDataSource constructor.
+     * 
+     * @param context Current state.
+     * @param databaseName Database to use.
+     */
     public EmotionsDataSource(Context context, String databaseName) {
         dbHelper = new OtashuDatabaseHelper(context, databaseName);
     }
@@ -82,7 +88,7 @@ public class EmotionsDataSource {
         Emotion newEmotion = cursorToEmotion(cursor);
         cursor.close();
         db.close();
-        
+
         return newEmotion;
     }
 
@@ -100,7 +106,7 @@ public class EmotionsDataSource {
         // delete emotion
         db.delete(OtashuDatabaseHelper.TABLE_EMOTIONS,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
-        
+
         db.close();
     }
 
@@ -137,7 +143,7 @@ public class EmotionsDataSource {
                 emotions.add(emotion);
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return emotions;
@@ -176,7 +182,7 @@ public class EmotionsDataSource {
 
         cursor.close();
         db.close();
-        
+
         return emotion_ids;
     }
 
@@ -228,7 +234,7 @@ public class EmotionsDataSource {
         }
 
         db.close();
-        
+
         return emotions;
     }
 
@@ -277,7 +283,7 @@ public class EmotionsDataSource {
                 OtashuDatabaseHelper.COLUMN_ID + "=" + emotion.getId(), null);
 
         db.close();
-        
+
         return emotion;
     }
 

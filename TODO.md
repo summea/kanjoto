@@ -14,9 +14,11 @@
 - standardize strings view naming
 - fix getTakenAt ISO date issue
 - if db is deleted while app has been closed from a page other than main activity, user isn't asked to create a new apprentice
+- call data source constructors that specify databaseName
 
 
 ## DONE:
+- 20150712: added noteset-to-emotion noteset approach test (GetEmotionFromNotesetActivityTest)
 - 20150707: added "keep track of what test was taken for scorecards" feature (graph id)
 - 20150707: fixed apprentice scores database issue (columns seem to be shifted when data is added)
 - 20150706: fixed "scale test scores aren't being saved" issue

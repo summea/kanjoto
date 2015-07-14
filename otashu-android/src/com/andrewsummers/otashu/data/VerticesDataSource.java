@@ -33,6 +33,16 @@ public class VerticesDataSource {
     }
 
     /**
+     * VerticesDataSource constructor.
+     * 
+     * @param context Current state.
+     * @param databaseName Database to use.
+     */
+    public VerticesDataSource(Context context, String databaseName) {
+        dbHelper = new OtashuDatabaseHelper(context, databaseName);
+    }
+
+    /**
      * Open database.
      * 
      * @throws SQLException

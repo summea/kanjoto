@@ -34,6 +34,16 @@ public class KeySignaturesDataSource {
     }
 
     /**
+     * KeySignaturesDataSource constructor.
+     * 
+     * @param context Current state.
+     * @param databaseName Database to use.
+     */
+    public KeySignaturesDataSource(Context context, String databaseName) {
+        dbHelper = new OtashuDatabaseHelper(context, databaseName);
+    }
+
+    /**
      * Open database.
      * 
      * @throws SQLException
@@ -78,7 +88,7 @@ public class KeySignaturesDataSource {
         KeySignature newKeySignature = cursorToKeySignature(cursor);
         cursor.close();
         db.close();
-        
+
         return newKeySignature;
     }
 
@@ -96,7 +106,7 @@ public class KeySignaturesDataSource {
         // delete keySignature
         db.delete(OtashuDatabaseHelper.TABLE_KEY_SIGNATURES,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
-        
+
         db.close();
     }
 
@@ -132,7 +142,7 @@ public class KeySignaturesDataSource {
                 keySignatures.add(keySignature);
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return keySignatures;
@@ -177,7 +187,7 @@ public class KeySignaturesDataSource {
         }
 
         db.close();
-        
+
         return keySignature;
     }
 
@@ -196,7 +206,7 @@ public class KeySignaturesDataSource {
                 OtashuDatabaseHelper.COLUMN_ID + "=" + keySignature.getId(), null);
 
         db.close();
-        
+
         return keySignature;
     }
 

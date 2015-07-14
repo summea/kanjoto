@@ -33,6 +33,16 @@ public class BookmarksDataSource {
     }
 
     /**
+     * BookmarksDataSource constructor.
+     * 
+     * @param context Current state.
+     * @param databaseName Database to use.
+     */
+    public BookmarksDataSource(Context context, String databaseName) {
+        dbHelper = new OtashuDatabaseHelper(context, databaseName);
+    }
+
+    /**
      * Open database.
      * 
      * @throws SQLException
@@ -77,7 +87,7 @@ public class BookmarksDataSource {
         Bookmark newBookmark = cursorToBookmark(cursor);
         cursor.close();
         db.close();
-        
+
         return newBookmark;
     }
 
@@ -95,7 +105,7 @@ public class BookmarksDataSource {
         // delete bookmark
         db.delete(OtashuDatabaseHelper.TABLE_BOOKMARKS,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
-        
+
         db.close();
     }
 
@@ -128,7 +138,7 @@ public class BookmarksDataSource {
                 bookmarks.add(bookmark);
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return bookmarks;
@@ -159,7 +169,7 @@ public class BookmarksDataSource {
 
         // select all bookmarks from database
         Cursor cursor = db.rawQuery(query, new String[] {
-            String.valueOf(bookmarkId)
+                String.valueOf(bookmarkId)
         });
 
         if (cursor.moveToFirst()) {
@@ -171,7 +181,7 @@ public class BookmarksDataSource {
                 bookmark.setSerializedValue(cursor.getString(2));
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return bookmark;
@@ -192,7 +202,7 @@ public class BookmarksDataSource {
                 OtashuDatabaseHelper.COLUMN_ID + "=" + bookmark.getId(), null);
 
         db.close();
-        
+
         return bookmark;
     }
 

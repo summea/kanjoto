@@ -39,6 +39,16 @@ public class ApprenticeScoresDataSource {
     }
 
     /**
+     * ApprenticeScoresDataSource constructor.
+     * 
+     * @param context Current state.
+     * @param databaseName Database to use.
+     */
+    public ApprenticeScoresDataSource(Context context, String databaseName) {
+        dbHelper = new OtashuDatabaseHelper(context, databaseName);
+    }
+
+    /**
      * Open database.
      * 
      * @throws SQLException

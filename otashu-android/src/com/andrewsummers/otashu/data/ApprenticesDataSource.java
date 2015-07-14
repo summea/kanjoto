@@ -34,6 +34,16 @@ public class ApprenticesDataSource {
     }
 
     /**
+     * ApprenticesDataSource constructor.
+     * 
+     * @param context Current state.
+     * @param databaseName Database to use.
+     */
+    public ApprenticesDataSource(Context context, String databaseName) {
+        dbHelper = new OtashuDatabaseHelper(context, databaseName);
+    }
+
+    /**
      * Open database.
      * 
      * @throws SQLException
@@ -76,7 +86,7 @@ public class ApprenticesDataSource {
         Apprentice newApprentice = cursorToApprentice(cursor);
         cursor.close();
         db.close();
-        
+
         return newApprentice;
     }
 
@@ -94,7 +104,7 @@ public class ApprenticesDataSource {
         // delete apprentice
         db.delete(OtashuDatabaseHelper.TABLE_APPRENTICES,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
-        
+
         db.close();
     }
 
@@ -127,7 +137,7 @@ public class ApprenticesDataSource {
                 apprentices.add(apprentice);
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return apprentices;
@@ -177,7 +187,7 @@ public class ApprenticesDataSource {
         }
 
         db.close();
-        
+
         return apprentices;
     }
 
@@ -192,7 +202,7 @@ public class ApprenticesDataSource {
 
         // select all apprentices from database
         Cursor cursor = db.rawQuery(query, new String[] {
-            String.valueOf(apprenticeId)
+                String.valueOf(apprenticeId)
         });
 
         if (cursor.moveToFirst()) {
@@ -204,7 +214,7 @@ public class ApprenticesDataSource {
                 apprentice.setLearningStyleId(cursor.getLong(2));
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return apprentice;
@@ -226,7 +236,7 @@ public class ApprenticesDataSource {
                         + "=" + apprentice.getId(), null);
 
         db.close();
-        
+
         return apprentice;
     }
 

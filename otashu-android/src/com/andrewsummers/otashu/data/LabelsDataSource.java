@@ -33,6 +33,16 @@ public class LabelsDataSource {
     }
 
     /**
+     * LabelsDataSource constructor.
+     * 
+     * @param context Current state.
+     * @param databaseName Database to use.
+     */
+    public LabelsDataSource(Context context, String databaseName) {
+        dbHelper = new OtashuDatabaseHelper(context, databaseName);
+    }
+
+    /**
      * Open database.
      * 
      * @throws SQLException
@@ -74,7 +84,7 @@ public class LabelsDataSource {
         Label newLabel = cursorToLabel(cursor);
         cursor.close();
         db.close();
-        
+
         return newLabel;
     }
 
@@ -92,7 +102,7 @@ public class LabelsDataSource {
         // delete label
         db.delete(OtashuDatabaseHelper.TABLE_LABELS,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
-        
+
         db.close();
     }
 
@@ -125,7 +135,7 @@ public class LabelsDataSource {
                 labels.add(label);
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return labels;
@@ -174,7 +184,7 @@ public class LabelsDataSource {
                 labels.add(label.toString());
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return labels;
@@ -208,7 +218,7 @@ public class LabelsDataSource {
                 labels.add(label.getId());
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return labels;
@@ -237,7 +247,7 @@ public class LabelsDataSource {
                 label.setColor(cursor.getString(2));
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return label;
@@ -257,7 +267,7 @@ public class LabelsDataSource {
                 + "=" + label.getId(), null);
 
         db.close();
-        
+
         return label;
     }
 }

@@ -37,6 +37,16 @@ public class ApprenticeScorecardsDataSource {
     }
 
     /**
+     * ApprenticeScorecardsDataSource constructor.
+     * 
+     * @param context Current state.
+     * @param databaseName Database to use.
+     */
+    public ApprenticeScorecardsDataSource(Context context, String databaseName) {
+        dbHelper = new OtashuDatabaseHelper(context, databaseName);
+    }
+
+    /**
      * Open database.
      * 
      * @throws SQLException
@@ -83,7 +93,7 @@ public class ApprenticeScorecardsDataSource {
         ApprenticeScorecard newApprenticeScorecard = cursorToApprenticeScorecard(cursor);
         cursor.close();
         db.close();
-        
+
         return newApprenticeScorecard;
     }
 
@@ -101,7 +111,7 @@ public class ApprenticeScorecardsDataSource {
         // delete apprenticeScorecard
         db.delete(OtashuDatabaseHelper.TABLE_APPRENTICE_SCORECARDS,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
-        
+
         db.close();
     }
 
@@ -144,7 +154,7 @@ public class ApprenticeScorecardsDataSource {
                 apprenticeScorecards.add(apprenticeScorecard);
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return apprenticeScorecards;
@@ -203,7 +213,7 @@ public class ApprenticeScorecardsDataSource {
         }
 
         db.close();
-        
+
         return apprenticeScorecards;
     }
 
@@ -218,7 +228,7 @@ public class ApprenticeScorecardsDataSource {
 
         // select all apprenticeScorecards from database
         Cursor cursor = db.rawQuery(query, new String[] {
-            String.valueOf(apprenticeScorecardId)
+                String.valueOf(apprenticeScorecardId)
         });
 
         if (cursor.moveToFirst()) {
@@ -237,7 +247,7 @@ public class ApprenticeScorecardsDataSource {
                 apprenticeScorecard.setApprenticeId(cursor.getInt(4));
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return apprenticeScorecard;
@@ -259,7 +269,7 @@ public class ApprenticeScorecardsDataSource {
                 OtashuDatabaseHelper.COLUMN_ID + "=" + apprenticeScorecard.getId(), null);
 
         db.close();
-        
+
         return apprenticeScorecard;
     }
 

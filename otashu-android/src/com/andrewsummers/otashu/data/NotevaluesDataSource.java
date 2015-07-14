@@ -36,6 +36,16 @@ public class NotevaluesDataSource {
     }
 
     /**
+     * NotevaluesDataSource constructor.
+     * 
+     * @param context Current state.
+     * @param databaseName Database to use.
+     */
+    public NotevaluesDataSource(Context context, String databaseName) {
+        dbHelper = new OtashuDatabaseHelper(context, databaseName);
+    }
+
+    /**
      * Open database.
      * 
      * @throws SQLException
@@ -78,7 +88,7 @@ public class NotevaluesDataSource {
         Notevalue newNotevalue = cursorToNotevalue(cursor);
         cursor.close();
         db.close();
-        
+
         return newNotevalue;
     }
 
@@ -96,7 +106,7 @@ public class NotevaluesDataSource {
         // delete notevalue
         db.delete(OtashuDatabaseHelper.TABLE_NOTEVALUES,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
-        
+
         db.close();
     }
 
@@ -130,7 +140,7 @@ public class NotevaluesDataSource {
                 notevalues.add(notevalue);
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return notevalues;
@@ -183,7 +193,7 @@ public class NotevaluesDataSource {
         }
 
         db.close();
-        
+
         return notevalues;
     }
 
@@ -215,7 +225,7 @@ public class NotevaluesDataSource {
                 notevalues.add(notevalue.getId());
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return notevalues;
@@ -245,7 +255,7 @@ public class NotevaluesDataSource {
                 notevalue.setLabelId(cursor.getLong(3));
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return notevalue;
@@ -275,7 +285,7 @@ public class NotevaluesDataSource {
                 notevalue.setLabelId(cursor.getLong(3));
             } while (cursor.moveToNext());
         }
-        
+
         db.close();
 
         return notevalue;
@@ -296,7 +306,7 @@ public class NotevaluesDataSource {
                 OtashuDatabaseHelper.COLUMN_ID + "=" + notevalue.getId(), null);
 
         db.close();
-        
+
         return notevalue;
     }
 
