@@ -97,6 +97,9 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_EARNED_ON = "earned_on";
     public static final String COLUMN_KEY = "key";
 
+    public static final String TABLE_PATHS = "paths";
+    public static final String COLUMN_RANK = "rank";
+
     private static final String CREATE_TABLE_NOTESETS = "CREATE TABLE " + TABLE_NOTESETS
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
             + COLUMN_NAME + " text,"
@@ -204,6 +207,13 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_EARNED_ON + " text,"
             + COLUMN_KEY + " text);";
 
+    private static final String CREATE_TABLE_PATHS = "CREATE TABLE " + TABLE_PATHS
+            + " (" + COLUMN_ID + " integer primary key autoincrement, "
+            + COLUMN_EDGE_ID + " integer,"
+            + COLUMN_APPRENTICE_ID + " integer,"
+            + COLUMN_POSITION + " integer,"
+            + COLUMN_RANK + " integer);";
+
     /**
      * NotesetCollectionOpenHelper constructor.
      * 
@@ -254,6 +264,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_APPRENTICES);
         db.execSQL(CREATE_TABLE_LEARNING_STYLES);
         db.execSQL(CREATE_TABLE_ACHIEVEMENTS);
+        db.execSQL(CREATE_TABLE_PATHS);
 
         // add default apprentice
         Log.d("MYLOG", "db: adding apprentices...");

@@ -10,6 +10,11 @@ import java.util.List;
 public class Path {
 
     private List<Edge> path = new ArrayList<Edge>();
+    private long id;
+    private long edgeId;
+    private long apprenticeId;
+    private int position;
+    private int rank;
 
     /**
      * getPath gets path
@@ -27,6 +32,96 @@ public class Path {
      */
     public void setPath(List<Edge> path) {
         this.path = path;
+    }
+
+    /**
+     * getId gets Path id
+     * 
+     * @return <code>long</code> id value
+     */
+    public long getId() {
+        return id;
+    }
+
+    /**
+     * setId sets Path id
+     * 
+     * @param id New id value.
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    /**
+     * getEdgeId gets Edge id
+     * 
+     * @return <code>long</code> id value
+     */
+    public long getEdgeId() {
+        return edgeId;
+    }
+
+    /**
+     * setEdgeId sets Edge id
+     * 
+     * @param edgeId New id value.
+     */
+    public void setEdgeId(long edgeId) {
+        this.edgeId = edgeId;
+    }
+
+    /**
+     * getApprenticeId gets Apprentice id
+     * 
+     * @return <code>long</code> id value
+     */
+    public long getApprenticeId() {
+        return apprenticeId;
+    }
+
+    /**
+     * setApprenticeId sets Apprentice id
+     * 
+     * @param apprenticeId New apprenticeId value.
+     */
+    public void setApprenticeId(long apprenticeId) {
+        this.apprenticeId = apprenticeId;
+    }
+
+    /**
+     * getPosition gets Path position.
+     * 
+     * @return <code>int</code> of Path position.
+     */
+    public int getPosition() {
+        return position;
+    }
+
+    /**
+     * setPosition sets Path position.
+     * 
+     * @param position New Path position.
+     */
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    /**
+     * getRank gets Path rank.
+     * 
+     * @return <code>int</code> of Path rank.
+     */
+    public int getRank() {
+        return rank;
+    }
+
+    /**
+     * setRank sets Path rank.
+     * 
+     * @param position New Path rank.
+     */
+    public void setRank(int rank) {
+        this.rank = rank;
     }
 
     /**
