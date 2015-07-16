@@ -127,7 +127,7 @@ public class LabelsDataSource {
             do {
                 // create note objects based on note data from database
                 label = new Label();
-                label.setId(Integer.parseInt(cursor.getString(0)));
+                label.setId(cursor.getLong(0));
                 label.setName(cursor.getString(1));
                 label.setColor(cursor.getString(2));
 
@@ -176,7 +176,7 @@ public class LabelsDataSource {
             do {
                 // create label objects based on label data from database
                 label = new Label();
-                label.setId(Integer.parseInt(cursor.getString(0)));
+                label.setId(cursor.getLong(0));
                 label.setName(cursor.getString(1));
                 label.setColor(cursor.getString(2));
 
@@ -212,7 +212,7 @@ public class LabelsDataSource {
             do {
                 // create label objects based on label data from database
                 label = new Label();
-                label.setId(Long.parseLong(cursor.getString(0)));
+                label.setId(cursor.getLong(0));
 
                 // add label to labels list
                 labels.add(label.getId());
@@ -242,7 +242,7 @@ public class LabelsDataSource {
             do {
                 // create label objects based on label data from database
                 label = new Label();
-                label.setId(Integer.parseInt(cursor.getString(0)));
+                label.setId(cursor.getLong(0));
                 label.setName(cursor.getString(1));
                 label.setColor(cursor.getString(2));
             } while (cursor.moveToNext());
