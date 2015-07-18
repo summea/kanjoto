@@ -77,7 +77,119 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         headerText.setText(R.string.top_apprentice_strongest_paths_list_header);
         listView.addHeaderView(listHeader, "", false);
 
+        // TODO: update Paths table in database first time around
+        // then pull from Paths table for the fillList()
+        
         fillList();
+    }
+    
+    public void updatePathsTable() {
+        // fill list with Top 3 strongest Apprentice paths (if available)
+        topPaths = new ArrayList<Path>();
+        EdgesDataSource eds = new EdgesDataSource(this);
+
+        // select a given graph
+        long graphId = 1;
+
+        // select a given emotion
+        emotionId = getIntent().getExtras().getLong("list_id");
+
+        // select a given weight limit
+        float weightLimit = 0.5f;
+
+        // select an edge position
+        int position = 1;
+
+        // select all position one edges for given emotion with given threshold (e.g. all rows that
+        // have a weight less than 0.5)
+        List<Edge> p1Edges = eds.getAllEdges(apprenticeId, graphId, emotionId, weightLimit,
+                position);
+
+        position = 2;
+        // select all position two edges for given emotion with given threshold (e.g. all rows that
+        // have a weight less than 0.5)
+        List<Edge> p2Edges = eds.getAllEdges(apprenticeId, graphId, emotionId, weightLimit,
+                position);
+
+        position = 3;
+        // select all position three edges for given emotion with given threshold (e.g. all rows
+        // that have a weight less than 0.5)
+        List<Edge> p3Edges = eds.getAllEdges(apprenticeId, graphId, emotionId, weightLimit,
+                position);
+
+        List<Long> usedOnce = new ArrayList<Long>();
+
+        // get top 3
+        for (int i = 0; i < 3; i++) {
+
+            List<Edge> bestMatch = new ArrayList<Edge>();
+
+            boolean edge1To2Match = false;
+            boolean edge2To3Match = false;
+            // check to see if any of the lowest-weight edges are related nodes (i.e. do they
+            // connect in the graph?)
+            outerloop: for (Edge edge1 : p1Edges) {
+                if (!usedOnce.contains(edge1.getId())) {
+                    for (Edge edge2 : p2Edges) {
+                        if (!usedOnce.contains(edge2.getId())) {
+                            if (edge1.getToNodeId() == edge2.getFromNodeId()) {
+                                // edge1 to edge2 match!
+                                edge1To2Match = true;
+                            }
+                            for (Edge edge3 : p3Edges) {
+                                if (!usedOnce.contains(edge3.getId())) {
+                                    if (edge2.getToNodeId() == edge3.getFromNodeId()) {
+                                        // edge2 to edge3 match!
+                                        edge2To3Match = true;
+
+                                        if (edge1To2Match && edge2To3Match) {
+                                            Log.d("MYLOG", "cross section match found!");
+                                            bestMatch.add(edge1);
+                                            bestMatch.add(edge2);
+                                            bestMatch.add(edge3);
+                                            break outerloop;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            try {
+                // TODO: save strongest path results in database
+                Log.d("MYLOG", "strongest path:");
+                for (Edge edge : bestMatch) {
+                    Log.d("MYLOG", edge.toString());
+                }
+                
+                // return results
+                Log.d("MYLOG", "best match results: " + bestMatch.toString());
+
+                // keep track of what edges have been used already
+                for (int j = 0; j < 3; j++) {
+                    if (!usedOnce.contains(bestMatch.get(j).getId())) {
+                        usedOnce.add(bestMatch.get(j).getId());
+                    }
+                }
+
+                Log.d("MYLOG", usedOnce.toString());
+            } catch (Exception e) {
+                Log.d("MYLOG", e.getStackTrace().toString());
+            }
+
+            if (!bestMatch.isEmpty()) {
+                // add path for list
+                Path path = new Path();
+                path.setPath(bestMatch);
+                Log.d("MYLOG", "adding best match: " + bestMatch.toString());
+                topPaths.add(path);
+                Log.d("MYLOG", "current state of topPaths: " + topPaths.toString());
+            }
+        }
+
+        
     }
 
     public void fillList() {

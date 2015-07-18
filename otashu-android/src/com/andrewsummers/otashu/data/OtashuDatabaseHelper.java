@@ -407,6 +407,41 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
                 db.endTransaction();
             }
         }
+        
+        // add strong paths
+        Log.d("MYLOG", "db: adding strong paths...");
+        contentValues = new ContentValues();
+        contentValues.put(OtashuDatabaseHelper.COLUMN_ID, 1);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_GRAPH_ID, 1);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_EMOTION_ID, 1);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_FROM_NODE_ID, 60);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_TO_NODE_ID, 61);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_WEIGHT, 0.1f);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_POSITION, 1);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID, 1);
+        db.insert(OtashuDatabaseHelper.TABLE_EDGES, null, contentValues);
+        
+        contentValues = new ContentValues();
+        contentValues.put(OtashuDatabaseHelper.COLUMN_ID, 2);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_GRAPH_ID, 1);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_EMOTION_ID, 1);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_FROM_NODE_ID, 61);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_TO_NODE_ID, 62);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_WEIGHT, 0.1f);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_POSITION, 2);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID, 1);
+        db.insert(OtashuDatabaseHelper.TABLE_EDGES, null, contentValues);
+        
+        contentValues = new ContentValues();
+        contentValues.put(OtashuDatabaseHelper.COLUMN_ID, 3);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_GRAPH_ID, 1);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_EMOTION_ID, 1);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_FROM_NODE_ID, 62);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_TO_NODE_ID, 63);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_WEIGHT, 0.1f);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_POSITION, 3);
+        contentValues.put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID, 1);
+        db.insert(OtashuDatabaseHelper.TABLE_EDGES, null, contentValues);
     }
 
     /**
