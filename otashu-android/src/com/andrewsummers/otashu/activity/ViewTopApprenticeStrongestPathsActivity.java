@@ -9,6 +9,7 @@ import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.adapter.PathAdapter;
 import com.andrewsummers.otashu.data.EdgesDataSource;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
+import com.andrewsummers.otashu.data.PathsDataSource;
 import com.andrewsummers.otashu.model.Edge;
 import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.Path;
@@ -79,10 +80,10 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
 
         // TODO: update Paths table in database first time around
         // then pull from Paths table for the fillList()
-        
+
         fillList();
     }
-    
+
     public void updatePathsTable() {
         // fill list with Top 3 strongest Apprentice paths (if available)
         topPaths = new ArrayList<Path>();
@@ -159,11 +160,23 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
 
             try {
                 // TODO: save strongest path results in database
+                // TODO: delete rows that have old emotion data
+                // (keep other emotion data for now, though)
+                PathsDataSource pds = new PathsDataSource(this);
+                Path path;
+
+                for (int j = 0; j < bestMatch.size(); j++) {
+                    path = new Path();
+                    path.setApprenticeId(apprenticeId);
+                    // TODO: add other path attributes
+                    // TODO: create each path in database
+                }
+
                 Log.d("MYLOG", "strongest path:");
                 for (Edge edge : bestMatch) {
                     Log.d("MYLOG", edge.toString());
                 }
-                
+
                 // return results
                 Log.d("MYLOG", "best match results: " + bestMatch.toString());
 
@@ -189,7 +202,6 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
             }
         }
 
-        
     }
 
     public void fillList() {
