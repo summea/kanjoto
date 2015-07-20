@@ -209,7 +209,8 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_PATHS = "CREATE TABLE " + TABLE_PATHS
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
-            + COLUMN_EDGE_ID + " integer,"
+            + COLUMN_FROM_NODE_ID + " integer, "
+            + COLUMN_TO_NODE_ID + " integer, "
             + COLUMN_APPRENTICE_ID + " integer,"
             + COLUMN_POSITION + " integer,"
             + COLUMN_RANK + " integer);";
@@ -407,7 +408,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
                 db.endTransaction();
             }
         }
-        
+
         // add strong paths
         Log.d("MYLOG", "db: adding strong paths...");
         contentValues = new ContentValues();
@@ -420,7 +421,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(OtashuDatabaseHelper.COLUMN_POSITION, 1);
         contentValues.put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID, 1);
         db.insert(OtashuDatabaseHelper.TABLE_EDGES, null, contentValues);
-        
+
         contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, 2);
         contentValues.put(OtashuDatabaseHelper.COLUMN_GRAPH_ID, 1);
@@ -431,7 +432,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(OtashuDatabaseHelper.COLUMN_POSITION, 2);
         contentValues.put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID, 1);
         db.insert(OtashuDatabaseHelper.TABLE_EDGES, null, contentValues);
-        
+
         contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, 3);
         contentValues.put(OtashuDatabaseHelper.COLUMN_GRAPH_ID, 1);

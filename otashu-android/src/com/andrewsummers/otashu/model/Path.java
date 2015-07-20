@@ -16,8 +16,8 @@ public class Path {
 
     private List<Edge> path = new ArrayList<Edge>();
     private long id;
-    // TODO: consider changing edgeId back to "from" and "to" for vertices instead of using edges?
-    private long edgeId;
+    private int fromNodeId;
+    private int toNodeId;
     private long apprenticeId;
     private int position;
     private int rank;
@@ -59,21 +59,39 @@ public class Path {
     }
 
     /**
-     * getEdgeId gets Edge id
+     * getFromNodeId gets Edge fromNodeId.
      * 
-     * @return <code>long</code> id value
+     * @return <code>int</code> of Edge fromNodeId.
      */
-    public long getEdgeId() {
-        return edgeId;
+    public int getFromNodeId() {
+        return fromNodeId;
     }
 
     /**
-     * setEdgeId sets Edge id
+     * setFromNodeId sets Edge fromNodeId.
      * 
-     * @param edgeId New id value.
+     * @param fromNodeId New Edge fromNodeId.
      */
-    public void setEdgeId(long edgeId) {
-        this.edgeId = edgeId;
+    public void setFromNodeId(int fromNodeId) {
+        this.fromNodeId = fromNodeId;
+    }
+
+    /**
+     * getToNodeId gets Edge toNodeId.
+     * 
+     * @return <code>int</code> of Edge toNodeId.
+     */
+    public int getToNodeId() {
+        return toNodeId;
+    }
+
+    /**
+     * setToNodeId sets Edge toNodeId.
+     * 
+     * @param toNodeId New Edge toNodeId.
+     */
+    public void setToNodeId(int toNodeId) {
+        this.toNodeId = toNodeId;
     }
 
     /**
