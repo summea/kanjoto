@@ -19,6 +19,7 @@ public class Path {
     private int fromNodeId;
     private int toNodeId;
     private long apprenticeId;
+    private long emotionId;
     private int position;
     private int rank;
 
@@ -113,6 +114,24 @@ public class Path {
     }
 
     /**
+     * getEmotionId gets Path emotionId
+     * 
+     * @return <code>long</code> emotionId value
+     */
+    public long getEmotionId() {
+        return emotionId;
+    }
+
+    /**
+     * setEmotionId sets Path emotionId
+     * 
+     * @param emotionId New emotionId value.
+     */
+    public void setEmotionId(long emotionId) {
+        this.emotionId = emotionId;
+    }
+
+    /**
      * getPosition gets Path position.
      * 
      * @return <code>int</code> of Path position.
@@ -155,6 +174,7 @@ public class Path {
      */
     @Override
     public String toString() {
-        return this.path.toString();
+        return "id: " + id + ", fromNodeId: " + fromNodeId + ", toNodeId: " + toNodeId
+                + ", apprenticeId: " + apprenticeId + ", position: " + position + ", rank: " + rank;
     }
 }

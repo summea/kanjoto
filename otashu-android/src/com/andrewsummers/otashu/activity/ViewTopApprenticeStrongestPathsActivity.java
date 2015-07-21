@@ -81,7 +81,8 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         // TODO: update Paths table in database first time around
         // then pull from Paths table for the fillList()
 
-        fillList();
+        updatePathsTable();
+        // fillList();
     }
 
     public void updatePathsTable() {
@@ -144,7 +145,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
                                         edge2To3Match = true;
 
                                         if (edge1To2Match && edge2To3Match) {
-                                            Log.d("MYLOG", "cross section match found!");
+                                            Log.d("MYLOG", "> cross section match found!");
                                             bestMatch.add(edge1);
                                             bestMatch.add(edge2);
                                             bestMatch.add(edge3);
@@ -158,8 +159,10 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
                 }
             }
 
+            // TODO: possibly add other ranks for less-strong paths
+            int rank = 1;
+
             try {
-                // TODO: save strongest path results in database
                 // TODO: delete rows that have old emotion data
                 // (keep other emotion data for now, though)
                 PathsDataSource pds = new PathsDataSource(this);
@@ -168,7 +171,13 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
                 for (int j = 0; j < bestMatch.size(); j++) {
                     path = new Path();
                     path.setApprenticeId(apprenticeId);
-                    // TODO: add other path attributes
+                    path.setEmotionId(bestMatch.get(j).getEmotionId());
+                    path.setFromNodeId(bestMatch.get(j).getFromNodeId());
+                    path.setToNodeId(bestMatch.get(j).getToNodeId());
+                    path.setPosition(j + 1);
+                    path.setRank(rank);
+                    Log.d("MYLOG", "create path: " + path.toString());
+                    pds.createPath(path);
                     // TODO: create each path in database
                 }
 
@@ -202,6 +211,30 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
             }
         }
 
+        Log.d("MYLOG", "top paths being passed to adapter: " + topPaths.toString());
+
+        // pass list data to adapter
+        adapter = new PathAdapter(this, topPaths);
+
+        listView.setAdapter(adapter);
+
+        // get individual emotion details
+        listView.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                    int position, long id) {
+
+                // launch details activity
+                Intent intent = new Intent(view.getContext(),
+                        ViewApprenticeStrongestPathDetailActivity.class);
+
+                intent.putExtra("emotion_id", emotionId);
+                intent.putExtra("list_id", id);
+                startActivity(intent);
+            }
+        });
+
+        // register context menu
+        registerForContextMenu(listView);
     }
 
     public void fillList() {

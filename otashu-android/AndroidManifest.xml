@@ -96,6 +96,7 @@
         <activity android:name="com.andrewsummers.otashu.activity.DatabaseDumperLearningStylesActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.DatabaseDumperAchievementsActivity" />
         <activity android:name="com.andrewsummers.otashu.activity.PlayModeApprenticeActivity" />
+        <activity android:name="com.andrewsummers.otashu.activity.DatabaseDumperPathsActivity" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

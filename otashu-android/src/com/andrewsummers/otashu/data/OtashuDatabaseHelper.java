@@ -212,6 +212,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_FROM_NODE_ID + " integer, "
             + COLUMN_TO_NODE_ID + " integer, "
             + COLUMN_APPRENTICE_ID + " integer,"
+            + COLUMN_EMOTION_ID + " integer,"
             + COLUMN_POSITION + " integer,"
             + COLUMN_RANK + " integer);";
 

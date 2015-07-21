@@ -22,6 +22,7 @@ public class PathsDataSource {
             OtashuDatabaseHelper.COLUMN_FROM_NODE_ID,
             OtashuDatabaseHelper.COLUMN_TO_NODE_ID,
             OtashuDatabaseHelper.COLUMN_APPRENTICE_ID,
+            OtashuDatabaseHelper.COLUMN_EMOTION_ID,
             OtashuDatabaseHelper.COLUMN_POSITION,
             OtashuDatabaseHelper.COLUMN_RANK,
     };
@@ -72,17 +73,18 @@ public class PathsDataSource {
         contentValues.put(OtashuDatabaseHelper.COLUMN_FROM_NODE_ID, path.getFromNodeId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_TO_NODE_ID, path.getToNodeId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID, path.getApprenticeId());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_EMOTION_ID, path.getEmotionId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_POSITION, path.getPosition());
         contentValues.put(OtashuDatabaseHelper.COLUMN_RANK, path.getRank());
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        long insertId = db.insert(OtashuDatabaseHelper.TABLE_LABELS, null,
+        long insertId = db.insert(OtashuDatabaseHelper.TABLE_PATHS, null,
                 contentValues);
 
         Cursor cursor = db.query(
-                OtashuDatabaseHelper.TABLE_LABELS, allColumns,
+                OtashuDatabaseHelper.TABLE_PATHS, allColumns,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + insertId, null,
                 null, null, null);
 
@@ -106,7 +108,7 @@ public class PathsDataSource {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // delete path
-        db.delete(OtashuDatabaseHelper.TABLE_LABELS,
+        db.delete(OtashuDatabaseHelper.TABLE_PATHS,
                 OtashuDatabaseHelper.COLUMN_ID + " = " + id, null);
 
         db.close();
@@ -120,7 +122,7 @@ public class PathsDataSource {
     public List<Path> getAllPaths() {
         List<Path> paths = new ArrayList<Path>();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_LABELS;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_PATHS;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -137,8 +139,9 @@ public class PathsDataSource {
                 path.setFromNodeId(cursor.getInt(1));
                 path.setToNodeId(cursor.getInt(2));
                 path.setApprenticeId(cursor.getLong(3));
-                path.setPosition(cursor.getInt(4));
-                path.setRank(cursor.getInt(5));
+                path.setEmotionId(cursor.getLong(4));
+                path.setPosition(cursor.getInt(5));
+                path.setRank(cursor.getInt(6));
 
                 // add note string to list of strings
                 paths.add(path);
@@ -162,8 +165,9 @@ public class PathsDataSource {
         path.setFromNodeId(cursor.getInt(1));
         path.setToNodeId(cursor.getInt(2));
         path.setApprenticeId(cursor.getLong(3));
-        path.setPosition(cursor.getInt(4));
-        path.setRank(cursor.getInt(5));
+        path.setEmotionId(cursor.getLong(4));
+        path.setPosition(cursor.getInt(5));
+        path.setRank(cursor.getInt(6));
         return path;
     }
 
@@ -175,7 +179,7 @@ public class PathsDataSource {
     public List<String> getAllPathListPreviews() {
         List<String> paths = new LinkedList<String>();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_LABELS;
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_PATHS;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -192,8 +196,9 @@ public class PathsDataSource {
                 path.setFromNodeId(cursor.getInt(1));
                 path.setToNodeId(cursor.getInt(2));
                 path.setApprenticeId(cursor.getLong(3));
-                path.setPosition(cursor.getInt(4));
-                path.setRank(cursor.getInt(5));
+                path.setEmotionId(cursor.getLong(4));
+                path.setPosition(cursor.getInt(5));
+                path.setRank(cursor.getInt(6));
 
                 // add path string to list of strings
                 paths.add(path.toString());
@@ -214,7 +219,7 @@ public class PathsDataSource {
         List<Long> paths = new LinkedList<Long>();
 
         String query = "SELECT " + OtashuDatabaseHelper.COLUMN_ID + " FROM "
-                + OtashuDatabaseHelper.TABLE_LABELS;
+                + OtashuDatabaseHelper.TABLE_PATHS;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -242,7 +247,7 @@ public class PathsDataSource {
     public Path getPath(long pathId) {
         Path path = new Path();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_LABELS + " WHERE "
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_PATHS + " WHERE "
                 + OtashuDatabaseHelper.COLUMN_ID + "=?";
 
         // create database handle
@@ -261,8 +266,9 @@ public class PathsDataSource {
                 path.setFromNodeId(cursor.getInt(1));
                 path.setToNodeId(cursor.getInt(2));
                 path.setApprenticeId(cursor.getLong(3));
-                path.setPosition(cursor.getInt(4));
-                path.setRank(cursor.getInt(5));
+                path.setEmotionId(cursor.getLong(4));
+                path.setPosition(cursor.getInt(5));
+                path.setRank(cursor.getInt(6));
             } while (cursor.moveToNext());
         }
 
@@ -281,10 +287,11 @@ public class PathsDataSource {
         contentValues.put(OtashuDatabaseHelper.COLUMN_FROM_NODE_ID, path.getFromNodeId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_TO_NODE_ID, path.getToNodeId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID, path.getApprenticeId());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_EMOTION_ID, path.getEmotionId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_POSITION, path.getPosition());
         contentValues.put(OtashuDatabaseHelper.COLUMN_RANK, path.getRank());
 
-        db.update(OtashuDatabaseHelper.TABLE_LABELS, contentValues, OtashuDatabaseHelper.COLUMN_ID
+        db.update(OtashuDatabaseHelper.TABLE_PATHS, contentValues, OtashuDatabaseHelper.COLUMN_ID
                 + "=" + path.getId(), null);
 
         db.close();
