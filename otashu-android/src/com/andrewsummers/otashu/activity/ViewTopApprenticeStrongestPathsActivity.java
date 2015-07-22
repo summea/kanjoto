@@ -162,10 +162,19 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
             // TODO: possibly add other ranks for less-strong paths
             int rank = 1;
 
+            PathsDataSource pds = new PathsDataSource(this);
+
             try {
-                // TODO: delete rows that have old emotion data
+                // delete rows that have old emotion data
+                List<Path> pathsToDelete = pds.getAllPathsByEmotion(emotionId);
+                for (Path pathToDelete : pathsToDelete) {
+                    pds.deletePath(pathToDelete);
+                    Log.d("MYLOG", "deleting old path for emotion: " + emotionId);
+                }
+
+                // TODO: add current path data into database
+
                 // (keep other emotion data for now, though)
-                PathsDataSource pds = new PathsDataSource(this);
                 Path path;
 
                 for (int j = 0; j < bestMatch.size(); j++) {
@@ -200,6 +209,8 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
             } catch (Exception e) {
                 Log.d("MYLOG", e.getStackTrace().toString());
             }
+
+            pds.close();
 
             if (!bestMatch.isEmpty()) {
                 // add path for list

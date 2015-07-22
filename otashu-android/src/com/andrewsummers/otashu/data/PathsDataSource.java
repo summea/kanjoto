@@ -154,6 +154,48 @@ public class PathsDataSource {
     }
 
     /**
+     * Get all paths from database table by Emotion.
+     * 
+     * @return List of Paths.
+     */
+    public List<Path> getAllPathsByEmotion(long emotionId) {
+        List<Path> paths = new ArrayList<Path>();
+
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_PATHS
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=?";
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notes from database
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(emotionId)
+        });
+
+        Path path = null;
+        if (cursor.moveToFirst()) {
+            do {
+                // create note objects based on note data from database
+                path = new Path();
+                path.setId(cursor.getLong(0));
+                path.setFromNodeId(cursor.getInt(1));
+                path.setToNodeId(cursor.getInt(2));
+                path.setApprenticeId(cursor.getLong(3));
+                path.setEmotionId(cursor.getLong(4));
+                path.setPosition(cursor.getInt(5));
+                path.setRank(cursor.getInt(6));
+
+                // add note string to list of strings
+                paths.add(path);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+
+        return paths;
+    }
+
+    /**
      * Access column data at current position of result.
      * 
      * @param cursor Current cursor location.
