@@ -78,10 +78,10 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         headerText.setText(R.string.top_apprentice_strongest_paths_list_header);
         listView.addHeaderView(listHeader, "", false);
 
-        // TODO: update Paths table in database first time around
-        // then pull from Paths table for the fillList()
-
+        // update Paths table in database first time around
         updatePathsTable();
+
+        // TODO: then pull from Paths table for the fillList()
         // fillList();
     }
 
@@ -121,11 +121,17 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
 
         List<Long> usedOnce = new ArrayList<Long>();
 
+        // delete rows that have old emotion data
+        PathsDataSource pds = new PathsDataSource(this);
+        List<Path> pathsToDelete = pds.getAllPathsByEmotion(emotionId);
+        for (Path pathToDelete : pathsToDelete) {
+            pds.deletePath(pathToDelete);
+            Log.d("MYLOG", "deleting old path for emotion: " + emotionId);
+        }
+
         // get top 3
         for (int i = 0; i < 3; i++) {
-
             List<Edge> bestMatch = new ArrayList<Edge>();
-
             boolean edge1To2Match = false;
             boolean edge2To3Match = false;
             // check to see if any of the lowest-weight edges are related nodes (i.e. do they
@@ -162,22 +168,12 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
             // TODO: possibly add other ranks for less-strong paths
             int rank = 1;
 
-            PathsDataSource pds = new PathsDataSource(this);
-
             try {
-                // delete rows that have old emotion data
-                List<Path> pathsToDelete = pds.getAllPathsByEmotion(emotionId);
-                for (Path pathToDelete : pathsToDelete) {
-                    pds.deletePath(pathToDelete);
-                    Log.d("MYLOG", "deleting old path for emotion: " + emotionId);
-                }
-
-                // TODO: add current path data into database
-
-                // (keep other emotion data for now, though)
                 Path path;
+                Log.d("MYLOG", "creating new emotion data");
 
                 for (int j = 0; j < bestMatch.size(); j++) {
+                    // add current path data into database
                     path = new Path();
                     path.setApprenticeId(apprenticeId);
                     path.setEmotionId(bestMatch.get(j).getEmotionId());
@@ -185,18 +181,8 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
                     path.setToNodeId(bestMatch.get(j).getToNodeId());
                     path.setPosition(j + 1);
                     path.setRank(rank);
-                    Log.d("MYLOG", "create path: " + path.toString());
                     pds.createPath(path);
-                    // TODO: create each path in database
                 }
-
-                Log.d("MYLOG", "strongest path:");
-                for (Edge edge : bestMatch) {
-                    Log.d("MYLOG", edge.toString());
-                }
-
-                // return results
-                Log.d("MYLOG", "best match results: " + bestMatch.toString());
 
                 // keep track of what edges have been used already
                 for (int j = 0; j < 3; j++) {
