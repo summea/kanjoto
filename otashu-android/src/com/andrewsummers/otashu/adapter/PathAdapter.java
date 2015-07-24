@@ -45,8 +45,6 @@ public class PathAdapter extends BaseAdapter {
         apprenticeId = Long.parseLong(sharedPref.getString(
                 "pref_selected_apprentice", "1"));
 
-        Log.d("MYLOG", "all paths: " + allPaths.toString());
-
         NotevaluesDataSource nvds = new NotevaluesDataSource(mContext);
         List<Notevalue> allNotevalues = nvds.getAllNotevalues();
         nvds.close();
@@ -112,6 +110,11 @@ public class PathAdapter extends BaseAdapter {
                     .getName() + "");
 
             String backgroundColor = "#dddddd";
+            
+            // TODO: get correct path data... might have to rethink the Path cache, though
+            // because how should each path be grouped when paths are made up of individual
+            // entries...? just needed a place to cache path info, but this is getting
+            // unnecessarily complex...
 
             // TODO: refactor this in the future...
             // get background color of related label

@@ -67,7 +67,8 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         apprenticeId = Long.parseLong(sharedPref.getString(
                 "pref_selected_apprentice", "1"));
-
+        emotionId = getIntent().getExtras().getLong("list_id");
+        
         // initialize ListView
         listView = getListView();
 
@@ -79,10 +80,10 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         listView.addHeaderView(listHeader, "", false);
 
         // update Paths table in database first time around
-        updatePathsTable();
+        //updatePathsTable();
 
         // TODO: then pull from Paths table for the fillList()
-        // fillList();
+        fillList();
     }
 
     public void updatePathsTable() {
@@ -91,10 +92,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         EdgesDataSource eds = new EdgesDataSource(this);
 
         // select a given graph
-        long graphId = 1;
-
-        // select a given emotion
-        emotionId = getIntent().getExtras().getLong("list_id");
+        long graphId = 1;        
 
         // select a given weight limit
         float weightLimit = 0.5f;
@@ -237,6 +235,8 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
     public void fillList() {
         // fill list with Top 3 strongest Apprentice paths (if available)
         topPaths = new ArrayList<Path>();
+        
+        /*
         EdgesDataSource eds = new EdgesDataSource(this);
 
         // select a given graph
@@ -335,7 +335,16 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         }
 
         Log.d("MYLOG", "top paths being passed to adapter: " + topPaths.toString());
-
+        */
+        
+        PathsDataSource pds = new PathsDataSource(this);
+        topPaths = pds.getAllPathsByEmotion(emotionId);
+        pds.close();
+        
+        for (Path path : topPaths) {
+            Log.d("MYLOG", "top path: " + path.toString());
+        }
+        
         // pass list data to adapter
         adapter = new PathAdapter(this, topPaths);
 
