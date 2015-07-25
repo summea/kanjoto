@@ -142,7 +142,8 @@ public class ViewApprenticeStrongestPathDetailActivity extends Activity {
             if (!bestMatch.isEmpty()) {
                 // add path for list
                 Path path = new Path();
-                path.setPath(bestMatch);
+                // TODO: check this later
+                //path.setPath(bestMatch);
                 Log.d("MYLOG", "adding best match: " + bestMatch.toString());
                 topPaths.add(path);
                 Log.d("MYLOG", "current state of topPaths: " + topPaths.toString());

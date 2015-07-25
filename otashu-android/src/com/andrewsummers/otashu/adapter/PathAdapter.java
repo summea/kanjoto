@@ -12,7 +12,7 @@ import com.andrewsummers.otashu.data.NotevaluesDataSource;
 import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.Label;
 import com.andrewsummers.otashu.model.Notevalue;
-import com.andrewsummers.otashu.model.Path;
+import com.andrewsummers.otashu.model.PathEdge;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -31,15 +31,15 @@ import android.widget.TextView;
 public class PathAdapter extends BaseAdapter {
 
     private Context mContext;
-    private List<Path> paths;
+    private List<PathEdge> paths;
     private SharedPreferences sharedPref;
     private long apprenticeId = 0;
     SparseArray<Notevalue> notevalues = new SparseArray<Notevalue>();
     SparseArray<Label> labels = new SparseArray<Label>();
 
-    public PathAdapter(Context context, List<Path> allPaths) {
+    public PathAdapter(Context context, List<PathEdge> topPaths) {
         mContext = context;
-        paths = allPaths;
+        paths = topPaths;
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(mContext);
         apprenticeId = Long.parseLong(sharedPref.getString(
@@ -106,8 +106,12 @@ public class PathAdapter extends BaseAdapter {
             }
 
             TextView emotion = (TextView) convertView.findViewById(R.id.emotion);
+            // TODO: make dynamic
+            emotion.setText("fix");
+            /*
             emotion.setText(allEmotionsMap.get(paths.get(position).getPath().get(0).getEmotionId())
                     .getName() + "");
+            */
 
             String backgroundColor = "#dddddd";
             
@@ -118,13 +122,15 @@ public class PathAdapter extends BaseAdapter {
 
             // TODO: refactor this in the future...
             // get background color of related label
+            // TODO: make dynamic
+            /*
             if (allLabelsMap.get(
                     allEmotionsMap.get(paths.get(position).getPath().get(0).getEmotionId())
                             .getLabelId()).getColor() != null) {
                 backgroundColor = allLabelsMap.get(
                         allEmotionsMap.get(paths.get(position).getPath().get(0).getEmotionId())
                                 .getLabelId()).getColor();
-            }
+            }*/
 
             // add correct color to background (but maintain default state "pressed" and "selected"
             // effects)
@@ -146,14 +152,21 @@ public class PathAdapter extends BaseAdapter {
             // fill in note names for each note in each row of this custom list
             for (int i = 0; i < noteItems.length - 1; i++) {
                 note = (TextView) convertView.findViewById(noteItems[i]);
-                note.setText(notevalues.get(
+                
+                // TODO: make dynamic
+                note.setText("fix");
+                /*note.setText(notevalues.get(
                         paths.get(position).getPath().get(i).getFromNodeId())
                         .getNotelabel());
+                        */
 
                 backgroundColor = "#dddddd";
 
                 // TODO: refactor this in the future...
                 // get background color of related label
+                
+                // TODO: make dynamic
+                /*
                 if (allLabelsMap
                         .get(notevalues.get(paths.get(position).getPath().get(i).getFromNodeId())
                                 .getLabelId()).getColor() != null) {
@@ -161,6 +174,7 @@ public class PathAdapter extends BaseAdapter {
                             notevalues.get(paths.get(position).getPath().get(i).getFromNodeId())
                                     .getLabelId()).getColor();
                 }
+                */
 
                 drawable = new StateListDrawable();
                 drawable.addState(new int[] {
@@ -178,12 +192,18 @@ public class PathAdapter extends BaseAdapter {
 
                     note = (TextView) convertView.findViewById(noteItems[i + 1]);
 
+                    // TODO: make dynamic
+                    note.setText("fix");
+                    /*
                     note.setText(notevalues.get(
                             paths.get(position).getPath().get(i).getToNodeId())
                             .getNotelabel());
-
+                    */
+                    
                     backgroundColor = "#dddddd";
 
+                    // TODO: make dynamic
+                    /*
                     if (allLabelsMap
                             .get(notevalues.get(paths.get(position).getPath().get(i).getToNodeId())
                                     .getLabelId()).getColor() != null) {
@@ -191,6 +211,7 @@ public class PathAdapter extends BaseAdapter {
                                 notevalues.get(paths.get(position).getPath().get(i).getToNodeId())
                                         .getLabelId()).getColor();
                     }
+                    */
 
                     drawable = new StateListDrawable();
                     drawable.addState(new int[] {
@@ -224,7 +245,7 @@ public class PathAdapter extends BaseAdapter {
         return noteNamesArray[noteIndex];
     }
 
-    public void addItem(Path pathToBeAdded) {
+    public void addItem(PathEdge pathToBeAdded) {
         paths.add(pathToBeAdded);
     }
 

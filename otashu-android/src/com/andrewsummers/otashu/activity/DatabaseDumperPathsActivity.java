@@ -29,24 +29,12 @@ public class DatabaseDumperPathsActivity extends Activity {
 
         debugText.setText(debugText.getText().toString() + "Table: Paths\n"
                 + OtashuDatabaseHelper.COLUMN_ID + "|"
-                + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "|"
-                + OtashuDatabaseHelper.COLUMN_TO_NODE_ID + "|"
-                + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "|"
-                + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "|"
-                + OtashuDatabaseHelper.COLUMN_POSITION + "|"
-                + OtashuDatabaseHelper.COLUMN_RANK + "|"
                 + "\n");
 
         for (Path path : allPaths) {
 
             String newText = debugText.getText().toString();
             newText += path.getId() + "|"
-                    + path.getFromNodeId() + "|"
-                    + path.getToNodeId() + "|"
-                    + path.getApprenticeId() + "|"
-                    + path.getEmotionId() + "|"
-                    + path.getPosition() + "|"
-                    + path.getRank() + "|"
                     + "\n";
 
             debugText.setText(newText);

@@ -19,12 +19,6 @@ public class PathsDataSource {
     // database table columns
     private String[] allColumns = {
             OtashuDatabaseHelper.COLUMN_ID,
-            OtashuDatabaseHelper.COLUMN_FROM_NODE_ID,
-            OtashuDatabaseHelper.COLUMN_TO_NODE_ID,
-            OtashuDatabaseHelper.COLUMN_APPRENTICE_ID,
-            OtashuDatabaseHelper.COLUMN_EMOTION_ID,
-            OtashuDatabaseHelper.COLUMN_POSITION,
-            OtashuDatabaseHelper.COLUMN_RANK,
     };
 
     /**
@@ -70,12 +64,6 @@ public class PathsDataSource {
      */
     public Path createPath(Path path) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(OtashuDatabaseHelper.COLUMN_FROM_NODE_ID, path.getFromNodeId());
-        contentValues.put(OtashuDatabaseHelper.COLUMN_TO_NODE_ID, path.getToNodeId());
-        contentValues.put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID, path.getApprenticeId());
-        contentValues.put(OtashuDatabaseHelper.COLUMN_EMOTION_ID, path.getEmotionId());
-        contentValues.put(OtashuDatabaseHelper.COLUMN_POSITION, path.getPosition());
-        contentValues.put(OtashuDatabaseHelper.COLUMN_RANK, path.getRank());
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -136,12 +124,6 @@ public class PathsDataSource {
                 // create note objects based on note data from database
                 path = new Path();
                 path.setId(cursor.getLong(0));
-                path.setFromNodeId(cursor.getInt(1));
-                path.setToNodeId(cursor.getInt(2));
-                path.setApprenticeId(cursor.getLong(3));
-                path.setEmotionId(cursor.getLong(4));
-                path.setPosition(cursor.getInt(5));
-                path.setRank(cursor.getInt(6));
 
                 // add note string to list of strings
                 paths.add(path);
@@ -178,12 +160,6 @@ public class PathsDataSource {
                 // create note objects based on note data from database
                 path = new Path();
                 path.setId(cursor.getLong(0));
-                path.setFromNodeId(cursor.getInt(1));
-                path.setToNodeId(cursor.getInt(2));
-                path.setApprenticeId(cursor.getLong(3));
-                path.setEmotionId(cursor.getLong(4));
-                path.setPosition(cursor.getInt(5));
-                path.setRank(cursor.getInt(6));
 
                 // add note string to list of strings
                 paths.add(path);
@@ -204,12 +180,6 @@ public class PathsDataSource {
     private Path cursorToPath(Cursor cursor) {
         Path path = new Path();
         path.setId(cursor.getLong(0));
-        path.setFromNodeId(cursor.getInt(1));
-        path.setToNodeId(cursor.getInt(2));
-        path.setApprenticeId(cursor.getLong(3));
-        path.setEmotionId(cursor.getLong(4));
-        path.setPosition(cursor.getInt(5));
-        path.setRank(cursor.getInt(6));
         return path;
     }
 
@@ -235,12 +205,6 @@ public class PathsDataSource {
                 // create path objects based on path data from database
                 path = new Path();
                 path.setId(cursor.getLong(0));
-                path.setFromNodeId(cursor.getInt(1));
-                path.setToNodeId(cursor.getInt(2));
-                path.setApprenticeId(cursor.getLong(3));
-                path.setEmotionId(cursor.getLong(4));
-                path.setPosition(cursor.getInt(5));
-                path.setRank(cursor.getInt(6));
 
                 // add path string to list of strings
                 paths.add(path.toString());
@@ -305,12 +269,6 @@ public class PathsDataSource {
                 // create path objects based on path data from database
                 path = new Path();
                 path.setId(cursor.getLong(0));
-                path.setFromNodeId(cursor.getInt(1));
-                path.setToNodeId(cursor.getInt(2));
-                path.setApprenticeId(cursor.getLong(3));
-                path.setEmotionId(cursor.getLong(4));
-                path.setPosition(cursor.getInt(5));
-                path.setRank(cursor.getInt(6));
             } while (cursor.moveToNext());
         }
 
@@ -326,12 +284,6 @@ public class PathsDataSource {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, path.getId());
-        contentValues.put(OtashuDatabaseHelper.COLUMN_FROM_NODE_ID, path.getFromNodeId());
-        contentValues.put(OtashuDatabaseHelper.COLUMN_TO_NODE_ID, path.getToNodeId());
-        contentValues.put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID, path.getApprenticeId());
-        contentValues.put(OtashuDatabaseHelper.COLUMN_EMOTION_ID, path.getEmotionId());
-        contentValues.put(OtashuDatabaseHelper.COLUMN_POSITION, path.getPosition());
-        contentValues.put(OtashuDatabaseHelper.COLUMN_RANK, path.getRank());
 
         db.update(OtashuDatabaseHelper.TABLE_PATHS, contentValues, OtashuDatabaseHelper.COLUMN_ID
                 + "=" + path.getId(), null);

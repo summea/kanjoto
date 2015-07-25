@@ -9,10 +9,12 @@ import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.adapter.PathAdapter;
 import com.andrewsummers.otashu.data.EdgesDataSource;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
+import com.andrewsummers.otashu.data.PathEdgesDataSource;
 import com.andrewsummers.otashu.data.PathsDataSource;
 import com.andrewsummers.otashu.model.Edge;
 import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.Path;
+import com.andrewsummers.otashu.model.PathEdge;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -53,7 +55,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
     private long emotionId = 0;
     private SharedPreferences sharedPref;
     private long apprenticeId = 0;
-    private List<Path> topPaths = new ArrayList<Path>();
+    private List<PathEdge> topPaths = new ArrayList<PathEdge>();
 
     /**
      * onCreate override used to gather and display a list of all emotions saved in database.
@@ -88,7 +90,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
 
     public void updatePathsTable() {
         // fill list with Top 3 strongest Apprentice paths (if available)
-        topPaths = new ArrayList<Path>();
+        topPaths = new ArrayList<PathEdge>();
         EdgesDataSource eds = new EdgesDataSource(this);
 
         // select a given graph
@@ -121,6 +123,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
 
         // delete rows that have old emotion data
         PathsDataSource pds = new PathsDataSource(this);
+        PathEdgesDataSource peds = new PathEdgesDataSource(this);
         List<Path> pathsToDelete = pds.getAllPathsByEmotion(emotionId);
         for (Path pathToDelete : pathsToDelete) {
             pds.deletePath(pathToDelete);
@@ -167,19 +170,24 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
             int rank = 1;
 
             try {
-                Path path;
+                Path path = new Path();
+                path = pds.createPath(path);
+                
+                PathEdge pathEdge;
                 Log.d("MYLOG", "creating new emotion data");
 
                 for (int j = 0; j < bestMatch.size(); j++) {
                     // add current path data into database
-                    path = new Path();
-                    path.setApprenticeId(apprenticeId);
-                    path.setEmotionId(bestMatch.get(j).getEmotionId());
-                    path.setFromNodeId(bestMatch.get(j).getFromNodeId());
-                    path.setToNodeId(bestMatch.get(j).getToNodeId());
-                    path.setPosition(j + 1);
-                    path.setRank(rank);
-                    pds.createPath(path);
+                    pathEdge = new PathEdge();
+                    pathEdge.setPathId(path.getId());
+                    pathEdge.setApprenticeId(apprenticeId);
+                    pathEdge.setEmotionId(bestMatch.get(j).getEmotionId());
+                    pathEdge.setFromNodeId(bestMatch.get(j).getFromNodeId());
+                    pathEdge.setToNodeId(bestMatch.get(j).getToNodeId());
+                    pathEdge.setPosition(j + 1);
+                    pathEdge.setRank(rank);
+                    peds.createPathEdge(pathEdge);
+                    topPaths.add(pathEdge);
                 }
 
                 // keep track of what edges have been used already
@@ -196,6 +204,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
 
             pds.close();
 
+            /*
             if (!bestMatch.isEmpty()) {
                 // add path for list
                 Path path = new Path();
@@ -204,6 +213,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
                 topPaths.add(path);
                 Log.d("MYLOG", "current state of topPaths: " + topPaths.toString());
             }
+            */
         }
 
         Log.d("MYLOG", "top paths being passed to adapter: " + topPaths.toString());
@@ -234,7 +244,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
 
     public void fillList() {
         // fill list with Top 3 strongest Apprentice paths (if available)
-        topPaths = new ArrayList<Path>();
+        topPaths = new ArrayList<PathEdge>();
         
         /*
         EdgesDataSource eds = new EdgesDataSource(this);
@@ -337,12 +347,12 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         Log.d("MYLOG", "top paths being passed to adapter: " + topPaths.toString());
         */
         
-        PathsDataSource pds = new PathsDataSource(this);
-        topPaths = pds.getAllPathsByEmotion(emotionId);
-        pds.close();
+        PathEdgesDataSource peds = new PathEdgesDataSource(this);
+        topPaths = peds.getAllPathEdgesByEmotion(emotionId);
+        peds.close();
         
-        for (Path path : topPaths) {
-            Log.d("MYLOG", "top path: " + path.toString());
+        for (PathEdge pathEdge : topPaths) {
+            Log.d("MYLOG", "top path edge: " + pathEdge.toString());
         }
         
         // pass list data to adapter
