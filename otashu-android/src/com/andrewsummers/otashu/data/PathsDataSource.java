@@ -19,6 +19,7 @@ public class PathsDataSource {
     // database table columns
     private String[] allColumns = {
             OtashuDatabaseHelper.COLUMN_ID,
+            OtashuDatabaseHelper.COLUMN_NAME,
     };
 
     /**
@@ -64,6 +65,7 @@ public class PathsDataSource {
      */
     public Path createPath(Path path) {
         ContentValues contentValues = new ContentValues();
+        contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, path.getName());
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -124,42 +126,7 @@ public class PathsDataSource {
                 // create note objects based on note data from database
                 path = new Path();
                 path.setId(cursor.getLong(0));
-
-                // add note string to list of strings
-                paths.add(path);
-            } while (cursor.moveToNext());
-        }
-
-        db.close();
-
-        return paths;
-    }
-
-    /**
-     * Get all paths from database table by Emotion.
-     * 
-     * @return List of Paths.
-     */
-    public List<Path> getAllPathsByEmotion(long emotionId) {
-        List<Path> paths = new ArrayList<Path>();
-
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_PATHS
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=?";
-
-        // create database handle
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        // select all notes from database
-        Cursor cursor = db.rawQuery(query, new String[] {
-                String.valueOf(emotionId)
-        });
-
-        Path path = null;
-        if (cursor.moveToFirst()) {
-            do {
-                // create note objects based on note data from database
-                path = new Path();
-                path.setId(cursor.getLong(0));
+                path.setName(cursor.getString(1));
 
                 // add note string to list of strings
                 paths.add(path);
@@ -180,6 +147,7 @@ public class PathsDataSource {
     private Path cursorToPath(Cursor cursor) {
         Path path = new Path();
         path.setId(cursor.getLong(0));
+        path.setName(cursor.getString(1));
         return path;
     }
 
@@ -205,6 +173,7 @@ public class PathsDataSource {
                 // create path objects based on path data from database
                 path = new Path();
                 path.setId(cursor.getLong(0));
+                path.setName(cursor.getString(1));
 
                 // add path string to list of strings
                 paths.add(path.toString());
@@ -239,6 +208,7 @@ public class PathsDataSource {
                 // create path objects based on path data from database
                 path = new Path();
                 path.setId(cursor.getLong(0));
+                path.setName(cursor.getString(1));
 
                 // add path to paths list
                 paths.add(path.getId());
@@ -269,6 +239,7 @@ public class PathsDataSource {
                 // create path objects based on path data from database
                 path = new Path();
                 path.setId(cursor.getLong(0));
+                path.setName(cursor.getString(1));
             } while (cursor.moveToNext());
         }
 
@@ -284,6 +255,7 @@ public class PathsDataSource {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, path.getId());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_NAME, path.getName());
 
         db.update(OtashuDatabaseHelper.TABLE_PATHS, contentValues, OtashuDatabaseHelper.COLUMN_ID
                 + "=" + path.getId(), null);

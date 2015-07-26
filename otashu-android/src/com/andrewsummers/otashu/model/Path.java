@@ -11,6 +11,7 @@ package com.andrewsummers.otashu.model;
  */
 public class Path {
     private long id;
+    private String name;
 
     /**
      * getId gets Path id
@@ -31,12 +32,30 @@ public class Path {
     }
 
     /**
+     * getName gets Path name.
+     * 
+     * @return <code>String</code> of Path name.
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * setName sets Path name.
+     * 
+     * @param name New Path name.
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
      * toString override to return path name.
      * 
      * @return <code>String</code> of path name.
      */
     @Override
     public String toString() {
-        return "id: " + id;
+        return "id: " + id + ", name: " + name;
     }
 }

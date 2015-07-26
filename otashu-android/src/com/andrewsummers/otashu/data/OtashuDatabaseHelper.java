@@ -99,7 +99,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_PATHS = "paths";
     public static final String COLUMN_RANK = "rank";
-    
+
     public static final String TABLE_PATH_EDGES = "path_edges";
     public static final String COLUMN_PATH_ID = "path_id";
 
@@ -211,8 +211,9 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_KEY + " text);";
 
     private static final String CREATE_TABLE_PATHS = "CREATE TABLE " + TABLE_PATHS
-            + " (" + COLUMN_ID + " integer primary key autoincrement);";
-    
+            + " (" + COLUMN_ID + " integer primary key autoincrement"
+            + COLUMN_NAME + " text);";
+
     private static final String CREATE_TABLE_PATH_EDGES = "CREATE TABLE " + TABLE_PATH_EDGES
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
             + COLUMN_PATH_ID + " integer, "
@@ -453,7 +454,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(OtashuDatabaseHelper.COLUMN_POSITION, 3);
         contentValues.put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID, 1);
         db.insert(OtashuDatabaseHelper.TABLE_EDGES, null, contentValues);
-        
+
         contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, 4);
         contentValues.put(OtashuDatabaseHelper.COLUMN_GRAPH_ID, 1);

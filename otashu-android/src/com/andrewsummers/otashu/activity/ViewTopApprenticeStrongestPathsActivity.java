@@ -4,6 +4,8 @@ package com.andrewsummers.otashu.activity;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.adapter.PathAdapter;
@@ -82,10 +84,10 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         listView.addHeaderView(listHeader, "", false);
 
         // update Paths table in database first time around
-        //updatePathsTable();
+        updatePathsTable();
 
         // TODO: then pull from Paths table for the fillList()
-        fillList();
+        //fillList();
     }
 
     public void updatePathsTable() {
@@ -124,9 +126,25 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         // delete rows that have old emotion data
         PathsDataSource pds = new PathsDataSource(this);
         PathEdgesDataSource peds = new PathEdgesDataSource(this);
-        List<Path> pathsToDelete = pds.getAllPathsByEmotion(emotionId);
-        for (Path pathToDelete : pathsToDelete) {
-            pds.deletePath(pathToDelete);
+        
+        Set<Long> pathIdsToDelete = new TreeSet<Long>();
+        
+        List<PathEdge> pathEdgesToDelete = peds.getAllPathEdgesByEmotion(emotionId);
+        for (PathEdge pathEdgeToDelete : pathEdgesToDelete) {
+            // add path ids that are related to current path edge
+            // so that these can be deleted from the `paths` table later
+            pathIdsToDelete.add(pathEdgeToDelete.getPathId());
+            peds.deletePathEdge(pathEdgeToDelete);
+            Log.d("MYLOG", "deleting old path edge for emotion: " + emotionId);
+        }
+        
+        Path path;
+        
+        // delete related paths in `paths` database table
+        for (long pathId : pathIdsToDelete) {
+            path = new Path();
+            path.setId(pathId);
+            pds.deletePath(path);
             Log.d("MYLOG", "deleting old path for emotion: " + emotionId);
         }
 
@@ -170,11 +188,13 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
             int rank = 1;
 
             try {
-                Path path = new Path();
+                // TODO: get a non-zero id...
+                path = new Path();
                 path = pds.createPath(path);
+                Log.d("MYLOG", "newly created path id: " + path.getId());
                 
                 PathEdge pathEdge;
-                Log.d("MYLOG", "creating new emotion data");
+                Log.d("MYLOG", "updating path data for emotion");
 
                 for (int j = 0; j < bestMatch.size(); j++) {
                     // add current path data into database

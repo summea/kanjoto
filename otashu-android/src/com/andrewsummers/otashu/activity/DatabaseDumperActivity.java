@@ -40,6 +40,7 @@ public class DatabaseDumperActivity extends ListActivity {
             OtashuDatabaseHelper.TABLE_NOTESETS,
             OtashuDatabaseHelper.TABLE_NOTEVALUES,
             OtashuDatabaseHelper.TABLE_PATHS,
+            OtashuDatabaseHelper.TABLE_PATH_EDGES,
     };
 
     @Override
@@ -117,6 +118,10 @@ public class DatabaseDumperActivity extends ListActivity {
                     case 15:
                         intent = new Intent(DatabaseDumperActivity.this,
                                 DatabaseDumperPathsActivity.class);
+                        break;
+                    case 16:
+                        intent = new Intent(DatabaseDumperActivity.this,
+                                DatabaseDumperPathEdgesActivity.class);
                         break;
                 }
 
