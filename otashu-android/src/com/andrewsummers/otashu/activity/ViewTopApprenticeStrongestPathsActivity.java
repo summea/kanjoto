@@ -189,6 +189,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
 
             try {
                 // TODO: get a non-zero id...
+                if (bestMatch.size() > 0) {
                 path = new Path();
                 path = pds.createPath(path);
                 Log.d("MYLOG", "newly created path id: " + path.getId());
@@ -208,6 +209,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
                     pathEdge.setRank(rank);
                     peds.createPathEdge(pathEdge);
                     topPaths.add(pathEdge);
+                }
                 }
 
                 // keep track of what edges have been used already

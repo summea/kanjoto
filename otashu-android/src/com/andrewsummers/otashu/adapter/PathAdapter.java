@@ -40,6 +40,8 @@ public class PathAdapter extends BaseAdapter {
     public PathAdapter(Context context, List<PathEdge> topPaths) {
         mContext = context;
         paths = topPaths;
+        
+        Log.d("MYLOG", "> adapter top paths: " + paths.toString());
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(mContext);
         apprenticeId = Long.parseLong(sharedPref.getString(
@@ -86,6 +88,8 @@ public class PathAdapter extends BaseAdapter {
                     R.layout.row_noteset, null);
         }
 
+        // TODO: keep all path edges in same row
+        
         try {
             EmotionsDataSource eds = new EmotionsDataSource(mContext);
             List<Emotion> allEmotions = eds.getAllEmotions(apprenticeId);
@@ -106,12 +110,8 @@ public class PathAdapter extends BaseAdapter {
             }
 
             TextView emotion = (TextView) convertView.findViewById(R.id.emotion);
-            // TODO: make dynamic
-            emotion.setText("fix");
-            /*
-            emotion.setText(allEmotionsMap.get(paths.get(position).getPath().get(0).getEmotionId())
+            emotion.setText(allEmotionsMap.get(paths.get(position).getEmotionId())
                     .getName() + "");
-            */
 
             String backgroundColor = "#dddddd";
             
@@ -123,6 +123,13 @@ public class PathAdapter extends BaseAdapter {
             // TODO: refactor this in the future...
             // get background color of related label
             // TODO: make dynamic
+            if (allLabelsMap.get(
+                    allEmotionsMap.get(paths.get(position).getEmotionId())
+                            .getLabelId()).getColor() != null) {
+                backgroundColor = allLabelsMap.get(
+                        allEmotionsMap.get(paths.get(position).getEmotionId())
+                                .getLabelId()).getColor();
+            }
             /*
             if (allLabelsMap.get(
                     allEmotionsMap.get(paths.get(position).getPath().get(0).getEmotionId())

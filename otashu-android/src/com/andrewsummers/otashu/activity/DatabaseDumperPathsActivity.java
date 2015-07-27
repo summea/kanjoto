@@ -29,12 +29,14 @@ public class DatabaseDumperPathsActivity extends Activity {
 
         debugText.setText(debugText.getText().toString() + "Table: Paths\n"
                 + OtashuDatabaseHelper.COLUMN_ID + "|"
+                + OtashuDatabaseHelper.COLUMN_NAME + "|"
                 + "\n");
 
         for (Path path : allPaths) {
 
             String newText = debugText.getText().toString();
             newText += path.getId() + "|"
+                    + path.getName() + "|"
                     + "\n";
 
             debugText.setText(newText);

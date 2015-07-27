@@ -211,7 +211,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_KEY + " text);";
 
     private static final String CREATE_TABLE_PATHS = "CREATE TABLE " + TABLE_PATHS
-            + " (" + COLUMN_ID + " integer primary key autoincrement"
+            + " (" + COLUMN_ID + " integer primary key autoincrement, "
             + COLUMN_NAME + " text);";
 
     private static final String CREATE_TABLE_PATH_EDGES = "CREATE TABLE " + TABLE_PATH_EDGES
