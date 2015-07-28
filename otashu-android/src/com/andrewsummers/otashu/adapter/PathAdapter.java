@@ -1,6 +1,7 @@
 
 package com.andrewsummers.otashu.adapter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -31,13 +32,13 @@ import android.widget.TextView;
 public class PathAdapter extends BaseAdapter {
 
     private Context mContext;
-    private List<PathEdge> paths;
+    private HashMap<Long, ArrayList<PathEdge>> paths;
     private SharedPreferences sharedPref;
     private long apprenticeId = 0;
     SparseArray<Notevalue> notevalues = new SparseArray<Notevalue>();
     SparseArray<Label> labels = new SparseArray<Label>();
 
-    public PathAdapter(Context context, List<PathEdge> topPaths) {
+    public PathAdapter(Context context, HashMap<Long, ArrayList<PathEdge>> topPaths) {
         mContext = context;
         paths = topPaths;
         
@@ -110,8 +111,10 @@ public class PathAdapter extends BaseAdapter {
             }
 
             TextView emotion = (TextView) convertView.findViewById(R.id.emotion);
-            emotion.setText(allEmotionsMap.get(paths.get(position).getEmotionId())
-                    .getName() + "");
+            // TODO: make dynamic
+            emotion.setText("fix");
+            //emotion.setText(allEmotionsMap.get(paths.get(position).getEmotionId())
+                    //.getName() + "");
 
             String backgroundColor = "#dddddd";
             
@@ -123,6 +126,7 @@ public class PathAdapter extends BaseAdapter {
             // TODO: refactor this in the future...
             // get background color of related label
             // TODO: make dynamic
+            /*
             if (allLabelsMap.get(
                     allEmotionsMap.get(paths.get(position).getEmotionId())
                             .getLabelId()).getColor() != null) {
@@ -130,14 +134,7 @@ public class PathAdapter extends BaseAdapter {
                         allEmotionsMap.get(paths.get(position).getEmotionId())
                                 .getLabelId()).getColor();
             }
-            /*
-            if (allLabelsMap.get(
-                    allEmotionsMap.get(paths.get(position).getPath().get(0).getEmotionId())
-                            .getLabelId()).getColor() != null) {
-                backgroundColor = allLabelsMap.get(
-                        allEmotionsMap.get(paths.get(position).getPath().get(0).getEmotionId())
-                                .getLabelId()).getColor();
-            }*/
+            */
 
             // add correct color to background (but maintain default state "pressed" and "selected"
             // effects)
@@ -252,8 +249,10 @@ public class PathAdapter extends BaseAdapter {
         return noteNamesArray[noteIndex];
     }
 
-    public void addItem(PathEdge pathToBeAdded) {
-        paths.add(pathToBeAdded);
+    public void addItem(Long pathId, ArrayList<PathEdge> pathToBeAdded) {
+        //paths.add(pathToBeAdded);
+        ArrayList<PathEdge> al = pathToBeAdded;
+        paths.put(pathId, al);
     }
 
     public Object removeItem(int position) {

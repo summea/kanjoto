@@ -2,6 +2,7 @@
 package com.andrewsummers.otashu.activity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -57,7 +58,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
     private long emotionId = 0;
     private SharedPreferences sharedPref;
     private long apprenticeId = 0;
-    private List<PathEdge> topPaths = new ArrayList<PathEdge>();
+    private HashMap<Long, ArrayList<PathEdge>> topPaths = new HashMap<Long, ArrayList<PathEdge>>();
 
     /**
      * onCreate override used to gather and display a list of all emotions saved in database.
@@ -92,7 +93,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
 
     public void updatePathsTable() {
         // fill list with Top 3 strongest Apprentice paths (if available)
-        topPaths = new ArrayList<PathEdge>();
+        topPaths = new HashMap<Long, ArrayList<PathEdge>>();
         EdgesDataSource eds = new EdgesDataSource(this);
 
         // select a given graph
@@ -208,7 +209,18 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
                     pathEdge.setPosition(j + 1);
                     pathEdge.setRank(rank);
                     peds.createPathEdge(pathEdge);
-                    topPaths.add(pathEdge);
+                
+                    // TODO: add to topPaths
+                    ArrayList<PathEdge> al = new ArrayList<PathEdge>();
+                    // check if a list exists for current path
+                    if (topPaths.get(path.getId()) != null) {
+                        al = topPaths.get(path.getId());
+                        al.add(pathEdge);
+                        topPaths.put(path.getId(), al);
+                    } else {
+                        al.add(pathEdge);
+                        topPaths.put(path.getId(), al);
+                    }
                 }
                 }
 
@@ -266,7 +278,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
 
     public void fillList() {
         // fill list with Top 3 strongest Apprentice paths (if available)
-        topPaths = new ArrayList<PathEdge>();
+        topPaths = new HashMap<Long, ArrayList<PathEdge>>();
         
         /*
         EdgesDataSource eds = new EdgesDataSource(this);
@@ -369,12 +381,22 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         Log.d("MYLOG", "top paths being passed to adapter: " + topPaths.toString());
         */
         
+        List<PathEdge> allPathEdges;  
         PathEdgesDataSource peds = new PathEdgesDataSource(this);
-        topPaths = peds.getAllPathEdgesByEmotion(emotionId);
+        allPathEdges = peds.getAllPathEdgesByEmotion(emotionId);
         peds.close();
         
-        for (PathEdge pathEdge : topPaths) {
-            Log.d("MYLOG", "top path edge: " + pathEdge.toString());
+        // topPaths = ...
+        ArrayList<PathEdge> al = new ArrayList<PathEdge>();
+        for (PathEdge pathEdge : allPathEdges) {
+            if (topPaths.get(pathEdge.getPathId()) != null) {
+                al = topPaths.get(pathEdge.getId());
+                al.add(pathEdge);
+                topPaths.put(pathEdge.getId(), al);
+            } else {
+                al.add(pathEdge);
+                topPaths.put(pathEdge.getId(), al);
+            }
         }
         
         // pass list data to adapter
