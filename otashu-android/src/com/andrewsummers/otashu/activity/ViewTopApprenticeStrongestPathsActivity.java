@@ -150,7 +150,8 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         }
 
         // get top 3
-        for (int i = 0; i < 3; i++) {
+        // TODO: change back to top 3
+        for (int i = 0; i < 1; i++) {
             List<Edge> bestMatch = new ArrayList<Edge>();
             boolean edge1To2Match = false;
             boolean edge2To3Match = false;
@@ -213,6 +214,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
                     // TODO: add to topPaths
                     ArrayList<PathEdge> al = new ArrayList<PathEdge>();
                     // check if a list exists for current path
+                    Log.d("MYLOG", "adding to top paths (pathId): " + path.getId());
                     if (topPaths.get(path.getId()) != null) {
                         al = topPaths.get(path.getId());
                         al.add(pathEdge);
@@ -277,6 +279,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
     }
 
     public void fillList() {
+        Log.d("MYLOG", "fill list called...");
         // fill list with Top 3 strongest Apprentice paths (if available)
         topPaths = new HashMap<Long, ArrayList<PathEdge>>();
         
@@ -545,6 +548,8 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
 
         // refresh list
         adapter.clear();
-        fillList();
+        //fillList();
+        // TODO: change back to fill list when ready
+        updatePathsTable();
     }
 }

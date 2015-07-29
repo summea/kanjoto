@@ -82,15 +82,25 @@ public class PathAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         if (convertView == null) {
             convertView = ((LayoutInflater) mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
                     R.layout.row_noteset, null);
         }
+        
+        // get actual position for next HashMap row
+        int positionCount = 0;
+        for (long key : paths.keySet()) {
+            if (positionCount == position) {
+                position = (int) key;
+                Log.d("MYLOG", "found actual HashMap position: " + position);
+                break;
+            }
+            positionCount++;
+        }
+        
 
         // TODO: keep all path edges in same row
-        
         try {
             EmotionsDataSource eds = new EmotionsDataSource(mContext);
             List<Emotion> allEmotions = eds.getAllEmotions(apprenticeId);
@@ -112,9 +122,14 @@ public class PathAdapter extends BaseAdapter {
 
             TextView emotion = (TextView) convertView.findViewById(R.id.emotion);
             // TODO: make dynamic
-            emotion.setText("fix");
-            //emotion.setText(allEmotionsMap.get(paths.get(position).getEmotionId())
-                    //.getName() + "");
+            //emotion.setText("fix");
+            
+            // TODO: fix null pointer issue... maybe related to the listview header?
+            
+            Log.d("MYLOG", "paths again: " + paths.toString());
+            Log.d("MYLOG", "and position: " + position);
+            Log.d("MYLOG", "getting path data... " + paths.get(position).toString());
+            //emotion.setText(allEmotionsMap.get(paths.get(position).get(0).getEmotionId()).getName() + "");
 
             String backgroundColor = "#dddddd";
             
@@ -250,7 +265,6 @@ public class PathAdapter extends BaseAdapter {
     }
 
     public void addItem(Long pathId, ArrayList<PathEdge> pathToBeAdded) {
-        //paths.add(pathToBeAdded);
         ArrayList<PathEdge> al = pathToBeAdded;
         paths.put(pathId, al);
     }

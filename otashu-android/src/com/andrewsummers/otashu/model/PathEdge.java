@@ -188,7 +188,8 @@ public class PathEdge {
      */
     @Override
     public String toString() {
-        return "id: " + id + ", fromNodeId: " + fromNodeId + ", toNodeId: " + toNodeId
-                + ", apprenticeId: " + apprenticeId + ", position: " + position + ", rank: " + rank;
+        return "id: " + id + ", pathId: " + pathId + ", fromNodeId: " + fromNodeId + ", toNodeId: "
+                + toNodeId + ", apprenticeId: " + apprenticeId + ", emotionId: " + emotionId
+                + ", position: " + position + ", rank: " + rank;
     }
 }
