@@ -12,6 +12,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class PathsDataSource {
     private OtashuDatabaseHelper dbHelper;
@@ -263,5 +264,49 @@ public class PathsDataSource {
         db.close();
 
         return path;
+    }
+
+    public Path getLastPath() {
+        Path path = new Path();
+
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_PATHS
+                + " ORDER BY " + OtashuDatabaseHelper.COLUMN_ID + " DESC LIMIT 1";
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all paths from database
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                // create path objects based on path data from database
+                path = new Path();
+                path.setId(cursor.getLong(0));
+                path.setName(cursor.getString(1));
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+
+        return path;
+    }
+
+    public void resetAutoIncrement() {
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        String query = "DELETE FROM " + OtashuDatabaseHelper.TABLE_PATHS;
+        db.execSQL(query);
+
+        query = "DELETE FROM SQLITE_SEQUENCE WHERE NAME=?";
+        db.execSQL(query, new String[] {
+                OtashuDatabaseHelper.TABLE_PATHS,
+        });
+
+        db.close();
+
+        Log.d("MYLOG", "resetting auto increment: " + query + " "
+                + OtashuDatabaseHelper.TABLE_PATHS);
     }
 }

@@ -12,6 +12,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class PathEdgesDataSource {
     private OtashuDatabaseHelper dbHelper;
@@ -348,5 +349,55 @@ public class PathEdgesDataSource {
         db.close();
 
         return pathEdge;
+    }
+
+    public PathEdge getLastPathEdge() {
+        PathEdge pathEdge = new PathEdge();
+
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_PATH_EDGES
+                + " ORDER BY " + OtashuDatabaseHelper.COLUMN_ID + " DESC LIMIT 1";
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all pathEdges from database
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                // create pathEdge objects based on pathEdge data from database
+                pathEdge = new PathEdge();
+                pathEdge.setId(cursor.getLong(0));
+                pathEdge.setPathId(cursor.getLong(1));
+                pathEdge.setFromNodeId(cursor.getInt(2));
+                pathEdge.setToNodeId(cursor.getInt(3));
+                pathEdge.setApprenticeId(cursor.getLong(4));
+                pathEdge.setEmotionId(cursor.getLong(5));
+                pathEdge.setPosition(cursor.getInt(6));
+                pathEdge.setRank(cursor.getInt(7));
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+
+        return pathEdge;
+    }
+
+    public void resetAutoIncrement() {
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        String query = "DELETE FROM " + OtashuDatabaseHelper.TABLE_PATH_EDGES;
+        db.execSQL(query);
+
+        query = "DELETE FROM SQLITE_SEQUENCE WHERE NAME=?";
+        db.execSQL(query, new String[] {
+                OtashuDatabaseHelper.TABLE_PATH_EDGES,
+        });
+
+        db.close();
+
+        Log.d("MYLOG", "resetting auto increment: " + query + " "
+                + OtashuDatabaseHelper.TABLE_PATH_EDGES);
     }
 }

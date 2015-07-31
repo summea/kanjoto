@@ -58,8 +58,8 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
     private long emotionId = 0;
     private SharedPreferences sharedPref;
     private long apprenticeId = 0;
-    //private HashMap<Long, ArrayList<PathEdge>> topPaths = new HashMap<Long, ArrayList<PathEdge>>();
     private ArrayList<PathAndRelated> topPaths = new ArrayList<PathAndRelated>();
+    private int resetAutoIncrementLimit = 1000;
 
     /**
      * onCreate override used to gather and display a list of all emotions saved in database.
@@ -74,7 +74,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         apprenticeId = Long.parseLong(sharedPref.getString(
                 "pref_selected_apprentice", "1"));
         emotionId = getIntent().getExtras().getLong("list_id");
-        
+
         // initialize ListView
         listView = getListView();
 
@@ -89,7 +89,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         updatePathsTable();
 
         // TODO: then pull from Paths table for the fillList()
-        //fillList();
+        // fillList();
     }
 
     public void updatePathsTable() {
@@ -98,7 +98,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         EdgesDataSource eds = new EdgesDataSource(this);
 
         // select a given graph
-        long graphId = 1;        
+        long graphId = 1;
 
         // select a given weight limit
         float weightLimit = 0.5f;
@@ -128,9 +128,19 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         // delete rows that have old emotion data
         PathsDataSource pds = new PathsDataSource(this);
         PathEdgesDataSource peds = new PathEdgesDataSource(this);
-        
+
+        Path currentLastPath = pds.getLastPath();
+        if (currentLastPath.getId() > resetAutoIncrementLimit) {
+            pds.resetAutoIncrement();
+        }
+
+        PathEdge currentLastPathEdge = peds.getLastPathEdge();
+        if (currentLastPathEdge.getId() > resetAutoIncrementLimit) {
+            peds.resetAutoIncrement();
+        }
+
         Set<Long> pathIdsToDelete = new TreeSet<Long>();
-        
+
         List<PathEdge> pathEdgesToDelete = peds.getAllPathEdgesByEmotion(emotionId);
         for (PathEdge pathEdgeToDelete : pathEdgesToDelete) {
             // add path ids that are related to current path edge
@@ -139,9 +149,9 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
             peds.deletePathEdge(pathEdgeToDelete);
             Log.d("MYLOG", "deleting old path edge for emotion: " + emotionId);
         }
-        
+
         Path path;
-        
+
         // delete related paths in `paths` database table
         for (long pathId : pathIdsToDelete) {
             path = new Path();
@@ -193,52 +203,40 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
             try {
                 // TODO: get a non-zero id...
                 if (bestMatch.size() > 0) {
-                path = new Path();
-                path = pds.createPath(path);
-                Log.d("MYLOG", "newly created path id: " + path.getId());
-                
-                PathEdge pathEdge;
-                Log.d("MYLOG", "updating path data for emotion");
+                    path = new Path();
+                    path = pds.createPath(path);
+                    Log.d("MYLOG", "newly created path id: " + path.getId());
 
-                List<PathEdge> pathEdges = new ArrayList<PathEdge>();
-                
-                PathAndRelated par = new PathAndRelated();
-                par.setPath(path);
-                
-                for (int j = 0; j < bestMatch.size(); j++) {
-                    // add current path data into database
-                    pathEdge = new PathEdge();
-                    pathEdge.setPathId(path.getId());
-                    pathEdge.setApprenticeId(apprenticeId);
-                    pathEdge.setEmotionId(bestMatch.get(j).getEmotionId());
-                    pathEdge.setFromNodeId(bestMatch.get(j).getFromNodeId());
-                    pathEdge.setToNodeId(bestMatch.get(j).getToNodeId());
-                    pathEdge.setPosition(j + 1);
-                    pathEdge.setRank(rank);
-                    peds.createPathEdge(pathEdge);
-                
-                    // TODO: add to topPaths
-                    //ArrayList<PathEdge> al = new ArrayList<PathEdge>();
-                    // check if a list exists for current path
-                    Log.d("MYLOG", "adding to top paths (pathId): " + path.getId());
-                    
-                    
-                    pathEdges.add(pathEdge);
-                    
-                    /*
-                    if (topPaths.get(path.getId()) != null) {
-                        al = topPaths.get(path.getId());
-                        al.add(pathEdge);
-                        topPaths.put(path.getId(), al);
-                    } else {
-                        al.add(pathEdge);
-                        topPaths.put(path.getId(), al);
+                    PathEdge pathEdge;
+                    Log.d("MYLOG", "updating path data for emotion");
+
+                    List<PathEdge> pathEdges = new ArrayList<PathEdge>();
+
+                    PathAndRelated par = new PathAndRelated();
+                    par.setPath(path);
+
+                    for (int j = 0; j < bestMatch.size(); j++) {
+                        // add current path data into database
+                        pathEdge = new PathEdge();
+                        pathEdge.setPathId(path.getId());
+                        pathEdge.setApprenticeId(apprenticeId);
+                        pathEdge.setEmotionId(bestMatch.get(j).getEmotionId());
+                        pathEdge.setFromNodeId(bestMatch.get(j).getFromNodeId());
+                        pathEdge.setToNodeId(bestMatch.get(j).getToNodeId());
+                        pathEdge.setPosition(j + 1);
+                        pathEdge.setRank(rank);
+                        peds.createPathEdge(pathEdge);
+
+                        // TODO: add to topPaths
+                        // ArrayList<PathEdge> al = new ArrayList<PathEdge>();
+                        // check if a list exists for current path
+                        Log.d("MYLOG", "adding to top paths (pathId): " + path.getId());
+
+                        pathEdges.add(pathEdge);
                     }
-                    */
-                }
-                
-                par.setPathEdge(pathEdges);
-                topPaths.add(par);
+
+                    par.setPathEdge(pathEdges);
+                    topPaths.add(par);
                 }
 
                 // keep track of what edges have been used already
@@ -254,17 +252,6 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
             }
 
             pds.close();
-
-            /*
-            if (!bestMatch.isEmpty()) {
-                // add path for list
-                Path path = new Path();
-                path.setPath(bestMatch);
-                Log.d("MYLOG", "adding best match: " + bestMatch.toString());
-                topPaths.add(path);
-                Log.d("MYLOG", "current state of topPaths: " + topPaths.toString());
-            }
-            */
         }
 
         Log.d("MYLOG", "top paths being passed to adapter: " + topPaths.toString());
@@ -297,119 +284,17 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         Log.d("MYLOG", "fill list called...");
         // fill list with Top 3 strongest Apprentice paths (if available)
         topPaths.clear();
-        
-        /*
-        EdgesDataSource eds = new EdgesDataSource(this);
 
-        // select a given graph
-        long graphId = 1;
-
-        // select a given emotion
-        emotionId = getIntent().getExtras().getLong("list_id");
-
-        // select a given weight limit
-        float weightLimit = 0.5f;
-
-        // select an edge position
-        int position = 1;
-
-        // select all position one edges for given emotion with given threshold (e.g. all rows that
-        // have a weight less than 0.5)
-        List<Edge> p1Edges = eds.getAllEdges(apprenticeId, graphId, emotionId, weightLimit,
-                position);
-
-        position = 2;
-        // select all position two edges for given emotion with given threshold (e.g. all rows that
-        // have a weight less than 0.5)
-        List<Edge> p2Edges = eds.getAllEdges(apprenticeId, graphId, emotionId, weightLimit,
-                position);
-
-        position = 3;
-        // select all position three edges for given emotion with given threshold (e.g. all rows
-        // that have a weight less than 0.5)
-        List<Edge> p3Edges = eds.getAllEdges(apprenticeId, graphId, emotionId, weightLimit,
-                position);
-
-        List<Long> usedOnce = new ArrayList<Long>();
-
-        // get top 3
-        for (int i = 0; i < 3; i++) {
-
-            List<Edge> bestMatch = new ArrayList<Edge>();
-
-            boolean edge1To2Match = false;
-            boolean edge2To3Match = false;
-            // check to see if any of the lowest-weight edges are related nodes (i.e. do they
-            // connect in the graph?)
-            outerloop: for (Edge edge1 : p1Edges) {
-                if (!usedOnce.contains(edge1.getId())) {
-                    for (Edge edge2 : p2Edges) {
-                        if (!usedOnce.contains(edge2.getId())) {
-                            if (edge1.getToNodeId() == edge2.getFromNodeId()) {
-                                // edge1 to edge2 match!
-                                edge1To2Match = true;
-                            }
-                            for (Edge edge3 : p3Edges) {
-                                if (!usedOnce.contains(edge3.getId())) {
-                                    if (edge2.getToNodeId() == edge3.getFromNodeId()) {
-                                        // edge2 to edge3 match!
-                                        edge2To3Match = true;
-
-                                        if (edge1To2Match && edge2To3Match) {
-                                            Log.d("MYLOG", "cross section match found!");
-                                            bestMatch.add(edge1);
-                                            bestMatch.add(edge2);
-                                            bestMatch.add(edge3);
-                                            break outerloop;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            try {
-                // return results
-                Log.d("MYLOG", "best match results: " + bestMatch.toString());
-
-                // keep track of what edges have been used already
-                for (int j = 0; j < 3; j++) {
-                    if (!usedOnce.contains(bestMatch.get(j).getId())) {
-                        usedOnce.add(bestMatch.get(j).getId());
-                    }
-                }
-
-                Log.d("MYLOG", usedOnce.toString());
-            } catch (Exception e) {
-                Log.d("MYLOG", e.getStackTrace().toString());
-            }
-
-            if (!bestMatch.isEmpty()) {
-                // add path for list
-                Path path = new Path();
-                path.setPath(bestMatch);
-                Log.d("MYLOG", "adding best match: " + bestMatch.toString());
-                topPaths.add(path);
-                Log.d("MYLOG", "current state of topPaths: " + topPaths.toString());
-            }
-        }
-
-        Log.d("MYLOG", "top paths being passed to adapter: " + topPaths.toString());
-        */
-        
-        List<PathEdge> allPathEdges;  
+        List<PathEdge> allPathEdges;
         PathEdgesDataSource peds = new PathEdgesDataSource(this);
         allPathEdges = peds.getAllPathEdgesByEmotion(emotionId);
         peds.close();
-        
+
         List<PathEdge> pathEdges = new ArrayList<PathEdge>();
-        
+
         PathAndRelated par = new PathAndRelated();
-        //List<PathEdge> pathEdges = new ArrayList<PathEdge>();
         pathEdges.clear();
-        
+
         long lastPathId = 0;
         boolean firstLoop = true;
         for (PathEdge pathEdge : allPathEdges) {
@@ -426,7 +311,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
             pathEdges.add(pathEdge);
             lastPathId = pathEdge.getPathId();
         }
-        
+
         // pass list data to adapter
         adapter = new PathAdapter(this, topPaths);
 
@@ -573,7 +458,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
 
         // refresh list
         adapter.clear();
-        //fillList();
+        // fillList();
         // TODO: change back to fill list when ready
         updatePathsTable();
     }
