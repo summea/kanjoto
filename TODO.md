@@ -15,6 +15,7 @@
 - fix getTakenAt ISO date issue
 - if db is deleted while app has been closed from a page other than main activity, user isn't asked to create a new apprentice
 - call data source constructors that specify databaseName
+- check on why some old getIntent() lines are casting long to int...
 
 
 ## DONE:

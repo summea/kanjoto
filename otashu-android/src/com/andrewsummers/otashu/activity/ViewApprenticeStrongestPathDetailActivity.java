@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -13,8 +14,15 @@ import android.widget.TextView;
 
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.EdgesDataSource;
+import com.andrewsummers.otashu.data.EmotionsDataSource;
+import com.andrewsummers.otashu.data.LabelsDataSource;
+import com.andrewsummers.otashu.data.PathEdgesDataSource;
+import com.andrewsummers.otashu.data.PathsDataSource;
 import com.andrewsummers.otashu.model.Edge;
+import com.andrewsummers.otashu.model.Emotion;
+import com.andrewsummers.otashu.model.Label;
 import com.andrewsummers.otashu.model.Path;
+import com.andrewsummers.otashu.model.PathEdge;
 
 /**
  * View details of a particular Apprentice strongest path.
@@ -31,6 +39,8 @@ import com.andrewsummers.otashu.model.Path;
 public class ViewApprenticeStrongestPathDetailActivity extends Activity {
     private SharedPreferences sharedPref;
     private long apprenticeId = 0;
+    private long pathId;
+    private List<PathEdge> pathEdges = new ArrayList<PathEdge>();
 
     /**
      * onCreate override that provides emotion-choose view to user.
@@ -47,113 +57,35 @@ public class ViewApprenticeStrongestPathDetailActivity extends Activity {
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         apprenticeId = Long.parseLong(sharedPref.getString(
                 "pref_selected_apprentice", "1"));
+        pathId = getIntent().getExtras().getLong("path_id");
 
-        TextView pathText = (TextView) findViewById(R.id.path_text);
-        pathText.setText("Strongest Path\n");
+        Log.d("MYLOG", "detail activity received pathId: " + pathId);
+        
+        TextView pathText = (TextView) findViewById(R.id.view_strongest_path_detail_title);
 
-        List<Path> topPaths = new ArrayList<Path>();
-        EdgesDataSource eds = new EdgesDataSource(this);
-
-        // select a given graph
-        long graphId = 2;
-
-        // select a given emotion
-        long emotionId = 1;
-        emotionId = getIntent().getExtras().getLong("emotion_id");
-        Log.d("MYLOG", "emotion id: " + emotionId);
-
-        // select a given weight limit
-        float weightLimit = 0.5f;
-
-        // select an edge position
-        int position = 1;
-
-        // select all position one edges for given emotion with given threshold (e.g. all rows that
-        // have a weight less than 0.5)
-        List<Edge> p1Edges = eds.getAllEdges(apprenticeId, graphId, emotionId, weightLimit,
-                position);
-
-        position = 2;
-        // select all position two edges for given emotion with given threshold (e.g. all rows that
-        // have a weight less than 0.5)
-        List<Edge> p2Edges = eds.getAllEdges(apprenticeId, graphId, emotionId, weightLimit,
-                position);
-
-        position = 3;
-        // select all position three edges for given emotion with given threshold (e.g. all rows
-        // that have a weight less than 0.5)
-        List<Edge> p3Edges = eds.getAllEdges(apprenticeId, graphId, emotionId, weightLimit,
-                position);
-        List<Long> usedOnce = new ArrayList<Long>();
-
-        // get top 3
-        for (int i = 0; i < 3; i++) {
-            List<Edge> bestMatch = new ArrayList<Edge>();
-            boolean edge1To2Match = false;
-            boolean edge2To3Match = false;
-
-            // check to see if any of the lowest-weight edges are related nodes (i.e. do they
-            // connect in the graph?)
-            outerloop: for (Edge edge1 : p1Edges) {
-                if (!usedOnce.contains(edge1.getId())) {
-                    for (Edge edge2 : p2Edges) {
-                        if (!usedOnce.contains(edge2.getId())) {
-                            if (edge1.getToNodeId() == edge2.getFromNodeId()) {
-                                // edge1 to edge2 match!
-                                edge1To2Match = true;
-                            }
-                            for (Edge edge3 : p3Edges) {
-                                if (!usedOnce.contains(edge3.getId())) {
-                                    if (edge2.getToNodeId() == edge3.getFromNodeId()) {
-                                        // edge2 to edge3 match!
-                                        edge2To3Match = true;
-
-                                        if (edge1To2Match && edge2To3Match) {
-                                            Log.d("MYLOG", "cross section match found!");
-                                            bestMatch.add(edge1);
-                                            bestMatch.add(edge2);
-                                            bestMatch.add(edge3);
-                                            break outerloop;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            try {
-                // return results
-                Log.d("MYLOG", "best match results: " + bestMatch.toString());
-
-                // keep track of what edges have been used already
-                for (int j = 0; j < 3; j++) {
-                    if (!usedOnce.contains(bestMatch.get(j).getId())) {
-                        usedOnce.add(bestMatch.get(j).getId());
-                    }
-                }
-
-                Log.d("MYLOG", usedOnce.toString());
-            } catch (Exception e) {
-                Log.d("MYLOG", e.getStackTrace().toString());
-            }
-
-            if (!bestMatch.isEmpty()) {
-                // add path for list
-                Path path = new Path();
-                // TODO: check this later
-                //path.setPath(bestMatch);
-                Log.d("MYLOG", "adding best match: " + bestMatch.toString());
-                topPaths.add(path);
-                Log.d("MYLOG", "current state of topPaths: " + topPaths.toString());
-            }
-        }
-
-        // get correct path detail for clicked list item
         try {
-            long pathListPosition = getIntent().getExtras().getLong("list_id");
-            pathText.setText(pathText.getText() + "\n" + topPaths.get((int) pathListPosition));
+            PathEdgesDataSource peds = new PathEdgesDataSource(this);
+            pathEdges = peds.getPathEdgesByPath(pathId);
+            peds.close();
+
+            EmotionsDataSource eds = new EmotionsDataSource(this);
+            Emotion emotion = eds.getEmotion(pathEdges.get(0).getEmotionId());
+            eds.close();
+
+            LabelsDataSource lds = new LabelsDataSource(this);
+            Label emotionLabel = lds.getLabel(emotion.getLabelId());
+            lds.close();
+            
+            Log.d("MYLOG", "found emotion for detail activity: " + emotion.getName());
+
+            TextView emotionName = (TextView) findViewById(R.id.strongest_path_detail_emotion_value);
+            emotionName.setText(emotion.getName());
+            String backgroundColor = "#ffffff";
+            if (emotionLabel != null) {
+                backgroundColor = emotionLabel.getColor();
+            }
+            emotionName.setBackgroundColor(Color.parseColor(backgroundColor));
+
         } catch (Exception e) {
             Log.d("MYLOG", e.getStackTrace().toString());
         }

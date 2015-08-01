@@ -376,8 +376,8 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         switch (item.getItemId()) {
             case R.id.context_menu_view:
                 intent = new Intent(this, ViewApprenticeStrongestPathDetailActivity.class);
-                intent.putExtra("emotion_id", emotionId);
-                intent.putExtra("list_id", info.id);
+                // TODO: get correct path id...
+                intent.putExtra("path_id", info.id);
                 startActivity(intent);
                 return true;
             default:

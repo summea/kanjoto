@@ -47,6 +47,7 @@
     <string name="button_ok">OK</string>
     <string name="button_play_bookmark">Play</string>
     <string name="button_play_noteset">Play</string>
+    <string name="button_play_strongest_path">Play</string>
     <string name="button_play">Play</string>
     <string name="button_save">Save</string>
     <string name="button_send_apprentice">Send Apprentice</string>
@@ -183,6 +184,8 @@
     <string name="spinner_notevalues_label">Notes</string>
     <string name="spinner_notevalue">Note</string>    
     <string name="spinner_velocity_label">Velocity</string>
+    <string name="strongest_path_detail_emotion_label">Emotion</string>
+    <string name="strongest_path_detail_notes">Notes</string>
     <string name="toggle_enabled_label">Enabled</string>
     <string name="toggle_enabled_off">Off</string>
     <string name="toggle_enabled_on">On</string>
@@ -210,4 +213,5 @@
     <string name="view_noteset_detail_title">Noteset Details</string>
     <string name="view_notevalue_detail_title">Notevalue Details</string>
     <string name="view_notevalues">Notevalues</string>
+    <string name="view_strongest_path_detail_title">Strongest Path Details</string>
 </resources>

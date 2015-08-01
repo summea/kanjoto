@@ -382,6 +382,42 @@ public class PathEdgesDataSource {
 
         return pathEdge;
     }
+    
+    public List<PathEdge> getPathEdgesByPath(long pathId) {
+        List<PathEdge> pathEdges = new ArrayList<PathEdge>();
+
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_PATH_EDGES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_PATH_ID + "=?";
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all pathEdges from database
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(pathId)
+        });
+
+        PathEdge pathEdge = new PathEdge();
+        if (cursor.moveToFirst()) {
+            do {
+                // create pathEdge objects based on pathEdge data from database
+                pathEdge = new PathEdge();
+                pathEdge.setId(cursor.getLong(0));
+                pathEdge.setPathId(cursor.getLong(1));
+                pathEdge.setFromNodeId(cursor.getInt(2));
+                pathEdge.setToNodeId(cursor.getInt(3));
+                pathEdge.setApprenticeId(cursor.getLong(4));
+                pathEdge.setEmotionId(cursor.getLong(5));
+                pathEdge.setPosition(cursor.getInt(6));
+                pathEdge.setRank(cursor.getInt(7));
+                pathEdges.add(pathEdge);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+
+        return pathEdges;
+    }
 
     public void resetAutoIncrement() {
         // create database handle
