@@ -57,10 +57,10 @@ public class ViewApprenticeStrongestPathDetailActivity extends Activity {
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         apprenticeId = Long.parseLong(sharedPref.getString(
                 "pref_selected_apprentice", "1"));
-        pathId = getIntent().getExtras().getLong("path_id");
+        pathId = getIntent().getExtras().getLong("list_id");
 
         Log.d("MYLOG", "detail activity received pathId: " + pathId);
-        
+
         TextView pathText = (TextView) findViewById(R.id.view_strongest_path_detail_title);
 
         try {
@@ -75,7 +75,7 @@ public class ViewApprenticeStrongestPathDetailActivity extends Activity {
             LabelsDataSource lds = new LabelsDataSource(this);
             Label emotionLabel = lds.getLabel(emotion.getLabelId());
             lds.close();
-            
+
             Log.d("MYLOG", "found emotion for detail activity: " + emotion.getName());
 
             TextView emotionName = (TextView) findViewById(R.id.strongest_path_detail_emotion_value);
@@ -85,6 +85,13 @@ public class ViewApprenticeStrongestPathDetailActivity extends Activity {
                 backgroundColor = emotionLabel.getColor();
             }
             emotionName.setBackgroundColor(Color.parseColor(backgroundColor));
+
+            int[] textViewIds = {
+                    R.id.noteset_detail_note1,
+                    R.id.noteset_detail_note2,
+                    R.id.noteset_detail_note3,
+                    R.id.noteset_detail_note4
+            };
 
         } catch (Exception e) {
             Log.d("MYLOG", e.getStackTrace().toString());

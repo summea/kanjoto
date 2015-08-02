@@ -270,6 +270,8 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
                 Intent intent = new Intent(view.getContext(),
                         ViewApprenticeStrongestPathDetailActivity.class);
 
+                Log.d("MYLOG", "** selected item path id: " + id);
+                
                 intent.putExtra("emotion_id", emotionId);
                 intent.putExtra("list_id", id);
                 startActivity(intent);
@@ -321,7 +323,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         listView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
-
+                
                 // launch details activity
                 Intent intent = new Intent(view.getContext(),
                         ViewApprenticeStrongestPathDetailActivity.class);
@@ -376,8 +378,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         switch (item.getItemId()) {
             case R.id.context_menu_view:
                 intent = new Intent(this, ViewApprenticeStrongestPathDetailActivity.class);
-                // TODO: get correct path id...
-                intent.putExtra("path_id", info.id);
+                intent.putExtra("list_id", info.id);
                 startActivity(intent);
                 return true;
             default:
