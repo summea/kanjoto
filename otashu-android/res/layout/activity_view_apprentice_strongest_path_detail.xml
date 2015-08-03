@@ -47,7 +47,7 @@
         android:layout_marginBottom="40dp" >
         
         <TextView
-            android:id="@+id/strongest_path_detail_note1"
+            android:id="@+id/path_detail_vertex1"
             android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:layout_weight="1"
@@ -55,7 +55,7 @@
             android:gravity="center_horizontal" />
         
         <TextView
-            android:id="@+id/strongest_path_detail_note2"
+            android:id="@+id/path_detail_vertex2"
             android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:layout_weight="1"
@@ -63,14 +63,14 @@
             android:gravity="center_horizontal" />
         
         <TextView
-            android:id="@+id/strongest_path_detail_note3"
+            android:id="@+id/path_detail_vertex3"
             android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:padding="15dp"
             android:gravity="center_horizontal" />
         <TextView
-            android:id="@+id/strongest_path_detail_note4"
+            android:id="@+id/path_detail_vertex4"
             android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:layout_weight="1"

@@ -269,8 +269,6 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
                 // launch details activity
                 Intent intent = new Intent(view.getContext(),
                         ViewApprenticeStrongestPathDetailActivity.class);
-
-                Log.d("MYLOG", "** selected item path id: " + id);
                 
                 intent.putExtra("emotion_id", emotionId);
                 intent.putExtra("list_id", id);

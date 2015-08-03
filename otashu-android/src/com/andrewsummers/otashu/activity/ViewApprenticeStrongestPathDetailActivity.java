@@ -87,11 +87,48 @@ public class ViewApprenticeStrongestPathDetailActivity extends Activity {
             emotionName.setBackgroundColor(Color.parseColor(backgroundColor));
 
             int[] textViewIds = {
-                    R.id.noteset_detail_note1,
-                    R.id.noteset_detail_note2,
-                    R.id.noteset_detail_note3,
-                    R.id.noteset_detail_note4
+                    R.id.path_detail_vertex1,
+                    R.id.path_detail_vertex2,
+                    R.id.path_detail_vertex3,
+                    R.id.path_detail_vertex4,
             };
+            
+            TextView vertex = null;
+
+            for (int i = 0; i < textViewIds.length-1; i++) {
+                vertex = (TextView) findViewById(textViewIds[i]);
+                vertex.setText(String.valueOf(pathEdges.get(i).getFromNodeId()));
+                backgroundColor = "#dddddd";
+                // TODO: add labels
+                /*
+                if (notesetAndRelated.getNotevalues().get(i).getLabelId() > 0) {
+                    // TODO: getting note-related labels could be done in a different way...
+                    for (Label label : allLabels) {
+                        if (label.getId() == notesetAndRelated.getNotevalues().get(i).getLabelId()) {
+                            backgroundColor = label.getColor();
+                        }
+                    }
+                }
+                */
+                vertex.setBackgroundColor(Color.parseColor(backgroundColor));                
+            }
+            
+            // add last vertex
+            vertex = (TextView) findViewById(textViewIds[textViewIds.length-1]);
+            vertex.setText(String.valueOf(pathEdges.get(textViewIds.length-2).getToNodeId()));
+            backgroundColor = "#dddddd";
+            // TODO: add labels
+            /*
+            if (notesetAndRelated.getNotevalues().get(i).getLabelId() > 0) {
+                // TODO: getting note-related labels could be done in a different way...
+                for (Label label : allLabels) {
+                    if (label.getId() == notesetAndRelated.getNotevalues().get(i).getLabelId()) {
+                        backgroundColor = label.getColor();
+                    }
+                }
+            }
+            */
+            vertex.setBackgroundColor(Color.parseColor(backgroundColor));
 
         } catch (Exception e) {
             Log.d("MYLOG", e.getStackTrace().toString());
