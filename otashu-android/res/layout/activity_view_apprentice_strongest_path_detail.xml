@@ -27,6 +27,7 @@
         android:id="@+id/strongest_path_detail_emotion_value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:padding="15dp" />
     

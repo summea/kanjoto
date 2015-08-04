@@ -16,11 +16,13 @@ import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.EdgesDataSource;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.LabelsDataSource;
+import com.andrewsummers.otashu.data.NotevaluesDataSource;
 import com.andrewsummers.otashu.data.PathEdgesDataSource;
 import com.andrewsummers.otashu.data.PathsDataSource;
 import com.andrewsummers.otashu.model.Edge;
 import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.Label;
+import com.andrewsummers.otashu.model.Notevalue;
 import com.andrewsummers.otashu.model.Path;
 import com.andrewsummers.otashu.model.PathEdge;
 
@@ -92,43 +94,47 @@ public class ViewApprenticeStrongestPathDetailActivity extends Activity {
                     R.id.path_detail_vertex3,
                     R.id.path_detail_vertex4,
             };
-            
-            TextView vertex = null;
 
-            for (int i = 0; i < textViewIds.length-1; i++) {
+            Label label;
+            lds = new LabelsDataSource(this);
+            Notevalue notevalue;
+            NotevaluesDataSource nvds = new NotevaluesDataSource(this);
+            TextView vertex;
+
+            for (int i = 0; i < textViewIds.length - 1; i++) {
                 vertex = (TextView) findViewById(textViewIds[i]);
-                vertex.setText(String.valueOf(pathEdges.get(i).getFromNodeId()));
                 backgroundColor = "#dddddd";
-                // TODO: add labels
-                /*
-                if (notesetAndRelated.getNotevalues().get(i).getLabelId() > 0) {
-                    // TODO: getting note-related labels could be done in a different way...
-                    for (Label label : allLabels) {
-                        if (label.getId() == notesetAndRelated.getNotevalues().get(i).getLabelId()) {
-                            backgroundColor = label.getColor();
-                        }
-                    }
+
+                // TODO: there's probably a more efficient way to match vertices with related note
+                // labels
+                notevalue = nvds.getNotevalueByNoteValue(pathEdges.get(i).getFromNodeId());
+                label = lds.getLabel(notevalue.getLabelId());
+
+                if (label != null) {
+                    backgroundColor = label.getColor();
                 }
-                */
-                vertex.setBackgroundColor(Color.parseColor(backgroundColor));                
+                vertex.setBackgroundColor(Color.parseColor(backgroundColor));
+                vertex.setText(notevalue.getNotelabel());
             }
-            
+
             // add last vertex
-            vertex = (TextView) findViewById(textViewIds[textViewIds.length-1]);
-            vertex.setText(String.valueOf(pathEdges.get(textViewIds.length-2).getToNodeId()));
+            vertex = (TextView) findViewById(textViewIds[textViewIds.length - 1]);
             backgroundColor = "#dddddd";
-            // TODO: add labels
-            /*
-            if (notesetAndRelated.getNotevalues().get(i).getLabelId() > 0) {
-                // TODO: getting note-related labels could be done in a different way...
-                for (Label label : allLabels) {
-                    if (label.getId() == notesetAndRelated.getNotevalues().get(i).getLabelId()) {
-                        backgroundColor = label.getColor();
-                    }
-                }
+
+            // TODO: there's probably a more efficient way to match vertices with related note
+            // labels
+            notevalue = nvds.getNotevalueByNoteValue(pathEdges.get(textViewIds.length - 2)
+                    .getToNodeId());
+            label = lds.getLabel(notevalue.getLabelId());
+
+            if (label != null) {
+                backgroundColor = label.getColor();
             }
-            */
             vertex.setBackgroundColor(Color.parseColor(backgroundColor));
+            vertex.setText(notevalue.getNotelabel());
+
+            nvds.close();
+            lds.close();
 
         } catch (Exception e) {
             Log.d("MYLOG", e.getStackTrace().toString());
