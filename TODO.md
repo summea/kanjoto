@@ -6,9 +6,6 @@
 - create auto test/learn for Emotion test
 - think about adding support for different note speeds in Logic D
 - connect label_id to background color in "list all scorecards" activity
-- add noteset and emotion background colors to UI for "strongest path detail" activity
-- add noteset playback to "top 3 strengths" detail activity
-- add UI formatting to Apprentice top three strengths detail activity
 - fix horizontal animation timing for music generation activity
 - music playback pauses at random times on phone which interferes with sync between audio and graphics
 - standardize strings view naming
@@ -19,6 +16,9 @@
 
 
 ## DONE:
+- 20150804: added noteset playback to "top 3 strengths" detail activity
+- 20150804: added UI formatting to Apprentice top three strengths detail activity
+- 20150804: added noteset and emotion background colors to UI for "strongest path detail" activity
 - 20150712: added noteset-to-emotion noteset approach test (GetEmotionFromNotesetActivityTest)
 - 20150707: added "keep track of what test was taken for scorecards" feature (graph id)
 - 20150707: fixed apprentice scores database issue (columns seem to be shifted when data is added)

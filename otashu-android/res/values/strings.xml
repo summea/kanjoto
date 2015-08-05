@@ -45,10 +45,10 @@
     <string name="button_go">Go</string>
     <string name="button_no">No</string>
     <string name="button_ok">OK</string>
+    <string name="button_play">Play</string>
     <string name="button_play_bookmark">Play</string>
     <string name="button_play_noteset">Play</string>
-    <string name="button_play_strongest_path">Play</string>
-    <string name="button_play">Play</string>
+    <string name="button_play_path">Play</string>
     <string name="button_save">Save</string>
     <string name="button_send_apprentice">Send Apprentice</string>
     <string name="button_send_emofing">Send Emofing</string>

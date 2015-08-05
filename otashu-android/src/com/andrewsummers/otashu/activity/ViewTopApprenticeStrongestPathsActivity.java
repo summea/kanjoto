@@ -269,7 +269,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
                 // launch details activity
                 Intent intent = new Intent(view.getContext(),
                         ViewApprenticeStrongestPathDetailActivity.class);
-                
+
                 intent.putExtra("emotion_id", emotionId);
                 intent.putExtra("list_id", id);
                 startActivity(intent);
@@ -321,7 +321,7 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         listView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
-                
+
                 // launch details activity
                 Intent intent = new Intent(view.getContext(),
                         ViewApprenticeStrongestPathDetailActivity.class);
