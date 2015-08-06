@@ -4,9 +4,15 @@ package com.andrewsummers.otashu.adapter;
 import java.util.List;
 
 import com.andrewsummers.otashu.R;
+import com.andrewsummers.otashu.data.ApprenticeScoresDataSource;
+import com.andrewsummers.otashu.data.GraphsDataSource;
+import com.andrewsummers.otashu.data.LabelsDataSource;
+import com.andrewsummers.otashu.model.ApprenticeScore;
 import com.andrewsummers.otashu.model.ApprenticeScorecard;
+import com.andrewsummers.otashu.model.Label;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +63,19 @@ public class ApprenticeScorecardAdapter extends BaseAdapter {
                 .findViewById(R.id.apprentice_scorecard);
         apprenticeScorecard.setText(apprenticeScorecards.get(position).toString());
 
+        ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(mContext);
+        List<ApprenticeScore> apprenticeScores = asds.getApprenticeScoresByScorecard(apprenticeScorecards.get(position).getId());
+        asds.close();
+        
+        GraphsDataSource gds = new GraphsDataSource(mContext);
+        gds.close();
+        
+        LabelsDataSource lds = new LabelsDataSource(mContext);
+        lds.close();
+        
+        
+        // TODO set relevant background color, if available
+        
         return convertView;
     }
 

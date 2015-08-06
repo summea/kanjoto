@@ -343,6 +343,49 @@ public class ApprenticeScoresDataSource {
 
         return total;
     }
+    
+    /**
+     * Get all ApprenticeScores for given ApprenticeScorecard
+     * 
+     * @return List of ApprenticeScores.
+     */
+    public List<ApprenticeScore> getApprenticeScoresByScorecard(long scorecardId) {
+        List<ApprenticeScore> apprenticeScores = new ArrayList<ApprenticeScore>();
+
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_SCORECARD_ID + "=?";
+
+        // create database handle
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // select all notes from database
+        Cursor cursor = db.rawQuery(query, new String[] {
+                String.valueOf(scorecardId)
+        });
+
+        ApprenticeScore apprenticeScore = null;
+        if (cursor.moveToFirst()) {
+            do {
+                // create note objects based on note data from database
+                apprenticeScore = new ApprenticeScore();
+                apprenticeScore.setId(cursor.getLong(0));
+                apprenticeScore.setScorecardId(cursor.getLong(1));
+                apprenticeScore.setQuestionNumber(cursor.getInt(2));
+                apprenticeScore.setCorrect(cursor.getInt(3));
+                apprenticeScore.setNotevalue(cursor.getLong(4));
+                apprenticeScore.setGraphId(cursor.getLong(5));
+                apprenticeScore.setApprenticeId(cursor.getLong(6));
+                apprenticeScore.setScaleId(cursor.getLong(7));
+
+                // add note string to list of strings
+                apprenticeScores.add(apprenticeScore);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+
+        return apprenticeScores;
+    }
 
     public SQLiteDatabase getDatabase() {
         return database;

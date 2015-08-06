@@ -1,6 +1,7 @@
 # otashu
 
 ## TODO:
+- possibly move graph_id, apprentice_id, and scale_id columns from ApprenticeScores to ApprenticeScorecards
 - make sure vertices are generated at start of program (if not already existing... these are same for all apprentices)
 - make sure vertices are shared for all apprentices and users
 - create auto test/learn for Emotion test

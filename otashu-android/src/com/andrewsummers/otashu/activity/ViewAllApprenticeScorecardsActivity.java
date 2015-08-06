@@ -185,21 +185,6 @@ public class ViewAllApprenticeScorecardsActivity extends ListActivity {
         dialog.show();
     }
 
-    /*
-     * public ApprenticeScorecard getApprenticeScorecardFromListPosition(long rowId) { long
-     * apprenticeScorecardId = rowId; List<Long> allApprenticeScorecardsData = new
-     * LinkedList<Long>(); ApprenticeScorecardsDataSource lds = new
-     * ApprenticeScorecardsDataSource(this); // get string version of returned apprenticeScorecard
-     * list allApprenticeScorecardsData =
-     * asds.getAllApprenticeScorecardListDBTableIds(apprenticeId); asds.close(); // prevent crashes
-     * due to lack of database data if (allApprenticeScorecardsData.isEmpty()) {
-     * allApprenticeScorecardsData.add((long) 0); } Long[] allApprenticeScorecards =
-     * allApprenticeScorecardsData .toArray(new Long[allApprenticeScorecardsData.size()]);
-     * ApprenticeScorecard apprenticeScorecard = lds
-     * .getApprenticeScorecard(allApprenticeScorecards[(int) apprenticeScorecardId]); asds.close();
-     * return apprenticeScorecard; }
-     */
-
     public void deleteApprenticeScorecard(ApprenticeScorecard apprenticeScorecard) {
         ApprenticeScorecardsDataSource asds = new ApprenticeScorecardsDataSource(this);
         asds.deleteApprenticeScorecard(apprenticeScorecard);
