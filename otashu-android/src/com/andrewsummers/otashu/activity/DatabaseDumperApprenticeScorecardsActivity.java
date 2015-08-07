@@ -37,17 +37,25 @@ public class DatabaseDumperApprenticeScorecardsActivity extends Activity {
         TextView debugText = (TextView) findViewById(R.id.debug_text);
 
         debugText.setText(debugText.getText().toString() + "Table: Apprentice Scorecards\n"
-                + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_TAKEN_AT + "|"
-                + OtashuDatabaseHelper.COLUMN_CORRECT + "|" + OtashuDatabaseHelper.COLUMN_TOTAL
-                + "|"
-                + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "\n");
+                + OtashuDatabaseHelper.COLUMN_ID
+                + "|" + OtashuDatabaseHelper.COLUMN_TAKEN_AT
+                + "|" + OtashuDatabaseHelper.COLUMN_CORRECT
+                + "|" + OtashuDatabaseHelper.COLUMN_TOTAL
+                + "|" + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID
+                + "|" + OtashuDatabaseHelper.COLUMN_GRAPH_ID
+                + "|" + OtashuDatabaseHelper.COLUMN_SCALE_ID
+                + "\n");
 
         for (ApprenticeScorecard aScorecard : allApprenticeScorecards) {
 
             String newText = debugText.getText().toString();
-            newText += aScorecard.getId() + "|" + aScorecard.getTakenAt()
-                    + aScorecard.getCorrect() + "|" + aScorecard.getTotal()
-                    + "|" + aScorecard.getApprenticeId() + "\n";
+            newText += aScorecard.getId()
+                    + "|" + aScorecard.getTakenAt()
+                    + "|" + aScorecard.getCorrect()
+                    + "|" + aScorecard.getTotal()
+                    + "|" + aScorecard.getApprenticeId()
+                    + "|" + aScorecard.getGraphId()
+                    + "|" + aScorecard.getScaleId()+ "\n";
 
             debugText.setText(newText);
         }

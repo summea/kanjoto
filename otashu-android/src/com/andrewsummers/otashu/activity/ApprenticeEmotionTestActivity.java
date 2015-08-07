@@ -245,7 +245,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
 
                 // examine notes for graph purposes
                 for (int i = 0; i < notesToInsert.size() - 1; i++) {
-                    //long notevalue = 0;
+                    // long notevalue = 0;
 
                     // Examine note1 + note2
                     noteA = notesToInsert.get(i);
@@ -291,7 +291,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                         newEdge.setPosition(i + 1);
                         newEdge.setApprenticeId(apprenticeId);
                         newEdge = edds.createEdge(newEdge);
-                        //notevalue = newEdge.getId();
+                        // notevalue = newEdge.getId();
                     } else {
                         // edge exists between nodeA and nodeB, just update weight
 
@@ -303,7 +303,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                             bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
                             edge.setWeight(bd.floatValue());
                             edds.updateEdge(edge);
-                            //notevalue = edge.getId();
+                            // notevalue = edge.getId();
                         }
                     }
 
@@ -397,7 +397,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
 
                 // examine notes for graph purposes
                 for (int i = 0; i < notesToInsert.size() - 1; i++) {
-                    //long notevalue = 0;
+                    // long notevalue = 0;
 
                     // Examine note1 + note2
                     noteA = notesToInsert.get(i);
@@ -445,7 +445,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                         newEdge.setPosition(i + 1);
                         newEdge.setApprenticeId(apprenticeId);
                         newEdge = edds.createEdge(newEdge);
-                        //notevalue = newEdge.getId();
+                        // notevalue = newEdge.getId();
                         currentEdges.add(newEdge);
                     } else {
                         // edge exists between nodeA and nodeB, just update weight
@@ -458,7 +458,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                             bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
                             edge.setWeight(bd.floatValue());
                             edds.updateEdge(edge);
-                            //notevalue = edge.getId();
+                            // notevalue = edge.getId();
                         }
 
                         currentEdges.add(edge);
@@ -590,7 +590,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
 
         // get random emotion
         EmotionsDataSource eds = new EmotionsDataSource(this);
-        //int emotionCount = eds.getEmotionCount(apprenticeId);
+        // int emotionCount = eds.getEmotionCount(apprenticeId);
 
         // are we focusing on a specific emotion?
         if (emotionFocusId > 0) {
@@ -790,6 +790,7 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                 ApprenticeScorecard aScorecard = new ApprenticeScorecard();
                 aScorecard.setTakenAt(takenAtISO);
                 aScorecard.setApprenticeId(apprenticeId);
+                aScorecard.setGraphId(emotionGraphId);
                 aScorecard = asds.createApprenticeScorecard(aScorecard);
                 asds.close();
 
@@ -814,8 +815,6 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
             aScore.setQuestionNumber(totalGuesses);
             aScore.setCorrect(isCorrect);
             aScore.setNotevalue(notevalue);
-            aScore.setApprenticeId(apprenticeId);
-            aScore.setGraphId(emotionGraphId);
 
             Log.d("MYLOG", "saving emotion score: " + aScore.toString());
 

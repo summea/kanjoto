@@ -9,6 +9,8 @@ public class ApprenticeScorecard {
     private int total;
     private int correct;
     private long apprenticeId;
+    private long graphId;
+    private long scaleId;
 
     /**
      * getId gets ApprenticeScorecard id
@@ -107,6 +109,42 @@ public class ApprenticeScorecard {
      */
     public void setApprenticeId(long apprenticeId) {
         this.apprenticeId = apprenticeId;
+    }
+
+    /**
+     * getGraphId gets Graph id
+     * 
+     * @return <code>long</code> graphId value
+     */
+    public long getGraphId() {
+        return graphId;
+    }
+
+    /**
+     * setGraphId sets Graph id
+     * 
+     * @param graphId New graphId value.
+     */
+    public void setGraphId(long graphId) {
+        this.graphId = graphId;
+    }
+
+    /**
+     * getScaleId gets Scale id
+     * 
+     * @return <code>long</code> scaleId value
+     */
+    public long getScaleId() {
+        return scaleId;
+    }
+
+    /**
+     * setScaleId sets Scale id
+     * 
+     * @param scaleId New scaleId value.
+     */
+    public void setScaleId(long scaleId) {
+        this.scaleId = scaleId;
     }
 
     /**

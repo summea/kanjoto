@@ -30,20 +30,17 @@ public class DatabaseDumperApprenticeScoresActivity extends Activity {
                 "pref_selected_apprentice", "1"));
 
         ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
-        List<ApprenticeScore> allApprenticeScores = asds
-                .getAllApprenticeScoresByApprentice(apprenticeId);
+        List<ApprenticeScore> allApprenticeScores = asds.getAllApprenticeScores();
         asds.close();
 
         TextView debugText = (TextView) findViewById(R.id.debug_text);
 
         debugText.setText(debugText.getText().toString() + "Table: Apprentice Scores\n"
-                + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_SCORECARD_ID
+                + OtashuDatabaseHelper.COLUMN_ID
+                + "|" + OtashuDatabaseHelper.COLUMN_SCORECARD_ID
                 + "|" + OtashuDatabaseHelper.COLUMN_QUESTION_NUMBER
-                + "|" + OtashuDatabaseHelper.COLUMN_CORRECT + "|"
-                + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "|"
-                + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "|"
-                + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "|"
-                + OtashuDatabaseHelper.COLUMN_SCALE_ID
+                + "|" + OtashuDatabaseHelper.COLUMN_CORRECT
+                + "|" + OtashuDatabaseHelper.COLUMN_NOTEVALUE
                 + "\n");
 
         for (ApprenticeScore aScore : allApprenticeScores) {
@@ -52,10 +49,7 @@ public class DatabaseDumperApprenticeScoresActivity extends Activity {
             newText += aScore.getId() + "|" + aScore.getScorecardId()
                     + "|" + aScore.getQuestionNumber()
                     + "|" + aScore.getCorrect()
-                    + "|" + aScore.getNotevalue()
-                    + "|" + aScore.getGraphId()
-                    + "|" + aScore.getApprenticeId()
-                    + "|" + aScore.getScaleId() + "\n";
+                    + "|" + aScore.getNotevalue() + "\n";
 
             debugText.setText(newText);
         }

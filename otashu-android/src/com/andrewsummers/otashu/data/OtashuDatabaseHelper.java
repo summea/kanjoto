@@ -166,7 +166,9 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_TAKEN_AT + " text, "
             + COLUMN_TOTAL + " integer,"
             + COLUMN_CORRECT + " integer,"
-            + COLUMN_APPRENTICE_ID + " integer);";
+            + COLUMN_APPRENTICE_ID + " integer,"
+            + COLUMN_GRAPH_ID + " integer,"
+            + COLUMN_SCALE_ID + " integer);";
 
     private static final String CREATE_TABLE_APPRENTICE_SCORES = "CREATE TABLE "
             + TABLE_APPRENTICE_SCORES
@@ -174,10 +176,7 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_SCORECARD_ID + " integer,"
             + COLUMN_QUESTION_NUMBER + " integer,"
             + COLUMN_CORRECT + " integer,"
-            + COLUMN_NOTEVALUE + " integer,"
-            + COLUMN_GRAPH_ID + " integer,"
-            + COLUMN_APPRENTICE_ID + " integer,"
-            + COLUMN_SCALE_ID + " integer);";
+            + COLUMN_NOTEVALUE + " integer);";
 
     private static final String CREATE_TABLE_KEY_SIGNATURES = "CREATE TABLE "
             + TABLE_KEY_SIGNATURES

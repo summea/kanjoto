@@ -24,9 +24,6 @@ public class ApprenticeScoresDataSource {
             OtashuDatabaseHelper.COLUMN_QUESTION_NUMBER,
             OtashuDatabaseHelper.COLUMN_CORRECT,
             OtashuDatabaseHelper.COLUMN_NOTEVALUE,
-            OtashuDatabaseHelper.COLUMN_GRAPH_ID,
-            OtashuDatabaseHelper.COLUMN_APPRENTICE_ID,
-            OtashuDatabaseHelper.COLUMN_SCALE_ID,
     };
 
     /**
@@ -78,12 +75,6 @@ public class ApprenticeScoresDataSource {
                 apprenticeScore.getQuestionNumber());
         contentValues.put(OtashuDatabaseHelper.COLUMN_CORRECT, apprenticeScore.getCorrect());
         contentValues.put(OtashuDatabaseHelper.COLUMN_NOTEVALUE, apprenticeScore.getNotevalue());
-        contentValues.put(OtashuDatabaseHelper.COLUMN_GRAPH_ID,
-                apprenticeScore.getGraphId());
-        contentValues.put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID,
-                apprenticeScore.getApprenticeId());
-        contentValues.put(OtashuDatabaseHelper.COLUMN_SCALE_ID,
-                apprenticeScore.getScaleId());
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -125,23 +116,20 @@ public class ApprenticeScoresDataSource {
     }
 
     /**
-     * Get all apprenticeScores from database table.
+     * Get all apprenticeScores from database table for a specific Scorecard
      * 
      * @return List of ApprenticeScores.
      */
-    public List<ApprenticeScore> getAllApprenticeScoresByApprentice(long apprenticeId) {
+    public List<ApprenticeScore> getAllApprenticeScores() {
         List<ApprenticeScore> apprenticeScores = new ArrayList<ApprenticeScore>();
 
-        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_APPRENTICE_ID + "=?";
+        String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES;
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all notes from database
-        Cursor cursor = db.rawQuery(query, new String[] {
-                String.valueOf(apprenticeId)
-        });
+        Cursor cursor = db.rawQuery(query, null);
 
         ApprenticeScore apprenticeScore = null;
         if (cursor.moveToFirst()) {
@@ -153,9 +141,6 @@ public class ApprenticeScoresDataSource {
                 apprenticeScore.setQuestionNumber(cursor.getInt(2));
                 apprenticeScore.setCorrect(cursor.getInt(3));
                 apprenticeScore.setNotevalue(cursor.getLong(4));
-                apprenticeScore.setGraphId(cursor.getLong(5));
-                apprenticeScore.setApprenticeId(cursor.getLong(6));
-                apprenticeScore.setScaleId(cursor.getLong(7));
 
                 // add note string to list of strings
                 apprenticeScores.add(apprenticeScore);
@@ -172,7 +157,7 @@ public class ApprenticeScoresDataSource {
      * 
      * @return List of ApprenticeScores.
      */
-    public List<ApprenticeScore> getAllApprenticeScores(long scorecardId) {
+    public List<ApprenticeScore> getAllApprenticeScoresByScorecard(long scorecardId) {
         List<ApprenticeScore> apprenticeScores = new ArrayList<ApprenticeScore>();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES
@@ -196,9 +181,6 @@ public class ApprenticeScoresDataSource {
                 apprenticeScore.setQuestionNumber(cursor.getInt(2));
                 apprenticeScore.setCorrect(cursor.getInt(3));
                 apprenticeScore.setNotevalue(cursor.getLong(4));
-                apprenticeScore.setGraphId(cursor.getLong(5));
-                apprenticeScore.setApprenticeId(cursor.getLong(6));
-                apprenticeScore.setScaleId(cursor.getLong(7));
 
                 // add note string to list of strings
                 apprenticeScores.add(apprenticeScore);
@@ -223,9 +205,6 @@ public class ApprenticeScoresDataSource {
         apprenticeScore.setQuestionNumber(cursor.getInt(2));
         apprenticeScore.setCorrect(cursor.getInt(3));
         apprenticeScore.setNotevalue(cursor.getLong(4));
-        apprenticeScore.setGraphId(cursor.getLong(5));
-        apprenticeScore.setApprenticeId(cursor.getLong(6));
-        apprenticeScore.setScaleId(cursor.getLong(7));
         return apprenticeScore;
     }
 
@@ -252,9 +231,6 @@ public class ApprenticeScoresDataSource {
                 apprenticeScore.setQuestionNumber(cursor.getInt(2));
                 apprenticeScore.setCorrect(cursor.getInt(3));
                 apprenticeScore.setNotevalue(cursor.getLong(4));
-                apprenticeScore.setGraphId(cursor.getLong(5));
-                apprenticeScore.setApprenticeId(cursor.getLong(6));
-                apprenticeScore.setScaleId(cursor.getLong(7));
             } while (cursor.moveToNext());
         }
 
@@ -275,12 +251,6 @@ public class ApprenticeScoresDataSource {
                 apprenticeScore.getQuestionNumber());
         contentValues.put(OtashuDatabaseHelper.COLUMN_CORRECT, apprenticeScore.getCorrect());
         contentValues.put(OtashuDatabaseHelper.COLUMN_NOTEVALUE, apprenticeScore.getNotevalue());
-        contentValues.put(OtashuDatabaseHelper.COLUMN_GRAPH_ID,
-                apprenticeScore.getGraphId());
-        contentValues.put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID,
-                apprenticeScore.getApprenticeId());
-        contentValues.put(OtashuDatabaseHelper.COLUMN_SCALE_ID,
-                apprenticeScore.getScaleId());
 
         db.update(OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES, contentValues,
                 OtashuDatabaseHelper.COLUMN_ID + "=" + apprenticeScore.getId(), null);
@@ -343,7 +313,7 @@ public class ApprenticeScoresDataSource {
 
         return total;
     }
-    
+
     /**
      * Get all ApprenticeScores for given ApprenticeScorecard
      * 
@@ -373,9 +343,6 @@ public class ApprenticeScoresDataSource {
                 apprenticeScore.setQuestionNumber(cursor.getInt(2));
                 apprenticeScore.setCorrect(cursor.getInt(3));
                 apprenticeScore.setNotevalue(cursor.getLong(4));
-                apprenticeScore.setGraphId(cursor.getLong(5));
-                apprenticeScore.setApprenticeId(cursor.getLong(6));
-                apprenticeScore.setScaleId(cursor.getLong(7));
 
                 // add note string to list of strings
                 apprenticeScores.add(apprenticeScore);

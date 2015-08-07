@@ -1,7 +1,6 @@
 # otashu
 
 ## TODO:
-- possibly move graph_id, apprentice_id, and scale_id columns from ApprenticeScores to ApprenticeScorecards
 - make sure vertices are generated at start of program (if not already existing... these are same for all apprentices)
 - make sure vertices are shared for all apprentices and users
 - create auto test/learn for Emotion test
@@ -17,6 +16,7 @@
 
 
 ## DONE:
+- 20150806: moved graph_id, apprentice_id, and scale_id columns from ApprenticeScores to ApprenticeScorecards
 - 20150804: added noteset playback to "top 3 strengths" detail activity
 - 20150804: added UI formatting to Apprentice top three strengths detail activity
 - 20150804: added noteset and emotion background colors to UI for "strongest path detail" activity

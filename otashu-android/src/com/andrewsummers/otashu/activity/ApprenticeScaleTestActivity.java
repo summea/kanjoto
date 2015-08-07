@@ -595,6 +595,8 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
                 ApprenticeScorecard aScorecard = new ApprenticeScorecard();
                 aScorecard.setTakenAt(takenAtISO);
                 aScorecard.setApprenticeId(apprenticeId);
+                aScorecard.setGraphId(scaleGraphId);
+                aScorecard.setScaleId(scaleId);
                 aScorecard = asds.createApprenticeScorecard(aScorecard);
                 asds.close();
 
@@ -618,9 +620,6 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
             aScore.setScorecardId(scorecardId);
             aScore.setQuestionNumber(totalGuesses);
             aScore.setCorrect(isCorrect);
-            aScore.setApprenticeId(apprenticeId);
-            aScore.setGraphId(scaleGraphId);
-            aScore.setScaleId(scaleId);
 
             ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
             asds.createApprenticeScore(aScore);

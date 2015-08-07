@@ -10,9 +10,6 @@ public class ApprenticeScore {
     private int questionNumber;
     private int correct;
     private long notevalue;
-    private long apprenticeId;
-    private long graphId;
-    private long scaleId;
 
     /**
      * getId gets ApprenticeScore id
@@ -105,60 +102,6 @@ public class ApprenticeScore {
     }
 
     /**
-     * getApprenticeId gets Apprentice id
-     * 
-     * @return <code>long</code> id value
-     */
-    public long getApprenticeId() {
-        return apprenticeId;
-    }
-
-    /**
-     * setApprenticeId sets Apprentice id
-     * 
-     * @param apprenticeId New apprenticeId value.
-     */
-    public void setApprenticeId(long apprenticeId) {
-        this.apprenticeId = apprenticeId;
-    }
-
-    /**
-     * getGraphId gets Graph id
-     * 
-     * @return <code>long</code> graphId value
-     */
-    public long getGraphId() {
-        return graphId;
-    }
-
-    /**
-     * setGraphId sets Graph id
-     * 
-     * @param graphId New graphId value.
-     */
-    public void setGraphId(long graphId) {
-        this.graphId = graphId;
-    }
-
-    /**
-     * getScaleId gets Scale id
-     * 
-     * @return <code>long</code> scaleId value
-     */
-    public long getScaleId() {
-        return scaleId;
-    }
-
-    /**
-     * setScaleId sets Scale id
-     * 
-     * @param scaleId New scaleId value.
-     */
-    public void setScaleId(long scaleId) {
-        this.scaleId = scaleId;
-    }
-
-    /**
      * toString override to return ApprenticeScore name.
      * 
      * @return <code>String</code> of ApprenticeScore name.
@@ -166,7 +109,6 @@ public class ApprenticeScore {
     @Override
     public String toString() {
         return "id: " + id + " scorecard_id: " + scorecardId + " question_number: "
-                + questionNumber + " correct: " + correct + " notevalue: " + notevalue
-                + " apprentice_id: " + apprenticeId + " graphId: " + graphId + "\n";
+                + questionNumber + " correct: " + correct + " notevalue: " + notevalue + "\n";
     }
 }
