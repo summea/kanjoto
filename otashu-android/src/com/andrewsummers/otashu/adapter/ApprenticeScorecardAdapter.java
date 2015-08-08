@@ -4,10 +4,8 @@ package com.andrewsummers.otashu.adapter;
 import java.util.List;
 
 import com.andrewsummers.otashu.R;
-import com.andrewsummers.otashu.data.ApprenticeScoresDataSource;
 import com.andrewsummers.otashu.data.GraphsDataSource;
 import com.andrewsummers.otashu.data.LabelsDataSource;
-import com.andrewsummers.otashu.model.ApprenticeScore;
 import com.andrewsummers.otashu.model.ApprenticeScorecard;
 import com.andrewsummers.otashu.model.Graph;
 import com.andrewsummers.otashu.model.Label;

@@ -21,18 +21,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.andrewsummers.otashu.R;
-import com.andrewsummers.otashu.data.EdgesDataSource;
 import com.andrewsummers.otashu.data.EmotionsDataSource;
 import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.data.NotevaluesDataSource;
 import com.andrewsummers.otashu.data.PathEdgesDataSource;
-import com.andrewsummers.otashu.data.PathsDataSource;
-import com.andrewsummers.otashu.model.Edge;
 import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.Label;
 import com.andrewsummers.otashu.model.Note;
 import com.andrewsummers.otashu.model.Notevalue;
-import com.andrewsummers.otashu.model.Path;
 import com.andrewsummers.otashu.model.PathEdge;
 
 /**
@@ -48,8 +44,6 @@ import com.andrewsummers.otashu.model.PathEdge;
  * </p>
  */
 public class ViewApprenticeStrongestPathDetailActivity extends Activity implements OnClickListener {
-    private SharedPreferences sharedPref;
-    private long apprenticeId = 0;
     private long pathId;
     private List<PathEdge> pathEdges = new ArrayList<PathEdge>();
     private Button buttonPlayPath = null;
@@ -70,14 +64,7 @@ public class ViewApprenticeStrongestPathDetailActivity extends Activity implemen
         // get specific layout for content view
         setContentView(R.layout.activity_view_apprentice_strongest_path_detail);
 
-        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        apprenticeId = Long.parseLong(sharedPref.getString(
-                "pref_selected_apprentice", "1"));
         pathId = getIntent().getExtras().getLong("list_id");
-
-        Log.d("MYLOG", "detail activity received pathId: " + pathId);
-
-        TextView pathText = (TextView) findViewById(R.id.view_strongest_path_detail_title);
 
         try {
             PathEdgesDataSource peds = new PathEdgesDataSource(this);
