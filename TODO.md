@@ -5,7 +5,6 @@
 - make sure vertices are shared for all apprentices and users
 - create auto test/learn for Emotion test
 - think about adding support for different note speeds in Logic D
-- connect label_id to background color in "list all scorecards" activity
 - fix horizontal animation timing for music generation activity
 - music playback pauses at random times on phone which interferes with sync between audio and graphics
 - standardize strings view naming
@@ -16,6 +15,7 @@
 
 
 ## DONE:
+- 20150807: connected label_id to background color in "list all scorecards" activity 
 - 20150806: moved graph_id, apprentice_id, and scale_id columns from ApprenticeScores to ApprenticeScorecards
 - 20150804: added noteset playback to "top 3 strengths" detail activity
 - 20150804: added UI formatting to Apprentice top three strengths detail activity

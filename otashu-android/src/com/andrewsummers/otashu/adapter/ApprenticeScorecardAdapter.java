@@ -9,6 +9,7 @@ import com.andrewsummers.otashu.data.GraphsDataSource;
 import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.model.ApprenticeScore;
 import com.andrewsummers.otashu.model.ApprenticeScorecard;
+import com.andrewsummers.otashu.model.Graph;
 import com.andrewsummers.otashu.model.Label;
 
 import android.content.Context;
@@ -63,19 +64,19 @@ public class ApprenticeScorecardAdapter extends BaseAdapter {
                 .findViewById(R.id.apprentice_scorecard);
         apprenticeScorecard.setText(apprenticeScorecards.get(position).toString());
 
-        ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(mContext);
-        List<ApprenticeScore> apprenticeScores = asds.getApprenticeScoresByScorecard(apprenticeScorecards.get(position).getId());
-        asds.close();
-        
         GraphsDataSource gds = new GraphsDataSource(mContext);
+        Graph graph = gds.getGraph(apprenticeScorecards.get(position).getGraphId());
         gds.close();
-        
+
         LabelsDataSource lds = new LabelsDataSource(mContext);
+        Label label = lds.getLabel(graph.getLabelId());
         lds.close();
-        
-        
-        // TODO set relevant background color, if available
-        
+
+        // set relevant background color, if available
+        if (label.getColor() != null) {
+            apprenticeScorecard.setBackgroundColor(Color.parseColor(label.getColor()));
+        }
+
         return convertView;
     }
 

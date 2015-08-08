@@ -75,7 +75,8 @@ public class ApprenticeScorecardsDataSource {
         contentValues.put(OtashuDatabaseHelper.COLUMN_TAKEN_AT, apprenticeScorecard.getTakenAt());
         contentValues.put(OtashuDatabaseHelper.COLUMN_TOTAL, apprenticeScorecard.getTotal());
         contentValues.put(OtashuDatabaseHelper.COLUMN_CORRECT, apprenticeScorecard.getCorrect());
-        contentValues.put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID, apprenticeScorecard.getApprenticeId());
+        contentValues.put(OtashuDatabaseHelper.COLUMN_APPRENTICE_ID,
+                apprenticeScorecard.getApprenticeId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_GRAPH_ID, apprenticeScorecard.getGraphId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_SCALE_ID, apprenticeScorecard.getScaleId());
 
