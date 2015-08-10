@@ -36,7 +36,6 @@ public class ApprenticeScoresDataSourceTest extends AndroidTestCase {
         apprenticeScore.setCorrect(1);
         apprenticeScore.setScorecardId(1);
         apprenticeScore.setQuestionNumber(1);
-        apprenticeScore.setApprenticeId(1);
         ApprenticeScore result = asds.createApprenticeScore(apprenticeScore);
         assertNotNull("created apprentice score is not null", result);
     }
@@ -47,7 +46,6 @@ public class ApprenticeScoresDataSourceTest extends AndroidTestCase {
         apprenticeScore.setCorrect(1);
         apprenticeScore.setScorecardId(1);
         apprenticeScore.setQuestionNumber(1);
-        apprenticeScore.setApprenticeId(1);
         ApprenticeScore result = asds.createApprenticeScore(apprenticeScore);
         assertNotNull("created apprentice score is not null", result);
         asds.deleteApprenticeScore(apprenticeScore);
@@ -56,18 +54,10 @@ public class ApprenticeScoresDataSourceTest extends AndroidTestCase {
         assertTrue(apprenticeScore.getId() != 1);
     }
 
-    public void test_getAllApprenticeScoresByApprentice_paramApprenticeId() throws Throwable {
+    public void test_getAllApprenticeScoresByScorecard_paramScoreId() throws Throwable {
         test_createApprenticeScore_paramApprenticeScore();
         List<ApprenticeScore> apprenticeScores = new ArrayList<ApprenticeScore>();
-        apprenticeScores = asds.getAllApprenticeScoresByApprentice(1);
-        assertNotNull("get all apprentice scores is not null", apprenticeScores);
-        assertFalse(apprenticeScores.isEmpty());
-    }
-
-    public void test_getAllApprenticeScores_paramScoreId() throws Throwable {
-        test_createApprenticeScore_paramApprenticeScore();
-        List<ApprenticeScore> apprenticeScores = new ArrayList<ApprenticeScore>();
-        apprenticeScores = asds.getAllApprenticeScores(1);
+        apprenticeScores = asds.getAllApprenticeScoresByScorecard(1);
         assertNotNull("get all apprentice scores is not null", apprenticeScores);
         assertFalse(apprenticeScores.isEmpty());
     }

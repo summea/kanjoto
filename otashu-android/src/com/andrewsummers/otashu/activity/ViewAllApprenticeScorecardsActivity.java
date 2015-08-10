@@ -123,7 +123,8 @@ public class ViewAllApprenticeScorecardsActivity extends ListActivity {
         super.onCreateContextMenu(menu, v, menuInfo);
 
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        selectedPositionInList = info.position;
+        // -1 to subtract list header
+        selectedPositionInList = info.position - 1;
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.context_menu_apprentice_scorecard, menu);

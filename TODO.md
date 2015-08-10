@@ -1,6 +1,7 @@
 # otashu
 
 ## TODO:
+- check if list items are deleting correctly (ever since list headers were added...)
 - make sure vertices are generated at start of program (if not already existing... these are same for all apprentices)
 - make sure vertices are shared for all apprentices and users
 - create auto test/learn for Emotion test
