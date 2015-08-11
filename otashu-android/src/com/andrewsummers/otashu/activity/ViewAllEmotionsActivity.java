@@ -45,7 +45,7 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 public class ViewAllEmotionsActivity extends ListActivity {
     private ListView listView = null;
-    //private int selectedPositionInList = 0;
+    private int selectedPositionInList = 0;
     private EmotionAdapter adapter = null;
     private SharedPreferences sharedPref;
     private long apprenticeId = 0;
@@ -150,8 +150,9 @@ public class ViewAllEmotionsActivity extends ListActivity {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
 
-        //AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        //selectedPositionInList = info.position;
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+        // -1 to subtract list header
+        selectedPositionInList = info.position - 1;
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.context_menu_emotion, menu);

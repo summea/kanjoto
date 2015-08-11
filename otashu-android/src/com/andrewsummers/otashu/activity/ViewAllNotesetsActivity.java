@@ -109,7 +109,6 @@ public class ViewAllNotesetsActivity extends ListActivity {
         totalNotesetsAvailable = nsds.getCount(apprenticeId);
 
         if (currentOffset <= totalNotesetsAvailable && !doneLoading) {
-            // allNotesets = nsds.getAllNotesets(apprenticeId, limit, currentOffset);
             allNotesets = nsds.getAllNotesetsByEmotion(apprenticeId, filterEmotionId, limit,
                     currentOffset);
 
@@ -202,7 +201,6 @@ public class ViewAllNotesetsActivity extends ListActivity {
         totalNotesetsAvailable = nsds.getCount(apprenticeId);
 
         if (currentOffset <= totalNotesetsAvailable) {
-            // allNotesets = nsds.getAllNotesets(apprenticeId, limit, currentOffset);
             allNotesets = nsds.getAllNotesetsByEmotion(apprenticeId, filterEmotionId, limit,
                     currentOffset);
 
@@ -215,7 +213,6 @@ public class ViewAllNotesetsActivity extends ListActivity {
                 notesetAndRelated.setLabel(relatedLabel);
                 notesetAndRelated.setNoteset(noteset);
                 notesetAndRelated.setNotes(relatedNotes);
-                // allNotesetsAndNotes.add(notesetAndRelated);
                 adapter.addItem(notesetAndRelated);
             }
 
@@ -318,7 +315,8 @@ public class ViewAllNotesetsActivity extends ListActivity {
         super.onCreateContextMenu(menu, v, menuInfo);
 
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        selectedPositionInList = info.position;
+        // -1 to subtract list header
+        selectedPositionInList = info.position - 1;
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.context_menu_noteset, menu);

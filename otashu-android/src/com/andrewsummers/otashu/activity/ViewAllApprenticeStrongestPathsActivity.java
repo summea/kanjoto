@@ -109,7 +109,7 @@ public class ViewAllApprenticeStrongestPathsActivity extends ListActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_emotions, menu);
+        inflater.inflate(R.menu.menu_paths, menu);
         return true;
     }
 
@@ -136,7 +136,7 @@ public class ViewAllApprenticeStrongestPathsActivity extends ListActivity {
         selectedPositionInList = info.position;
 
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.context_menu_emotion, menu);
+        inflater.inflate(R.menu.context_menu_path, menu);
     }
 
     @Override
@@ -152,43 +152,6 @@ public class ViewAllApprenticeStrongestPathsActivity extends ListActivity {
             default:
                 return super.onContextItemSelected(item);
         }
-    }
-
-    public void confirmDelete() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.dialog_confirm_delete_message).setTitle(
-                R.string.dialog_confirm_delete_title);
-        builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // user clicked ok
-                // go ahead and delete emotion
-
-                // get correct emotion id to delete
-                Emotion emotionToDelete = getEmotionFromListPosition(selectedPositionInList);
-
-                deleteEmotion(emotionToDelete);
-
-                Context context = getApplicationContext();
-                int duration = Toast.LENGTH_SHORT;
-
-                Toast toast = Toast.makeText(context,
-                        context.getResources().getString(R.string.emotion_deleted),
-                        duration);
-                toast.show();
-
-                // refresh list
-                adapter.removeItem(selectedPositionInList);
-                adapter.notifyDataSetChanged();
-            }
-        });
-        builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // user clicked cancel
-                // just go back to list for now
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 
     public Emotion getEmotionFromListPosition(long rowId) {
@@ -214,12 +177,6 @@ public class ViewAllApprenticeStrongestPathsActivity extends ListActivity {
         eds.close();
 
         return emotion;
-    }
-
-    public void deleteEmotion(Emotion emotion) {
-        EmotionsDataSource eds = new EmotionsDataSource(this);
-        eds.deleteEmotion(emotion);
-        eds.close();
     }
 
     @Override
