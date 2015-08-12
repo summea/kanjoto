@@ -196,6 +196,7 @@ public class ViewAllBookmarksActivity extends ListActivity {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+        bds.close();
     }
 
     public void deleteBookmark(Bookmark bookmark) {

@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.adapter.LabelAdapter;
+import com.andrewsummers.otashu.data.GraphsDataSource;
 import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.model.Label;
 
@@ -39,7 +40,6 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 public class ViewAllLabelsActivity extends ListActivity {
     private ListView listView = null;
-    private int selectedPositionInList = 0;
     private LabelAdapter adapter = null;
 
     /**
@@ -119,9 +119,6 @@ public class ViewAllLabelsActivity extends ListActivity {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
 
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        selectedPositionInList = info.position;
-
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.context_menu_label, menu);
     }
@@ -143,14 +140,15 @@ public class ViewAllLabelsActivity extends ListActivity {
                 startActivity(intent);
                 return true;
             case R.id.context_menu_delete:
-                confirmDelete();
+                confirmDelete(info);
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
     }
 
-    public void confirmDelete() {
+    public void confirmDelete(final AdapterContextMenuInfo info) {
+        final LabelsDataSource lds = new LabelsDataSource(this);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.dialog_confirm_delete_message).setTitle(
                 R.string.dialog_confirm_delete_title);
@@ -160,8 +158,7 @@ public class ViewAllLabelsActivity extends ListActivity {
                 // go ahead and delete label
 
                 // get correct label id to delete
-                Label labelToDelete = getLabelFromListPosition(selectedPositionInList);
-
+                Label labelToDelete = lds.getLabel(info.id);
                 deleteLabel(labelToDelete);
 
                 Context context = getApplicationContext();
@@ -173,7 +170,7 @@ public class ViewAllLabelsActivity extends ListActivity {
                 toast.show();
 
                 // refresh list
-                adapter.removeItem(selectedPositionInList);
+                adapter.removeItem(info.position - 1);
                 adapter.notifyDataSetChanged();
             }
         });
@@ -185,6 +182,7 @@ public class ViewAllLabelsActivity extends ListActivity {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+        lds.close();
     }
 
     public Label getLabelFromListPosition(long rowId) {

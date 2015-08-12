@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.adapter.LearningStyleAdapter;
+import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.data.LearningStylesDataSource;
 import com.andrewsummers.otashu.model.LearningStyle;
 
@@ -37,7 +38,6 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 public class ViewAllLearningStylesActivity extends ListActivity {
     private ListView listView = null;
-    private int selectedPositionInList = 0;
     private LearningStyleAdapter adapter = null;
 
     /**
@@ -121,9 +121,6 @@ public class ViewAllLearningStylesActivity extends ListActivity {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
 
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        selectedPositionInList = info.position;
-
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.context_menu_learning_style, menu);
     }
@@ -144,14 +141,15 @@ public class ViewAllLearningStylesActivity extends ListActivity {
                 startActivity(intent);
                 return true;
             case R.id.context_menu_delete:
-                confirmDelete();
+                confirmDelete(info);
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
     }
 
-    public void confirmDelete() {
+    public void confirmDelete(final AdapterContextMenuInfo info) {
+        final LearningStylesDataSource lsds = new LearningStylesDataSource(this);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.dialog_confirm_delete_message).setTitle(
                 R.string.dialog_confirm_delete_title);
@@ -161,8 +159,7 @@ public class ViewAllLearningStylesActivity extends ListActivity {
                 // go ahead and delete learningStyle
 
                 // get correct learningStyle id to delete
-                LearningStyle learningStyleToDelete = getLearningStyleFromListPosition(selectedPositionInList);
-
+                LearningStyle learningStyleToDelete = lsds.getLearningStyle(info.id);
                 deleteLearningStyle(learningStyleToDelete);
 
                 Context context = getApplicationContext();
@@ -174,7 +171,7 @@ public class ViewAllLearningStylesActivity extends ListActivity {
                 toast.show();
 
                 // refresh list
-                adapter.removeItem(selectedPositionInList);
+                adapter.removeItem(info.position - 1);
                 adapter.notifyDataSetChanged();
             }
         });
@@ -186,30 +183,7 @@ public class ViewAllLearningStylesActivity extends ListActivity {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    public LearningStyle getLearningStyleFromListPosition(long rowId) {
-        long learningStyleId = rowId;
-
-        List<Long> allLearningStylesData = new LinkedList<Long>();
-        LearningStylesDataSource lsds = new LearningStylesDataSource(this);
-
-        // get string version of returned learningStyle list
-        allLearningStylesData = lsds.getAllLearningStyleListDBTableIds();
         lsds.close();
-
-        // prevent crashes due to lack of database data
-        if (allLearningStylesData.isEmpty())
-            allLearningStylesData.add((long) 0);
-
-        Long[] allLearningStyles = allLearningStylesData
-                .toArray(new Long[allLearningStylesData.size()]);
-
-        LearningStyle learningStyle = lsds
-                .getLearningStyle(allLearningStyles[(int) learningStyleId]);
-        lsds.close();
-
-        return learningStyle;
     }
 
     public void deleteLearningStyle(LearningStyle learningStyle) {

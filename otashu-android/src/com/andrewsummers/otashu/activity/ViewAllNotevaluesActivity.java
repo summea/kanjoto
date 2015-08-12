@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.adapter.NotevalueAdapter;
+import com.andrewsummers.otashu.data.LearningStylesDataSource;
 import com.andrewsummers.otashu.data.NotevaluesDataSource;
 import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.model.Notevalue;
@@ -42,7 +43,6 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 public class ViewAllNotevaluesActivity extends ListActivity {
     private ListView listView = null;
-    private int selectedPositionInList = 0;
     private NotevalueAdapter adapter = null;
 
     /**
@@ -136,9 +136,6 @@ public class ViewAllNotevaluesActivity extends ListActivity {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
 
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        selectedPositionInList = info.position;
-
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.context_menu_notevalue, menu);
     }
@@ -159,14 +156,15 @@ public class ViewAllNotevaluesActivity extends ListActivity {
                 startActivity(intent);
                 return true;
             case R.id.context_menu_delete:
-                confirmDelete();
+                confirmDelete(info);
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
     }
 
-    public void confirmDelete() {
+    public void confirmDelete(final AdapterContextMenuInfo info) {
+        final NotevaluesDataSource nds = new NotevaluesDataSource(this);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.dialog_confirm_delete_message).setTitle(
                 R.string.dialog_confirm_delete_title);
@@ -176,8 +174,7 @@ public class ViewAllNotevaluesActivity extends ListActivity {
                 // go ahead and delete notevalue
 
                 // get correct notevalue id to delete
-                Notevalue notevalueToDelete = getNotevalueFromListPosition(selectedPositionInList);
-
+                Notevalue notevalueToDelete = nds.getNotevalue(info.id);
                 deleteNotevalue(notevalueToDelete);
 
                 Context context = getApplicationContext();
@@ -189,7 +186,7 @@ public class ViewAllNotevaluesActivity extends ListActivity {
                 toast.show();
 
                 // refresh list
-                adapter.removeItem(selectedPositionInList);
+                adapter.removeItem(info.position - 1);
                 adapter.notifyDataSetChanged();
             }
         });
@@ -201,29 +198,7 @@ public class ViewAllNotevaluesActivity extends ListActivity {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    public Notevalue getNotevalueFromListPosition(long rowId) {
-        long notevalueId = rowId;
-
-        List<Long> allNotevaluesData = new LinkedList<Long>();
-        NotevaluesDataSource nvds = new NotevaluesDataSource(this);
-
-        // get string version of returned notevalue list
-        allNotevaluesData = nvds.getAllNotevalueListDBTableIds();
-        nvds.close();
-
-        // prevent crashes due to lack of database data
-        if (allNotevaluesData.isEmpty())
-            allNotevaluesData.add((long) 0);
-
-        Long[] allNotevalues = allNotevaluesData
-                .toArray(new Long[allNotevaluesData.size()]);
-
-        Notevalue notevalue = nvds.getNotevalue(allNotevalues[(int) notevalueId]);
-        nvds.close();
-
-        return notevalue;
+        nds.close();
     }
 
     public void deleteNotevalue(Notevalue notevalue) {

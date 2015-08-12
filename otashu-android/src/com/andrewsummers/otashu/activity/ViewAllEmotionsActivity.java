@@ -45,7 +45,6 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 public class ViewAllEmotionsActivity extends ListActivity {
     private ListView listView = null;
-    private int selectedPositionInList = 0;
     private EmotionAdapter adapter = null;
     private SharedPreferences sharedPref;
     private long apprenticeId = 0;
@@ -149,11 +148,7 @@ public class ViewAllEmotionsActivity extends ListActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        // -1 to subtract list header
-        selectedPositionInList = info.position - 1;
-
+        
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.context_menu_emotion, menu);
     }
@@ -182,7 +177,7 @@ public class ViewAllEmotionsActivity extends ListActivity {
     }
 
     public void confirmDelete(final AdapterContextMenuInfo info) {
-        final EmotionsDataSource bds = new EmotionsDataSource(this);
+        final EmotionsDataSource eds = new EmotionsDataSource(this);
         final NotesetsDataSource nds = new NotesetsDataSource(this);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.dialog_confirm_delete_message).setTitle(
@@ -191,7 +186,7 @@ public class ViewAllEmotionsActivity extends ListActivity {
             public void onClick(DialogInterface dialog, int id) {
                 // user clicked ok, so go ahead and delete emotion
                 // get correct emotion id to delete
-                Emotion emotionToDelete = bds.getEmotion(info.id);
+                Emotion emotionToDelete = eds.getEmotion(info.id);
                 Log.d("MYLOG", "emotion id to delete: " + info.id);
                 deleteEmotion(emotionToDelete);
                 
@@ -222,30 +217,8 @@ public class ViewAllEmotionsActivity extends ListActivity {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-    
-    public Emotion getEmotionFromListPosition(long rowId) {
-        long emotionId = rowId;
-
-        List<Long> allEmotionsData = new LinkedList<Long>();
-        EmotionsDataSource eds = new EmotionsDataSource(this);
-
-        // get string version of returned emotion list
-        allEmotionsData = eds.getAllEmotionListDBTableIds(apprenticeId);
+        nds.close();
         eds.close();
-
-        // prevent crashes due to lack of database data
-        if (allEmotionsData.isEmpty())
-            allEmotionsData.add((long) 0);
-
-        Long[] allEmotions = allEmotionsData
-                .toArray(new Long[allEmotionsData.size()]);
-
-        Emotion emotion = eds.getEmotion(allEmotions[(int) emotionId]);
-
-        eds.close();
-
-        return emotion;
     }
 
     public void deleteEmotion(Emotion emotion) {

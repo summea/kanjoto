@@ -45,7 +45,6 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 public class ViewAllApprenticeStrongestPathsByEmotionActivity extends ListActivity {
     private ListView listView = null;
-    private int selectedPositionInList = 0;
     private EmotionAdapter adapter = null;
     private SharedPreferences sharedPref;
     private long apprenticeId = 0;
@@ -145,9 +144,6 @@ public class ViewAllApprenticeStrongestPathsByEmotionActivity extends ListActivi
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
 
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        selectedPositionInList = info.position;
-
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.context_menu_path, menu);
     }
@@ -165,30 +161,6 @@ public class ViewAllApprenticeStrongestPathsByEmotionActivity extends ListActivi
             default:
                 return super.onContextItemSelected(item);
         }
-    }
-
-    public Emotion getEmotionFromListPosition(long rowId) {
-        long emotionId = rowId;
-
-        List<Long> allEmotionsData = new LinkedList<Long>();
-        EmotionsDataSource eds = new EmotionsDataSource(this);
-
-        // get string version of returned emotion list
-        allEmotionsData = eds.getAllEmotionListDBTableIds(apprenticeId);
-        eds.close();
-
-        // prevent crashes due to lack of database data
-        if (allEmotionsData.isEmpty())
-            allEmotionsData.add((long) 0);
-
-        Long[] allEmotions = allEmotionsData
-                .toArray(new Long[allEmotionsData.size()]);
-
-        Emotion emotion = eds.getEmotion(allEmotions[(int) emotionId]);
-
-        eds.close();
-
-        return emotion;
     }
 
     @Override

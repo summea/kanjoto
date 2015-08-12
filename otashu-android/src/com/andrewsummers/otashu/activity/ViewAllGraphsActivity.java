@@ -39,7 +39,6 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 public class ViewAllGraphsActivity extends ListActivity {
     private ListView listView = null;
-    //private int selectedPositionInList = 0;
     private GraphAdapter adapter = null;
 
     /**
@@ -119,9 +118,6 @@ public class ViewAllGraphsActivity extends ListActivity {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
 
-        //AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        //selectedPositionInList = info.position;
-
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.context_menu_graph, menu);
     }
@@ -142,9 +138,9 @@ public class ViewAllGraphsActivity extends ListActivity {
                 intent.putExtra("list_id", info.id);
                 startActivity(intent);
                 return true;
-            case R.id.context_menu_delete:
-                confirmDelete(info);
-                return true;
+            //case R.id.context_menu_delete:
+                //confirmDelete(info);
+                //return true;
             default:
                 return super.onContextItemSelected(item);
         }
@@ -183,12 +179,13 @@ public class ViewAllGraphsActivity extends ListActivity {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+        gds.close();
     }
 
     public void deleteGraph(Graph graph) {
-        GraphsDataSource lds = new GraphsDataSource(this);
-        lds.deleteGraph(graph);
-        lds.close();
+        GraphsDataSource gds = new GraphsDataSource(this);
+        gds.deleteGraph(graph);
+        gds.close();
     }
 
     @Override
