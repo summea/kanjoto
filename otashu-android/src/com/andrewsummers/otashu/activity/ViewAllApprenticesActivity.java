@@ -7,6 +7,7 @@ import java.util.List;
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.adapter.ApprenticeAdapter;
 import com.andrewsummers.otashu.data.ApprenticesDataSource;
+import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.model.Apprentice;
 
 import android.app.AlertDialog;
@@ -39,7 +40,6 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 public class ViewAllApprenticesActivity extends ListActivity {
     private ListView listView = null;
-    private int selectedPositionInList = 0;
     private ApprenticeAdapter adapter = null;
 
     /**
@@ -119,9 +119,6 @@ public class ViewAllApprenticesActivity extends ListActivity {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
 
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        selectedPositionInList = info.position;
-
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.context_menu_apprentice, menu);
     }
@@ -143,14 +140,15 @@ public class ViewAllApprenticesActivity extends ListActivity {
                 startActivity(intent);
                 return true;
             case R.id.context_menu_delete:
-                confirmDelete();
+                confirmDelete(info);
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
     }
 
-    public void confirmDelete() {
+    public void confirmDelete(final AdapterContextMenuInfo info) {
+        final ApprenticesDataSource ads = new ApprenticesDataSource(this);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.dialog_confirm_delete_message).setTitle(
                 R.string.dialog_confirm_delete_title);
@@ -160,8 +158,7 @@ public class ViewAllApprenticesActivity extends ListActivity {
                 // go ahead and delete apprentice
 
                 // get correct apprentice id to delete
-                Apprentice apprenticeToDelete = getApprenticeFromListPosition(selectedPositionInList);
-
+                Apprentice apprenticeToDelete = ads.getApprentice(info.id);
                 deleteApprentice(apprenticeToDelete);
 
                 Context context = getApplicationContext();
@@ -173,7 +170,7 @@ public class ViewAllApprenticesActivity extends ListActivity {
                 toast.show();
 
                 // refresh list
-                adapter.removeItem(selectedPositionInList);
+                adapter.removeItem(info.position - 1);
                 adapter.notifyDataSetChanged();
             }
         });
@@ -185,34 +182,13 @@ public class ViewAllApprenticesActivity extends ListActivity {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    public Apprentice getApprenticeFromListPosition(long rowId) {
-        long apprenticeId = rowId;
-        List<Long> allApprenticesData = new LinkedList<Long>();
-        ApprenticesDataSource lds = new ApprenticesDataSource(this);
-
-        // get string version of returned apprentice list
-        allApprenticesData = lds.getAllApprenticeListDBTableIds();
-        lds.close();
-
-        // prevent crashes due to lack of database data
-        if (allApprenticesData.isEmpty())
-            allApprenticesData.add((long) 0);
-
-        Long[] allApprentices = allApprenticesData
-                .toArray(new Long[allApprenticesData.size()]);
-
-        Apprentice apprentice = lds.getApprentice(allApprentices[(int) apprenticeId]);
-        lds.close();
-
-        return apprentice;
+        ads.close();
     }
 
     public void deleteApprentice(Apprentice apprentice) {
-        ApprenticesDataSource lds = new ApprenticesDataSource(this);
-        lds.deleteApprentice(apprentice);
-        lds.close();
+        ApprenticesDataSource ads = new ApprenticesDataSource(this);
+        ads.deleteApprentice(apprentice);
+        ads.close();
     }
 
     @Override

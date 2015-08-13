@@ -1,7 +1,6 @@
 # otashu
 
 ## TODO:
-- check if list items are deleting correctly (ever since list headers were added...)
 - make sure vertices are generated at start of program (if not already existing... these are same for all apprentices)
 - make sure vertices are shared for all apprentices and users
 - create auto test/learn for Emotion test
@@ -16,6 +15,7 @@
 
 
 ## DONE:
+- 20150812: fixed "delete correct items in list" issue (in "list all" activities that also contain deletion code)
 - 20150807: connected label_id to background color in "list all scorecards" activity 
 - 20150806: moved graph_id, apprentice_id, and scale_id columns from ApprenticeScores to ApprenticeScorecards
 - 20150804: added noteset playback to "top 3 strengths" detail activity

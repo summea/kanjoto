@@ -43,7 +43,6 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 public class ViewAllEmotionFingerprintsActivity extends ListActivity {
     private ListView listView = null;
-    private int selectedPositionInList = 0;
     private EmotionAdapter adapter = null;
     private SharedPreferences sharedPref;
     private long apprenticeId = 0;

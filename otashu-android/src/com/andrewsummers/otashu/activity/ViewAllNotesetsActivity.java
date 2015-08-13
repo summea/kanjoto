@@ -54,7 +54,6 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 public class ViewAllNotesetsActivity extends ListActivity {
     private ListView listView = null;
-    private int selectedPositionInList = 0;
     private NotesetAdapter adapter = null;
     List<NotesetAndRelated> allNotesetsAndNotes = new LinkedList<NotesetAndRelated>();
     private int currentOffset = 0;
@@ -314,10 +313,6 @@ public class ViewAllNotesetsActivity extends ListActivity {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
 
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        // -1 to subtract list header
-        selectedPositionInList = info.position - 1;
-
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.context_menu_noteset, menu);
     }
@@ -338,14 +333,15 @@ public class ViewAllNotesetsActivity extends ListActivity {
                 startActivity(intent);
                 return true;
             case R.id.context_menu_delete:
-                confirmDelete();
+                confirmDelete(info);
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
     }
 
-    public void confirmDelete() {
+    public void confirmDelete(final AdapterContextMenuInfo info) {
+        final NotesetsDataSource nds = new NotesetsDataSource(this);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.dialog_confirm_delete_message).setTitle(
                 R.string.dialog_confirm_delete_title);
@@ -355,9 +351,7 @@ public class ViewAllNotesetsActivity extends ListActivity {
                 // go ahead and delete noteset
 
                 // get noteset id to delete (from chosen item in list)
-                Noteset notesetToDelete = allNotesetsAndNotes.get(selectedPositionInList)
-                        .getNoteset();
-
+                Noteset notesetToDelete = nds.getNoteset(info.id);
                 deleteNoteset(notesetToDelete);
 
                 Context context = getApplicationContext();
@@ -369,7 +363,7 @@ public class ViewAllNotesetsActivity extends ListActivity {
                 toast.show();
 
                 // refresh list
-                adapter.removeItem(selectedPositionInList);
+                adapter.removeItem(info.position - 1);
                 adapter.notifyDataSetChanged();
             }
         });
@@ -381,6 +375,7 @@ public class ViewAllNotesetsActivity extends ListActivity {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+        nds.close();
     }
 
     public void deleteNoteset(Noteset noteset) {

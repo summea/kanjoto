@@ -202,9 +202,9 @@ public class ViewAllNotevaluesActivity extends ListActivity {
     }
 
     public void deleteNotevalue(Notevalue notevalue) {
-        NotevaluesDataSource eds = new NotevaluesDataSource(this);
-        eds.deleteNotevalue(notevalue);
-        eds.close();
+        NotevaluesDataSource nds = new NotevaluesDataSource(this);
+        nds.deleteNotevalue(notevalue);
+        nds.close();
     }
 
     @Override
