@@ -12,10 +12,7 @@ import com.andrewsummers.otashu.model.Emotion;
 import com.andrewsummers.otashu.model.Label;
 import com.andrewsummers.otashu.model.EmotionAndRelated;
 
-import android.app.AlertDialog;
 import android.app.ListActivity;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
