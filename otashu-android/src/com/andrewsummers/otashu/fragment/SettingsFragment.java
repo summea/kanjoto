@@ -18,7 +18,6 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.widget.TimePicker;
 
 public class SettingsFragment extends PreferenceFragment implements
@@ -46,9 +45,6 @@ public class SettingsFragment extends PreferenceFragment implements
                     int hourOfDay = sharedPref.getInt("alarm_hour_of_day", -1);
                     int minute = sharedPref.getInt("alarm_minute", -1);
 
-                    Log.d("MYLOG", "hour of day: " + hourOfDay);
-                    Log.d("MYLOG", "minute: " + minute);
-
                     // set alarm, if enabled
                     if ((hourOfDay >= 0) && (minute >= 0)) {
                         setAlarm(hourOfDay, minute, second);
@@ -60,8 +56,6 @@ public class SettingsFragment extends PreferenceFragment implements
                     Intent intent = new Intent(getActivity(), OtashuReceiver.class);
                     PendingIntent sender = PendingIntent.getBroadcast(getActivity(), 0, intent, 0);
                     am.cancel(sender);
-
-                    Log.d("MYLOG", "alarm disabled");
                 }
 
                 return true;
@@ -149,7 +143,5 @@ public class SettingsFragment extends PreferenceFragment implements
 
         am.setRepeating(AlarmManager.RTC_WAKEUP, calAlarm.getTimeInMillis(),
                 AlarmManager.INTERVAL_DAY, sender);
-
-        Log.d("MYLOG", "alarm set: hour: " + hourOfDay + " minute: " + minute);
     }
 }

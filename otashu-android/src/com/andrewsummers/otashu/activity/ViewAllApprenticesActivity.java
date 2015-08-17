@@ -7,7 +7,6 @@ import java.util.List;
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.adapter.ApprenticeAdapter;
 import com.andrewsummers.otashu.data.ApprenticesDataSource;
-import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.model.Apprentice;
 
 import android.app.AlertDialog;

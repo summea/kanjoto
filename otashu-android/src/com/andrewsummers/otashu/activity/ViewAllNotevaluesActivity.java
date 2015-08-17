@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.adapter.NotevalueAdapter;
-import com.andrewsummers.otashu.data.LearningStylesDataSource;
 import com.andrewsummers.otashu.data.NotevaluesDataSource;
 import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.model.Notevalue;

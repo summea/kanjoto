@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.adapter.LabelAdapter;
-import com.andrewsummers.otashu.data.GraphsDataSource;
 import com.andrewsummers.otashu.data.LabelsDataSource;
 import com.andrewsummers.otashu.model.Label;
 
