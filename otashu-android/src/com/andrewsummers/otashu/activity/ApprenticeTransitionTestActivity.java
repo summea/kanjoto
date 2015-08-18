@@ -413,8 +413,6 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                 // check if achievement was earned in play mode
                 if (programMode == 2) {
 
-                    Log.d("MYLOG", "current edges: " + currentEdges.toString());
-
                     // check if this is a strong noteset
                     String currentEdgesKey = "";
                     boolean strongTransitionFound = true;
@@ -430,9 +428,6 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                             strongTransitionFound = false;
                         }
                     }
-
-                    Log.d("MYLOG", "strong path found? " + strongTransitionFound);
-                    Log.d("MYLOG", "current edges key: " + currentEdgesKey);
 
                     if (strongTransitionFound) {
                         String key = String.valueOf(currentEdgesKey);
@@ -589,17 +584,9 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
             focusNotes.add(noteOne);
             // first noteset of last noteset
             focusNotes.add(noteTwo);
-
-            // focusNotes.add(notesetOne.size()
-            Log.d("MYLOG", noteOne.toString());
-            Log.d("MYLOG", noteTwo.toString());
-            Log.d("MYLOG", focusNotes.get(0) + "");
-            Log.d("MYLOG", focusNotes.get(1) + "");
         } catch (Exception e) {
             Log.d("MYLOG", e.getStackTrace().toString());
         }
-
-        // }
 
         // get default instrument for playback
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -702,13 +689,9 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
             aScore.setCorrect(isCorrect);
             aScore.setNotevalue(notevalue);
 
-            Log.d("MYLOG", "current transition score: " + aScore.toString());
-
             ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
             asds.createApprenticeScore(aScore);
             asds.close();
-        } else {
-            Log.d("MYLOG", "Not saving scorecard.");
         }
     }
 }

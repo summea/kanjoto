@@ -209,7 +209,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
 
         switch (v.getId()) {
             case R.id.button_no:
-                Log.d("MYLOG", "10. if 'no':");
+                // 10. if 'no':
                 guessesIncorrect++;
 
                 totalGuesses = guessesCorrect + guessesIncorrect;
@@ -230,14 +230,10 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
                             if ((kn.getWeight() + 0.1f) >= 1.0f) {
                                 // prune note from table set (once weight gets past certain value)
                                 knds.deleteKeyNote(kn);
-                                Log.d("MYLOG", "deleting keynote -- weight is >= 1.0f");
                             } else {
                                 // raise weight of note in table set
                                 kn.setWeight(kn.getWeight() + 0.1f);
                                 knds.updateKeyNote(kn);
-                                Log.d("MYLOG",
-                                        "updating key note -- weight is raised to: "
-                                                + kn.getWeight());
                             }
                         }
                     }
@@ -269,7 +265,7 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
 
                 break;
             case R.id.button_yes:
-                Log.d("MYLOG", "11. if 'yes':");
+                // 11. if 'yes':
                 guessesCorrect++;
 
                 totalGuesses = guessesCorrect + guessesIncorrect;
@@ -293,9 +289,6 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
                                 // lower weight of note in table set
                                 kn.setWeight(kn.getWeight() - 0.1f);
                                 knds.updateKeyNote(kn);
-                                Log.d("MYLOG",
-                                        "updating key note -- weight is lowered to: "
-                                                + kn.getWeight());
                             }
                         }
                     }
@@ -308,7 +301,6 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
                         newNote.setWeight(0.5f);
                         newNote.setApprenticeId(apprenticeId);
                         knds.createKeyNote(newNote);
-                        Log.d("MYLOG", "adding new key note: " + newNote.getNotevalue());
                     }
                 }
 
@@ -423,14 +415,11 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
         notesToInsert.clear();
 
         // 1. select random notevalue
-        Log.d("MYLOG", "1. select random notevalue");
         // 60..71 (C4..B4)
         // stay within 39..50 for now (C4..B4)
         Note anchorNote = getRandomNote(39, 50);
 
         // 2. check to see if a key signature contains notevalue
-        Log.d("MYLOG", "2. check to see if a key signature contains notevalue for apprentice: "
-                + apprenticeId);
         KeyNotesDataSource knds = new KeyNotesDataSource(this);
         List<Long> keySignatureIds = knds.keySignatureIdsThatContain(apprenticeId,
                 anchorNote.getNotevalue());
@@ -440,8 +429,6 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
         String approach = "";
 
         // 3. if no key signatures exist, create one and put notevalue into key signature
-        Log.d("MYLOG",
-                "3. if no key signatures exist, create one and put notevalue into key signature");
         if (keySignatureIds.isEmpty()) {
             approach = "Random";
             KeySignature ks = new KeySignature();
@@ -468,26 +455,18 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
         }
 
         // 4. select all notes from selected key signature
-        Log.d("MYLOG", "4. select all notes from selected key signature");
         List<Integer> currentKeySignatureNotes = knds
                 .getKeyNoteNotevaluesByKeySignature(currentKeySignatureId);
 
         // 5. sort notes in list
-        Log.d("MYLOG", "5. sort notes in list");
         Collections.sort(currentKeySignatureNotes);
 
-        Log.d("MYLOG", "current key signature: " + currentKeySignatureId);
-        Log.d("MYLOG", "current key signature notes: " + currentKeySignatureNotes.toString());
-
         // 6. choose an extra note
-        Log.d("MYLOG", "6. choose an extra note");
-
         boolean foundExistingNote = false;
 
-        // avoid duplicate notes in key signature list
+        // attempt to avoid duplicate notes in key signature list
         Note extraNote = new Note();
         for (int i = 0; i < 3; i++) {
-            Log.d("MYLOG", "attempting to avoid duplicate notes in key signature list");
             // random approach
             extraNote = getRandomNote(39, 50);
 
@@ -504,11 +483,9 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
         }
 
         // 7. add extra note to key signature notes list
-        Log.d("MYLOG", "7. add extra note to key signature notes list");
         currentKeySignatureNotes.add(extraNote.getNotevalue());
 
         // 8. play all notes from set for user
-        Log.d("MYLOG", "8. play all notes from set for user");
         for (int i = 0; i < currentKeySignatureNotes.size(); i++) {
             Note note = new Note();
             note.setNotevalue(currentKeySignatureNotes.get(i));
@@ -528,7 +505,6 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
         generateMusic.generateMusic(notes, musicSource, defaultInstrument, playbackSpeed);
 
         // 9. does last generated note fit in selected key set for this emotion?
-        Log.d("MYLOG", "9. does last generated note fit in selected key set for this emotion?");
         askQuestion();
 
         TextView apprenticeGuessMethod = (TextView) findViewById(R.id.apprentice_guess_method);
@@ -624,8 +600,6 @@ public class ApprenticeScaleTestActivity extends Activity implements OnClickList
             ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
             asds.createApprenticeScore(aScore);
             asds.close();
-        } else {
-            Log.d("MYLOG", "Not saving scorecard.");
         }
     }
 

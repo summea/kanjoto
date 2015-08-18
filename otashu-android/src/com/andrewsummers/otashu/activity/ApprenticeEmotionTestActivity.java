@@ -477,8 +477,6 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                 // check if achievement was earned in play mode
                 if (programMode == 2) {
 
-                    Log.d("MYLOG", "current edges: " + currentEdges.toString());
-
                     // check if this is a strong noteset
                     String currentEdgesKey = "";
                     boolean strongPathFound = true;
@@ -494,9 +492,6 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                             strongPathFound = false;
                         }
                     }
-
-                    Log.d("MYLOG", "strong path found? " + strongPathFound);
-                    Log.d("MYLOG", "current edges key: " + currentEdgesKey);
 
                     if (strongPathFound) {
                         String key = String.valueOf(currentEdgesKey);
@@ -672,8 +667,6 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
             notes = generateNotes(39, 50);
         }
 
-        Log.d("MYLOG", "checking generated notes in emotion test: " + notes.toString());
-
         notesToInsert = notes;
 
         // get default instrument for playback
@@ -816,13 +809,9 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
             aScore.setCorrect(isCorrect);
             aScore.setNotevalue(notevalue);
 
-            Log.d("MYLOG", "saving emotion score: " + aScore.toString());
-
             ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);
             asds.createApprenticeScore(aScore);
             asds.close();
-        } else {
-            Log.d("MYLOG", "Not saving scorecard.");
         }
     }
 
