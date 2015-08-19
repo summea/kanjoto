@@ -104,6 +104,7 @@ public class ExportDatabaseActivity extends Activity {
                 e.printStackTrace();
             }
 
+            // TODO: address certain cases
             if (currentDB.exists()) {
                 Log.d("MYLOG", "current database exists!");
             }

@@ -29,7 +29,7 @@ import android.widget.Toast;
  * CreateEmotionActivity is an Activity which provides users the ability to create new emotions.
  * <p>
  * This activity provides a form for creating a new Emotion. An Emotion is basically a label or tag
- * for an emotion that is s;aved into the database for later use. Emotions are typically used in
+ * for an emotion that is saved into the database for later use. Emotions are typically used in
  * connection with Noteset objects (e.g. noteset-emotion combinations).
  * </p>
  */
