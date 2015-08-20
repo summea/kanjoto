@@ -274,7 +274,6 @@ public class ViewAllNotesetsActivity extends ListActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView,
                     int position, long id) {
-                Log.d("MYLOG", "> filter selected... positon" + position + " id: " + id);
                 filterEmotionId = id;
                 // TODO: refresh notesets list after choosing a filter option
                 adapter.clear();

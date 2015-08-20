@@ -24,8 +24,6 @@ import android.widget.TextView;
  */
 public class ViewApprenticeScorecardDetailActivity extends Activity {
     private int apprenticeScorecardId = 0;
-    //private SharedPreferences sharedPref;
-    //private long apprenticeId = 0;
 
     /**
      * onCreate override used to get details view.
@@ -38,10 +36,6 @@ public class ViewApprenticeScorecardDetailActivity extends Activity {
 
         // get specific layout for content view
         setContentView(R.layout.activity_view_apprentice_scorecard_detail);
-
-        //sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        //apprenticeId = Long.parseLong(sharedPref.getString(
-                //"pref_selected_apprentice", "1"));
 
         apprenticeScorecardId = (int) getIntent().getExtras().getLong("list_id");
 

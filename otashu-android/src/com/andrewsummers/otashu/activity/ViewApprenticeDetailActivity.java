@@ -69,13 +69,13 @@ public class ViewApprenticeDetailActivity extends Activity implements OnClickLis
 
         TextView apprenticeLearningStyle = (TextView) findViewById(R.id.apprentice_learning_style_value);
         apprenticeLearningStyle.setText(learningStyle.getName());
-        
+
         TextView apprenticeAchievementLabel1 = (TextView) findViewById(R.id.apprentice_achievement_label_1);
         apprenticeAchievementLabel1.setText("Emotion");
-        
+
         TextView apprenticeAchievementLabel2 = (TextView) findViewById(R.id.apprentice_achievement_label_2);
         apprenticeAchievementLabel2.setText("Scale");
-        
+
         TextView apprenticeAchievementLabel3 = (TextView) findViewById(R.id.apprentice_achievement_label_3);
         apprenticeAchievementLabel3.setText("Transition");
 

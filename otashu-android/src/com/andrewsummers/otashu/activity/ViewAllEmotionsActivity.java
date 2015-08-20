@@ -22,7 +22,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -148,7 +147,7 @@ public class ViewAllEmotionsActivity extends ListActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        
+
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.context_menu_emotion, menu);
     }
@@ -187,9 +186,8 @@ public class ViewAllEmotionsActivity extends ListActivity {
                 // user clicked ok, so go ahead and delete emotion
                 // get correct emotion id to delete
                 Emotion emotionToDelete = eds.getEmotion(info.id);
-                Log.d("MYLOG", "emotion id to delete: " + info.id);
                 deleteEmotion(emotionToDelete);
-                
+
                 // also, delete related notesets and notes
                 List<Noteset> relatedNotesets = nds.getAllNotesetsByEmotion(info.id);
                 for (Noteset noteset : relatedNotesets) {

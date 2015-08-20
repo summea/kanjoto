@@ -79,8 +79,6 @@ public class ViewApprenticeStrongestPathDetailActivity extends Activity implemen
             Label emotionLabel = lds.getLabel(emotion.getLabelId());
             lds.close();
 
-            Log.d("MYLOG", "found emotion for detail activity: " + emotion.getName());
-
             TextView emotionName = (TextView) findViewById(R.id.strongest_path_detail_emotion_value);
             emotionName.setText(emotion.getName());
             String backgroundColor = "#ffffff";
@@ -179,8 +177,6 @@ public class ViewApprenticeStrongestPathDetailActivity extends Activity implemen
                 note.setVelocity(100);
                 note.setPosition(pathEdges.size() + 1);
                 notes.add(note);
-
-                Log.d("MYLOG", "> notes for playback: " + notes.toString());
 
                 // get default instrument for playback
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
