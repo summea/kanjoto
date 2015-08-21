@@ -147,7 +147,6 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
             // so that these can be deleted from the `paths` table later
             pathIdsToDelete.add(pathEdgeToDelete.getPathId());
             peds.deletePathEdge(pathEdgeToDelete);
-            Log.d("MYLOG", "deleting old path edge for emotion: " + emotionId);
         }
 
         Path path;
@@ -157,7 +156,6 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
             path = new Path();
             path.setId(pathId);
             pds.deletePath(path);
-            Log.d("MYLOG", "deleting old path for emotion: " + emotionId);
         }
 
         // get top 3
@@ -183,7 +181,6 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
                                         edge2To3Match = true;
 
                                         if (edge1To2Match && edge2To3Match) {
-                                            Log.d("MYLOG", "> cross section match found!");
                                             bestMatch.add(edge1);
                                             bestMatch.add(edge2);
                                             bestMatch.add(edge3);
@@ -205,13 +202,9 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
                 if (bestMatch.size() > 0) {
                     path = new Path();
                     path = pds.createPath(path);
-                    Log.d("MYLOG", "newly created path id: " + path.getId());
 
                     PathEdge pathEdge;
-                    Log.d("MYLOG", "updating path data for emotion");
-
                     List<PathEdge> pathEdges = new ArrayList<PathEdge>();
-
                     PathAndRelated par = new PathAndRelated();
                     par.setPath(path);
 
@@ -230,7 +223,6 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
                         // TODO: add to topPaths
                         // ArrayList<PathEdge> al = new ArrayList<PathEdge>();
                         // check if a list exists for current path
-                        Log.d("MYLOG", "adding to top paths (pathId): " + path.getId());
 
                         pathEdges.add(pathEdge);
                     }
@@ -245,16 +237,12 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
                         usedOnce.add(bestMatch.get(j).getId());
                     }
                 }
-
-                Log.d("MYLOG", usedOnce.toString());
             } catch (Exception e) {
                 Log.d("MYLOG", e.getStackTrace().toString());
             }
 
             pds.close();
         }
-
-        Log.d("MYLOG", "top paths being passed to adapter: " + topPaths.toString());
 
         // pass list data to adapter
         adapter = new PathAdapter(this, topPaths);
@@ -281,7 +269,6 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
     }
 
     public void fillList() {
-        Log.d("MYLOG", "fill list called...");
         // fill list with Top 3 strongest Apprentice paths (if available)
         topPaths.clear();
 

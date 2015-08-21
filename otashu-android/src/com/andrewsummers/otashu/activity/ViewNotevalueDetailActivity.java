@@ -22,6 +22,7 @@ import android.widget.TextView;
  */
 public class ViewNotevalueDetailActivity extends Activity {
     private int notevalueId = 0;
+
     /**
      * onCreate override used to get details view.
      * 

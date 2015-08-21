@@ -40,7 +40,7 @@ public class ViewNotesetSequenceActivity extends FragmentActivity {
 
         // get specific layout for content view
         setContentView(R.layout.activity_view_noteset_sequence);
-        
+
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         apprenticeId = Long.parseLong(sharedPref.getString(
                 "pref_selected_apprentice", "1"));
@@ -74,8 +74,8 @@ public class ViewNotesetSequenceActivity extends FragmentActivity {
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
             // check if touch feedback is enabled
-            // pass current setting value to bundle (for later delivery to
-            // fragment view)
+            // pass current setting value to bundle
+            // (for later delivery to fragment view)
             boolean pref_touch_feedback_enabled = sharedPref.getBoolean(
                     "pref_touch_feedback_enabled", true);
 
@@ -98,8 +98,7 @@ public class ViewNotesetSequenceActivity extends FragmentActivity {
      */
     @Override
     public void onBackPressed() {
-        // do a normal "back" action if we are viewing page 0 (first sequence
-        // page)
+        // do a normal "back" action if we are viewing page 0 (first sequence page)
         if (mPager.getCurrentItem() == 0) {
             super.onBackPressed();
         }

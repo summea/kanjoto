@@ -69,7 +69,6 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
         } else {
             emotionId = getIntent().getExtras().getLong("list_id");
         }
-        Log.d("MYLOG", "emotionId: " + emotionId);
 
         // get emotion graph id for Apprentice's note relationships graph
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -81,10 +80,7 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
         sendEmofing = getIntent().getIntExtra("send_emofing", 0);
 
         // 2. Gather all found paths
-        // List<Integer> foundPathNotes = gatherEmotionPaths(0.5f);
         SparseArray<SparseIntArray> emofingData = gatherEmotionPaths(0.5f);
-
-        Log.d("MYLOG", ">> found paths: " + emofingData);
 
         // 7. Plot root number reductions (the emofing)
         drawView = new DrawView(this, emofingData);
@@ -99,7 +95,6 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
                     "120"));
 
             List<Note> notes = new ArrayList<Note>();
-            Log.d("MYLOG", "emofingData: " + emofingData.toString());
 
             for (int i = 1; i <= emofingData.size(); i++) {
                 for (int j = 1; j <= 12; j++) {
@@ -152,8 +147,6 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
                 }
             }
 
-            Log.d("MYLOG", "emofing notes: " + notes.toString());
-
             generateMusic(notes, musicSource, defaultInstrument, playbackSpeed);
 
             playMusic(musicSource);
@@ -185,9 +178,6 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
             foundPaths.put(i, values);
         }
 
-        Log.d("MYLOG", ">> init found paths: " + foundPaths);
-        Log.d("MYLOG", "args: " + apprenticeId + " " + graphId + " " + emotionId);
-
         // 3. Look for all possible Emotion Graph paths that are stronger (lower than) X weight
         EdgesDataSource eds = new EdgesDataSource(this);
         SparseArray<List<Edge>> foundEdges = eds.getPathsForEmotion(apprenticeId, graphId,
@@ -196,8 +186,6 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
         // 5. Store noteset path root number reductions into data structure
         SparseIntArray rootNumbersMap = new SparseIntArray();
         boolean rootNumbersMapCreated = false;
-
-        Log.d("MYLOG", "edges: " + foundEdges.toString());
 
         try {
             for (int i = 1; i < foundEdges.size() + 1; i++) {
@@ -210,12 +198,11 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
                         if (edge.getPosition() == 1) {
                             firstNote = edge.getFromNodeId();
                             rootNumbersMap.put(firstNote, 1);
-                            Log.d("MYLOG", "root numbers map... key: " + firstNote + " j: " + 1);
                         }
 
-                        // 4. Convert noteset paths into root numbers +/- {1, ..., 12} (ex: I, II,
-                        // III, IV ...)
-                        // QUESTION: do this for each path?
+                        // 4. Convert noteset paths into root numbers +/- {1, ..., 12}
+                        // (ex: I, II, III, IV ...)
+                        // QUESTION: should this be done for each path?
                         // range of notevalues between C4...B4 (60...71)
 
                         int key = firstNote;
@@ -226,16 +213,12 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
                                 key++;
                             }
                             rootNumbersMap.put(key, j);
-                            Log.d("MYLOG", "root numbers map... key: " + key + " j: " + j);
                         }
                         rootNumbersMapCreated = true;
                     }
 
-                    Log.d("MYLOG", "current edge: " + edge.toString());
-
                     SparseIntArray values = foundPaths.get(edge.getPosition());
                     int newValue = values.get(rootNumbersMap.get(edge.getFromNodeId())) + 1;
-                    Log.d("MYLOG", "new value: " + newValue);
                     values.put(rootNumbersMap.get(edge.getFromNodeId()), newValue);
 
                     // add found mapped notevalues to our result
@@ -243,9 +226,7 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
 
                     if (edge.getPosition() == 3) {
                         values = foundPaths.get(edge.getPosition() + 1);
-                        Log.d("MYLOG", "to node: " + edge.getToNodeId());
                         newValue = values.get(rootNumbersMap.get(edge.getToNodeId())) + 1;
-                        Log.d("MYLOG", "new value: " + newValue);
                         values.put(rootNumbersMap.get(edge.getToNodeId()), newValue);
 
                         // add found mapped notevalues to our result
@@ -253,8 +234,6 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
                     }
                 }
             }
-
-            Log.d("MYLOG", ">> found paths: " + foundPaths);
         } catch (Exception e) {
             Log.d("MYLOG", e.getStackTrace().toString());
         }

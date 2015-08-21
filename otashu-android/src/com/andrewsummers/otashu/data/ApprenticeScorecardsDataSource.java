@@ -133,8 +133,6 @@ public class ApprenticeScorecardsDataSource {
             query += " ORDER BY " + orderBy + " ASC";
         }
 
-        Log.d("MYLOG", "order query: " + query);
-
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 

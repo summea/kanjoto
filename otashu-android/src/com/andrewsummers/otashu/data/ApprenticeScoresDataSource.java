@@ -11,7 +11,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 public class ApprenticeScoresDataSource {
     private SQLiteDatabase database;
@@ -298,8 +297,6 @@ public class ApprenticeScoresDataSource {
         String query = "SELECT COUNT(*) FROM " + OtashuDatabaseHelper.TABLE_APPRENTICE_SCORES
                 + " WHERE " + OtashuDatabaseHelper.COLUMN_SCORECARD_ID + "=?"
                 + " GROUP BY " + OtashuDatabaseHelper.COLUMN_QUESTION_NUMBER;
-
-        Log.d("MYLOG", query);
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
