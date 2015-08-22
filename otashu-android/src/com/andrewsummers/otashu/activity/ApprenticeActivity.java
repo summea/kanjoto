@@ -113,7 +113,6 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
         // apply this adapter to the spinner
         spinner.setAdapter(emotionsAdapter);
 
-        
         try {
             // add listeners to buttons
             buttonChooseApprentice.setOnClickListener(this);
@@ -128,7 +127,7 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
     @Override
     public void onClick(View v) {
         Intent intent = null;
-        
+
         // get all emotions for spinner list
         List<Integer> allEmotionIds = new ArrayList<Integer>();
         EmotionsDataSource eds = new EmotionsDataSource(this);
@@ -149,7 +148,7 @@ public class ApprenticeActivity extends Activity implements OnClickListener {
         // fill bundle with values we are passing to next activity
         Bundle bundle = new Bundle();
         bundle.putInt("emotion_focus_id", selectedEmotionFocusValue);
-        
+
         switch (v.getId()) {
             case R.id.button_choose_apprentice:
                 intent = new Intent(this, ChooseApprenticeActivity.class);

@@ -112,46 +112,46 @@ public class MainActivity extends Activity implements OnClickListener {
 
         // handle menu item selection
         switch (item.getItemId()) {
-            case R.id.view_settings:
+            case R.id.menu_button_settings:
                 intent = new Intent(this, SettingsActivity.class);
                 break;
-            case R.id.view_labels:
+            case R.id.menu_button_labels:
                 intent = new Intent(this, ViewAllLabelsActivity.class);
                 break;
-            case R.id.export_database:
+            case R.id.menu_button_export_database:
                 intent = new Intent(this, ExportDatabaseActivity.class);
                 break;
-            case R.id.import_database:
+            case R.id.menu_button_import_database:
                 confirmImport();
                 break;
-            case R.id.database_dumper:
+            case R.id.menu_button_database_dumper:
                 intent = new Intent(this, DatabaseDumperActivity.class);
                 break;
-            case R.id.view_bookmarks:
+            case R.id.menu_button_bookmarks:
                 intent = new Intent(this, ViewAllBookmarksActivity.class);
                 break;
-            case R.id.view_notevalues:
+            case R.id.menu_button_notevalues:
                 intent = new Intent(this, ViewAllNotevaluesActivity.class);
                 break;
-            case R.id.view_graphs:
+            case R.id.menu_button_graphs:
                 intent = new Intent(this, ViewAllGraphsActivity.class);
                 break;
-            case R.id.view_apprentice_scorecards:
+            case R.id.menu_button_apprentice_scorecards:
                 intent = new Intent(this, ViewAllApprenticeScorecardsActivity.class);
                 break;
-            case R.id.view_apprentice_strongest_paths:
+            case R.id.menu_button_apprentice_strongest_paths:
                 intent = new Intent(this, ViewAllApprenticeStrongestPathsByEmotionActivity.class);
                 break;
-            case R.id.view_emotion_fingerprints:
+            case R.id.menu_button_emotion_fingerprints:
                 intent = new Intent(this, ViewAllEmotionFingerprintsActivity.class);
                 break;
-            case R.id.get_emotion_from_noteset:
+            case R.id.menu_button_get_emotion_from_noteset:
                 intent = new Intent(this, GetEmotionFromNotesetActivity.class);
                 break;
-            case R.id.view_apprentices:
+            case R.id.menu_button_apprentices:
                 intent = new Intent(this, ViewAllApprenticesActivity.class);
                 break;
-            case R.id.view_learning_styles:
+            case R.id.menu_button_learning_styles:
                 intent = new Intent(this, ViewAllLearningStylesActivity.class);
                 break;
         }

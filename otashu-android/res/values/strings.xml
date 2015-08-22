@@ -112,6 +112,8 @@
     <string name="learning_style_saved">learning style saved</string>
     <string name="list_header_title">List Title</string>
     <string name="main_menu_title">kanjoto</string>
+    <string name="menu_button_apprentices">Apprentices</string>
+    <string name="menu_button_apprentice_scorecards">Apprentice Scorecards</string>
     <string name="menu_button_apprentice_strongest_paths">Apprentice Strongest Paths</string>
     <string name="menu_button_bookmarks">Bookmarks</string>
     <string name="menu_button_create_apprentice">New</string>
@@ -125,13 +127,15 @@
     <string name="menu_button_database_dumper">Database Dumper</string>
     <string name="menu_button_emotion_fingerprints">Emotion Fingerprints</string>
     <string name="menu_button_export_database">Export Database</string>
+    <string name="menu_button_get_emotion_from_noteset">Get Emotion from Noteset</string>
     <string name="menu_button_graphs">Graphs</string>
     <string name="menu_button_import_database">Import Database</string>
+    <string name="menu_button_labels">Labels</string>
+    <string name="menu_button_learning_styles">Learning Styles</string>
     <string name="menu_button_noteset_filter">Filter</string>
     <string name="menu_button_notevalues">Notevalues</string>
     <string name="menu_button_scorecards">Scorecards</string>
     <string name="menu_button_settings">Settings</string>
-    <string name="menu_button_view_labels">Labels</string>
     <string name="menu_title">kanjoto</string>
     <string name="name_apprentice_title">Name Your Apprentice</string>
     <string name="need_emotions">Please create an emotion first!</string>

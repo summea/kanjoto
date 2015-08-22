@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/view_settings"
-        android:title="@string/menu_button_settings" />
+        android:id="@+id/menu_button_apprentices"
+        android:title="@string/menu_button_apprentices" />
     <item
-        android:id="@+id/view_labels"
-        android:title="@string/menu_button_view_labels" />
+        android:id="@+id/menu_button_apprentice_scorecards"
+        android:title="@string/menu_button_apprentice_scorecards" />
     <item
-        android:id="@+id/export_database"
-        android:title="@string/menu_button_export_database" />
-    <item
-        android:id="@+id/import_database"
-        android:title="@string/menu_button_import_database" />
-    <item
-        android:id="@+id/database_dumper"
-        android:title="@string/menu_button_database_dumper" />
-    <item
-        android:id="@+id/view_bookmarks"
-        android:title="@string/menu_button_bookmarks" />
-    <item
-        android:id="@+id/view_notevalues"
-        android:title="@string/menu_button_notevalues" />
-    <item
-        android:id="@+id/view_graphs"
-        android:title="@string/menu_button_graphs" />
-    <item
-        android:id="@+id/view_apprentice_scorecards"
-        android:title="@string/menu_button_scorecards" />
-    <item
-        android:id="@+id/view_apprentice_strongest_paths"
+        android:id="@+id/menu_button_apprentice_strongest_paths"
         android:title="@string/menu_button_apprentice_strongest_paths" />
     <item
-        android:id="@+id/view_emotion_fingerprints"
+        android:id="@+id/menu_button_bookmarks"
+        android:title="@string/menu_button_bookmarks" />
+    <item
+        android:id="@+id/menu_button_database_dumper"
+        android:title="@string/menu_button_database_dumper" />
+    <item
+        android:id="@+id/menu_button_emotion_fingerprints"
         android:title="@string/menu_button_emotion_fingerprints" />
     <item
-        android:id="@+id/get_emotion_from_noteset"
-        android:title="@string/get_emotion_from_noteset" />
+        android:id="@+id/menu_button_export_database"
+        android:title="@string/menu_button_export_database" />
     <item
-        android:id="@+id/view_apprentices"
-        android:title="@string/view_apprentices" />
+        android:id="@+id/menu_button_get_emotion_from_noteset"
+        android:title="@string/menu_button_get_emotion_from_noteset" />
     <item
-        android:id="@+id/view_learning_styles"
-        android:title="@string/view_learning_styles" />
+        android:id="@+id/menu_button_graphs"
+        android:title="@string/menu_button_graphs" />
+    <item
+        android:id="@+id/menu_button_import_database"
+        android:title="@string/menu_button_import_database" />
+    <item
+        android:id="@+id/menu_button_labels"
+        android:title="@string/menu_button_labels" />
+    <item
+        android:id="@+id/menu_button_learning_styles"
+        android:title="@string/menu_button_learning_styles" />
+    <item
+        android:id="@+id/menu_button_notevalues"
+        android:title="@string/menu_button_notevalues" />
+    <item
+        android:id="@+id/menu_button_settings"
+        android:title="@string/menu_button_settings" />
 </menu>
