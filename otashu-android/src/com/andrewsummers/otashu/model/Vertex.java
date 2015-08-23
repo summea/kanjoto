@@ -6,7 +6,6 @@ package com.andrewsummers.otashu.model;
  */
 public class Vertex {
     private long id;
-    private long graphId;
     private int node;
 
     /**
@@ -25,24 +24,6 @@ public class Vertex {
      */
     public void setId(long id) {
         this.id = id;
-    }
-
-    /**
-     * getGraphId gets Vertex graphId
-     * 
-     * @return <code>long</code> graphId value
-     */
-    public long getGraphId() {
-        return graphId;
-    }
-
-    /**
-     * setGraphId sets Vertex graphId
-     * 
-     * @param graphId New graphId value.
-     */
-    public void setGraphId(long graphId) {
-        this.graphId = graphId;
     }
 
     /**

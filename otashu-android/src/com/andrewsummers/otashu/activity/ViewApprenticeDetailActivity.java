@@ -58,28 +58,28 @@ public class ViewApprenticeDetailActivity extends Activity implements OnClickLis
         apprentice = lds.getApprentice(apprenticeId);
         lds.close();
 
-        // fill in form data
-        TextView apprenticeName = (TextView) findViewById(R.id.apprentice_name_value);
-        apprenticeName.setText(apprentice.getName());
-
-        buttonSendApprentice = (Button) findViewById(R.id.button_send_apprentice);
-
-        LearningStylesDataSource lsds = new LearningStylesDataSource(this);
-        LearningStyle learningStyle = lsds.getLearningStyle(apprentice.getLearningStyleId());
-
-        TextView apprenticeLearningStyle = (TextView) findViewById(R.id.apprentice_learning_style_value);
-        apprenticeLearningStyle.setText(learningStyle.getName());
-
-        TextView apprenticeAchievementLabel1 = (TextView) findViewById(R.id.apprentice_achievement_label_1);
-        apprenticeAchievementLabel1.setText("Emotion");
-
-        TextView apprenticeAchievementLabel2 = (TextView) findViewById(R.id.apprentice_achievement_label_2);
-        apprenticeAchievementLabel2.setText("Scale");
-
-        TextView apprenticeAchievementLabel3 = (TextView) findViewById(R.id.apprentice_achievement_label_3);
-        apprenticeAchievementLabel3.setText("Transition");
-
         try {
+            // fill in form data
+            TextView apprenticeName = (TextView) findViewById(R.id.apprentice_name_value);
+            apprenticeName.setText(apprentice.getName());
+
+            buttonSendApprentice = (Button) findViewById(R.id.button_send_apprentice);
+
+            LearningStylesDataSource lsds = new LearningStylesDataSource(this);
+            LearningStyle learningStyle = lsds.getLearningStyle(apprentice.getLearningStyleId());
+
+            TextView apprenticeLearningStyle = (TextView) findViewById(R.id.apprentice_learning_style_value);
+            apprenticeLearningStyle.setText(learningStyle.getName());
+
+            TextView apprenticeAchievementLabel1 = (TextView) findViewById(R.id.apprentice_achievement_label_1);
+            apprenticeAchievementLabel1.setText("Emotion");
+
+            TextView apprenticeAchievementLabel2 = (TextView) findViewById(R.id.apprentice_achievement_label_2);
+            apprenticeAchievementLabel2.setText("Scale");
+
+            TextView apprenticeAchievementLabel3 = (TextView) findViewById(R.id.apprentice_achievement_label_3);
+            apprenticeAchievementLabel3.setText("Transition");
+
             // add listeners to buttons
             buttonSendApprentice.setOnClickListener(this);
         } catch (Exception e) {

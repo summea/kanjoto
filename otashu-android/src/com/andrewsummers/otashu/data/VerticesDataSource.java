@@ -19,7 +19,6 @@ public class VerticesDataSource {
     // database table columns
     private String[] allColumns = {
             OtashuDatabaseHelper.COLUMN_ID,
-            OtashuDatabaseHelper.COLUMN_GRAPH_ID,
             OtashuDatabaseHelper.COLUMN_NODE,
     };
 
@@ -66,7 +65,6 @@ public class VerticesDataSource {
      */
     public Vertex createVertex(Vertex vertex) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(OtashuDatabaseHelper.COLUMN_GRAPH_ID, vertex.getGraphId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_NODE, vertex.getNode());
 
         // create database handle
@@ -128,8 +126,7 @@ public class VerticesDataSource {
                 // create note objects based on note data from database
                 vertex = new Vertex();
                 vertex.setId(cursor.getLong(0));
-                vertex.setGraphId(cursor.getLong(1));
-                vertex.setNode(cursor.getInt(2));
+                vertex.setNode(cursor.getInt(1));
 
                 // add note string to list of strings
                 vertices.add(vertex);
@@ -150,24 +147,21 @@ public class VerticesDataSource {
     private Vertex cursorToVertex(Cursor cursor) {
         Vertex vertex = new Vertex();
         vertex.setId(cursor.getLong(0));
-        vertex.setGraphId(cursor.getLong(1));
-        vertex.setNode(cursor.getInt(2));
+        vertex.setNode(cursor.getInt(1));
         return vertex;
     }
 
-    public Vertex getVertex(long graphId, int vertexNodeId) {
+    public Vertex getVertex(int vertexNodeId) {
         Vertex vertex = new Vertex();
 
         String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_VERTICES
-                + " WHERE " + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "=?"
-                + " AND " + OtashuDatabaseHelper.COLUMN_NODE + "=?";
+                + " WHERE " + OtashuDatabaseHelper.COLUMN_NODE + "=?";
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // select all vertices from database
         Cursor cursor = db.rawQuery(query, new String[] {
-                String.valueOf(graphId),
                 String.valueOf(vertexNodeId),
         });
 
@@ -176,8 +170,7 @@ public class VerticesDataSource {
                 // create vertex objects based on vertex data from database
                 vertex = new Vertex();
                 vertex.setId(cursor.getLong(0));
-                vertex.setGraphId(cursor.getLong(1));
-                vertex.setNode(cursor.getInt(2));
+                vertex.setNode(cursor.getInt(1));
             } while (cursor.moveToNext());
         }
 
@@ -193,7 +186,6 @@ public class VerticesDataSource {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(OtashuDatabaseHelper.COLUMN_ID, vertex.getId());
-        contentValues.put(OtashuDatabaseHelper.COLUMN_GRAPH_ID, vertex.getGraphId());
         contentValues.put(OtashuDatabaseHelper.COLUMN_NODE, vertex.getNode());
 
         db.update(OtashuDatabaseHelper.TABLE_VERTICES, contentValues,

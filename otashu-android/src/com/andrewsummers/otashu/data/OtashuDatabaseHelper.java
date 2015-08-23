@@ -147,7 +147,6 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_VERTICES = "CREATE TABLE " + TABLE_VERTICES
             + " (" + COLUMN_ID + " integer primary key autoincrement, "
-            + COLUMN_GRAPH_ID + " integer,"
             + COLUMN_NODE + " integer);";
 
     private static final String CREATE_TABLE_EDGES = "CREATE TABLE " + TABLE_EDGES
@@ -416,6 +415,15 @@ public class OtashuDatabaseHelper extends SQLiteOpenHelper {
             } finally {
                 db.endTransaction();
             }
+        }
+
+        // add default vertices
+        Log.d("MYLOG", "db: adding default vertices...");
+        for (int i = 0; i <= 108; i++) {
+            contentValues = new ContentValues();
+            contentValues.put(OtashuDatabaseHelper.COLUMN_ID, i + 1);
+            contentValues.put(OtashuDatabaseHelper.COLUMN_NODE, i);
+            db.insert(OtashuDatabaseHelper.TABLE_VERTICES, null, contentValues);
         }
 
         // add strong paths

@@ -1,8 +1,6 @@
 # otashu
 
 ## TODO:
-- make sure vertices are generated at start of program (if not already existing... these are same for all apprentices)
-- make sure vertices are shared for all apprentices and users
 - create auto test/learn for Emotion test
 - think about adding support for different note speeds in Logic D
 - fix horizontal animation timing for music generation activity
@@ -12,9 +10,13 @@
 - if db is deleted while app has been closed from a page other than main activity, user isn't asked to create a new apprentice
 - call data source constructors that specify databaseName
 - check on why some old getIntent() lines are casting long to int...
+- left-align table cols on Apprentice Detail layout
+- connect achievements (if available) to apprentice details layout page (or separate this out)
 
 
 ## DONE:
+- 20150822: added "generate all apprentice-related graph vertices when new database is created" feature
+- 20150822: fixed "vertices are shared for all apprentices and users and graphs" requirement
 - 20150812: fixed "delete correct items in list" issue (in "list all" activities that also contain deletion code)
 - 20150807: connected label_id to background color in "list all scorecards" activity 
 - 20150806: moved graph_id, apprentice_id, and scale_id columns from ApprenticeScores to ApprenticeScorecards

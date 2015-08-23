@@ -240,8 +240,8 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
         Note noteB = focusNotes.get(1);
 
         // Do nodes exist?
-        Vertex nodeA = vds.getVertex(transitionGraphId, noteA.getNotevalue());
-        Vertex nodeB = vds.getVertex(transitionGraphId, noteB.getNotevalue());
+        Vertex nodeA = vds.getVertex(noteA.getNotevalue());
+        Vertex nodeB = vds.getVertex(noteB.getNotevalue());
 
         switch (v.getId()) {
             case R.id.button_no:
@@ -258,7 +258,6 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                 if (nodeA.getNode() <= 0) {
                     // nodeA doesn't exist... creating new vertex
                     Vertex newNodeA = new Vertex();
-                    newNodeA.setGraphId(transitionGraphId);
                     newNodeA.setNode(noteA.getNotevalue());
                     vds.createVertex(newNodeA);
                     nodeA.setNode(noteA.getNotevalue());
@@ -266,7 +265,6 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                 if (nodeB.getNode() <= 0) {
                     // nodeB doesn't exist... creating new vertex
                     Vertex newNodeB = new Vertex();
-                    newNodeB.setGraphId(transitionGraphId);
                     newNodeB.setNode(noteB.getNotevalue());
                     vds.createVertex(newNodeB);
                     nodeB.setNode(noteB.getNotevalue());
@@ -355,7 +353,6 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                 if (nodeA.getNode() <= 0) {
                     // nodeA doesn't exist... creating new vertex
                     Vertex newNodeA = new Vertex();
-                    newNodeA.setGraphId(transitionGraphId);
                     newNodeA.setNode(noteA.getNotevalue());
                     vds.createVertex(newNodeA);
                     nodeA.setNode(noteA.getNotevalue());
@@ -363,7 +360,6 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
                 if (nodeB.getNode() <= 0) {
                     // nodeB doesn't exist... creating new vertex
                     Vertex newNodeB = new Vertex();
-                    newNodeB.setGraphId(transitionGraphId);
                     newNodeB.setNode(noteB.getNotevalue());
                     vds.createVertex(newNodeB);
                     nodeB.setNode(noteB.getNotevalue());

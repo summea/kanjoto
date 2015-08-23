@@ -252,14 +252,13 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                     noteB = notesToInsert.get(i + 1);
 
                     // Do nodes exist?
-                    Vertex nodeA = vds.getVertex(emotionGraphId, noteA.getNotevalue());
-                    Vertex nodeB = vds.getVertex(emotionGraphId, noteB.getNotevalue());
+                    Vertex nodeA = vds.getVertex(noteA.getNotevalue());
+                    Vertex nodeB = vds.getVertex(noteB.getNotevalue());
 
                     // If nodes don't exist, create new nodes in graph
                     if (nodeA.getNode() <= 0) {
                         // nodeA doesn't exist... creating new vertex
                         Vertex newNodeA = new Vertex();
-                        newNodeA.setGraphId(emotionGraphId);
                         newNodeA.setNode(noteA.getNotevalue());
                         vds.createVertex(newNodeA);
                         nodeA.setNode(noteA.getNotevalue());
@@ -267,7 +266,6 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                     if (nodeB.getNode() <= 0) {
                         // nodeB doesn't exist... creating new vertex
                         Vertex newNodeB = new Vertex();
-                        newNodeB.setGraphId(emotionGraphId);
                         newNodeB.setNode(noteB.getNotevalue());
                         vds.createVertex(newNodeB);
                         nodeB.setNode(noteB.getNotevalue());
@@ -404,15 +402,14 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                     noteB = notesToInsert.get(i + 1);
 
                     // Do nodes exist?
-                    Vertex nodeA = vds.getVertex(emotionGraphId, noteA.getNotevalue());
-                    Vertex nodeB = vds.getVertex(emotionGraphId, noteB.getNotevalue());
+                    Vertex nodeA = vds.getVertex(noteA.getNotevalue());
+                    Vertex nodeB = vds.getVertex(noteB.getNotevalue());
 
                     // If nodes don't exist, create new nodes in graph
 
                     // if nodeA doesn't exist... create new vertex
                     if (nodeA.getNode() <= 0) {
                         Vertex newNodeA = new Vertex();
-                        newNodeA.setGraphId(emotionGraphId);
                         newNodeA.setNode(noteA.getNotevalue());
                         vds.createVertex(newNodeA);
                         nodeA.setNode(noteA.getNotevalue());
@@ -421,7 +418,6 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                     // if nodeB doesn't exist... create new vertex
                     if (nodeB.getNode() <= 0) {
                         Vertex newNodeB = new Vertex();
-                        newNodeB.setGraphId(emotionGraphId);
                         newNodeB.setNode(noteB.getNotevalue());
                         vds.createVertex(newNodeB);
                         nodeB.setNode(noteB.getNotevalue());
@@ -585,7 +581,6 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
 
         // get random emotion
         EmotionsDataSource eds = new EmotionsDataSource(this);
-        // int emotionCount = eds.getEmotionCount(apprenticeId);
 
         // are we focusing on a specific emotion?
         if (emotionFocusId > 0) {

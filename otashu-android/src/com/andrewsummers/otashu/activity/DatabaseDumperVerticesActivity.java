@@ -26,13 +26,14 @@ public class DatabaseDumperVerticesActivity extends Activity {
         TextView debugText = (TextView) findViewById(R.id.debug_text);
 
         debugText.setText(debugText.getText().toString() + "Table: Vertices\n"
-                + OtashuDatabaseHelper.COLUMN_ID + "|" + OtashuDatabaseHelper.COLUMN_GRAPH_ID + "|"
-                + OtashuDatabaseHelper.COLUMN_NODE + "\n");
+                + OtashuDatabaseHelper.COLUMN_ID
+                + "|" + OtashuDatabaseHelper.COLUMN_NODE + "\n");
 
         for (Vertex vertex : allVertices) {
 
             String newText = debugText.getText().toString();
-            newText += vertex.getId() + "|" + vertex.getGraphId() + "|" + vertex.getNode() + "\n";
+            newText += vertex.getId()
+                    + "|" + vertex.getNode() + "\n";
 
             debugText.setText(newText);
         }

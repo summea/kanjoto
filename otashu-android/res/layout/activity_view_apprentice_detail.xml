@@ -47,6 +47,62 @@
         android:layout_marginBottom="20dp"
         android:padding="15dp" />
         
+    <TextView
+        android:id="@+id/apprentice_achievements_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/apprentice_achievements_title"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp" />
+        
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="1">
+        <TableRow>
+            <TextView
+                android:id="@+id/apprentice_achievement_label_1"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp" />
+            <TextView
+                android:id="@+id/apprentice_achievement_1"
+                android:text="@string/apprentice_achievements_placeholder"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:id="@+id/apprentice_achievement_label_2"
+                android:layout_width="0dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp" />
+            <TextView
+                android:id="@+id/apprentice_achievement_2"
+                android:layout_width="0dp"
+                android:text="@string/apprentice_achievements_placeholder"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:id="@+id/apprentice_achievement_label_3"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp" />
+            <TextView
+                android:id="@+id/apprentice_achievement_3"
+                android:text="@string/apprentice_achievements_placeholder"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp" />
+        </TableRow>
+    </TableLayout>
+        
     <Button
         android:id="@+id/button_send_apprentice"
         android:layout_width="match_parent"
