@@ -63,7 +63,7 @@ public class ViewEmotionFingerprintDetailActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         // 1. Choose an emotion
-        long intentEmotionId = getIntent().getIntExtra("emotion_id", 0);
+        long intentEmotionId = getIntent().getLongExtra("emotion_id", 0);
         if (intentEmotionId > 0) {
             emotionId = intentEmotionId;
         } else {

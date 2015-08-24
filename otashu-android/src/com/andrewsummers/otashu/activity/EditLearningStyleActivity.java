@@ -46,7 +46,7 @@ public class EditLearningStyleActivity extends Activity implements OnClickListen
 
         // open data source handle
         LearningStylesDataSource lsds = new LearningStylesDataSource(this);
-        int learningStyleId = (int) getIntent().getExtras().getLong("list_id");
+        long learningStyleId = getIntent().getExtras().getLong("list_id");
 
         editLearningStyle = lsds.getLearningStyle(learningStyleId);
         lsds.close();

@@ -35,7 +35,7 @@ import android.widget.TextView;
  * </p>
  */
 public class ViewBookmarkDetailActivity extends Activity implements OnClickListener {
-    private int bookmarkId = 0;
+    private long bookmarkId = 0;
     private String currentBookmarkSerializedValue = "";
     private Button buttonPlayBookmark = null;
     private File path = Environment.getExternalStorageDirectory();
@@ -55,7 +55,7 @@ public class ViewBookmarkDetailActivity extends Activity implements OnClickListe
         // get specific layout for content view
         setContentView(R.layout.activity_view_bookmark_detail);
 
-        bookmarkId = (int) getIntent().getExtras().getLong("list_id");
+        bookmarkId = getIntent().getExtras().getLong("list_id");
 
         Bookmark bookmark = new Bookmark();
         BookmarksDataSource bds = new BookmarksDataSource(this);

@@ -44,7 +44,7 @@ public class EditApprenticeActivity extends Activity implements OnClickListener 
         buttonSave = (Button) findViewById(R.id.button_save);
         buttonSave.setOnClickListener(this);
 
-        int apprenticeId = (int) getIntent().getExtras().getLong("list_id");
+        long apprenticeId = getIntent().getExtras().getLong("list_id");
 
         // open data source handle
         ApprenticesDataSource lds = new ApprenticesDataSource(this);

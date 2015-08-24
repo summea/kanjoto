@@ -55,7 +55,7 @@ public class EditGraphActivity extends Activity implements OnClickListener {
         buttonSave = (Button) findViewById(R.id.button_save);
         buttonSave.setOnClickListener(this);
 
-        int graphId = (int) getIntent().getExtras().getLong("list_id");
+        long graphId = getIntent().getExtras().getLong("list_id");
 
         // open data source handle
         GraphsDataSource gds = new GraphsDataSource(this);

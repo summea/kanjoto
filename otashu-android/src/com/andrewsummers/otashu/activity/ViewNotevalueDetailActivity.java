@@ -21,7 +21,7 @@ import android.widget.TextView;
  * </p>
  */
 public class ViewNotevalueDetailActivity extends Activity {
-    private int notevalueId = 0;
+    private long notevalueId = 0;
 
     /**
      * onCreate override used to get details view.
@@ -35,7 +35,7 @@ public class ViewNotevalueDetailActivity extends Activity {
         // get specific layout for content view
         setContentView(R.layout.activity_view_notevalue_detail);
 
-        notevalueId = (int) getIntent().getExtras().getLong("list_id");
+        notevalueId = getIntent().getExtras().getLong("list_id");
 
         Notevalue notevalue = new Notevalue();
         NotevaluesDataSource nvds = new NotevaluesDataSource(this);

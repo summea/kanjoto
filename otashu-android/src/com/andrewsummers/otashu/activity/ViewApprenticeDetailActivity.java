@@ -30,7 +30,7 @@ import android.widget.TextView;
 public class ViewApprenticeDetailActivity extends Activity implements OnClickListener {
     private Button buttonSendApprentice = null;
     private SharedPreferences sharedPref;
-    private int apprenticeId = 0;
+    private long apprenticeId = 0;
     private String apprenticeUploadUrl;
     private File path = Environment.getExternalStorageDirectory();
     private String externalDirectory = path.toString() + "/otashu/";
@@ -51,7 +51,7 @@ public class ViewApprenticeDetailActivity extends Activity implements OnClickLis
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         apprenticeUploadUrl = sharedPref.getString("pref_apprentice_upload_url", "");
 
-        apprenticeId = (int) getIntent().getExtras().getLong("list_id");
+        apprenticeId = getIntent().getExtras().getLong("list_id");
 
         Apprentice apprentice = new Apprentice();
         ApprenticesDataSource lds = new ApprenticesDataSource(this);

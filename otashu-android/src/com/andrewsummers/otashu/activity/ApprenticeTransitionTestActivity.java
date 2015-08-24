@@ -99,7 +99,7 @@ public class ApprenticeTransitionTestActivity extends Activity implements OnClic
 
         // get data from bundle
         Bundle bundle = getIntent().getExtras();
-        emotionFocusId = bundle.getInt("emotion_focus_id");
+        emotionFocusId = bundle.getLong("emotion_focus_id");
 
         try {
             // add listeners to buttons

@@ -49,7 +49,7 @@ import android.widget.TextView;
  */
 public class ViewNotesetDetailActivity extends Activity implements OnClickListener {
     private int key = 0;
-    private int notesetId = 0;
+    private long notesetId = 0;
     private SparseArray<List<Note>> notesetBundle = new SparseArray<List<Note>>();
     private Button buttonPlayNoteset = null;
     private File path = Environment.getExternalStorageDirectory();
@@ -69,7 +69,7 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
         // get specific layout for content view
         setContentView(R.layout.activity_view_noteset_detail);
 
-        notesetId = (int) getIntent().getExtras().getLong("list_id");
+        notesetId = getIntent().getExtras().getLong("list_id");
 
         NotesetsDataSource nsds = new NotesetsDataSource(this);
 
@@ -106,7 +106,9 @@ public class ViewNotesetDetailActivity extends Activity implements OnClickListen
         notesetAndRelated.setNotevalues(relatedNotevalues);
 
         // used for playback
-        key = notesetId;
+        // TODO: check on ways to avoid this type of conversion
+        // "key" is used later to access notesetBundle data...
+        key = (int) notesetId;
 
         TextView emotionName = (TextView) findViewById(R.id.noteset_detail_emotion_value);
         emotionName.setText(notesetAndRelated.getEmotion().getName());

@@ -45,7 +45,7 @@ public class EditLabelActivity extends Activity implements OnClickListener {
 
         // open data source handle
         LabelsDataSource lds = new LabelsDataSource(this);
-        int labelId = (int) getIntent().getExtras().getLong("list_id");
+        long labelId = getIntent().getExtras().getLong("list_id");
 
         editLabel = lds.getLabel(labelId);
         lds.close();

@@ -23,7 +23,7 @@ import android.widget.TextView;
  * </p>
  */
 public class ViewApprenticeScorecardDetailActivity extends Activity {
-    private int apprenticeScorecardId = 0;
+    private long apprenticeScorecardId = 0;
 
     /**
      * onCreate override used to get details view.
@@ -37,7 +37,7 @@ public class ViewApprenticeScorecardDetailActivity extends Activity {
         // get specific layout for content view
         setContentView(R.layout.activity_view_apprentice_scorecard_detail);
 
-        apprenticeScorecardId = (int) getIntent().getExtras().getLong("list_id");
+        apprenticeScorecardId = getIntent().getExtras().getLong("list_id");
 
         ApprenticeScorecard apprenticeScorecard = new ApprenticeScorecard();
         ApprenticeScorecardsDataSource asc = new ApprenticeScorecardsDataSource(this);

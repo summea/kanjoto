@@ -18,7 +18,7 @@ import android.widget.TextView;
  * </p>
  */
 public class ViewLearningStyleDetailActivity extends Activity implements OnClickListener {
-    private int learningStyleId = 0;
+    private long learningStyleId = 0;
 
     /**
      * onCreate override used to get details view.
@@ -32,7 +32,7 @@ public class ViewLearningStyleDetailActivity extends Activity implements OnClick
         // get specific layout for content view
         setContentView(R.layout.activity_view_learning_style_detail);
 
-        learningStyleId = (int) getIntent().getExtras().getLong("list_id");
+        learningStyleId = getIntent().getExtras().getLong("list_id");
 
         LearningStyle learningStyle = new LearningStyle();
         LearningStylesDataSource bds = new LearningStylesDataSource(this);

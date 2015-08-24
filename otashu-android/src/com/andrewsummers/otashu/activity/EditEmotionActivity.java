@@ -58,7 +58,7 @@ public class EditEmotionActivity extends Activity implements OnClickListener {
         buttonSave = (Button) findViewById(R.id.button_save);
         buttonSave.setOnClickListener(this);
 
-        int emotionId = (int) getIntent().getExtras().getLong("list_id");
+        long emotionId = getIntent().getExtras().getLong("list_id");
 
         // open data source handle
         EmotionsDataSource eds = new EmotionsDataSource(this);

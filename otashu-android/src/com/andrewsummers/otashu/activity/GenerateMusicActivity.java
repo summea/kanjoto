@@ -69,7 +69,7 @@ public class GenerateMusicActivity extends Activity {
     private GLSurfaceView mGLView;
     long selectedEmotionId = 1;
     String selectedEmotionName = "";
-    int selectedLogicId = 1;
+    long selectedLogicId = 1;
     int selectedInstrumentId = -1;
     int playbackSpeed = 120;
     File path = Environment.getExternalStorageDirectory();
@@ -157,8 +157,8 @@ public class GenerateMusicActivity extends Activity {
 
         // get data from bundle
         Bundle bundle = getIntent().getExtras();
-        selectedEmotionId = bundle.getInt("emotion_id");
-        selectedLogicId = bundle.getInt("logic_id");
+        selectedEmotionId = bundle.getLong("emotion_id");
+        selectedLogicId = bundle.getLong("logic_id");
         selectedInstrumentId = bundle.getInt("instrument_id");
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);

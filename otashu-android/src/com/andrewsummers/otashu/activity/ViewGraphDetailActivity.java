@@ -21,7 +21,7 @@ import android.widget.TextView;
  * </p>
  */
 public class ViewGraphDetailActivity extends Activity {
-    private int graphId = 0;
+    private long graphId = 0;
 
     /**
      * onCreate override used to get details view.
@@ -35,13 +35,13 @@ public class ViewGraphDetailActivity extends Activity {
         // get specific layout for content view
         setContentView(R.layout.activity_view_graph_detail);
 
-        graphId = (int) getIntent().getExtras().getLong("list_id");
+        graphId = getIntent().getExtras().getLong("list_id");
 
         Graph graph = new Graph();
         GraphsDataSource gds = new GraphsDataSource(this);
         graph = gds.getGraph(graphId);
         gds.close();
-        
+
         LabelsDataSource lds = new LabelsDataSource(this);
         Label label = lds.getLabel(graph.getLabelId());
         lds.close();
@@ -49,7 +49,7 @@ public class ViewGraphDetailActivity extends Activity {
         // fill in form data
         TextView graphName = (TextView) findViewById(R.id.graph_name_value);
         graphName.setText(graph.getName());
-        
+
         TextView graphLabel = (TextView) findViewById(R.id.graph_label_value);
         graphLabel.setText(lds.getLabel(graph.getLabelId()).getName());
 

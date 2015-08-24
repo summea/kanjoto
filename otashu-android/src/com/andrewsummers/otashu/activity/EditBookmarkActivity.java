@@ -26,7 +26,7 @@ import android.widget.Toast;
  */
 public class EditBookmarkActivity extends Activity implements OnClickListener {
     private Button buttonSave = null;
-    private Bookmark editBookmark;  // keep track of which Bookmark is currently being edited
+    private Bookmark editBookmark; // keep track of which Bookmark is currently being edited
 
     /**
      * onCreate override that provides bookmark creation view to user .
@@ -46,7 +46,7 @@ public class EditBookmarkActivity extends Activity implements OnClickListener {
 
         // open data source handle
         BookmarksDataSource bds = new BookmarksDataSource(this);
-        int bookmarkId = (int) getIntent().getExtras().getLong("list_id");
+        long bookmarkId = getIntent().getExtras().getLong("list_id");
 
         editBookmark = bds.getBookmark(bookmarkId);
         bds.close();

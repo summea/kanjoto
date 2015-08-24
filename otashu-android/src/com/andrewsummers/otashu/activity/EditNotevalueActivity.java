@@ -49,7 +49,7 @@ public class EditNotevalueActivity extends Activity implements OnClickListener {
         buttonSave = (Button) findViewById(R.id.button_save);
         buttonSave.setOnClickListener(this);
 
-        int notevalueId = (int) getIntent().getExtras().getLong("list_id");
+        long notevalueId = getIntent().getExtras().getLong("list_id");
         NotevaluesDataSource nvds = new NotevaluesDataSource(this);
         editNotevalue = nvds.getNotevalue(notevalueId);
         nvds.close();
@@ -57,7 +57,7 @@ public class EditNotevalueActivity extends Activity implements OnClickListener {
         LabelsDataSource lds = new LabelsDataSource(this);
         List<String> allLabels = new ArrayList<String>();
         allLabels = lds.getAllLabelListPreviews();
-        
+
         Label selectedLabel = lds.getLabel(editNotevalue.getLabelId());
         lds.close();
 

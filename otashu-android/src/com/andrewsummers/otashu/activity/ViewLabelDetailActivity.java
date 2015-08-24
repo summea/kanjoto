@@ -18,7 +18,7 @@ import android.widget.TextView;
  * </p>
  */
 public class ViewLabelDetailActivity extends Activity {
-    private int labelId = 0;
+    private long labelId = 0;
 
     /**
      * onCreate override used to get details view.
@@ -32,7 +32,7 @@ public class ViewLabelDetailActivity extends Activity {
         // get specific layout for content view
         setContentView(R.layout.activity_view_label_detail);
 
-        labelId = (int) getIntent().getExtras().getLong("list_id");
+        labelId = getIntent().getExtras().getLong("list_id");
 
         Label label = new Label();
         LabelsDataSource lds = new LabelsDataSource(this);

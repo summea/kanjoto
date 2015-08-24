@@ -31,7 +31,7 @@ import android.widget.TextView;
  * </p>
  */
 public class ViewEmotionDetailActivity extends Activity implements OnClickListener {
-    private int emotionId = 0;
+    private long emotionId = 0;
     private Button buttonSendEmofing = null;
     private Button buttonViewEmofing = null;
     private SharedPreferences sharedPref;
@@ -56,7 +56,7 @@ public class ViewEmotionDetailActivity extends Activity implements OnClickListen
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         emofingUploadUrl = sharedPref.getString("pref_emofing_upload_url", "");
 
-        emotionId = (int) getIntent().getExtras().getLong("list_id");
+        emotionId = getIntent().getExtras().getLong("list_id");
 
         EmotionsDataSource eds = new EmotionsDataSource(this);
         Emotion emotion = new Emotion();

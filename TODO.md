@@ -9,12 +9,13 @@
 - fix getTakenAt ISO date issue
 - if db is deleted while app has been closed from a page other than main activity, user isn't asked to create a new apprentice
 - call data source constructors that specify databaseName
-- check on why some old getIntent() lines are casting long to int...
 - left-align table cols on Apprentice Detail layout
 - connect achievements (if available) to apprentice details layout page (or separate this out)
+- alphabetize "settings" list
 
 
 ## DONE:
+- 20150823: fixed old getIntent() integers that should be longs
 - 20150822: added "generate all apprentice-related graph vertices when new database is created" feature
 - 20150822: fixed "vertices are shared for all apprentices and users and graphs" requirement
 - 20150812: fixed "delete correct items in list" issue (in "list all" activities that also contain deletion code)
