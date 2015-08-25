@@ -128,7 +128,7 @@ public class ApprenticeTrainingActivity extends Activity implements OnClickListe
 
         // fill bundle with values we are passing to next activity
         Bundle bundle = new Bundle();
-        bundle.putInt("emotion_focus_id", selectedEmotionFocusValue);
+        bundle.putLong("emotion_focus_id", selectedEmotionFocusValue);
 
         switch (v.getId()) {
             case R.id.button_apprentice_emotion_test:

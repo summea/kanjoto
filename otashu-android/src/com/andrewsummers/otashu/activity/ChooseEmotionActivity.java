@@ -185,7 +185,7 @@ public class ChooseEmotionActivity extends Activity implements OnClickListener {
 
                 // fill bundle with values we are passing to next activity
                 Bundle bundle = new Bundle();
-                bundle.putInt("emotion_id", selectedEmotionValue);
+                bundle.putLong("emotion_id", selectedEmotionValue);
                 bundle.putInt("instrument_id", selectedInstrumentId);
 
                 intent = new Intent(this, GenerateMusicActivity.class);
