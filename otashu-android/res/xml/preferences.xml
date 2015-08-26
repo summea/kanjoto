@@ -3,19 +3,7 @@
     
     <PreferenceCategory
         android:title="@string/pref_general_category">
-            
-        <ListPreference
-            android:key="pref_default_instrument"
-            android:title="@string/pref_default_instrument"
-            android:entries="@array/instrument_labels_array"
-            android:entryValues="@array/instrument_values_array" />
-            
-        <ListPreference
-            android:key="pref_default_playback_speed"
-            android:title="@string/pref_default_playback_speed"
-            android:entries="@array/playback_speed_values_array"
-            android:entryValues="@array/playback_speed_values_array" />
-
+        
         <PreferenceScreen
             android:key="pref_screen_alarm"
             android:title="@string/pref_screen_alarm"
@@ -32,45 +20,38 @@
 
         </PreferenceScreen>
         
-        <EditTextPreference
-            android:key="pref_import_database_location"
-            android:title="@string/pref_import_database_location"
-            android:defaultValue="" />
-            
+        
         <CheckBoxPreference
             android:key="pref_apprentice_auto_add_noteset"
             android:title="@string/pref_apprentice_auto_add_noteset"
             android:defaultValue="false" />
-
-        <EditTextPreference
-            android:key="pref_emotion_graph_for_apprentice"
-            android:title="@string/pref_emotion_graph_for_apprentice"
-            android:defaultValue="1" />
-            
-        <EditTextPreference
-            android:key="pref_transition_graph_for_apprentice"
-            android:title="@string/pref_transition_graph_for_apprentice"
-            android:defaultValue="2" />
-            
-        <EditTextPreference
-            android:key="pref_scale_graph_for_apprentice"
-            android:title="@string/pref_scale_graph_for_apprentice"
-            android:defaultValue="3" />
-            
-        <CheckBoxPreference
-            android:key="pref_auto_save_scorecard"
-            android:title="@string/pref_auto_save_scorecard"
-            android:defaultValue="false" />
-            
-        <EditTextPreference
-            android:key="pref_selected_apprentice"
-            android:title="@string/pref_selected_apprentice"
-            android:defaultValue="" />
             
         <EditTextPreference
             android:key="pref_apprentice_upload_url"
             android:title="@string/pref_apprentice_upload_url"
             android:defaultValue="" />
+        
+        <CheckBoxPreference
+            android:key="pref_auto_save_scorecard"
+            android:title="@string/pref_auto_save_scorecard"
+            android:defaultValue="false" />
+        
+        <ListPreference
+            android:key="pref_default_instrument"
+            android:title="@string/pref_default_instrument"
+            android:entries="@array/instrument_labels_array"
+            android:entryValues="@array/instrument_values_array" />
+            
+        <ListPreference
+            android:key="pref_default_playback_speed"
+            android:title="@string/pref_default_playback_speed"
+            android:entries="@array/playback_speed_values_array"
+            android:entryValues="@array/playback_speed_values_array" />
+
+        <CheckBoxPreference
+            android:key="pref_developer_mode"
+            android:title="@string/pref_developer_mode"
+            android:defaultValue="false" />
             
         <EditTextPreference
             android:key="pref_emofing_upload_url"
@@ -78,19 +59,39 @@
             android:defaultValue="" />
             
         <EditTextPreference
+            android:key="pref_emotion_graph_for_apprentice"
+            android:title="@string/pref_emotion_graph_for_apprentice"
+            android:defaultValue="1" />
+        
+        <EditTextPreference
+            android:key="pref_import_database_location"
+            android:title="@string/pref_import_database_location"
+            android:defaultValue="" />
+            
+        <EditTextPreference
             android:key="pref_music_upload_url"
             android:title="@string/pref_music_upload_url"
             android:defaultValue="" />
+        
+        <EditTextPreference
+            android:key="pref_scale_graph_for_apprentice"
+            android:title="@string/pref_scale_graph_for_apprentice"
+            android:defaultValue="3" />
             
-        <CheckBoxPreference
-            android:key="pref_developer_mode"
-            android:title="@string/pref_developer_mode"
-            android:defaultValue="false" />
+        <EditTextPreference
+            android:key="pref_selected_apprentice"
+            android:title="@string/pref_selected_apprentice"
+            android:defaultValue="" />
             
         <EditTextPreference
             android:key="pref_selected_database"
             android:title="@string/pref_selected_database"
             android:defaultValue="" />
+
+        <EditTextPreference
+            android:key="pref_transition_graph_for_apprentice"
+            android:title="@string/pref_transition_graph_for_apprentice"
+            android:defaultValue="2" />
 
     </PreferenceCategory>
 

@@ -11,10 +11,10 @@
 - call data source constructors that specify databaseName
 - left-align table cols on Apprentice Detail layout
 - connect achievements (if available) to apprentice details layout page (or separate this out)
-- alphabetize "settings" list
 
 
 ## DONE:
+- 20150825: alphabetized "settings" list
 - 20150823: fixed old getIntent() integers that should be longs
 - 20150822: added "generate all apprentice-related graph vertices when new database is created" feature
 - 20150822: fixed "vertices are shared for all apprentices and users and graphs" requirement

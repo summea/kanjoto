@@ -155,7 +155,7 @@
     <string name="play_mode_menu_title">Play Mode</string>
     <string name="pref_alarm_enabled">Alarm Enabled</string>
     <string name="pref_alarm_time_picker">Choose Time</string>
-    <string name="pref_apprentice_auto_add_noteset">Can Apprentice auto-populate noteset collection with generated noteset?</string>
+    <string name="pref_apprentice_auto_add_noteset">Apprentice Auto-add Notesets</string>
     <string name="pref_apprentice_upload_url">Apprentice Upload URL</string>
     <string name="pref_auto_save_scorecard">Auto Save Scorecards</string>    
     <string name="pref_default_instrument">Default Instrument</string>
