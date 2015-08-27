@@ -1,7 +1,11 @@
 
 package com.andrewsummers.otashu.activity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import com.andrewsummers.otashu.R;
 import com.andrewsummers.otashu.data.ApprenticeScorecardsDataSource;
@@ -45,8 +49,22 @@ public class ViewApprenticeScorecardDetailActivity extends Activity {
         asc.close();
 
         // fill in form data
+
+        // get formatted string of test "taken at" datestamp
+        // based on examples from:
+        // http://stackoverflow.com/questions/17692863/converting-string-in-t-z-format-to-date
+        TimeZone timezone = TimeZone.getTimeZone("UTC");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'", Locale.getDefault());
+        sdf.setTimeZone(timezone);
+        Date date = new Date();
+        try {
+            date = sdf.parse(apprenticeScorecard.getTakenAt());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         TextView apprenticeScorecardTakenAt = (TextView) findViewById(R.id.apprentice_scorecard_taken_at_value);
-        apprenticeScorecardTakenAt.setText(apprenticeScorecard.getTakenAt());
+        apprenticeScorecardTakenAt.setText(date.toString());
 
         // get number of correct answers
         ApprenticeScoresDataSource asds = new ApprenticeScoresDataSource(this);

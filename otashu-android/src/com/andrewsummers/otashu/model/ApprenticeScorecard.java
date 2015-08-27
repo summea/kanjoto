@@ -1,7 +1,11 @@
 
 package com.andrewsummers.otashu.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class ApprenticeScorecard {
     private long id;
@@ -34,18 +38,22 @@ public class ApprenticeScorecard {
      * getTakenAt gets ApprenticeScore taken-at date-timestamp.
      * 
      * @return <code>String</code> of ApprenticeScore taken-at date-timestamp.
-     * @throws java.text.ParseException
      */
     public String getTakenAt() {
-        /*
-         * String formattedDate = ""; SimpleDateFormat sdf = new
-         * SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'", Locale.getDefault()); try { Date date =
-         * sdf.parse(takenAt); formattedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm",
-         * Locale.getDefault()) .format(date); } catch (ParseException e) { Log.d("MYLOG",
-         * e.toString()); } catch (java.text.ParseException e) { Log.d("MYLOG", e.toString()); }
-         * return formattedDate;
-         */
-        return takenAt;
+        // get formatted string of test "taken at" datestamp
+        // based on examples from:
+        // http://stackoverflow.com/questions/17692863/converting-string-in-t-z-format-to-date
+        TimeZone timezone = TimeZone.getTimeZone("UTC");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'", Locale.getDefault());
+        sdf.setTimeZone(timezone);
+        Date date = new Date();
+        try {
+            date = sdf.parse(takenAt);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return date.toString();
     }
 
     /**

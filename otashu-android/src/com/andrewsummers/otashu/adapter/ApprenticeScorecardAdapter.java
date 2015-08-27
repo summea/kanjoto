@@ -60,6 +60,7 @@ public class ApprenticeScorecardAdapter extends BaseAdapter {
 
         TextView apprenticeScorecard = (TextView) convertView
                 .findViewById(R.id.apprentice_scorecard);
+
         apprenticeScorecard.setText(apprenticeScorecards.get(position).toString());
 
         GraphsDataSource gds = new GraphsDataSource(mContext);

@@ -771,8 +771,6 @@ public class ApprenticeEmotionTestActivity extends Activity implements OnClickLi
                 dateFormat.setTimeZone(timezone);
                 String takenAtISO = dateFormat.format(new Date());
 
-                // String takenAtISO = new Date().toString();
-
                 // if scorecard doesn't yet exist, create it
                 ApprenticeScorecardsDataSource asds = new ApprenticeScorecardsDataSource(this);
                 ApprenticeScorecard aScorecard = new ApprenticeScorecard();

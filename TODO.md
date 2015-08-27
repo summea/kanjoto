@@ -6,7 +6,6 @@
 - fix horizontal animation timing for music generation activity
 - music playback pauses at random times on phone which interferes with sync between audio and graphics
 - standardize strings view naming
-- fix getTakenAt ISO date issue
 - if db is deleted while app has been closed from a page other than main activity, user isn't asked to create a new apprentice
 - call data source constructors that specify databaseName
 - left-align table cols on Apprentice Detail layout
@@ -14,6 +13,7 @@
 
 
 ## DONE:
+- 20150826: fixed getTakenAt ISO date issue
 - 20150825: alphabetized "settings" list
 - 20150823: fixed old getIntent() integers that should be longs
 - 20150822: added "generate all apprentice-related graph vertices when new database is created" feature
