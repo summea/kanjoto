@@ -36,14 +36,9 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
     private Square mSquare;
     private List<Square> mSquares = new ArrayList<Square>();
     private List<Note> noteSequence = new ArrayList<Note>();
-    // private float verticalSpeed = 0.036f;
     private float verticalSpeed = 0.036f;
-    //private float horizontalSpeed = 0.035f;
     private int itemCurrentlyPlaying = -1;
     private int tPlay = 0;
-    //private int innerMoveUntil = 3;
-    //private int innerUnMoveUntil = 6;
-    //private int squaresToRemove = 0;
     private float newColor[];
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
@@ -60,9 +55,7 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
     public PlaybackGLRenderer(List<Note> notes, SparseArray<float[]> incomingNoteColorTable,
             float playbackSpeed) {
         noteSequence = notes;
-
         noteColorTable = incomingNoteColorTable;
-
         verticalSpeed = ((verticalSpeed * playbackSpeed) / 120);
     }
 
@@ -101,8 +94,6 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
         // through a few times through the overall onDrawFrame loop
         //
         // tPlay: overall play time counter
-        // innerMoveUntil: animate until tPlay == this value
-        // innerUnMoveUntil: un-animate until tPlay == this value
 
         for (int i = 0; i < mSquares.size(); i++) {
             if (mSquares.get(i) != null) {
@@ -112,14 +103,6 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
                 // speed of squares
                 mSquares.get(i).setY(mSquares.get(i).getY() + verticalSpeed);
 
-                /*
-                 * if (i == itemCurrentlyPlaying && (tPlay < (tPlay + innerMoveUntil))) {
-                 * mSquares.get(i).setX(mSquares.get(i).getX() + horizontalSpeed); } else if (i ==
-                 * itemCurrentlyPlaying && (tPlay > (tPlay + innerMoveUntil) && tPlay < (tPlay +
-                 * innerUnMoveUntil))) { mSquares.get(i).setX(mSquares.get(i).getX() -
-                 * horizontalSpeed); }
-                 */
-
                 Matrix.setIdentityM(mModelMatrix, 0);
                 Matrix.translateM(mModelMatrix, 0, mSquares.get(i).getX(), mSquares.get(i).getY(),
                         0);
@@ -127,56 +110,26 @@ public class PlaybackGLRenderer implements GLSurfaceView.Renderer {
 
                 // Draw square
                 newColor = mSquares.get(i).getColor();
-                // newColor[0] = 1.0f;
                 if (i == itemCurrentlyPlaying) {
                     newColor[0] = 0.2f;
                     newColor[1] = 0.2f;
                     newColor[2] = 0.2f;
-                    // float originalColor[] = mSquares.get(i).getColor();
-                    // float red = originalColor[0] - 0.02f;
-                    // float green = originalColor[1] - 0.02f;
-                    // float blue = originalColor[2] - 0.02f;
-                    // if (red < 0.0f) red = 0.0f;
-                    // if (green < 0.0f) green = 0.0f;
-                    // if (blue < 0.0f) blue = 0.0f;
 
-                    // float newColor[] = new float[] { red, green, blue, 1.0f };
-                    // float newColor[] = new float[] { mSquares.get(i).getColor()[0] - 0.02f,
-                    // mSquares.get(i).getColor()[1] - 0.02f, mSquares.get(i).getColor()[2] - 0.02f,
-                    // 1.0f };
                     mSquares.get(i).setColor(newColor);
                     mSquares.get(i).draw(mMVPMatrix);
-                    // mSquares.get(i).setColor(originalColor);
                 } else {
                     mSquares.get(i).draw(mMVPMatrix);
                 }
-
-                // this is used to fix timing issue
-                // sometimes blocks slow down as they are drawn on screen this section takes out a
-                // specific number of blocks once blocks are out of sight... which speeds up the
-                // "currently playing" block animation
-                /*
-                 * if (mSquares.get(i).getY() > 35 && squaresToRemove > 0) { mSquares.remove(i);
-                 * squaresToRemove--; Log.d("MYLOG", "deleting square..."); }
-                 */
             }
         }
-
-        /*
-         * innerMoveUntil--; innerUnMoveUntil--; if (tPlay % 10 == 0) { innerMoveUntil = 3;
-         * innerUnMoveUntil = 6; }
-         */
 
         // note: MediaPlayer begins playing music slightly before visualizer starts, so the
         // animation begins with second note
         // TODO: take a look at this later...
-        if (tPlay % 29 == 0) {  // for tablet version
-        // if (tPlay % 27 == 0) {   // for phone version
+        if (tPlay % 29 == 0) { // for tablet version
+            // if (tPlay % 27 == 0) { // for phone version
             itemCurrentlyPlaying++;
         }
-
-        // Log.d("MYLOG", "pTime: " + tPlay + " innerMU: " + innerMoveUntil + " innerUMU: "
-        // + innerUnMoveUntil);
 
         tPlay++;
     }
