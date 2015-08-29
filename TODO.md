@@ -3,7 +3,6 @@
 ## TODO:
 - create auto test/learn for Emotion test
 - think about adding support for different note speeds in Logic D
-- fix horizontal animation timing for music generation activity
 - music playback pauses at random times on phone which interferes with sync between audio and graphics
 - standardize strings view naming
 - if db is deleted while app has been closed from a page other than main activity, user isn't asked to create a new apprentice
@@ -13,6 +12,7 @@
 
 
 ## DONE:
+- 20150829: added "cache current strongest paths in database" feature
 - 20150826: fixed getTakenAt ISO date issue
 - 20150825: alphabetized "settings" list
 - 20150823: fixed old getIntent() integers that should be longs

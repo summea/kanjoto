@@ -90,16 +90,18 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
             useCache = false;
         }
 
-        // TODO: fix this comparison...
+        // check if cache is expired
         if (System.nanoTime() > (topApprenticePathsLastCachedAt + (1000000000L * seconds))) {
+            // update cached-at time
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("pref_top_apprentice_paths_last_cached_at",
+                    Long.toString(System.nanoTime()));
+            editor.apply();
             useCache = false;
             Log.d("MYLOG", "cache expired... time to refresh");
         } else {
             useCache = true;
         }
-
-        Log.d("MYLOG", "current nano time: " + System.nanoTime());
-        Log.d("MYLOG", "USE CACHE: " + useCache);
 
         // initialize ListView
         listView = getListView();
@@ -116,8 +118,8 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
             updatePathsTable();
             Log.d("MYLOG", ">>> calling update paths table");
         } else {
-            // TODO: then pull from Paths table for the fillList()
-            // fillList();
+            // use cached data
+            fillList();
             Log.d("MYLOG", ">>> calling fill list");
         }
     }
@@ -477,8 +479,6 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
 
         // refresh list
         adapter.clear();
-        // fillList();
-        // TODO: change back to fill list when ready
-        updatePathsTable();
+        fillList();
     }
 }
