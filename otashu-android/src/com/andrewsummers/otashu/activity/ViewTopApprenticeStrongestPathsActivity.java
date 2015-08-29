@@ -60,6 +60,8 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
     private long apprenticeId = 0;
     private ArrayList<PathAndRelated> topPaths = new ArrayList<PathAndRelated>();
     private int resetAutoIncrementLimit = 1000;
+    private long topApprenticePathsLastCachedAt = 0;
+    private boolean useCache = true;
 
     /**
      * onCreate override used to gather and display a list of all emotions saved in database.
@@ -74,6 +76,30 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         apprenticeId = Long.parseLong(sharedPref.getString(
                 "pref_selected_apprentice", "1"));
         emotionId = getIntent().getExtras().getLong("list_id");
+        topApprenticePathsLastCachedAt = Long.parseLong(sharedPref.getString(
+                "pref_top_apprentice_paths_last_cached_at", "0"));
+
+        // 1000000000 nanoseconds = 1 second
+        long seconds = 30;
+        if (topApprenticePathsLastCachedAt <= 0) {
+            topApprenticePathsLastCachedAt = System.nanoTime();
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("pref_top_apprentice_paths_last_cached_at",
+                    Long.toString(topApprenticePathsLastCachedAt));
+            editor.apply();
+            useCache = false;
+        }
+
+        // TODO: fix this comparison...
+        if (System.nanoTime() > (topApprenticePathsLastCachedAt + (1000000000L * seconds))) {
+            useCache = false;
+            Log.d("MYLOG", "cache expired... time to refresh");
+        } else {
+            useCache = true;
+        }
+
+        Log.d("MYLOG", "current nano time: " + System.nanoTime());
+        Log.d("MYLOG", "USE CACHE: " + useCache);
 
         // initialize ListView
         listView = getListView();
@@ -85,14 +111,21 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         headerText.setText(R.string.top_apprentice_strongest_paths_list_header);
         listView.addHeaderView(listHeader, "", false);
 
-        // update Paths table in database first time around
-        updatePathsTable();
-
-        // TODO: then pull from Paths table for the fillList()
-        // fillList();
+        if (!useCache) {
+            // update Paths table in database first time around
+            updatePathsTable();
+            Log.d("MYLOG", ">>> calling update paths table");
+        } else {
+            // TODO: then pull from Paths table for the fillList()
+            // fillList();
+            Log.d("MYLOG", ">>> calling fill list");
+        }
     }
 
     public void updatePathsTable() {
+        // use cached data for the next time around
+        useCache = true;
+
         // fill list with Top 3 strongest Apprentice paths (if available)
         topPaths.clear();
         EdgesDataSource eds = new EdgesDataSource(this);
