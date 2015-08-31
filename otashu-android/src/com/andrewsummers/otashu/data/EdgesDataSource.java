@@ -615,14 +615,11 @@ public class EdgesDataSource {
             chosenIndex = new Random().nextInt(allEdges.size());
             Edge edgeTwo = allEdges.get(chosenIndex);
 
-            Log.d("MYLOG", "]] found edge one: " + edgeOne.getWeight());
-            Log.d("MYLOG", "]] found edge two: " + edgeTwo.getWeight());
-
             if (edgeOne.getWeight() < edgeTwo.getWeight()) {
-                Log.d("MYLOG", "]] edge one has a lower weight!");
+                // edge one has a lower weight!
                 return edgeOne;
             } else {
-                Log.d("MYLOG", "]] edge two has a lower or equal weight!");
+                // edge two has a lower or equal weight!
                 return edgeTwo;
             }
         } else {
@@ -702,8 +699,6 @@ public class EdgesDataSource {
                 });
             }
 
-            Log.d("MYLOG", "query: " + query);
-
             // query selects three random emotion-related notesets
             // now, find which of the notesets here has lowest (strongest) weight
             float lastWeight = 1.0f;
@@ -740,8 +735,6 @@ public class EdgesDataSource {
             } catch (Exception e) {
                 Log.d("MYLOG", e.getStackTrace().toString());
             }
-
-            Log.d("MYLOG", "strong found edge: " + results.toString());
         }
 
         db.close();
@@ -760,8 +753,6 @@ public class EdgesDataSource {
                 + " AND " + OtashuDatabaseHelper.COLUMN_EMOTION_ID + "=?"
                 + " AND " + OtashuDatabaseHelper.COLUMN_FROM_NODE_ID + "=?"
                 + " ORDER BY " + OtashuDatabaseHelper.COLUMN_WEIGHT + " ASC LIMIT 1";
-
-        Log.d("MYLOG", "query: " + query);
 
         // create database handle
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -789,8 +780,6 @@ public class EdgesDataSource {
                 result = edge;
             } while (cursor.moveToNext());
         }
-
-        Log.d("MYLOG", "strong found transition edge: " + result.toString());
 
         db.close();
 
@@ -847,8 +836,6 @@ public class EdgesDataSource {
                         foundEdgePath.add(edge2);
                         foundEdgePath.add(edge3);
 
-                        Log.d("MYLOG", "> complete path found! " + foundEdgePath.toString());
-
                         results.put(key, foundEdgePath);
                         key++;
                     }
@@ -871,8 +858,6 @@ public class EdgesDataSource {
 
         position = 2;
         List<Edge> p2Edges = getAllEdgesWithoutEmotionId(apprenticeId, graphId, position);
-        Log.d("MYLOG", "p1edges: " + p1Edges.toString());
-        Log.d("MYLOG", "p2edges: " + p2Edges.toString());
 
         position = 3;
         List<Edge> p3Edges = getAllEdgesWithoutEmotionId(apprenticeId, graphId, position);
@@ -880,7 +865,6 @@ public class EdgesDataSource {
         int i = 0;
         // loop through all position 1-2 edges
         for (Edge edge1 : p1Edges) {
-            Log.d("MYLOG", "note1: " + notes.get(i) + " p1: " + edge1.getFromNodeId());
             if (notes.get(i) == edge1.getFromNodeId()) {
 
                 if (certainty < 25.0) {
@@ -890,7 +874,6 @@ public class EdgesDataSource {
 
                 // loop through all position 2-3 edges and compare with first
                 for (Edge edge2 : p2Edges) {
-                    Log.d("MYLOG", "note2: " + notes.get(i + 1) + " p2: " + edge2.getFromNodeId());
                     if (notes.get(i + 1) == edge2.getFromNodeId()) {
 
                         if (certainty < 50.0) {
@@ -907,8 +890,6 @@ public class EdgesDataSource {
                         }
                         // loop through all position 3-4 edges and compare with first
                         for (Edge edge3 : p3Edges) {
-                            Log.d("MYLOG",
-                                    "note3: " + notes.get(i + 2) + " p3: " + edge3.getFromNodeId());
                             if (notes.get(i + 2) == edge3.getFromNodeId()) {
 
                                 if (certainty < 75.0) {
@@ -932,12 +913,6 @@ public class EdgesDataSource {
 
                                         emotionId = edge3.getEmotionId();
                                         certainty = 100.0f;
-
-                                        Log.d("MYLOG",
-                                                "> complete path found! "
-                                                        + foundEdgePath.toString());
-                                        Log.d("MYLOG", ">> found emotion id: " + emotionId);
-                                        Log.d("MYLOG", ">> certainty: " + certainty);
                                     }
                                 }
                             }
@@ -946,9 +921,6 @@ public class EdgesDataSource {
                 }
             }
         }
-
-        Log.d("MYLOG", ">> found emotion id: " + emotionId);
-        Log.d("MYLOG", ">> certainty: " + certainty);
 
         result.put("emotionId", String.valueOf(emotionId));
         result.put("certainty", String.valueOf(certainty));

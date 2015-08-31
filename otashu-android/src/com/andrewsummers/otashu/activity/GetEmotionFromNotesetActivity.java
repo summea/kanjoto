@@ -65,8 +65,6 @@ public class GetEmotionFromNotesetActivity extends Activity implements OnClickLi
         apprenticeId = Long.parseLong(sharedPref.getString(
                 "pref_selected_apprentice", "1"));
 
-        Log.d("MYLOG", "get emotion database name: " + databaseName);
-
         // locate next spinner in layout
         Spinner spinner = (Spinner) findViewById(R.id.spinner_emotion);
 
@@ -155,14 +153,7 @@ public class GetEmotionFromNotesetActivity extends Activity implements OnClickLi
                 break;
             case R.id.button_get_emotion:
                 // try to find an emotion match for given noteset
-                Log.d("MYLOG", "looking for emotion match...");
-
                 EmotionAndRelated emotionAndRelated = getEmotion(notes);
-
-                Log.d("MYLOG", "> final match result... method: " + emotionAndRelated.getMethod()
-                        + " emotion: "
-                        + emotionAndRelated.getEmotion().getName() + " certainty: "
-                        + emotionAndRelated.getCertainty());
 
                 Context context = getApplicationContext();
                 int duration = Toast.LENGTH_SHORT;

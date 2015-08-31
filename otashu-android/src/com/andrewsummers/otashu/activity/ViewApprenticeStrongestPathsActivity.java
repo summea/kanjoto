@@ -89,7 +89,7 @@ public class ViewApprenticeStrongestPathsActivity extends Activity {
                         edge2To3Match = true;
 
                         if (edge1To2Match && edge2To3Match) {
-                            Log.d("MYLOG", "cross section match found!");
+                            // cross section match found!
                             bestMatch.add(edge1);
                             bestMatch.add(edge2);
                             bestMatch.add(edge3);

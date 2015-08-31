@@ -44,8 +44,6 @@ public class PathAdapter extends BaseAdapter {
         mContext = context;
         paths = topPaths;
 
-        Log.d("MYLOG", "> adapter top paths: " + paths.toString());
-
         sharedPref = PreferenceManager.getDefaultSharedPreferences(mContext);
         apprenticeId = Long.parseLong(sharedPref.getString(
                 "pref_selected_apprentice", "1"));
@@ -111,8 +109,6 @@ public class PathAdapter extends BaseAdapter {
             }
 
             TextView emotion = (TextView) convertView.findViewById(R.id.emotion);
-            Log.d("MYLOG", "paths again: " + paths.toString());
-            Log.d("MYLOG", "and position: " + position);
             emotion.setText(allEmotionsMap.get(
                     paths.get(position).getPathEdge().get(0).getEmotionId()).getName()
                     + "");
