@@ -32,7 +32,7 @@ public class PlayModeApprenticeActivity extends Activity implements OnClickListe
 
         // get specific layout for content view
         setContentView(R.layout.activity_apprentice_detail);
-        
+
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         setProgramMode(Integer.parseInt(sharedPref.getString(
                 "pref_program_mode", "1")));
@@ -41,23 +41,34 @@ public class PlayModeApprenticeActivity extends Activity implements OnClickListe
 
         TextView apprenticeName = (TextView) findViewById(R.id.apprentice_name);
         Button buttonChooseApprentice = (Button) findViewById(R.id.button_choose_apprentice);
-        TextView apprenticeAchievement1 = (TextView) findViewById(R.id.apprentice_achievement_1);
-        TextView apprenticeAchievement2 = (TextView) findViewById(R.id.apprentice_achievement_2);
-        TextView apprenticeAchievement3 = (TextView) findViewById(R.id.apprentice_achievement_3);
 
         ApprenticesDataSource ads = new ApprenticesDataSource(this);
         Apprentice apprentice = ads.getApprentice(apprenticeId);
         apprenticeName.setText(apprentice.getName());
-        
+
+        TextView apprenticeAchievementLabel1 = (TextView) findViewById(R.id.apprentice_achievement_label_1);
+        apprenticeAchievementLabel1.setText("Emotion");
+
+        TextView apprenticeAchievementLabel2 = (TextView) findViewById(R.id.apprentice_achievement_label_2);
+        apprenticeAchievementLabel2.setText("Scale");
+
+        TextView apprenticeAchievementLabel3 = (TextView) findViewById(R.id.apprentice_achievement_label_3);
+        apprenticeAchievementLabel3.setText("Transition");
+
+        TextView apprenticeAchievement1 = (TextView) findViewById(R.id.apprentice_achievement_1);
+        TextView apprenticeAchievement2 = (TextView) findViewById(R.id.apprentice_achievement_2);
+        TextView apprenticeAchievement3 = (TextView) findViewById(R.id.apprentice_achievement_3);
+
         AchievementsDataSource acds = new AchievementsDataSource(this);
         int achievementEmotionCount = acds.getAchievementCount(apprenticeId, "found_strong_path");
         int achievementScaleCount = acds.getAchievementCount(apprenticeId, "completed_scale");
-        int achievementTransitionCount = acds.getAchievementCount(apprenticeId, "found_strong_transition");
+        int achievementTransitionCount = acds.getAchievementCount(apprenticeId,
+                "found_strong_transition");
         acds.close();
-        
-        apprenticeAchievement1.setText("Emotion: " + achievementEmotionCount);
-        apprenticeAchievement2.setText("Scale: " + achievementScaleCount);
-        apprenticeAchievement3.setText("Transition: " + achievementTransitionCount);
+
+        apprenticeAchievement1.setText(String.valueOf(achievementEmotionCount));
+        apprenticeAchievement2.setText(String.valueOf(achievementScaleCount));
+        apprenticeAchievement3.setText(String.valueOf(achievementTransitionCount));
 
         try {
             // add listeners to buttons

@@ -3,15 +3,16 @@
 ## TODO:
 - create auto test/learn for Emotion test
 - think about adding support for different note speeds in Logic D
-- music playback pauses at random times on phone which interferes with sync between audio and graphics
-- standardize strings view naming
+- music playback pauses at random times on some devices which interferes with sync between audio and graphics
 - if db is deleted while app has been closed from a page other than main activity, user isn't asked to create a new apprentice
 - call data source constructors that specify databaseName
-- left-align table cols on Apprentice Detail layout
-- connect achievements (if available) to apprentice details layout page (or separate this out)
+- add spaces in notesets (where notevalue = 0)
 
 
 ## DONE:
+- 20150831: connected achievements to apprentice details layout page
+- 20150831: left-aligned table cols on Apprentice Detail layout
+- 20150831: standardized strings view naming
 - 20150829: added "cache current strongest paths in database" feature
 - 20150826: fixed getTakenAt ISO date issue
 - 20150825: alphabetized "settings" list

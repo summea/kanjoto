@@ -94,10 +94,10 @@ public class DrawView extends View {
         }
 
         try {
+            // save bitmap
             mBitmap.compress(Bitmap.CompressFormat.PNG, 100, fout);
             fout.flush();
             fout.close();
-            Log.d("MYLOG", "> saved bitmap...");
         } catch (Exception e) {
             Log.d("MYLOG", e.getStackTrace().toString());
         }

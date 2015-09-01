@@ -12,7 +12,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 public class PathEdgesDataSource {
     private OtashuDatabaseHelper dbHelper;
@@ -382,7 +381,7 @@ public class PathEdgesDataSource {
 
         return pathEdge;
     }
-    
+
     public List<PathEdge> getPathEdgesByPath(long pathId) {
         List<PathEdge> pathEdges = new ArrayList<PathEdge>();
 
@@ -432,8 +431,5 @@ public class PathEdgesDataSource {
         });
 
         db.close();
-
-        Log.d("MYLOG", "resetting auto increment: " + query + " "
-                + OtashuDatabaseHelper.TABLE_PATH_EDGES);
     }
 }

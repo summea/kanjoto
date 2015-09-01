@@ -12,7 +12,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 public class PathsDataSource {
     private OtashuDatabaseHelper dbHelper;
@@ -305,8 +304,5 @@ public class PathsDataSource {
         });
 
         db.close();
-
-        Log.d("MYLOG", "resetting auto increment: " + query + " "
-                + OtashuDatabaseHelper.TABLE_PATHS);
     }
 }

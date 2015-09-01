@@ -116,11 +116,9 @@ public class ViewTopApprenticeStrongestPathsActivity extends ListActivity {
         if (!useCache) {
             // update Paths table in database first time around
             updatePathsTable();
-            Log.d("MYLOG", ">>> calling update paths table");
         } else {
             // use cached data
             fillList();
-            Log.d("MYLOG", ">>> calling fill list");
         }
     }
 

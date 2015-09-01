@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.andrewsummers.otashu.R;
@@ -101,7 +100,6 @@ public class ViewApprenticeStrongestPathsActivity extends Activity {
         }
 
         // return results
-        Log.d("MYLOG", bestMatch.toString());
         pathText.setText("Strongest Path\n" + bestMatch.toString());
     }
 }

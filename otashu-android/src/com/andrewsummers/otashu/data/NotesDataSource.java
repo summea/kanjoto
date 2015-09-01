@@ -15,7 +15,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 import android.util.SparseArray;
 
 public class NotesDataSource {
@@ -290,14 +289,11 @@ public class NotesDataSource {
         for (int i = 0; i < notesetAndRelatedToCheck.getNotes().size(); i++) {
             // TODO: check all possible note sequences
             // and narrow down as we move through the note positions
-            Log.d("MYLOG", "checking note " + i + " in list...");
             String query = "SELECT " + OtashuDatabaseHelper.COLUMN_NOTESET_ID + ", "
                     + OtashuDatabaseHelper.COLUMN_NOTEVALUE
                     + " FROM " + OtashuDatabaseHelper.TABLE_NOTES
                     + " WHERE " + OtashuDatabaseHelper.COLUMN_NOTEVALUE + "=?"
                     + " AND " + OtashuDatabaseHelper.COLUMN_POSITION + "=?";
-
-            Log.d("MYLOG", "query: " + query);
 
             // select all notes from database
             Cursor cursor = db.rawQuery(query, new String[] {
@@ -329,23 +325,15 @@ public class NotesDataSource {
         for (int i = 0; i < foundNotes.size(); i++) {
             int key = foundNotes.keyAt(i);
             foundSet.retainAll(foundNotes.get(key));
-            Log.d("MYLOG", "checking " + key + ": " + foundNotes.get(key));
         }
 
-        Log.d("MYLOG", "noteset_ids across the table: " + foundSet.toString());
-
         foundSet.remove(parentId);
-
-        Log.d("MYLOG", "actual noteset_ids across the table: " + foundSet.toString());
-        Log.d("MYLOG", "notes we are checking: " + notesetAndRelatedToCheck.getNotes().toString());
 
         if (foundSet.size() > 0) {
 
             for (Long id : foundSet) {
                 String query = "SELECT * FROM " + OtashuDatabaseHelper.TABLE_NOTESETS
                         + " WHERE " + OtashuDatabaseHelper.COLUMN_ID + "=?";
-
-                Log.d("MYLOG", "query: " + query);
 
                 // select all notes from database
                 Cursor cursor = db.rawQuery(query, new String[] {
@@ -366,8 +354,6 @@ public class NotesDataSource {
             }
 
         }
-
-        Log.d("MYLOG", "found noteset? " + notesetExists);
 
         db.close();
 
@@ -431,7 +417,6 @@ public class NotesDataSource {
         int i = 0;
         // loop through all position 1-2 notes
         for (Note note1 : p1Notes) {
-            Log.d("MYLOG", "note1: " + notes.get(i) + " p1: " + note1.getNotevalue());
             if (notes.get(i) == note1.getNotevalue()) {
 
                 if (certainty < 25.0) {
@@ -441,7 +426,6 @@ public class NotesDataSource {
 
                 // loop through all position 2-3 notes and compare with first
                 for (Note note2 : p2Notes) {
-                    Log.d("MYLOG", "note2: " + notes.get(i + 1) + " p2: " + note2.getNotevalue());
                     if (notes.get(i + 1) == note2.getNotevalue()) {
 
                         if (certainty < 50.0) {
@@ -458,8 +442,6 @@ public class NotesDataSource {
                         }
                         // loop through all position 3-4 notes and compare with first
                         for (Note note3 : p3Notes) {
-                            Log.d("MYLOG",
-                                    "note3: " + notes.get(i + 2) + " p3: " + note3.getNotevalue());
                             if (notes.get(i + 2) == note3.getNotevalue()) {
 
                                 if (certainty < 75.0) {
@@ -481,11 +463,6 @@ public class NotesDataSource {
                                         // complete noteset found!
                                         notesetId = note4.getNotesetId();
                                         certainty = 100.0f;
-
-                                        Log.d("MYLOG",
-                                                "> complete noteset found! " + notes.toString());
-                                        Log.d("MYLOG", ">> found emotion id: " + emotionId);
-                                        Log.d("MYLOG", ">> certainty: " + certainty);
                                     }
                                 }
                             }
@@ -497,9 +474,6 @@ public class NotesDataSource {
 
         NotesetsDataSource nsds = new NotesetsDataSource(mContext);
         emotionId = nsds.getNoteset(notesetId).getEmotion();
-
-        Log.d("MYLOG", ">> found emotion id: " + emotionId);
-        Log.d("MYLOG", ">> certainty: " + certainty);
 
         result.put("emotionId", String.valueOf(emotionId));
         result.put("certainty", String.valueOf(certainty));

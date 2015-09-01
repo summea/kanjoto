@@ -65,7 +65,8 @@
                 android:id="@+id/apprentice_achievement_label_1"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textStyle="bold"
-                android:layout_marginBottom="10dp" />
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp" />
             <TextView
                 android:id="@+id/apprentice_achievement_1"
                 android:text="@string/apprentice_achievements_placeholder"
@@ -79,7 +80,8 @@
                 android:layout_width="0dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textStyle="bold"
-                android:layout_marginBottom="10dp" />
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp" />
             <TextView
                 android:id="@+id/apprentice_achievement_2"
                 android:layout_width="0dp"
@@ -93,7 +95,8 @@
                 android:id="@+id/apprentice_achievement_label_3"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textStyle="bold"
-                android:layout_marginBottom="10dp" />
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp" />
             <TextView
                 android:id="@+id/apprentice_achievement_3"
                 android:text="@string/apprentice_achievements_placeholder"

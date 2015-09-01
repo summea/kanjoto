@@ -4,6 +4,7 @@ package com.andrewsummers.otashu.activity;
 import java.io.File;
 
 import com.andrewsummers.otashu.R;
+import com.andrewsummers.otashu.data.AchievementsDataSource;
 import com.andrewsummers.otashu.data.ApprenticesDataSource;
 import com.andrewsummers.otashu.data.LearningStylesDataSource;
 import com.andrewsummers.otashu.model.Apprentice;
@@ -54,9 +55,9 @@ public class ViewApprenticeDetailActivity extends Activity implements OnClickLis
         apprenticeId = getIntent().getExtras().getLong("list_id");
 
         Apprentice apprentice = new Apprentice();
-        ApprenticesDataSource lds = new ApprenticesDataSource(this);
-        apprentice = lds.getApprentice(apprenticeId);
-        lds.close();
+        ApprenticesDataSource ads = new ApprenticesDataSource(this);
+        apprentice = ads.getApprentice(apprenticeId);
+        ads.close();
 
         try {
             // fill in form data
@@ -79,12 +80,26 @@ public class ViewApprenticeDetailActivity extends Activity implements OnClickLis
 
             TextView apprenticeAchievementLabel3 = (TextView) findViewById(R.id.apprentice_achievement_label_3);
             apprenticeAchievementLabel3.setText("Transition");
-
+            
+            TextView apprenticeAchievement1 = (TextView) findViewById(R.id.apprentice_achievement_1);
+            TextView apprenticeAchievement2 = (TextView) findViewById(R.id.apprentice_achievement_2);
+            TextView apprenticeAchievement3 = (TextView) findViewById(R.id.apprentice_achievement_3);
+            
+            AchievementsDataSource acds = new AchievementsDataSource(this);
+            int achievementEmotionCount = acds.getAchievementCount(apprenticeId, "found_strong_path");
+            int achievementScaleCount = acds.getAchievementCount(apprenticeId, "completed_scale");
+            int achievementTransitionCount = acds.getAchievementCount(apprenticeId, "found_strong_transition");
+            acds.close();
+            
+            apprenticeAchievement1.setText(String.valueOf(achievementEmotionCount));
+            apprenticeAchievement2.setText(String.valueOf(achievementScaleCount));
+            apprenticeAchievement3.setText(String.valueOf(achievementTransitionCount));
+            
             // add listeners to buttons
             buttonSendApprentice.setOnClickListener(this);
         } catch (Exception e) {
             Log.d("MYLOG", e.getStackTrace().toString());
-        }
+        }        
     }
 
     @Override
