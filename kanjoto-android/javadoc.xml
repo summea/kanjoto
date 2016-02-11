@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="javadoc">
     <target name="javadoc">
-        <javadoc access="public" author="true" classpath="C:\Users\andy\Documents\adt-bundle-windows-x86_64-20140321\sdk\platforms\android-19\android.jar" destdir="doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="com.andrewsummers.kanjoto.data,com.andrewsummers.kanjoto.model,com.andrewsummers.kanjoto.view,com.andrewsummers.kanjoto.adapter,com.andrewsummers.kanjoto.fragment,com.andrewsummers.kanjoto.activity" source="1.6" sourcefiles="src/com/andrewsummers/kanjoto/DepthPageTransformer.java,src/com/andrewsummers/kanjoto/ImageAdapter.java" sourcepath="gen;src" splitindex="true" use="true" version="true">
+        <javadoc access="public" author="true" classpath="C:\Users\andy\Documents\adt-bundle-windows-x86_64-20140321\sdk\platforms\android-19\android.jar" destdir="doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="com.summea.kanjoto.data,com.summea.kanjoto.model,com.summea.kanjoto.view,com.summea.kanjoto.adapter,com.summea.kanjoto.fragment,com.summea.kanjoto.activity" source="1.6" sourcefiles="src/com/summea/kanjoto/DepthPageTransformer.java,src/com/summea/kanjoto/ImageAdapter.java" sourcepath="gen;src" splitindex="true" use="true" version="true">
             <link href="file:/C:/Users/andy/workspace-and/kanjoto/doc/"/>
             <link href="http://developer.android.com/reference/"/>
         </javadoc>
