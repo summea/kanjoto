@@ -23,10 +23,10 @@ local.properties
 proguard/
 
 # Exclude other libraries
-otashu-android/libs/*
-otashu-android/src/com/leff/midi/*
-otashu-android/src/com/leff/midi/event/*
-otashu-android/src/com/leff/midi/event/meta/*
-otashu-android/src/com/leff/midi/examples/*
-otashu-android/src/com/leff/midi/util/*
-otashu-android/javadoc.xml
+kanjoto-android/libs/*
+kanjoto-android/src/com/leff/midi/*
+kanjoto-android/src/com/leff/midi/event/*
+kanjoto-android/src/com/leff/midi/event/meta/*
+kanjoto-android/src/com/leff/midi/examples/*
+kanjoto-android/src/com/leff/midi/util/*
+kanjoto-android/javadoc.xml
