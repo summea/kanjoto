@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">オタシュウ</string>
+    <string name="menu_title">オタシュウ</string>
+    <string name="button_create_noteset">作成</string>
+    <string name="button_get_remote_noteset">遠隔資源をGET</string>
+    <string name="button_view_all_notesets">ノートセットの表示</string>
+    <string name="button_view_sequence">シーケンスの表示</string>
+    <string name="button_save">保存</string>
+    <string name="button_settings">設定</string>
+    
+    <string name="create_noteset_title">ノートセットを作成</string>
+    
+    <string name="http_request_failed">HTTP request failed</string>
+    
+    <string name="spinner_emotion_label">Emotion</string>
+    <string name="spinner_note1_label">Note 1</string>
+    <string name="spinner_note2_label">Note 2</string>
+    <string name="spinner_note3_label">Note 3</string>
+    <string name="spinner_note4_label">Note 4</string>
+    
+    <string name="noteset_saved">noteset saved</string>
+    
+    <string name="remote_noteset">getting remote noteset...</string>
+    <string name="settings_file_name">KanjotoSharedPrefs</string>
+    
+    <string name="touch_feedback">Enable touch feedback</string>
+    
+    <string name="view_all_notesets_title">View All Notesets</string>
+    
+    <string name="view_noteset_detail_title">Noteset Details</string>
+    <string name="noteset_detail_title_label">Noteset Name</string>
+    
+	<string name="button_generate">Generate</string>
+	<string name="button_play">Play</string>
+    
+</resources>
