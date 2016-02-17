@@ -5,9 +5,7 @@ import java.io.File;
 
 import summea.kanjoto.adapter.ImageAdapter;
 import summea.kanjoto.data.KanjotoDatabaseHelper;
-
 import summea.kanjoto.R;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -16,6 +14,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -41,6 +40,16 @@ public class MainActivity extends Activity implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // make sure destination directory exists
+        File path = Environment.getExternalStorageDirectory();
+        String newDirectory = path.toString() + "/kanjoto/";
+        File newFile = new File(newDirectory);
+
+        if (!newFile.exists()) {
+            Log.d("MYLOG", "> creating destination folder");
+            newFile.mkdirs();
+        }
+        
         // check if database exists
         File databaseFile = new File(Environment.getExternalStorageDirectory().toString()
                 + "/kanjoto/" + KanjotoDatabaseHelper.DATABASE_NAME);

@@ -2,6 +2,7 @@
 package summea.kanjoto.data;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -13,6 +14,7 @@ import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -29,7 +31,8 @@ public class KanjotoDatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "kanjoto.db";
 
-    public static final String DATABASE_PATH = "";
+    public static final String DATABASE_PATH = Environment.getExternalStorageDirectory().toString()
+            + "/kanjoto/";
     public static final String LABELS_IMPORT_FILE = "labels.csv";
     public static final String NOTEVALUES_IMPORT_FILE = "notevalues.csv";
 
@@ -247,7 +250,7 @@ public class KanjotoDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         Log.d("MYLOG", "database: " + db.toString());
         ContentValues contentValues = new ContentValues();
-
+        
         // set default preferences
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(mContext);
         SharedPreferences.Editor editor = sharedPref.edit();
