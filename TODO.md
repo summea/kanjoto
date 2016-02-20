@@ -1,4 +1,4 @@
-# otashu
+# KANJOTO
 
 ## TODO:
 - create auto test/learn for Emotion test
